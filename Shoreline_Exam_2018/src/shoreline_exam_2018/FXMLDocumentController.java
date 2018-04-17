@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_eksamen_2018;
+package shoreline_exam_2018;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -16,7 +16,7 @@ import javafx.scene.control.Label;
  *
  * @author janvanzetten
  */
-public class FXMLdocController implements Initializable {
+public class FXMLDocumentController implements Initializable {
     
     @FXML
     private Label label;
