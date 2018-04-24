@@ -41,7 +41,7 @@ public class Shoreline_Exam_2018_Preloader extends Preloader {
     @Override
     public void handleStateChangeNotification(StateChangeNotification scn) {
         if (scn.getType() == StateChangeNotification.Type.BEFORE_START) {
-            //stage.hide();
+            stage.hide();
         }
     }
 
