@@ -8,10 +8,16 @@ package shoreline_exam_2018.preloader;
 import javafx.application.Preloader;
 import javafx.application.Preloader.ProgressNotification;
 import javafx.application.Preloader.StateChangeNotification;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * Simple Preloader Using the ProgressBar Control
@@ -19,34 +25,24 @@ import javafx.stage.Stage;
  * @author janvanzetten
  */
 public class Shoreline_Exam_2018_Preloader extends Preloader {
-    
-    ProgressBar bar;
-    Stage stage;
-    
-    private Scene createPreloaderScene() {
-        bar = new ProgressBar();
-        BorderPane p = new BorderPane();
-        p.setCenter(bar);
-        return new Scene(p, 300, 150);        
-    }
-    
+    Stage stage = new Stage();
+   
     @Override
     public void start(Stage stage) throws Exception {
-        this.stage = stage;
-        stage.setScene(createPreloaderScene());        
-        stage.show();
+        Parent root = FXMLLoader.load(getClass().getResource("FXMLDocument.fxml"));
+        
+        Scene scene = new Scene(root);
+        scene.setFill(Color.TRANSPARENT);
+        this.stage.setScene(scene);
+        this.stage.initStyle(StageStyle.TRANSPARENT);
+        this.stage.show();
     }
     
     @Override
     public void handleStateChangeNotification(StateChangeNotification scn) {
         if (scn.getType() == StateChangeNotification.Type.BEFORE_START) {
-            stage.hide();
+            //stage.hide();
         }
     }
-    
-    @Override
-    public void handleProgressNotification(ProgressNotification pn) {
-        bar.setProgress(pn.getProgress());
-    }    
-    
+
 }
