@@ -19,7 +19,7 @@ public class Shoreline_Exam_2018 extends Application {
     Scene scene;
     
      /**
-     * this does the slow stuff because of preloader
+     * this does the slow startup stuff because of preloader
      * @throws Exception
      */
     @Override
@@ -30,7 +30,7 @@ public class Shoreline_Exam_2018 extends Application {
     }
     
     /**
-     * This does the stuff wich need the JavaFX thread 
+     * This does the startup stuff wich need the JavaFX thread 
      * @param stage
      * @throws Exception 
      */
