@@ -16,14 +16,23 @@ import javafx.stage.Stage;
  * @author janvanzetten
  */
 public class Shoreline_Exam_2018 extends Application {
+    Scene scene;
+    
+     /**
+     * this does the slow stuff because of preloader
+     * @throws Exception
+     */
+    @Override
+    public void init() throws Exception
+    {
+        Parent root = FXMLLoader.load(getClass().getResource("gui/view/FXMLDocument.fxml"));
+        scene = new Scene(root);
+    }
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("gui/view/FXMLDocument.fxml"));
-        
-        Scene scene = new Scene(root);
-        
         stage.setScene(scene);
+        stage.setTitle("Shoreline MappingTool");
         stage.show();
     }
 
