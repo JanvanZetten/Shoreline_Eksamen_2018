@@ -29,6 +29,11 @@ public class Shoreline_Exam_2018 extends Application {
         scene = new Scene(root);
     }
     
+    /**
+     * This does the stuff wich need the JavaFX thread 
+     * @param stage
+     * @throws Exception 
+     */
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(scene);
