@@ -19,7 +19,7 @@ public class Shoreline_Exam_2018 extends Application {
     
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("gui/view/FXMLDocument.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("gui/view/MainView.fxml"));
         
         Scene scene = new Scene(root);
         
