@@ -7,10 +7,11 @@ package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+
+import shoreline_exam_2018.gui.model.MainModel;
 
 /**
  *
@@ -20,16 +21,14 @@ public class MainController implements Initializable {
     
     @FXML
     private Label label;
+    private MainModel model;
     
-    @FXML
-    private void handleButtonAction(ActionEvent event) {
-        System.out.println("You clicked me!");
-        label.setText("Hello World!");
-    }
-    
+    /**
+     * Initializes the MainController.
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        model = new MainModel();
     }    
     
 }
