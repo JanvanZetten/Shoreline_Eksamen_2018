@@ -14,10 +14,25 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public interface InputFileReader {
     
-    List<String> getParameters();
+    /**
+     * get the parameters of the file
+     * @return
+     * @throws DALException 
+     */
+    List<String> getParameters() throws DALException;
     
-    boolean hasNext();
+    /**
+     * CHeck if there is a element more in the file
+     * @return
+     * @throws DALException 
+     */
+    boolean hasNext() throws DALException;
     
-    Row getNextRow();
+    /**
+     * get the next row/element of the file
+     * @return
+     * @throws DALException 
+     */
+    Row getNextRow() throws DALException;
     
 }
