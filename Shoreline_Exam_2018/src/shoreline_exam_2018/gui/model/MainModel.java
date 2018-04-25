@@ -9,6 +9,6 @@ package shoreline_exam_2018.gui.model;
  *
  * @author janvanzetten
  */
-public class someModel {
+public class MainModel {
     
 }
