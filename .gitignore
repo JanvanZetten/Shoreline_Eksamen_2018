@@ -86,5 +86,7 @@ $RECYCLE.BIN/
 /MyTunes/nbproject/private/
 /Shoreline_Exam_2018/nbproject/private/
 /Shoreline_Exam_2018-Preloader/nbproject/private/
+/Shoreline_Exam_2018/lib/poi-3.17
 *.orig
 *.properties
+
