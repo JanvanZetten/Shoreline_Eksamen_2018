@@ -34,7 +34,7 @@ public class XLSX_horisontal_Reader implements InputFileReader{
     
     /**
      * give it the filename as a path to where the file is located
-     * @param FileName ex "/tmp/MyFirstExcel.xlsx"
+     * @param FileName ex "/tmp/MyFirstExcel.xlsx" this file has to be of the xlsx type!!
      */
     public XLSX_horisontal_Reader(String FileName) {
         this.FileName = FileName;
@@ -89,6 +89,7 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         return parameterList;
     }
 
+  
     @Override
     public boolean hasNext() throws DALException {
         timeouttime = System.currentTimeMillis()+EXPIRATION_TIME;
@@ -106,6 +107,8 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         }
     }
 
+    
+    
     @Override
     public Row getNextRow() throws DALException{
         timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
@@ -118,6 +121,12 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         return mainWorkbook.getSheetAt(0).getRow(pointer);
     }
 
+    
+    /**
+     * opens a stream to the xlsx file 
+     * @return a workbook object with this file
+     * @throws DALException 
+     */
     private Workbook openStream() throws DALException {
         try {
             FileInputStream excelFile = new FileInputStream(new File(FileName));
@@ -129,6 +138,11 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         }
     }
     
+    
+    /**
+     * closes the mainWorkbook and sets the open field to false
+     * @throws DALException 
+     */
     private synchronized void closeMainStream() throws DALException{
         try {
             open = false;
@@ -138,6 +152,9 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         }
     }
 
+    /**
+     * makes a thread which cheks for timeout for the mainWorkbook and closes it when it expires
+     */
     private void makeTimeout() {
         Thread thread;
         thread = new Thread(new Runnable() {
