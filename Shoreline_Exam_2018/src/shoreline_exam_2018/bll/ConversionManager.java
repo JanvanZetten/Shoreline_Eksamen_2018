@@ -5,8 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import shoreline_exam_2018.bll.ConversionThread;
 
 /**
  *
@@ -14,22 +13,8 @@ import java.util.logging.Logger;
  */
 public class ConversionManager {
     
-    private Thread task;
-    
-    public void runConversion() {
-        task = new Thread(convert);
-        task.start();
-        try {
-            task.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ConversionManager.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    public ConversionThread createConversionThread() {
+        ConversionThread cThread = new ConversionThread();
+        return cThread;
     }
-    
-    private Runnable convert = new Runnable() {
-        @Override
-        public void run() {
-            //TODO converting
-        }
-    };
 }
