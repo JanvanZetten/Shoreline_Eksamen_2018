@@ -39,6 +39,10 @@ public class LoginViewController implements Initializable {
         model = new LoginModel();
     }    
 
+    /**
+     * Button to log in. Sends information to LoginModel.
+     * @param event 
+     */
     @FXML
     private void handleLogin(ActionEvent event) {
         model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText(), buttonLogin);
