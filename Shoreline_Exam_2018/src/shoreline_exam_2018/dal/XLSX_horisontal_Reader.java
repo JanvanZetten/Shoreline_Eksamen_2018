@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -22,6 +24,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class XLSX_horisontal_Reader implements InputFileReader{
 
+    private static final long EXPIRATION_TIME = 10000; //in milliseconds
+    private long timeouttime = System.currentTimeMillis()+EXPIRATION_TIME;
     private String FileName;
     private boolean open = false;
     private Workbook mainWorkbook;
@@ -81,37 +85,33 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         } catch (IOException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
-            
-            
-        
-        
+
         return parameterList;
     }
 
     @Override
     public boolean hasNext() throws DALException {
+        timeouttime = System.currentTimeMillis()+EXPIRATION_TIME;
         if (!open){
             mainWorkbook = openStream();
+            makeTimeout();
             open = true;
         }
         if (mainWorkbook.getSheetAt(0).getRow(pointer) != null){
             return true;
         }
         else{
-            try {
-                mainWorkbook.close();
-                open = false;
-            } catch (IOException ex) {
-                throw new DALException(ex.getMessage(), ex.getCause());
-            }
+            closeMainStream();
             return false;
         }
     }
 
     @Override
     public Row getNextRow() throws DALException{
+        timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
         if (!open){
             mainWorkbook = openStream();
+            
             open = true;
         }
         pointer++;
@@ -127,6 +127,38 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         } catch (IOException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
+    }
+    
+    private synchronized void closeMainStream() throws DALException{
+        try {
+            open = false;
+            mainWorkbook.close();
+        } catch (IOException ex) {
+            throw new DALException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    private void makeTimeout() {
+        Thread thread;
+        thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(System.currentTimeMillis() < timeouttime){
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(XLSX_horisontal_Reader.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                try {
+                    closeMainStream();
+                } catch (DALException ex) {
+                    Logger.getLogger(XLSX_horisontal_Reader.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        
+        thread.start();
     }
     
     
