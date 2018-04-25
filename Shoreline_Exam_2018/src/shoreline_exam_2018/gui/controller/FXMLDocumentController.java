@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018;
+package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
