@@ -13,7 +13,7 @@ import shoreline_exam_2018.bll.ConversionThread;
  */
 public class ConversionManager {
     
-    public ConversionThread createConversionThread() {
+    public ConversionThread createConversion() {
         ConversionThread cThread = new ConversionThread();
         return cThread;
     }
