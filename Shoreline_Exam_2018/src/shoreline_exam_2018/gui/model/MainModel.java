@@ -21,11 +21,14 @@ public class MainModel {
     private Path to;
     private Path from;
 
+    /**
+     * Opens a file chooser and sets a File object to be the selected file.
+     */
     public void chooseFile() {
-//        ExtensionFilter filter = new ExtensionFilter(".xslx");
+        ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
         
-//        fc.getExtensionFilters().add(filter);
+        fc.getExtensionFilters().add(filter);
         String currentDir = System.getProperty("user.dir") + File.separator;
         
         File dir = new File(currentDir);
