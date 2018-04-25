@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="350.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.141" fx:controller="shoreline_exam_2018.gui.controller.LoginViewController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.LoginViewController">
    <children>
       <Label layoutX="65.0" layoutY="54.0" text="Very good login">
          <font>
@@ -16,6 +15,6 @@
       </Label>
       <TextField fx:id="textfieldUsername" layoutX="82.0" layoutY="160.0" promptText="Username..." />
       <TextField fx:id="textviewPassword" layoutX="82.0" layoutY="224.0" promptText="Password" />
-      <Button layoutX="143.0" layoutY="308.0" mnemonicParsing="false" onAction="#handleLogin" text="Log in" />
+      <Button fx:id="buttonLogin" layoutX="143.0" layoutY="308.0" mnemonicParsing="false" onAction="#handleLogin" text="Log in" />
    </children>
 </AnchorPane>

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 import shoreline_exam_2018.gui.model.LoginModel;
@@ -27,6 +28,8 @@ public class LoginViewController implements Initializable {
     private TextField textviewPassword;
     
     private LoginModel model;
+    @FXML
+    private Button buttonLogin;
 
     /**
      * Initializes the controller class.
@@ -36,9 +39,13 @@ public class LoginViewController implements Initializable {
         model = new LoginModel();
     }    
 
+    /**
+     * Button to log in. Sends information to LoginModel.
+     * @param event 
+     */
     @FXML
     private void handleLogin(ActionEvent event) {
-        model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText());
+        model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText(), buttonLogin);
     }
     
 }
