@@ -13,66 +13,81 @@ and open the template in the editor.
 }
 
 /* cusom background */
+/* Set custom background colour */
 .pane {
     -fx-background-color: #4986A8;
 }
 
 /* cusom tab pane */
+/* Set minimum height and width and font size */
 .tab-pane {
     -fx-tab-min-width:100px;
     -fx-tab-min-height:45px;
     -fx-font-size: 20px;
 }
 
+/* Set background colour of pane behind tabs */
 .tab-pane .tab-header-background {
     -fx-background-color: #2C546D;
 }
+
+/* Removes huges gab between top and left side */
 .tab-pane:top *.tab-header-area {
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0 2 0 0;
 }
 
+/* removes round corners and gab between tabs and pane */
 .tab{
     -fx-background-radius: 0;
     -fx-background-insets: 0;
 }
 
+/* Set background color of tab */
 .tab-pane .tab
 {
     -fx-background-color: #2C546D;
     -fx-background-insets: 0;
 }
 
+/* Set background color of selected tab */
 .tab-pane .tab:selected
 {
     -fx-background-color: #4986A8;
 }
 
+/* Set tab label alignment and text fill */
 .tab .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: #FFFFFF;
 }
 
+/* Set selected tab label alignment and text fill */
 .tab:selected .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: #FFFFFF;
 }
 
+/* Removes ugly blue stroke around focused tab */
 .tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
     -fx-border-color: transparent;
 }
 
 /* cusom root */
+/* Set standard font family */
 .root {
     -fx-font-family: 'Coolvetica Rg';
 }
 
 /* cusom label */
+/* Label does not care about root settings, so the font family is added again */
+/* Set text colour */
 .label {
     -fx-font-family: 'Coolvetica Rg';
     -fx-text-fill: #FFFFFF;
 }
 
+/* Set text colour and makes stroke */
 .label .text {
     -fx-fill: #FFFFFF;
     -fx-stroke: #4D4D4D;
@@ -80,17 +95,20 @@ and open the template in the editor.
 }
 
 /* cusom button */
+/* Removes button round corners, set button background colour and set text colour */
 .button {
     -fx-background-radius: 0,0,0,0;
     -fx-background-color: #4D4D4D;
     -fx-text-fill: #FFFFFF;
 }
 
+/* Show cursor hand on hover */
 .button:hover {
     -fx-cursor: hand;
 }
 
 /* cusom textfield */
+/* Remove textfields round corners, set background colour, set text colour and set border colour */
 .text-field {
     -fx-background-radius: 0,0,0,0;
     -fx-background-color: #DFDFDF;
