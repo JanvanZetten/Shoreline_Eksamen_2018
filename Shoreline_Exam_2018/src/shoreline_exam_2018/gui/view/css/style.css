@@ -19,7 +19,9 @@ and open the template in the editor.
 
 /* cusom tab pane */
 .tab-pane {
-    -fx-tab-min-width:90px;
+    -fx-tab-min-width:100px;
+    -fx-tab-min-height:45px;
+    -fx-font-size: 20px;
 }
 
 .tab-pane .tab-header-background {
@@ -34,6 +36,7 @@ and open the template in the editor.
     -fx-background-radius: 0;
     -fx-background-insets: 0;
 }
+
 .tab-pane .tab
 {
     -fx-background-color: #2C546D;
@@ -53,6 +56,10 @@ and open the template in the editor.
 .tab:selected .tab-label {
     -fx-alignment: CENTER;
     -fx-text-fill: #FFFFFF;
+}
+
+.tab-pane:focused > .tab-header-area > .headers-region > .tab:selected .focus-indicator {
+    -fx-border-color: transparent;
 }
 
 /* cusom root */
