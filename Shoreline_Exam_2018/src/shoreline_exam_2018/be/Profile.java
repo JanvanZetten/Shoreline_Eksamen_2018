@@ -27,7 +27,12 @@ public class Profile {
     private String earliestStartDate;
     private String latestStartDate;
     private String estimatedTime;
+    private String profileDescription;
     
+    
+    /**
+     * Creates a profile for use when converting.
+     */
     public Profile (int profileId,
                     String assetSerialNumber,
                     String type,
@@ -40,7 +45,8 @@ public class Profile {
                     String latestFinishDate,
                     String earliestStartDate,
                     String latestStartDate,
-                    String estimatedTime) {
+                    String estimatedTime,
+                    String profileDesription) {
         this.profileId = profileId;
         this.assetSerialNumber = assetSerialNumber;
         this.type = type;
@@ -54,6 +60,7 @@ public class Profile {
         this.earliestStartDate = earliestStartDate;
         this.latestStartDate = latestStartDate;
         this.estimatedTime = estimatedTime;
+        this.profileDescription = profileDesription;
     }
 
     public int getProfileId() {
@@ -120,6 +127,9 @@ public class Profile {
         return estimatedTime;
     }
     
+    public String getProfileDescription() {
+        return profileDescription;
+    }
     
     
 }
