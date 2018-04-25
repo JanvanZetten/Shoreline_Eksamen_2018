@@ -12,6 +12,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 
+import shoreline_exam_2018.gui.model.LoginModel;
+
 /**
  * FXML Controller class
  *
@@ -23,17 +25,20 @@ public class LoginViewController implements Initializable {
     private TextField textfieldUsername;
     @FXML
     private TextField textviewPassword;
+    
+    private LoginModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        model = new LoginModel();
     }    
 
     @FXML
     private void handleLogin(ActionEvent event) {
+        model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText());
     }
     
 }
