@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.jsonwriter.jsonpair;
+package shoreline_exam_2018.dal.output.json.jsonpair;
+
+import shoreline_exam_2018.dal.output.OutputPair;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonPairDouble implements JsonPair<Double>
+public class JsonPairDouble implements OutputPair<Double>
 {
     private String key;
     private Double value;
