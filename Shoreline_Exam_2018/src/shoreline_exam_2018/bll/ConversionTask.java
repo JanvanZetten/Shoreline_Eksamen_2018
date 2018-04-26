@@ -21,7 +21,7 @@ public class ConversionTask extends HBox {
     private Button btnPause;
     private Button btnCancel;
 
-    public ConversionTask() {
+    public ConversionTask(ConversionThread cThread) {
         super();
 
         conversionName = new Label();
@@ -29,6 +29,6 @@ public class ConversionTask extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
 
-        this.getChildren().addAll(conversionName);
+        this.getChildren().addAll(conversionName, progress, btnPause, btnCancel);
     }
 }

@@ -5,7 +5,6 @@
  */
 package shoreline_exam_2018.bll;
 
-import shoreline_exam_2018.bll.ConversionThread;
 
 /**
  *
@@ -13,8 +12,8 @@ import shoreline_exam_2018.bll.ConversionThread;
  */
 public class ConversionManager {
     
-    public ConversionThread createConversion() {
+    public void newConversion() {
         ConversionThread cThread = new ConversionThread();
-        return cThread;
+        ConversionTask cTask = new ConversionTask(cThread);
     }
 }
