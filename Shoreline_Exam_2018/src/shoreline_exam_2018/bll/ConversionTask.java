@@ -5,9 +5,12 @@
  */
 package shoreline_exam_2018.bll;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
 
 /**
@@ -16,19 +19,40 @@ import javafx.scene.layout.HBox;
  */
 public class ConversionTask extends HBox {
     
-    private Label conversionName;
+    private Label lblConversionName;
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
 
-    public ConversionTask(ConversionThread cThread) {
+    public ConversionTask(String conversionName, ConversionThread cThread) {
         super();
 
-        conversionName = new Label();
+        lblConversionName = new Label();
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
+        
+        lblConversionName.setText(conversionName);
+        
+        progress.setProgress(0);
+        progress.progressProperty().unbind();
+        progress.progressProperty().bind(cThread.getTask().progressProperty());
+        
+        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.pauseTask();
+                //NEEDS TO SET RESUME BUTTON TOO
+            }
+        });
+        
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.cancelTask();
+            }
+        });
 
-        this.getChildren().addAll(conversionName, progress, btnPause, btnCancel);
+        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
     }
 }

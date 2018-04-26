@@ -7,6 +7,9 @@ package shoreline_exam_2018.bll;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
 
 /**
  *
@@ -14,27 +17,69 @@ import java.util.logging.Logger;
  */
 public class ConversionThread {
 
-    private Thread task;
+    private Task task;
+    private Thread thread;
 
+    /**
+     * Creates listeners for a progressbar for a task and runs the task on a
+     * separate thread.
+     */
     public ConversionThread() {
-        runConversion();
+        task = runConversion();
+        task.messageProperty().addListener(new ChangeListener<String>() {
+          public void changed(ObservableValue<? extends String> observable,
+              String oldValue, String newValue) {
+          }
+        });
+        thread = new Thread(task);
+        thread.start();
     }
-    
-    public void runConversion() {
-        task = new Thread(convert);
-        task.start();
+
+    /**
+     * Runs the convert function on a separate thread.
+     */
+    private Task runConversion() {
+        return new Task() {
+            @Override
+            protected Object call() throws Exception {
+                for (int i = 0; i < 1000000000000000000l; i++) {
+                    System.out.println("SPAM " + i);
+                    //NEEDS TO HAVE CONVERSION METHOD HERE
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Pauses the task.
+     */
+    public void pauseTask() {
         try {
-            task.join();
+            thread.wait();
         } catch (InterruptedException ex) {
-            Logger.getLogger(ConversionManager.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConversionThread.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
-    private Runnable convert = new Runnable() {
-        @Override
-        public void run() {
-            //TODO converting
+    /**
+     * Resumes the task after it has been paused.
+     */
+    public void resumeTask() {
+        if (thread.isAlive()) {
+            thread.notify();
         }
-    };
-}
+    }
 
+    /**
+     * Interrupts and cancels a conversion.
+     */
+    public void cancelTask() {
+        thread.interrupt();
+        //STILL NEEDS TO BE ABLE TO DELETE THE ATTEMPTED CREATED JSON FILE
+    }
+
+    public Task getTask() {
+        return task;
+    }
+}

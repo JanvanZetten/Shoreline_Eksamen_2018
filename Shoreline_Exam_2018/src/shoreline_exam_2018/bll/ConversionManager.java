@@ -14,6 +14,6 @@ public class ConversionManager {
     
     public void newConversion() {
         ConversionThread cThread = new ConversionThread();
-        ConversionTask cTask = new ConversionTask(cThread);
+        ConversionTask cTask = new ConversionTask("A string that contains the name of the task", cThread);
     }
 }
