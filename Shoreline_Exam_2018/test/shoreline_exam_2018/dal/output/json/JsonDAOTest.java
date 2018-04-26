@@ -3,33 +3,47 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.jsonwriter;
+package shoreline_exam_2018.dal.output.json;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.jsonwriter.jsonpair.JsonPair;
-import shoreline_exam_2018.dal.jsonwriter.jsonpair.JsonPairArray;
-import shoreline_exam_2018.dal.jsonwriter.jsonpair.JsonPairJson;
-import shoreline_exam_2018.dal.jsonwriter.jsonpair.JsonPairString;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import shoreline_exam_2018.dal.output.OutputDAO;
+import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairJson;
+import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairString;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonDAO
+public class JsonDAOTest
 {
-    /**
-     * Testing JSON write
-     * @throws DALException
-     */
-    public void writeJsonToFile() throws DALException
+
+    public JsonDAOTest()
     {
-        List<JsonPair> thisShouldWork = new ArrayList<>();
+    }
+
+    @BeforeClass
+    public static void setUpClass()
+    {
+    }
+
+    @AfterClass
+    public static void tearDownClass()
+    {
+    }
+
+    /**
+     * Test of createFile method, of class JsonDAO.
+     */
+    @Test
+    public void testCreateFile() throws Exception
+    {
+        List<OutputPair> thisShouldWork = new ArrayList<>();
         thisShouldWork.add(new JsonPairString("siteName", ""));
         thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
         thisShouldWork.add(new JsonPairString("type", "SAP import field -> 'Order Type'"));
@@ -42,31 +56,21 @@ public class JsonDAO
         thisShouldWork.add(new JsonPairString("priority", "SAP import field -> 'priority' if set else 'Low'"));
         thisShouldWork.add(new JsonPairString("status", "NEW"));
 
-        List<JsonPair> oioArr = new ArrayList<>();
+        List<OutputPair> oioArr = new ArrayList<>();
         oioArr.add(new JsonPairString("latestFinishDate", "Datetime Object"));
         oioArr.add(new JsonPairString("earliestStartDate", "Datetime Object"));
         oioArr.add(new JsonPairString("latestStartDate", "Datetime Object"));
         oioArr.add(new JsonPairString("estimatedTime", ""));
-        JsonPair oio = new JsonPairJson("planning", oioArr);
+        OutputPair oio = new JsonPairJson("planning", oioArr);
         thisShouldWork.add(oio);
 
         JsonPairJson jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
 
-        List<JsonPair> jpArr = new ArrayList<>();
+        List<OutputPair> jpArr = new ArrayList<>();
         jpArr.add(jsonObj);
 
-        JsonPairArray jsonArr = new JsonPairArray("jsonArray", jpArr);
-
-        try (FileWriter file = new FileWriter("e:\\test.json"))
-        {
-
-            file.write(jsonArr.getValue().toJSONString());
-            file.flush();
-
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        OutputDAO jdao = new JsonDAO();
+        jdao.createFile(jpArr, Paths.get("e:\\test.json"));
     }
+
 }

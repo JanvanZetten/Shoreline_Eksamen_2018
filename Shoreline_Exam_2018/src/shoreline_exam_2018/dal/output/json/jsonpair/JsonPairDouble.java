@@ -3,25 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.jsonwriter.jsonpair;
+package shoreline_exam_2018.dal.output.json.jsonpair;
 
-import java.util.Date;
+import shoreline_exam_2018.dal.output.OutputPair;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonPairDate implements JsonPair<Date>
+public class JsonPairDouble implements OutputPair<Double>
 {
     private String key;
-    private Date value;
+    private Double value;
 
     /**
      * Create object with given value.
      * @param key
      * @param value
      */
-    public JsonPairDate(String key, Date value)
+    public JsonPairDouble(String key, Double value)
     {
         this.key = key;
         this.value = value;
@@ -34,8 +34,9 @@ public class JsonPairDate implements JsonPair<Date>
     }
 
     @Override
-    public Date getValue()
+    public Double getValue()
     {
         return value;
     }
+
 }
