@@ -47,7 +47,10 @@ public class MainController implements Initializable {
         model.prepareTasks();
     }    
 
-    
+    /**
+     * Loads a file from a File Chooser. CURRENTLY STARTS TASK, NOT FINAL.
+     * @param event 
+     */
     @FXML
     private void handleLoadFile(ActionEvent event) {
         model.chooseFile(); 

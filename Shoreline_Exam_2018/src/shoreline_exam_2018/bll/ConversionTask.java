@@ -24,6 +24,12 @@ public class ConversionTask extends HBox {
     private Button btnPause;
     private Button btnCancel;
 
+    /**
+     * Creates a visual task that the user is able to see. Shows progress of a
+     * task currently running.
+     * @param conversionName
+     * @param cThread 
+     */
     public ConversionTask(String conversionName, ConversionThread cThread) {
         super();
 
@@ -39,6 +45,8 @@ public class ConversionTask extends HBox {
         progress.progressProperty().bind(cThread.getTask().progressProperty());
         
         btnPause.setText("PAUSE");
+        
+        //Pauses the running thread. NOT WORKING.
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -48,6 +56,8 @@ public class ConversionTask extends HBox {
         });
         
         btnCancel.setText("CANCEL");
+        
+        //Cancels the running thread.
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
