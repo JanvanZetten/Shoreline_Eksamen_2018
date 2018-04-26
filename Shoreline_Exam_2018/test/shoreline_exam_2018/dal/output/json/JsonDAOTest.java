@@ -20,11 +20,11 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import shoreline_exam_2018.dal.output.OutputDAO;
-import shoreline_exam_2018.dal.output.OutputPair;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairArray;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairDate;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairJson;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairString;
+import shoreline_exam_2018.be.output.OutputPair;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairDate;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairString;
 
 /**
  *

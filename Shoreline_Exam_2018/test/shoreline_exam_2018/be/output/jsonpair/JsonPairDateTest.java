@@ -3,17 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.output.json.jsonpair;
+package shoreline_exam_2018.be.output.jsonpair;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.TimeZone;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.OutputPair;
+import shoreline_exam_2018.bll.Utilities.DateUtils;
 
 /**
  *
@@ -31,10 +30,8 @@ public class JsonPairDateTest
 
         key = "date";
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
-        TimeZone tz = TimeZone.getDefault();
-        df.setTimeZone(tz);
-        value = df.format(date);
+        DateUtils du = new DateUtils();
+        value = du.dateToISO8601(date);
 
         jpd = new JsonPairDate(key, date);
     }

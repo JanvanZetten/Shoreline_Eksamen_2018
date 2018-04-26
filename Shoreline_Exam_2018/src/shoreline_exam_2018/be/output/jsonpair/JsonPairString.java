@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.output.json.jsonpair;
+package shoreline_exam_2018.be.output.jsonpair;
 
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.OutputPair;
 
 /**
- *
+ * Is a pair of a key String and a value String.
  * @author Asbamz
  */
 public class JsonPairString implements OutputPair<String>

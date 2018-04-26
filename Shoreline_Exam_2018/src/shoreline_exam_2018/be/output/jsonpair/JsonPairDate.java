@@ -3,15 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.output.json.jsonpair;
+package shoreline_exam_2018.be.output.jsonpair;
 
-import java.text.SimpleDateFormat;
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.OutputPair;
 import java.util.Date;
-import java.util.TimeZone;
+import shoreline_exam_2018.bll.Utilities.DateUtils;
 
 /**
- *
+ * Is a pair of a key String and a value with right JavaScript Date formatting.
  * @author Asbamz
  */
 public class JsonPairDate implements OutputPair<String>
@@ -27,7 +26,9 @@ public class JsonPairDate implements OutputPair<String>
     public JsonPairDate(String key, Date value)
     {
         this.key = key;
-        this.value = dateToISO8601(value);
+
+        DateUtils du = new DateUtils();
+        this.value = du.dateToISO8601(value);
     }
 
     @Override
@@ -40,18 +41,5 @@ public class JsonPairDate implements OutputPair<String>
     public String getValue()
     {
         return value;
-    }
-
-    /**
-     * Converts Java data to JSON ISO8601 format.
-     * @param date
-     * @return
-     */
-    private String dateToISO8601(Date date)
-    {
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
-        TimeZone tz = TimeZone.getDefault();
-        df.setTimeZone(tz);
-        return df.format(date);
     }
 }

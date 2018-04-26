@@ -3,29 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.output.json.jsonpair;
+package shoreline_exam_2018.be.output.jsonpair;
 
+import shoreline_exam_2018.be.output.jsonpair.JsonPairInteger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.OutputPair;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonPairStringTest
+public class JsonPairIntegerTest
 {
-    private OutputPair jps;
+    private OutputPair jpi;
     private String key;
-    private String value;
+    private Integer value;
 
-    public JsonPairStringTest()
+    public JsonPairIntegerTest()
     {
-        key = "string";
-        value = "value";
-        jps = new JsonPairString(key, value);
+        key = "integer";
+        value = 3;
+        jpi = new JsonPairInteger(key, value);
     }
 
     @BeforeClass
@@ -39,21 +40,21 @@ public class JsonPairStringTest
     }
 
     /**
-     * Test of getKey method, of class JsonPairString.
+     * Test of getKey method, of class JsonPairInteger.
      */
     @Test
     public void testGetKey()
     {
-        assertEquals(jps.getKey(), key);
+        assertEquals(jpi.getKey(), key);
     }
 
     /**
-     * Test of getValue method, of class JsonPairString.
+     * Test of getValue method, of class JsonPairInteger.
      */
     @Test
     public void testGetValue()
     {
-        assertEquals(jps.getValue(), value);
+        assertEquals(jpi.getValue(), value);
     }
 
 }

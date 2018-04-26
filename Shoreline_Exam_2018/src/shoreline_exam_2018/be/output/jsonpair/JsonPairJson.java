@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.output.json.jsonpair;
+package shoreline_exam_2018.be.output.jsonpair;
 
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.OutputPair;
 import java.util.List;
 import org.json.simple.JSONObject;
 
 /**
- *
+ * Is a pair of a key String and a value JSONObject. If given the key "object"
+ * and the list { OutputPair("1", "test"), OutputPair("2", "fix") } It will
+ * create an Object as this "object": {"1": "test", "2": "fix"}
  * @author Asbamz
  */
 public class JsonPairJson implements OutputPair<JSONObject>

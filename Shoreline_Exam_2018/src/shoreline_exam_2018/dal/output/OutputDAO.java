@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.dal.output;
 
+import shoreline_exam_2018.be.output.OutputPair;
 import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.dal.DALException;

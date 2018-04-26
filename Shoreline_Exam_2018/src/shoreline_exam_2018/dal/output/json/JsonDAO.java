@@ -14,10 +14,10 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.output.OutputDAO;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairArray;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairJson;
-import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairString;
-import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
+import shoreline_exam_2018.be.output.jsonpair.JsonPairString;
+import shoreline_exam_2018.be.output.OutputPair;
 
 /**
  *
