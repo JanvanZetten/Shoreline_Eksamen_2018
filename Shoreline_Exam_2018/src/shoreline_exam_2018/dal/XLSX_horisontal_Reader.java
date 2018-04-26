@@ -22,43 +22,52 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  *
  * @author janvanzetten
  */
-public class XLSX_horisontal_Reader implements InputFileReader{
+public class XLSX_horisontal_Reader implements InputFileReader {
 
     private static final long EXPIRATION_TIME = 10000; //in milliseconds
-    private long timeouttime = System.currentTimeMillis()+EXPIRATION_TIME;
+    private long timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
     private String FileName;
     private boolean open = false;
     private Workbook mainWorkbook;
     private int pointer = 0;
-    
-    
+
     /**
      * give it the filename as a path to where the file is located
-     * @param FileName ex "/tmp/MyFirstExcel.xlsx" this file has to be of the xlsx type!!
+     *
+     * @param FileName ex "/tmp/MyFirstExcel.xlsx" this file has to be of the
+     * xlsx type!!
      */
     public XLSX_horisontal_Reader(String FileName) {
         this.FileName = FileName;
-        
+
     }
-    
+
     /**
-     * Makes string when cell type is String, Boolean, Numeric or formula else nothing
-     * @return list with the parameter names as string and empty string if there was no parameter
+     * Makes string when cell type is String, Boolean, Numeric or formula else
+     * nothing
+     *
+     * @return list with the parameter names as string and empty string if there
+     * was no parameter
      * @throws shoreline_exam_2018.dal.DALException
      */
     @Override
-    public List<String> getParameters() throws DALException{
+    public List<String> getParameters() throws DALException {
         List<String> parameterList = new ArrayList<>();
-     
-            Workbook workbook = openStream();
-            Iterator<Row> iterator = workbook.getSheetAt(0).iterator();
-            
-            if (iterator.hasNext()){
-                Row currentRow = iterator.next();
-                Iterator<Cell> cellIterator = currentRow.iterator();
-                while (cellIterator.hasNext()) {
-                    Cell currentCell = cellIterator.next();
-                    switch(currentCell.getCellTypeEnum()){
+
+        Workbook workbook = openStream();
+        Iterator<Row> iterator = workbook.getSheetAt(0).iterator();
+
+        int cellPointer = 0;
+
+        if (iterator.hasNext()) {
+            Row currentRow = iterator.next();
+            while (checkForEndOfRow(currentRow, cellPointer, 10)) {
+                Cell currentCell = currentRow.getCell(cellPointer);
+                cellPointer++;
+                if (currentCell == null) {
+                    parameterList.add("");
+                } else {
+                    switch (currentCell.getCellTypeEnum()) {
                         case STRING:
                             parameterList.add(currentCell.getStringCellValue());
                             break;
@@ -74,12 +83,13 @@ public class XLSX_horisontal_Reader implements InputFileReader{
                         default:
                             parameterList.add("");
                             break;
-                                    
+
                     }
-                    
                 }
+
             }
-            
+        }
+
         try {
             workbook.close();
         } catch (IOException ex) {
@@ -89,61 +99,57 @@ public class XLSX_horisontal_Reader implements InputFileReader{
         return parameterList;
     }
 
-  
     @Override
     public boolean hasNext() throws DALException {
-        timeouttime = System.currentTimeMillis()+EXPIRATION_TIME;
-        if (!open){
+        timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
+        if (!open) {
             mainWorkbook = openStream();
             makeTimeout();
             open = true;
         }
-        if (mainWorkbook.getSheetAt(0).getRow(pointer) != null){
+        if (mainWorkbook.getSheetAt(0).getRow(pointer) != null) {
             return true;
-        }
-        else{
+        } else {
             closeMainStream();
             return false;
         }
     }
 
-    
-    
     @Override
-    public Row getNextRow() throws DALException{
+    public Row getNextRow() throws DALException {
         timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
-        if (!open){
+        if (!open) {
             mainWorkbook = openStream();
-            
+
             open = true;
         }
         pointer++;
         return mainWorkbook.getSheetAt(0).getRow(pointer);
     }
 
-    
     /**
-     * opens a stream to the xlsx file 
+     * opens a stream to the xlsx file
+     *
      * @return a workbook object with this file
-     * @throws DALException 
+     * @throws DALException
      */
     private Workbook openStream() throws DALException {
         try {
             FileInputStream excelFile = new FileInputStream(new File(FileName));
-            return new SXSSFWorkbook(new XSSFWorkbook(excelFile));
+            return new XSSFWorkbook(excelFile);
         } catch (FileNotFoundException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         } catch (IOException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
     }
-    
-    
+
     /**
      * closes the mainWorkbook and sets the open field to false
-     * @throws DALException 
+     *
+     * @throws DALException
      */
-    private synchronized void closeMainStream() throws DALException{
+    private synchronized void closeMainStream() throws DALException {
         try {
             open = false;
             mainWorkbook.close();
@@ -153,14 +159,15 @@ public class XLSX_horisontal_Reader implements InputFileReader{
     }
 
     /**
-     * makes a thread which cheks for timeout for the mainWorkbook and closes it when it expires
+     * makes a thread which cheks for timeout for the mainWorkbook and closes it
+     * when it expires
      */
     private void makeTimeout() {
         Thread thread;
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                while(System.currentTimeMillis() < timeouttime){
+                while (System.currentTimeMillis() < timeouttime) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
@@ -174,10 +181,18 @@ public class XLSX_horisontal_Reader implements InputFileReader{
                 }
             }
         });
-        
+
         thread.start();
     }
-    
-    
-    
+
+    private boolean checkForEndOfRow(Row currentRow, int cellPointer, int cellsTolookforward) {
+        for (int j = cellPointer; j < cellPointer + cellsTolookforward; j++) {
+            if (currentRow.getCell(j) != null) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
 }
