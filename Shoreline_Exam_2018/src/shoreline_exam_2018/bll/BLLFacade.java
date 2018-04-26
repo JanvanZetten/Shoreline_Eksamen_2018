@@ -11,4 +11,6 @@ package shoreline_exam_2018.bll;
  */
 public interface BLLFacade {
     
+    public ConversionTask setNewTask();
+    
 }

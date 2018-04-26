@@ -38,6 +38,7 @@ public class ConversionTask extends HBox {
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
         
+        btnPause.setText("PAUSE");
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -46,6 +47,7 @@ public class ConversionTask extends HBox {
             }
         });
         
+        btnCancel.setText("CANCEL");
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

@@ -12,7 +12,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import shoreline_exam_2018.bll.ConversionTask;
 
 import shoreline_exam_2018.gui.model.MainModel;
 
@@ -33,6 +35,8 @@ public class MainController implements Initializable {
     private Tab tabLog;
     @FXML
     private Tab tabSettings;
+    @FXML
+    private ListView<ConversionTask> tblTasks;
     
     /**
      * Initializes the MainController.
@@ -40,13 +44,14 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new MainModel();
+        model.prepareTasks();
     }    
 
     
     @FXML
     private void handleLoadFile(ActionEvent event) {
         model.chooseFile(); 
-    
+        model.setTask(tblTasks);
     }
     
 }

@@ -5,17 +5,19 @@
  */
 package shoreline_exam_2018.dal.output.json.jsonpair;
 
+import java.text.SimpleDateFormat;
 import shoreline_exam_2018.dal.output.OutputPair;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonPairDate implements OutputPair<Date>
+public class JsonPairDate implements OutputPair<String>
 {
     private String key;
-    private Date value;
+    private String value;
 
     /**
      * Create object with given value.
@@ -25,7 +27,7 @@ public class JsonPairDate implements OutputPair<Date>
     public JsonPairDate(String key, Date value)
     {
         this.key = key;
-        this.value = value;
+        this.value = dateToISO8601(value);
     }
 
     @Override
@@ -35,8 +37,21 @@ public class JsonPairDate implements OutputPair<Date>
     }
 
     @Override
-    public Date getValue()
+    public String getValue()
     {
         return value;
+    }
+
+    /**
+     * Converts Java data to JSON ISO8601 format.
+     * @param date
+     * @return
+     */
+    private String dateToISO8601(Date date)
+    {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SXXX");
+        TimeZone tz = TimeZone.getDefault();
+        df.setTimeZone(tz);
+        return df.format(date);
     }
 }

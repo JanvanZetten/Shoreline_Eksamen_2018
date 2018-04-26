@@ -12,8 +12,9 @@ package shoreline_exam_2018.bll;
  */
 public class ConversionManager {
     
-    public void newConversion() {
+    public ConversionTask newConversion() {
         ConversionThread cThread = new ConversionThread();
         ConversionTask cTask = new ConversionTask("A string that contains the name of the task", cThread);
+        return cTask;
     }
 }

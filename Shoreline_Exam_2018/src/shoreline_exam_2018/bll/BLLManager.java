@@ -5,10 +5,22 @@
  */
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.bll.ConversionManager;
+
 /**
  *
  * @author alexl
  */
 public class BLLManager implements BLLFacade {
+    
+    private ConversionManager cMan;
+    
+    public BLLManager() {
+        cMan = new ConversionManager();
+    }
+    
+    public ConversionTask setNewTask() {
+        return cMan.newConversion();
+    }
     
 }

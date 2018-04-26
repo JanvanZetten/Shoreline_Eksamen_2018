@@ -27,9 +27,9 @@ public class ConversionThread {
     public ConversionThread() {
         task = runConversion();
         task.messageProperty().addListener(new ChangeListener<String>() {
-          public void changed(ObservableValue<? extends String> observable,
-              String oldValue, String newValue) {
-          }
+            public void changed(ObservableValue<? extends String> observable,
+                    String oldValue, String newValue) {
+            }
         });
         thread = new Thread(task);
         thread.start();
@@ -43,8 +43,13 @@ public class ConversionThread {
             @Override
             protected Object call() throws Exception {
                 for (int i = 0; i < 1000000000000000000l; i++) {
-                    System.out.println("SPAM " + i);
-                    //NEEDS TO HAVE CONVERSION METHOD HERE
+                    if (!thread.isInterrupted()) {
+                        System.out.println("SPAM " + i);
+                        //NEEDS TO HAVE CONVERSION METHOD HERE
+                    }
+                    else {
+                        return true;
+                    }
                 }
                 return true;
             }
