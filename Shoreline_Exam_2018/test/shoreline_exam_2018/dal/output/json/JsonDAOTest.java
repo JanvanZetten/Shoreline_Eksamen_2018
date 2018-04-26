@@ -10,13 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.JSONParser;
 import org.junit.AfterClass;
@@ -84,12 +80,12 @@ public class JsonDAOTest
         jpArr.add(jsonObj);
 
         OutputDAO jdao = new JsonDAO();
-        jdao.createFile(jpArr, Paths.get(System.getProperty("user.dir") + "\\test.json"));
+        jdao.createFile(jpArr, Paths.get(System.getProperty("user.dir") + "/test.json"));
         JsonPairArray jsonArr = new JsonPairArray("jsonArray", jpArr);
 
         JSONParser parser = new JSONParser();
 
-        try (FileReader file = new FileReader(System.getProperty("user.dir") + "\\test.json"))
+        try (FileReader file = new FileReader(System.getProperty("user.dir") + "/test.json"))
         {
             Object obj = parser.parse(file);
 
@@ -106,7 +102,7 @@ public class JsonDAOTest
         }
         finally
         {
-            Files.deleteIfExists(Paths.get(System.getProperty("user.dir") + "\\test.json"));
+            Files.deleteIfExists(Paths.get(System.getProperty("user.dir") + "/test.json"));
         }
     }
 
