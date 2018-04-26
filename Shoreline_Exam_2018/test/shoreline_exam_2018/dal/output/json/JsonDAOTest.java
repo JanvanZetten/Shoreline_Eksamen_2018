@@ -5,14 +5,28 @@
  */
 package shoreline_exam_2018.dal.output.json;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
+import org.json.simple.JSONArray;
+import org.json.simple.parser.JSONParser;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import static org.junit.Assert.*;
 import shoreline_exam_2018.dal.output.OutputDAO;
 import shoreline_exam_2018.dal.output.OutputPair;
+import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairArray;
+import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairDate;
 import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairJson;
 import shoreline_exam_2018.dal.output.json.jsonpair.JsonPairString;
 
@@ -50,7 +64,7 @@ public class JsonDAOTest
         thisShouldWork.add(new JsonPairString("externalWorkOrderId", "SAP import field -> 'Order'"));
         thisShouldWork.add(new JsonPairString("systemStatus", "SAP import field -> 'System status'"));
         thisShouldWork.add(new JsonPairString("userStatus", "SAP import field -> 'User status'"));
-        thisShouldWork.add(new JsonPairString("createdOn", "Datetime Object (Date now)"));
+        thisShouldWork.add(new JsonPairDate("createdOn", Calendar.getInstance().getTime()));
         thisShouldWork.add(new JsonPairString("createdBy", "SAP"));
         thisShouldWork.add(new JsonPairString("name", "SAP import field -> 'Opr. short text' if empty then  'Description2'"));
         thisShouldWork.add(new JsonPairString("priority", "SAP import field -> 'priority' if set else 'Low'"));
@@ -70,7 +84,30 @@ public class JsonDAOTest
         jpArr.add(jsonObj);
 
         OutputDAO jdao = new JsonDAO();
-        jdao.createFile(jpArr, Paths.get("e:\\test.json"));
+        jdao.createFile(jpArr, Paths.get(System.getProperty("user.dir") + "\\test.json"));
+        JsonPairArray jsonArr = new JsonPairArray("jsonArray", jpArr);
+
+        JSONParser parser = new JSONParser();
+
+        try (FileReader file = new FileReader(System.getProperty("user.dir") + "\\test.json"))
+        {
+            Object obj = parser.parse(file);
+
+            JSONArray jsonObject = (JSONArray) obj;
+            assertTrue(jsonObject.toJSONString().equals(jsonArr.getValue().toJSONString()));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            Files.deleteIfExists(Paths.get(System.getProperty("user.dir") + "\\test.json"));
+        }
     }
 
 }
