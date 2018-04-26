@@ -3,23 +3,25 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.jsonwriter.jsonpair;
+package shoreline_exam_2018.dal.output.json.jsonpair;
+
+import shoreline_exam_2018.dal.output.OutputPair;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonPairInteger implements JsonPair<Integer>
+public class JsonPairString implements OutputPair<String>
 {
     private String key;
-    private Integer value;
+    private String value;
 
     /**
      * Create object with given value.
      * @param key
      * @param value
      */
-    public JsonPairInteger(String key, Integer value)
+    public JsonPairString(String key, String value)
     {
         this.key = key;
         this.value = value;
@@ -32,7 +34,7 @@ public class JsonPairInteger implements JsonPair<Integer>
     }
 
     @Override
-    public Integer getValue()
+    public String getValue()
     {
         return value;
     }
