@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal.connection;
+package shoreline_exam_2018.dal.database.connection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.connection.DBConnector;
+import shoreline_exam_2018.dal.database.connection.DBConnector;
 
 /**
  *

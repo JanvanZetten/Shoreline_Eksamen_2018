@@ -5,7 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.io.File;
+import java.nio.file.Path;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -15,8 +15,10 @@ import shoreline_exam_2018.be.Profile;
 public class ConvertXSLM implements ConversionInterface {
 
     @Override
-    public void convertFile(Profile selectedProfile, File selectedFile) {
-        //Do conversion
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
     
 }

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
@@ -107,7 +106,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
             makeTimeout();
             open = true;
         }
-        if (mainWorkbook.getSheetAt(0).getRow(pointer) != null) {
+        if (mainWorkbook.getSheetAt(0).getRow(pointer + 1) != null) {
             return true;
         } else {
             closeMainStream();

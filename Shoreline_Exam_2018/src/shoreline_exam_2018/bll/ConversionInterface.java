@@ -5,20 +5,22 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.io.File;
+import java.nio.file.Path;
 import shoreline_exam_2018.be.Profile;
 
 /**
  *
  * @author alexl
  */
-public interface ConversionInterface {
-    
+public interface ConversionInterface {    
+   
     /**
      * Converts the file.
-     * @param selectedProfile
-     * @param selectedFile 
+     * @param selectedProfile the profile for converting the inputfile to the output file
+     * @param inputFile the input file from which to convert from
+     * @param outputFile the placement and naming of the output file
      */
-    public void convertFile(Profile selectedProfile, File selectedFile);
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile);
+    
     
 }
