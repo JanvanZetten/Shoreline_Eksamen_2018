@@ -29,6 +29,8 @@ public class MainModel {
     private File selectedFile;
     private Path selectedFilePath;
     private Profile selectedProfile;
+    private String taskName;
+    
     private BLLFacade bll;
 
     private List<ConversionTask> tblTasks;
@@ -54,19 +56,21 @@ public class MainModel {
     public void chooseFile(ListView<ConversionTask> tblTasks) {
         ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
-
+        
         fc.getExtensionFilters().add(filter);
         String currentDir = System.getProperty("user.dir") + File.separator;
-
+        
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
         fc.setTitle("Attach a file");
-
+        
         selectedFile = fc.showOpenDialog(null);
+        //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
+        //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
         if (selectedFile != null) {
             selectedFilePath = Paths.get(selectedFile.toURI());
 
-            this.tblTasks.add(bll.setConversionFilePath(selectedFilePath, selectedProfile));
+            this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
             olTasks.addAll(this.tblTasks);
             tblTasks.setItems(olTasks);
         }

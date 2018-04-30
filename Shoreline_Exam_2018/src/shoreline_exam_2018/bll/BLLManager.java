@@ -22,8 +22,8 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public ConversionTask setConversionFilePath(Path selectedFilePath, Profile selectedProfile) {
-        return cMan.newConversion(selectedFilePath, selectedProfile);
+    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile) {
+        return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
     }
     
 }

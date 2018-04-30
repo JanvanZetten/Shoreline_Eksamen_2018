@@ -16,10 +16,13 @@ import shoreline_exam_2018.be.Profile;
 public class ConversionManager {
     
     /**
-     * Creates
-     * @return 
+     * Creates a Thread (the one working) and a Task (the visual element the user can see).
+     * @param taskName          = The name of the Conversion
+     * @param selectedFilePath  = The path of the file attempted to convert
+     * @param selectedProfile   = The selected profile for the conversion
+     * @return                  = Returns the Task so that it can be set in the view.
      */
-    public ConversionTask newConversion(Path selectedFilePath, Profile selectedProfile) {
+    public ConversionTask newConversion(String taskName, Path selectedFilePath, Profile selectedProfile) {
         
         ConversionThread cThread = new ConversionThread();
         ConversionTask cTask = new ConversionTask("A string that contains the name of the task", cThread, selectedFilePath, selectedProfile);

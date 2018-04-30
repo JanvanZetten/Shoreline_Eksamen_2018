@@ -14,6 +14,13 @@ import shoreline_exam_2018.be.Profile;
  */
 public interface BLLFacade {
 
-    public ConversionTask setConversionFilePath(Path selectedFilePath, Profile selectedProfile);
+    /**
+     * Creates a conversion that is based on the file path of a file and a profile.
+     * @param taskName
+     * @param selectedFilePath
+     * @param selectedProfile
+     * @return 
+     */
+    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
     
 }
