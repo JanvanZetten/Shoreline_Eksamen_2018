@@ -80,7 +80,6 @@ public class ProfileDAOTest
     @Test
     public void testGetAllProfiles() throws Exception
     {
-        /*
         ProfileDAO pdao = new ProfileDAO();
         List<Profile> profiles = pdao.getAllProfiles();
         for (Profile profile : profiles)
@@ -91,7 +90,6 @@ public class ProfileDAOTest
                 System.out.println(structEntryInterface);
             }
         }
-         */
     }
 
 }

@@ -5,8 +5,11 @@
  */
 package shoreline_exam_2018.gui.controller;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -22,7 +25,8 @@ import shoreline_exam_2018.gui.model.MainModel;
  *
  * @author janvanzetten
  */
-public class MainController implements Initializable {
+public class MainController implements Initializable
+{
 
     private MainModel model;
     @FXML
@@ -52,11 +56,19 @@ public class MainController implements Initializable {
      * Initializes the MainController.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         model = new MainModel();
         model.prepareTasks();
-        
-        model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
+
+        try
+        {
+            model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
+        }
+        catch (IOException ex)
+        {
+            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -65,7 +77,8 @@ public class MainController implements Initializable {
      * @param event
      */
     @FXML
-    private void handleLoadFile(ActionEvent event) {
+    private void handleLoadFile(ActionEvent event)
+    {
         model.chooseFile();
     }
 
@@ -75,7 +88,8 @@ public class MainController implements Initializable {
      * @param event
      */
     @FXML
-    private void handleConvert(ActionEvent event) {
+    private void handleConvert(ActionEvent event)
+    {
         model.convertTest(tblTasks);
     }
 

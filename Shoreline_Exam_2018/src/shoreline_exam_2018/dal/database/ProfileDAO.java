@@ -25,7 +25,7 @@ import shoreline_exam_2018.be.output.structure.entry.StructEntryString;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.database.connection.DBConnector;
+import shoreline_exam_2018.dal.database.connection.DBConnectorPool;
 
 /**
  *
@@ -33,11 +33,11 @@ import shoreline_exam_2018.dal.database.connection.DBConnector;
  */
 public class ProfileDAO
 {
-    private DBConnector dbc;
+    private DBConnectorPool dbcp;
 
     public ProfileDAO()
     {
-        dbc = new DBConnector();
+        dbcp = new DBConnectorPool();
     }
 
     /**
@@ -52,9 +52,11 @@ public class ProfileDAO
     {
         Profile profile;
         int id;
+        Connection con = null;
 
-        try (Connection con = dbc.getConnection())
+        try
         {
+            con = dbcp.checkOut();
             String sql = "INSERT INTO Profile VALUES(?, ?);";
 
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -85,6 +87,10 @@ public class ProfileDAO
         {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
 
         profile = new Profile(id, name, structure, String.valueOf(createdBy));
         return profile;
@@ -98,8 +104,11 @@ public class ProfileDAO
      */
     private void addProfileStructureSimple(int profileId, SimpleEntry se) throws SQLException
     {
-        try (Connection con = dbc.getConnection())
+        Connection con = null;
+
+        try
         {
+            con = dbcp.checkOut();
             String sql = "INSERT INTO ProfileStructureSimple VALUES(?, ?, ?, ?);";
 
             PreparedStatement statement = con.prepareStatement(sql);
@@ -109,6 +118,10 @@ public class ProfileDAO
             statement.setString(4, se.getSST().name());
 
             statement.executeUpdate();
+        }
+        finally
+        {
+            dbcp.checkIn(con);
         }
     }
 
@@ -120,8 +133,11 @@ public class ProfileDAO
      */
     private void addProfileStructureCollection(int profileId, CollectionEntry ce) throws SQLException
     {
-        try (Connection con = dbc.getConnection())
+        Connection con = null;
+
+        try
         {
+            con = dbcp.checkOut();
             String sql;
             if (ce.getCST() == CollectionStructType.ARRAY)
             {
@@ -158,6 +174,10 @@ public class ProfileDAO
 
             statement.executeUpdate();
         }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
     }
 
     /**
@@ -169,8 +189,11 @@ public class ProfileDAO
      */
     private int addListOfStructEntries(int id, List<StructEntryInterface> seiLst) throws SQLException
     {
-        try (Connection con = dbc.getConnection())
+        Connection con = null;
+
+        try
         {
+            con = dbcp.checkOut();
             String sql = "INSERT INTO Profile VALUES(?, ?);";
 
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -197,12 +220,19 @@ public class ProfileDAO
 
             return id;
         }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
     }
 
     public List<Profile> getAllProfiles() throws DALException
     {
-        try (Connection con = dbc.getConnection())
+        Connection con = null;
+
+        try
         {
+            con = dbcp.checkOut();
             String sql = "SELECT * FROM Profile WHERE createdBy IS NOT NULL";
 
             Statement st = con.createStatement();
@@ -226,6 +256,10 @@ public class ProfileDAO
         {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
     }
 
     /**
@@ -237,8 +271,11 @@ public class ProfileDAO
     private List<StructEntryInterface> getStructure(int profileId) throws SQLException
     {
         List<StructEntryInterface> lst = new ArrayList<>();
-        try (Connection con = dbc.getConnection())
+        Connection con = null;
+
+        try
         {
+            con = dbcp.checkOut();
             /*
                 Simple
              */
@@ -325,6 +362,10 @@ public class ProfileDAO
             lst.addAll(objects);
             lst.addAll(arrays);
             return lst;
+        }
+        finally
+        {
+            dbcp.checkIn(con);
         }
     }
 }
