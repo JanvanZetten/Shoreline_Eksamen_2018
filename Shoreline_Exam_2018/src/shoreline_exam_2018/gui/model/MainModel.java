@@ -53,7 +53,7 @@ public class MainModel {
     /**
      * Opens a file chooser and sets a File object to be the selected file.
      */
-    public void chooseFile(ListView<ConversionTask> tblTasks) {
+    public void chooseFile() {
         ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
         
@@ -69,10 +69,12 @@ public class MainModel {
         //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
         if (selectedFile != null) {
             selectedFilePath = Paths.get(selectedFile.toURI());
-
-            this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
+        }
+    }
+    
+    public void convertTest(ListView<ConversionTask> tblTasks) {
+        this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
             olTasks.addAll(this.tblTasks);
             tblTasks.setItems(olTasks);
-        }
     }
 }

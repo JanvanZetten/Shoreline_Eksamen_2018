@@ -65,7 +65,18 @@ public class ConversionTask extends HBox {
                 cThread.cancelTask();
             }
         });
+        
+        Button btnResume = new Button();
+        btnResume.setText("RESUME");
+        
+        //Resumes the paused thread. DOES NOT CURRENTLY WORK IN THE cThread CLASS.
+        btnResume.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.resumeTask();
+            }
+        });
 
-        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
+        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel, btnResume);
     }
 }
