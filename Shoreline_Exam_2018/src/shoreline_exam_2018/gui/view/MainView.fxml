@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="593.0" prefWidth="956.0" styleClass="pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.MainController">
+<AnchorPane id="AnchorPane" prefHeight="593.0" prefWidth="956.0" styleClass="pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.MainController">
    <children>
       <TabPane layoutX="14.0" layoutY="46.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
@@ -19,17 +19,17 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabProfiles" text="Profiles">
+          <Tab fx:id="tabProfiles" disable="true" text="Profiles">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
           </Tab>
-            <Tab fx:id="tabLog" text="Log">
+            <Tab fx:id="tabLog" disable="true" text="Log">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab fx:id="tabSettings" text="Settings">
+            <Tab fx:id="tabSettings" disable="true" text="Settings">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
