@@ -20,6 +20,9 @@ public class ConversionThread {
     private Task task;
     private Thread thread;
 
+    private boolean isCanceled = false;
+    private boolean isOperating = true;
+
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
      * separate thread.
@@ -43,13 +46,12 @@ public class ConversionThread {
             @Override
             protected Object call() throws Exception {
                 for (int i = 0; i < 1000000000000000000l; i++) {
-                    if (!thread.isInterrupted()) {
-                        System.out.println("SPAM " + i);
-                        //NEEDS TO HAVE CONVERSION METHOD HERE
-                    }
-                    else {
-                        return true;
-                    }
+                    System.out.println("SPAM " + i); //NEEDS TO HAVE CONVERSION METHOD HERE
+                    if (isOperating == true) {
+                        if (isCanceled == true) {
+                            return true;
+                        }
+                    } 
                 }
                 return true;
             }
@@ -60,27 +62,22 @@ public class ConversionThread {
      * Pauses the task.
      */
     public void pauseTask() {
-        try {
-            thread.wait();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ConversionThread.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        isOperating = false;
     }
 
     /**
      * Resumes the task after it has been paused.
+     * RESUME DOES NOT WORK CURRENTLY. NEEDS IMPLEMENTATION.
      */
     public void resumeTask() {
-        if (thread.isAlive()) {
-            thread.notify();
-        }
+        isOperating = true;
     }
 
     /**
      * Interrupts and cancels a conversion.
      */
     public void cancelTask() {
-        thread.interrupt();
+        isCanceled = true;
         //STILL NEEDS TO BE ABLE TO DELETE THE ATTEMPTED CREATED JSON FILE
     }
 
