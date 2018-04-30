@@ -5,12 +5,15 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.nio.file.Path;
+import shoreline_exam_2018.be.Profile;
+
 /**
  *
  * @author janvanzetten
  */
 public interface BLLFacade {
-    
-    public ConversionTask setNewTask();
+
+    public ConversionTask setConversionFilePath(Path selectedFilePath, Profile selectedProfile);
     
 }
