@@ -11,9 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
 import shoreline_exam_2018.bll.ConversionTask;
 
 import shoreline_exam_2018.gui.model.MainModel;
@@ -23,7 +23,7 @@ import shoreline_exam_2018.gui.model.MainModel;
  * @author janvanzetten
  */
 public class MainController implements Initializable {
-    
+
     private MainModel model;
     @FXML
     private Tab tabConvert;
@@ -39,7 +39,15 @@ public class MainController implements Initializable {
     private ListView<ConversionTask> tblTasks;
     @FXML
     private Button btnConvert;
-    
+    @FXML
+    private AnchorPane paneConvert;
+    @FXML
+    private AnchorPane paneProfiles;
+    @FXML
+    private AnchorPane paneLog;
+    @FXML
+    private AnchorPane paneSettings;
+
     /**
      * Initializes the MainController.
      */
@@ -47,24 +55,28 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         model = new MainModel();
         model.prepareTasks();
-    }    
+        
+        model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
+    }
 
     /**
      * Loads a file from a File Chooser.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleLoadFile(ActionEvent event) {
-        model.chooseFile(); 
+        model.chooseFile();
     }
 
     /**
      * Test button which creates a task and sets it into the view.
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void handleConvert(ActionEvent event) {
         model.convertTest(tblTasks);
     }
-    
+
 }
