@@ -37,6 +37,8 @@ public class MainController implements Initializable {
     private Tab tabSettings;
     @FXML
     private ListView<ConversionTask> tblTasks;
+    @FXML
+    private Button btnConvert;
     
     /**
      * Initializes the MainController.
@@ -48,12 +50,21 @@ public class MainController implements Initializable {
     }    
 
     /**
-     * Loads a file from a File Chooser. CURRENTLY STARTS TASK, NOT FINAL.
+     * Loads a file from a File Chooser.
      * @param event 
      */
     @FXML
     private void handleLoadFile(ActionEvent event) {
-        model.chooseFile(tblTasks); 
+        model.chooseFile(); 
+    }
+
+    /**
+     * Test button which creates a task and sets it into the view.
+     * @param event 
+     */
+    @FXML
+    private void handleConvert(ActionEvent event) {
+        model.convertTest(tblTasks);
     }
     
 }
