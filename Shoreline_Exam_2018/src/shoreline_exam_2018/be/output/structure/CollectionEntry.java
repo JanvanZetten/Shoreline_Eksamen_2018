@@ -34,4 +34,17 @@ public abstract class CollectionEntry implements StructEntryInterface
     {
         return cst;
     }
+
+    @Override
+    public String toString()
+    {
+        String str = "";
+        str += columnName + ":" + cst + "\n";
+        for (StructEntryInterface structEntryInterface : collection)
+        {
+            str += "    " + structEntryInterface.toString() + "\n";
+        }
+        return str;
+    }
+
 }
