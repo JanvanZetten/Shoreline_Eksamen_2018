@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.nio.file.Path;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionManager;
 
 /**
@@ -18,9 +20,10 @@ public class BLLManager implements BLLFacade {
     public BLLManager() {
         cMan = new ConversionManager();
     }
-    
-    public ConversionTask setNewTask() {
-        return cMan.newConversion();
+
+    @Override
+    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile) {
+        return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
     }
     
 }

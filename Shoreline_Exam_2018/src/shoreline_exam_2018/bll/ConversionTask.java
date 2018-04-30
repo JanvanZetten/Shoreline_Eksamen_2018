@@ -5,13 +5,14 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.nio.file.Path;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.HBox;
+import shoreline_exam_2018.be.Profile;
 
 /**
  *
@@ -30,7 +31,7 @@ public class ConversionTask extends HBox {
      * @param conversionName
      * @param cThread 
      */
-    public ConversionTask(String conversionName, ConversionThread cThread) {
+    public ConversionTask(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile) {
         super();
 
         lblConversionName = new Label();

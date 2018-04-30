@@ -53,8 +53,7 @@ public class MainController implements Initializable {
      */
     @FXML
     private void handleLoadFile(ActionEvent event) {
-        model.chooseFile(); 
-        model.setTask(tblTasks);
+        model.chooseFile(tblTasks); 
     }
     
 }

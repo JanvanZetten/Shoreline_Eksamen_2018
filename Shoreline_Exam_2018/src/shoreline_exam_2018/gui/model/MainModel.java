@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionTask;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
@@ -26,10 +27,12 @@ import shoreline_exam_2018.bll.BLLManager;
 public class MainModel {
 
     private File selectedFile;
-    private Path to;
-    private Path from;
-    private BLLFacade bll;
+    private Path selectedFilePath;
+    private Profile selectedProfile;
+    private String taskName;
     
+    private BLLFacade bll;
+
     private List<ConversionTask> tblTasks;
     private ObservableList<ConversionTask> olTasks;
 
@@ -39,6 +42,7 @@ public class MainModel {
 
     /**
      * Sets array and observable lists for future use to place tasks into view.
+     *
      * @param tblTasks
      */
     public void prepareTasks() {
@@ -49,29 +53,26 @@ public class MainModel {
     /**
      * Opens a file chooser and sets a File object to be the selected file.
      */
-    public void chooseFile() {
+    public void chooseFile(ListView<ConversionTask> tblTasks) {
         ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
-
+        
         fc.getExtensionFilters().add(filter);
         String currentDir = System.getProperty("user.dir") + File.separator;
-
+        
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
         fc.setTitle("Attach a file");
-
+        
         selectedFile = fc.showOpenDialog(null);
-        System.out.println(selectedFile);
+        //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
+        //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
+        if (selectedFile != null) {
+            selectedFilePath = Paths.get(selectedFile.toURI());
 
-//        if (selectedFile != null) {
-//            from = Paths.get(selectedFile.toURI());
-//            to = Paths.get(dir + "/music/" + selectedFile.getName());
-//    }
-    }
-
-    public void setTask(ListView<ConversionTask> tblTasks) {
-        this.tblTasks.add(bll.setNewTask());
-        olTasks.addAll(this.tblTasks);
-        tblTasks.setItems(olTasks);
+            this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
+            olTasks.addAll(this.tblTasks);
+            tblTasks.setItems(olTasks);
+        }
     }
 }

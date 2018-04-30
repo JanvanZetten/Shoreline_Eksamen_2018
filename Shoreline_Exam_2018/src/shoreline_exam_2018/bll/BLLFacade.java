@@ -5,12 +5,22 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.nio.file.Path;
+import shoreline_exam_2018.be.Profile;
+
 /**
  *
  * @author janvanzetten
  */
 public interface BLLFacade {
-    
-    public ConversionTask setNewTask();
+
+    /**
+     * Creates a conversion that is based on the file path of a file and a profile.
+     * @param taskName
+     * @param selectedFilePath
+     * @param selectedProfile
+     * @return 
+     */
+    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
     
 }
