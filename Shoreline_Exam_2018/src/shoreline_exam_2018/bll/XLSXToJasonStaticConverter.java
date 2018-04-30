@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -27,6 +28,7 @@ public class XLSXToJasonStaticConverter {
 
     InputFileReader inputReader;
     String jsonFilePath;
+    int counter = 0;
 
     public XLSXToJasonStaticConverter(String xlsxFilepath, String newJasonoutputFilepath) {
         this.jsonFilePath = newJasonoutputFilepath;
@@ -39,6 +41,9 @@ public class XLSXToJasonStaticConverter {
      * @throws BLLExeption 
      */
     public void convert() throws BLLExeption {
+        
+        
+        
         List<OutputPair> outputObjects = new ArrayList<>();
 
         try {
@@ -46,6 +51,10 @@ public class XLSXToJasonStaticConverter {
             List<String> paramaterNamesFromXLSX = inputReader.getParameters();
 
             while (inputReader.hasNext()) {
+                
+                counter ++;
+                System.out.println("convert Counter: " + counter);
+                
                 Row inputRow = inputReader.getNextRow();
 
                 List<OutputPair> outputFields = new ArrayList<>();
@@ -79,7 +88,7 @@ public class XLSXToJasonStaticConverter {
                 jsonObject = new JsonPairString("name", thisElseThat(inputRow.getCell(find("Opr. short text", paramaterNamesFromXLSX)).getStringCellValue(), inputRow.getCell(findSecond("Description", paramaterNamesFromXLSX)).getStringCellValue()));
                 outputFields.add(jsonObject);
 
-                jsonObject = new JsonPairString("priority", thisElseThat(inputRow.getCell(findSecond(jsonFilePath, paramaterNamesFromXLSX)).getStringCellValue(), "low"));
+                jsonObject = new JsonPairString("priority", thisElseThat(inputRow.getCell(findSecond("Priority", paramaterNamesFromXLSX)).getStringCellValue(), "low"));
                 outputFields.add(jsonObject);
 
                 jsonObject = new JsonPairString("status", "NEW");
@@ -130,7 +139,24 @@ public class XLSXToJasonStaticConverter {
      * @return 
      */
     private String getAssetFrom(Cell cell) {
-        return cell.getStringCellValue().split("(")[1].split(")")[0];
+        
+        String someString = cell.getStringCellValue();
+        System.out.println(someString);
+        
+        
+        String[] someArray;
+        
+        
+        
+        someArray = someString.split(Pattern.quote("("));
+        
+        someString = someArray[1];
+        
+        
+        someString = someString.split(Pattern.quote(")"))[0];
+        System.out.println(someString + " : "+ counter);
+        
+        return someString;
     }
 
     /**
@@ -156,10 +182,13 @@ public class XLSXToJasonStaticConverter {
      * @return 
      */
     private String thisElseThat(String first, String second) {
-        if (first.equals("")) {
+        if (first == null) {
             return second;
+        }else if (first.equals("")){
+            return second;
+        }else{
+            return first;
         }
-        return first;
     }
 
     /**
