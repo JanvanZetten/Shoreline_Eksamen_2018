@@ -20,7 +20,7 @@ public interface ConversionInterface {
      * @param inputFile the input file from which to convert from
      * @param outputFile the placement and naming of the output file
      */
-    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile);
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) throws BLLExeption;
     
     
 }
