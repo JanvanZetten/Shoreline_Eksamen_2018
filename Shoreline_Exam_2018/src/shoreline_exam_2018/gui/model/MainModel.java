@@ -6,13 +6,22 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import shoreline_exam_2018.be.Profile;
@@ -30,7 +39,7 @@ public class MainModel {
     private Path selectedFilePath;
     private Profile selectedProfile;
     private String taskName;
-    
+
     private BLLFacade bll;
 
     private List<ConversionTask> tblTasks;
@@ -56,14 +65,14 @@ public class MainModel {
     public void chooseFile() {
         ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
-        
+
         fc.getExtensionFilters().add(filter);
         String currentDir = System.getProperty("user.dir") + File.separator;
-        
+
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
         fc.setTitle("Attach a file");
-        
+
         selectedFile = fc.showOpenDialog(null);
         //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
         //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
@@ -71,10 +80,28 @@ public class MainModel {
             selectedFilePath = Paths.get(selectedFile.toURI());
         }
     }
-    
+
     public void convertTest(ListView<ConversionTask> tblTasks) {
         this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
-            olTasks.addAll(this.tblTasks);
-            tblTasks.setItems(olTasks);
+        olTasks.addAll(this.tblTasks);
+        tblTasks.setItems(olTasks);
+    }
+
+    /**
+     * Sets the tabs in all the tabs of the MainView.
+     *
+     * @param paneConvert
+     * @param paneProfiles
+     * @param paneLog
+     * @param paneSettings
+     */
+    public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings) throws MalformedURLException, IOException {
+//        System.out.println(System.getProperty("user.dir") + "/gui/view/ConvertView.fxml");
+        
+        URL url = new File(System.getProperty("user.dir") + "\\src\\shoreline_exam_2018\\gui\\view\\ConvertView.fxml").toURI().toURL();
+
+        Pane newLoadedPane =  FXMLLoader.load(url);
+        paneProfiles.getChildren().add(newLoadedPane);
+
     }
 }

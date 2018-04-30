@@ -12,7 +12,7 @@
         <tabs>
           <Tab fx:id="tabConvert" text="Convert">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <AnchorPane fx:id="paneConvert" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Button fx:id="btnLoadFile" layoutX="223.0" layoutY="94.0" mnemonicParsing="false" onAction="#handleLoadFile" text="Temporary load file button" />
                         <ListView fx:id="tblTasks" layoutX="31.0" layoutY="146.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="200.0" />
@@ -20,19 +20,19 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab fx:id="tabProfiles" disable="true" text="Profiles">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-            </content>
+          <Tab fx:id="tabProfiles" text="Profiles">
+               <content>
+                  <AnchorPane fx:id="paneProfiles" prefHeight="200.0" prefWidth="200.0" />
+               </content>
           </Tab>
             <Tab fx:id="tabLog" disable="true" text="Log">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane fx:id="paneLog" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
             <Tab fx:id="tabSettings" disable="true" text="Settings">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane fx:id="paneSettings" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
         </tabs>

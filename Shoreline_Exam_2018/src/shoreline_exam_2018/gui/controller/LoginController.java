@@ -20,7 +20,7 @@ import shoreline_exam_2018.gui.model.LoginModel;
  *
  * @author alexl
  */
-public class LoginViewController implements Initializable {
+public class LoginController implements Initializable {
 
     @FXML
     private TextField textfieldUsername;
