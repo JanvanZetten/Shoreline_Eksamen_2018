@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.CollectionEntry;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryDate;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryInterface;
@@ -70,6 +71,26 @@ public class ProfileDAOTest
 
         ProfileDAO pdao = new ProfileDAO();
         pdao.addProfile("Test_Profile", structure, 0);
+         */
+    }
+
+    /**
+     * Test of getAllProfiles method, of class ProfileDAO.
+     */
+    @Test
+    public void testGetAllProfiles() throws Exception
+    {
+        /*
+        ProfileDAO pdao = new ProfileDAO();
+        List<Profile> profiles = pdao.getAllProfiles();
+        for (Profile profile : profiles)
+        {
+            System.out.println(profile.getName() + " " + profile.getStructure().getCollection().size());
+            for (StructEntryInterface structEntryInterface : profile.getStructure().getCollection())
+            {
+                System.out.println(structEntryInterface);
+            }
+        }
          */
     }
 

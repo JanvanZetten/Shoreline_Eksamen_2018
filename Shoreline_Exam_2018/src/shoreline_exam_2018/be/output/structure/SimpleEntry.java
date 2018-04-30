@@ -33,4 +33,10 @@ public abstract class SimpleEntry implements StructEntryInterface
     {
         return sst;
     }
+
+    @Override
+    public String toString()
+    {
+        return columnName + ":" + sst.name();
+    }
 }
