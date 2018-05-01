@@ -82,6 +82,10 @@ public class MainModel {
         }
     }
 
+    /**
+     * Test method that handles conversion and setting of tasks.
+     * @param tblTasks 
+     */
     public void convertTest(ListView<ConversionTask> tblTasks) {
         this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
         olTasks.addAll(this.tblTasks);
@@ -91,10 +95,10 @@ public class MainModel {
     /**
      * Sets the tabs in all the tabs of the MainView.
      *
-     * @param paneConvert
-     * @param paneProfiles
-     * @param paneLog
-     * @param paneSettings
+     * @param paneConvert   = The convertion view.
+     * @param paneProfiles  = The profiles view.
+     * @param paneLog       = The log view.
+     * @param paneSettings  = The settings view.
      */
     public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings) {
         setPane("Convert", paneConvert);
@@ -103,6 +107,12 @@ public class MainModel {
         setPane("Settings", paneSettings);
     }
 
+    /**
+     * Rescales the views to have the same anchors as the tab panes they are 
+     * located in. Also sets a node of the view into the tab pane.
+     * @param PANE_NAME = Name of the tab.
+     * @param PANE      = Name of the pane.
+     */
     private void setPane(String PANE_NAME, AnchorPane PANE) {
         try {
             URL url = new File(System.getProperty("user.dir") + "\\src\\shoreline_exam_2018\\gui\\view\\" + PANE_NAME + "View.fxml").toURI().toURL();
