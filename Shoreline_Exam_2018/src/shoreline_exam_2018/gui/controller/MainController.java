@@ -59,31 +59,7 @@ public class MainController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new MainModel();
-        model.prepareTasks();
-
         model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
-    }
-
-    /**
-     * Loads a file from a File Chooser.
-     *
-     * @param event
-     */
-    @FXML
-    private void handleLoadFile(ActionEvent event)
-    {
-        model.chooseFile();
-    }
-
-    /**
-     * Test button which creates a task and sets it into the view.
-     *
-     * @param event
-     */
-    @FXML
-    private void handleConvert(ActionEvent event)
-    {
-        model.convertTest(tblTasks);
     }
 
 }
