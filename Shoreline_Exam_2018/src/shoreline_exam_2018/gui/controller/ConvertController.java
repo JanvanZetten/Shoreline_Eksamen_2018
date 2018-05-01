@@ -11,7 +11,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import shoreline_exam_2018.be.Profile;
 
 /**
  * FXML Controller class
@@ -26,6 +28,8 @@ public class ConvertController implements Initializable {
     private ListView<?> tblTasks;
     @FXML
     private Button btnConvert;
+    @FXML
+    private ComboBox<Profile> profileCombobox;
 
     /**
      * Initializes the controller class.
