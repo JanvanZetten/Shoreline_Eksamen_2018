@@ -4,11 +4,14 @@
  * and open the template in the editor.
  */
 package shoreline_exam_2018.gui.model;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListView;
+import shoreline_exam_2018.bll.BLLFacade;
+import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.ConversionTask;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -25,8 +28,27 @@ import shoreline_exam_2018.gui.model.ConvertModel;
  */
 public class ConvertModel {
     
-    ObservableList<Profile> profiles = FXCollections.observableArrayList();
-    BLLFacade bll = new BLLManager();
+    private BLLFacade bll;
+    
+    ObservableList<Profile> profiles;
+    
+    private List<ConversionTask> tblTasks;
+    private ObservableList<ConversionTask> olTasks;
+    
+    public ConvertModel() {
+        bll = new BLLManager();
+        profiles = FXCollections.observableArrayList();
+    }
+    
+    /**
+     * Sets array and observable lists for future use to place tasks into view.
+     *
+     * @param tblTasks
+     */
+    public void prepareTasks() {
+        tblTasks = new ArrayList<>();
+        olTasks = FXCollections.observableArrayList();
+    }
 
     public void chooseFile() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

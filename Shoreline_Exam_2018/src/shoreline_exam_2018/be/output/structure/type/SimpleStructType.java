@@ -6,7 +6,7 @@
 package shoreline_exam_2018.be.output.structure.type;
 
 /**
- *
+ * Simple Datatypes.
  * @author Asbamz
  */
 public enum SimpleStructType
