@@ -22,6 +22,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import shoreline_exam_2018.be.Profile;
@@ -95,13 +96,29 @@ public class MainModel {
      * @param paneLog
      * @param paneSettings
      */
-    public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings) throws MalformedURLException, IOException {
-//        System.out.println(System.getProperty("user.dir") + "/gui/view/ConvertView.fxml");
-        
-        URL url = new File(System.getProperty("user.dir") + "\\src\\shoreline_exam_2018\\gui\\view\\ConvertView.fxml").toURI().toURL();
+    public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings) {
+        setPane("Convert", paneConvert);
+        setPane("Profiles", paneProfiles);
+        setPane("Log", paneLog);
+        setPane("Settings", paneSettings);
+    }
 
-        Pane newLoadedPane =  FXMLLoader.load(url);
-        paneProfiles.getChildren().add(newLoadedPane);
+    private void setPane(String PANE_NAME, AnchorPane PANE) {
+        try {
+            URL url = new File(System.getProperty("user.dir") + "\\src\\shoreline_exam_2018\\gui\\view\\" + PANE_NAME + "View.fxml").toURI().toURL();
+            FXMLLoader loader = new FXMLLoader(url);
 
+            Node node = (Node) loader.load();
+            AnchorPane.setTopAnchor(node, 0.0);
+            AnchorPane.setRightAnchor(node, 0.0);
+            AnchorPane.setLeftAnchor(node, 0.0);
+            AnchorPane.setBottomAnchor(node, 0.0);
+            PANE.getChildren().setAll(node);
+            
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(MainModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(MainModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
