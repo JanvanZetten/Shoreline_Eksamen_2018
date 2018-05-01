@@ -14,9 +14,9 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryInteger;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryInterface;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryObject;
+import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.entry.*;
+
 
 /**
  *
@@ -44,12 +44,12 @@ public class ConvertXlsxToJsonTest {
      */
     @Test
     public void testConvertFile() throws Exception {
-        List<StructEntryInterface> listOfEntries = new ArrayList<>();
-        listOfEntries.add(new StructEntryInteger("first", 0));
-        listOfEntries.add(new StructEntryInteger("second", 1));
-        listOfEntries.add(new StructEntryInteger("last", 4));
+        List<StructEntityInterface> listOfEntries = new ArrayList<>();
+        listOfEntries.add(new StructEntityInteger("first", 0));
+        listOfEntries.add(new StructEntityInteger("second", 1));
+        listOfEntries.add(new StructEntityInteger("last", 4));
 
-        StructEntryObject structObject = new StructEntryObject("", listOfEntries);
+        StructEntityObject structObject = new StructEntityObject("", listOfEntries);
         Profile profile = new Profile(0, "test", structObject, "TestClass");
         converter.convertFile(profile, Paths.get("test/shoreline_exam_2018/MockTilJunitTest.xlsx"), Paths.get("test/shoreline_exam_2018/TestJson.json"));
         
