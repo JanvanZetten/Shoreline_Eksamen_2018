@@ -8,14 +8,15 @@ package shoreline_exam_2018.be.output.structure.entry;
 import shoreline_exam_2018.be.output.structure.CollectionEntry;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
+import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
  *
  * @author Asbamz
  */
-public class StructEntryObject extends CollectionEntry
+public class StructEntityObject extends CollectionEntry
 {
-    public StructEntryObject(String columnName, List<StructEntryInterface> collection)
+    public StructEntityObject(String columnName, List<StructEntityInterface> collection)
     {
         this.columnName = columnName;
         this.collection = collection;

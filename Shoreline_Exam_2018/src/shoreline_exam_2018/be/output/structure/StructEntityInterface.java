@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.be.output.structure.entry;
+package shoreline_exam_2018.be.output.structure;
 
 /**
  *
  * @author Asbamz
  */
-public interface StructEntryInterface
+public interface StructEntityInterface
 {
     public String getColumnName();
 }

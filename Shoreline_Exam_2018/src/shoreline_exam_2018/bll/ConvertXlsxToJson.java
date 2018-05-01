@@ -18,6 +18,7 @@ import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.InputFileReader;
 import shoreline_exam_2018.dal.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.json.JsonDAO;
+import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
  *
@@ -31,7 +32,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
     public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
 
-        StructEntryObject structure = selectedProfile.getStructure();
+        StructEntityObject structure = selectedProfile.getStructure();
 
         List<OutputPair> outputObjects = new ArrayList<>();
 
@@ -62,41 +63,41 @@ public class ConvertXlsxToJson implements ConversionInterface {
      * StructEntryDouble, StructEntryInteger, StructEntryObject and StructEntryString.
      */
     private List<OutputPair> mapRowToOutputpairWithEntryCollection(CollectionEntry structObject, Row row) throws BLLExeption {
-        List<StructEntryInterface> collection = structObject.getCollection();
+        List<StructEntityInterface> collection = structObject.getCollection();
         
         List<OutputPair> output = new ArrayList<>();
         
-        for (StructEntryInterface structEntry : collection) {
+        for (StructEntityInterface structEntry : collection) {
             
             //check what object this structE
 
-            if (structEntry instanceof StructEntryArray) {
+            if (structEntry instanceof StructEntityArray) {
                 
-                List<OutputPair> jsonArray = mapRowToOutputpairWithEntryCollection((StructEntryArray)structEntry, row);
+                List<OutputPair> jsonArray = mapRowToOutputpairWithEntryCollection((StructEntityArray)structEntry, row);
                 output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
                 
-            } else if (structEntry instanceof StructEntryDate) {
+            } else if (structEntry instanceof StructEntityDate) {
                 
                 output.add(new JsonPairDate(structEntry.getColumnName(), 
-                        row.getCell(((StructEntryDate) structEntry).getInputIndex()).getDateCellValue()));
+                        row.getCell(((StructEntityDate) structEntry).getInputIndex()).getDateCellValue()));
 
-            } else if (structEntry instanceof StructEntryDouble) {
+            } else if (structEntry instanceof StructEntityDouble) {
                 
                 output.add(new JsonPairDouble(structEntry.getColumnName(),
-                        row.getCell(((StructEntryDouble) structEntry).getInputIndex()).getNumericCellValue()));
+                        row.getCell(((StructEntityDouble) structEntry).getInputIndex()).getNumericCellValue()));
                 
-            } else if (structEntry instanceof StructEntryInteger) {
-                Double asDouble = row.getCell(((StructEntryInteger) structEntry).getInputIndex()).getNumericCellValue();
+            } else if (structEntry instanceof StructEntityInteger) {
+                Double asDouble = row.getCell(((StructEntityInteger) structEntry).getInputIndex()).getNumericCellValue();
                 output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
 
-            } else if (structEntry instanceof StructEntryObject) {
-                List<OutputPair> jsonObject = mapRowToOutputpairWithEntryCollection((StructEntryObject)structEntry, row);
+            } else if (structEntry instanceof StructEntityObject) {
+                List<OutputPair> jsonObject = mapRowToOutputpairWithEntryCollection((StructEntityObject)structEntry, row);
                 output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
                 
-            } else if (structEntry instanceof StructEntryString) {
+            } else if (structEntry instanceof StructEntityString) {
                 
                 output.add(new JsonPairString(structEntry.getColumnName(), 
-                        row.getCell(((StructEntryString) structEntry).getInputIndex()).getStringCellValue()));
+                        row.getCell(((StructEntityString) structEntry).getInputIndex()).getStringCellValue()));
 
             } else {
                 throw new BLLExeption("The struct entry type is not supported");
