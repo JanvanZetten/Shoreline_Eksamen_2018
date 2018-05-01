@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import shoreline_exam_2018.gui.model.ConvertModel;
 
 /**
  * FXML Controller class
@@ -26,23 +27,25 @@ public class ConvertController implements Initializable {
     private ListView<?> tblTasks;
     @FXML
     private Button btnConvert;
+    
+    private ConvertModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        model = new ConvertModel();
     }    
 
     @FXML
     private void handleLoadButton(ActionEvent event) {
-//        model.chooseFile();
+        model.chooseFile();
     }
 
     @FXML
     private void handleTaskButton(ActionEvent event) {
-//        model.convertTest(tblTasks);
+        model.convertTest(tblTasks);
     }
     
 }
