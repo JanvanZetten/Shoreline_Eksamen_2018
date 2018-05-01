@@ -12,12 +12,12 @@ import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
  *
  * @author Asbamz
  */
-public class StructEntryDate extends SimpleEntry
+public class StructEntityInteger extends SimpleEntry
 {
-    public StructEntryDate(String columnName, int inputIndex)
+    public StructEntityInteger(String columnName, int inputIndex)
     {
         this.columnName = columnName;
         this.inputIndex = inputIndex;
-        sst = SimpleStructType.DATE;
+        sst = SimpleStructType.INTEGER;
     }
 }

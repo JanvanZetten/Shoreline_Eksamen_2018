@@ -9,7 +9,7 @@ package shoreline_exam_2018.be.output.structure;
  *
  * @author Asbamz
  */
-public interface StructEntryInterface
+public interface StructEntityInterface
 {
     public String getColumnName();
 }

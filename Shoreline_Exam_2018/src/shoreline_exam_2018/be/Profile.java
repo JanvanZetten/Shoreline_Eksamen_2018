@@ -5,7 +5,7 @@
  */
 package shoreline_exam_2018.be;
 
-import shoreline_exam_2018.be.output.structure.entry.StructEntryObject;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
 /**
  *
@@ -15,10 +15,10 @@ public class Profile
 {
     private int id;
     private String name;
-    private StructEntryObject structure;
+    private StructEntityObject structure;
     private String createdBy;
 
-    public Profile(int id, String name, StructEntryObject structure, String createdBy)
+    public Profile(int id, String name, StructEntityObject structure, String createdBy)
     {
         this.id = id;
         this.name = name;
@@ -36,7 +36,7 @@ public class Profile
         return name;
     }
 
-    public StructEntryObject getStructure()
+    public StructEntityObject getStructure()
     {
         return structure;
     }

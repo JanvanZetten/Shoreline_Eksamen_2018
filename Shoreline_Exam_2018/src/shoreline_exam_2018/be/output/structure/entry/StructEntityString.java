@@ -12,9 +12,9 @@ import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
  *
  * @author Asbamz
  */
-public class StructEntryString extends SimpleEntry
+public class StructEntityString extends SimpleEntry
 {
-    public StructEntryString(String columnName, int inputIndex)
+    public StructEntityString(String columnName, int inputIndex)
     {
         this.columnName = columnName;
         this.inputIndex = inputIndex;

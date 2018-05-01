@@ -15,17 +15,17 @@ import java.util.List;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.CollectionEntry;
 import shoreline_exam_2018.be.output.structure.SimpleEntry;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryArray;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryDate;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryDouble;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryInteger;
-import shoreline_exam_2018.be.output.structure.StructEntryInterface;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryObject;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryString;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityDouble;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityInteger;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityString;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.database.connection.DBConnectorPool;
+import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
  *
@@ -48,7 +48,7 @@ public class ProfileDAO
      * @return
      * @throws DALException
      */
-    public Profile addProfile(String name, StructEntryObject structure, int createdBy) throws DALException
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException
     {
         Profile profile;
         int id;
@@ -69,7 +69,7 @@ public class ProfileDAO
             rs.next();
             id = rs.getInt(1);
 
-            for (StructEntryInterface structEntryInterface : structure.getCollection())
+            for (StructEntityInterface structEntryInterface : structure.getCollection())
             {
                 if (structEntryInterface instanceof CollectionEntry)
                 {
@@ -187,7 +187,7 @@ public class ProfileDAO
      * @return
      * @throws SQLException
      */
-    private int addListOfStructEntries(int id, List<StructEntryInterface> seiLst) throws SQLException
+    private int addListOfStructEntries(int id, List<StructEntityInterface> seiLst) throws SQLException
     {
         Connection con = null;
 
@@ -206,7 +206,7 @@ public class ProfileDAO
             rs.next();
             id = rs.getInt(1);
 
-            for (StructEntryInterface structEntryInterface : seiLst)
+            for (StructEntityInterface structEntryInterface : seiLst)
             {
                 if (structEntryInterface instanceof SimpleEntry)
                 {
@@ -244,7 +244,7 @@ public class ProfileDAO
             {
                 int profileId = rs.getInt("id");
                 String name = rs.getString("name");
-                Profile profile = new Profile(profileId, name, new StructEntryObject(name, getStructure(profileId)), String.valueOf(rs.getInt("createdBy")));
+                Profile profile = new Profile(profileId, name, new StructEntityObject(name, getStructure(profileId)), String.valueOf(rs.getInt("createdBy")));
 
                 profiles.add(profile);
 
@@ -268,9 +268,9 @@ public class ProfileDAO
      * @return
      * @throws SQLException
      */
-    private List<StructEntryInterface> getStructure(int profileId) throws SQLException
+    private List<StructEntityInterface> getStructure(int profileId) throws SQLException
     {
-        List<StructEntryInterface> lst = new ArrayList<>();
+        List<StructEntityInterface> lst = new ArrayList<>();
         Connection con = null;
 
         try
@@ -287,11 +287,11 @@ public class ProfileDAO
 
             ResultSet rs = statement.executeQuery();
 
-            StructEntryObject seo;
+            StructEntityObject seo;
 
-            List<StructEntryInterface> simples = new ArrayList<>();
-            List<StructEntryInterface> objects = new ArrayList<>();
-            List<StructEntryInterface> arrays = new ArrayList<>();
+            List<StructEntityInterface> simples = new ArrayList<>();
+            List<StructEntityInterface> objects = new ArrayList<>();
+            List<StructEntityInterface> arrays = new ArrayList<>();
 
             int id;
             String columnName;
@@ -306,19 +306,19 @@ public class ProfileDAO
 
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
                 {
-                    simples.add(new StructEntryDate(columnName, inputIndex));
+                    simples.add(new StructEntityDate(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.DOUBLE.name()))
                 {
-                    simples.add(new StructEntryDouble(columnName, inputIndex));
+                    simples.add(new StructEntityDouble(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.INTEGER.name()))
                 {
-                    simples.add(new StructEntryInteger(columnName, inputIndex));
+                    simples.add(new StructEntityInteger(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.STRING.name()))
                 {
-                    simples.add(new StructEntryString(columnName, inputIndex));
+                    simples.add(new StructEntityString(columnName, inputIndex));
                 }
             }
 
@@ -337,7 +337,7 @@ public class ProfileDAO
                 id = rs.getInt("id");
                 columnName = rs.getString("columnName");
 
-                objects.add(new StructEntryObject(columnName, getStructure(rs.getInt("otpId"))));
+                objects.add(new StructEntityObject(columnName, getStructure(rs.getInt("otpId"))));
             }
 
             /*
@@ -355,7 +355,7 @@ public class ProfileDAO
                 id = rs.getInt("id");
                 columnName = rs.getString("columnName");
 
-                arrays.add(new StructEntryArray(columnName, getStructure(rs.getInt("atpId"))));
+                arrays.add(new StructEntityArray(columnName, getStructure(rs.getInt("atpId"))));
             }
 
             lst.addAll(simples);
