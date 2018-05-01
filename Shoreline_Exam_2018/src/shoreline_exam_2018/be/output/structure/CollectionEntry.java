@@ -12,10 +12,10 @@ import java.util.List;
  *
  * @author Asbamz
  */
-public abstract class CollectionEntry implements StructEntryInterface
+public abstract class CollectionEntry implements StructEntityInterface
 {
     protected String columnName;
-    protected List<StructEntryInterface> collection;
+    protected List<StructEntityInterface> collection;
     protected CollectionStructType cst;
 
     @Override
@@ -24,7 +24,7 @@ public abstract class CollectionEntry implements StructEntryInterface
         return columnName;
     }
 
-    public List<StructEntryInterface> getCollection()
+    public List<StructEntityInterface> getCollection()
     {
         return collection;
     }
@@ -39,7 +39,7 @@ public abstract class CollectionEntry implements StructEntryInterface
     {
         String str = "";
         str += columnName + ":" + cst + "\n";
-        for (StructEntryInterface structEntryInterface : collection)
+        for (StructEntityInterface structEntryInterface : collection)
         {
             str += "    " + structEntryInterface.toString() + "\n";
         }

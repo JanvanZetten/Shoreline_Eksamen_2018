@@ -5,21 +5,21 @@
  */
 package shoreline_exam_2018.be.output.structure.entry;
 
-import shoreline_exam_2018.be.output.structure.StructEntryInterface;
 import shoreline_exam_2018.be.output.structure.CollectionEntry;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
+import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
  *
  * @author Asbamz
  */
-public class StructEntryObject extends CollectionEntry
+public class StructEntityArray extends CollectionEntry
 {
-    public StructEntryObject(String columnName, List<StructEntryInterface> collection)
+    public StructEntityArray(String columnName, List<StructEntityInterface> collection)
     {
         this.columnName = columnName;
         this.collection = collection;
-        this.cst = CollectionStructType.OBJECT;
+        this.cst = CollectionStructType.ARRAY;
     }
 }
