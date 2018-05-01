@@ -6,6 +6,7 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.List;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -22,5 +23,7 @@ public interface BLLFacade {
      * @return                  = Returns the Task so that it can be set in the view.
      */
     public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
-    
+
+    public List<Profile> getAllProfiles() throws BLLExeption;
+        
 }

@@ -5,10 +5,15 @@
  */
 package shoreline_exam_2018.dal;
 
+import java.util.List;
+import shoreline_exam_2018.be.Profile;
+
 /**
  *
  * @author janvanzetten
  */
 public interface DALFacade {
+
+    public List<Profile> getAllProfiles()throws DALException;
     
 }
