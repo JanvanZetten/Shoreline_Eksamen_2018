@@ -45,11 +45,21 @@ public class ConvertController implements Initializable {
         model.loadProfilesInCombo(profileCombobox);
     }    
 
+    /**
+     * Loads a file from a File Chooser.
+     *
+     * @param event
+     */
     @FXML
     private void handleLoadButton(ActionEvent event) {
         model.chooseFile();
     }
 
+    /**
+     * Test button which creates a task and sets it into the view.
+     *
+     * @param event
+     */
     @FXML
     private void handleTaskButton(ActionEvent event) {
         model.convertTest(tblTasks);

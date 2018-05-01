@@ -9,89 +9,18 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Region;
-import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
-import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.bll.ConversionTask;
-import shoreline_exam_2018.bll.BLLFacade;
-import shoreline_exam_2018.bll.BLLManager;
 
 /**
  *
  * @author janvanzetten
  */
 public class MainModel {
-
-    private File selectedFile;
-    private Path selectedFilePath;
-    private Profile selectedProfile;
-    private String taskName;
-
-    private BLLFacade bll;
-
-    private List<ConversionTask> tblTasks;
-    private ObservableList<ConversionTask> olTasks;
-
-    public MainModel() {
-        bll = new BLLManager();
-    }
-
-    /**
-     * Sets array and observable lists for future use to place tasks into view.
-     *
-     * @param tblTasks
-     */
-    public void prepareTasks() {
-        tblTasks = new ArrayList<>();
-        olTasks = FXCollections.observableArrayList();
-    }
-
-    /**
-     * Opens a file chooser and sets a File object to be the selected file.
-     */
-    public void chooseFile() {
-        ExtensionFilter filter = new ExtensionFilter("XLSX Files", "*.xlsx");
-        FileChooser fc = new FileChooser();
-
-        fc.getExtensionFilters().add(filter);
-        String currentDir = System.getProperty("user.dir") + File.separator;
-
-        File dir = new File(currentDir);
-        fc.setInitialDirectory(dir);
-        fc.setTitle("Attach a file");
-
-        selectedFile = fc.showOpenDialog(null);
-        //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
-        //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
-        if (selectedFile != null) {
-            selectedFilePath = Paths.get(selectedFile.toURI());
-        }
-    }
-
-    /**
-     * Test method that handles conversion and setting of tasks.
-     * @param tblTasks 
-     */
-    public void convertTest(ListView<ConversionTask> tblTasks) {
-        this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
-        olTasks.addAll(this.tblTasks);
-        tblTasks.setItems(olTasks);
-    }
-
+    
     /**
      * Sets the tabs in all the tabs of the MainView.
      *

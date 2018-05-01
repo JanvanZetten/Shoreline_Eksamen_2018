@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package shoreline_exam_2018.gui.model;
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -14,6 +17,7 @@ import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.ConversionTask;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.gui.model.ConvertModel;
 
@@ -27,6 +31,11 @@ public class ConvertModel {
     
     private List<ConversionTask> tblTasks;
     private ObservableList<ConversionTask> olTasks;
+    
+    private File selectedFile;
+    private Path selectedFilePath;
+    private Profile selectedProfile;
+    private String taskName;
     
     public ConvertModel() {
         bll = new BLLManager();
@@ -42,12 +51,36 @@ public class ConvertModel {
         olTasks = FXCollections.observableArrayList();
     }
 
+    /**
+     * Opens a file chooser and sets a File object to be the selected file.
+     */
     public void chooseFile() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
+        FileChooser fc = new FileChooser();
+
+        fc.getExtensionFilters().add(filter);
+        String currentDir = System.getProperty("user.dir") + File.separator;
+
+        File dir = new File(currentDir);
+        fc.setInitialDirectory(dir);
+        fc.setTitle("Attach a file");
+
+        selectedFile = fc.showOpenDialog(null);
+        //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
+        //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
+        if (selectedFile != null) {
+            selectedFilePath = Paths.get(selectedFile.toURI());
+        }
     }
 
-    public void convertTest(ListView<?> tblTasks) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    /**
+     * Test method that handles conversion and setting of tasks.
+     * @param tblTasks 
+     */
+    public void convertTest(ListView<ConversionTask> tblTasks) {
+        this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
+        olTasks.addAll(this.tblTasks);
+        tblTasks.setItems(olTasks);
     }
 
     public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
