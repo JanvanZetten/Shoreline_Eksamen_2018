@@ -40,6 +40,7 @@ public class ConvertController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new ConvertModel();
+        model.loadProfilesInCombo(profileCombobox);
     }    
 
     @FXML
