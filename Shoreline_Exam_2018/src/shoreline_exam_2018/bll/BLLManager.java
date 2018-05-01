@@ -6,8 +6,14 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionManager;
+import shoreline_exam_2018.dal.DALException;
+import shoreline_exam_2018.dal.DALFacade;
+import shoreline_exam_2018.dal.DALManager;
 
 /**
  *
@@ -16,14 +22,25 @@ import shoreline_exam_2018.bll.ConversionManager;
 public class BLLManager implements BLLFacade {
     
     private ConversionManager cMan;
+    private DALFacade dal;
     
     public BLLManager() {
         cMan = new ConversionManager();
+        dal = new DALManager();
     }
 
     @Override
     public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile) {
         return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
+    }
+
+    @Override
+    public List<Profile> getAllProfiles() throws BLLExeption {
+        try {
+            return dal.getAllProfiles();
+        } catch (DALException ex) {
+            throw new BLLExeption(ex.getMessage(), ex.getCause());
+        }
     }
     
 }

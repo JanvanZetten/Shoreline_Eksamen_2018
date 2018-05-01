@@ -15,10 +15,15 @@ import javafx.scene.control.ListView;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.ConversionTask;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLFacade;
+import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.gui.model.ConvertModel;
 
 /**
@@ -28,6 +33,8 @@ import shoreline_exam_2018.gui.model.ConvertModel;
 public class ConvertModel {
     
     private BLLFacade bll;
+    
+    ObservableList<Profile> profiles;
     
     private List<ConversionTask> tblTasks;
     private ObservableList<ConversionTask> olTasks;
@@ -39,6 +46,7 @@ public class ConvertModel {
     
     public ConvertModel() {
         bll = new BLLManager();
+        profiles = FXCollections.observableArrayList();
     }
     
     /**
@@ -84,7 +92,14 @@ public class ConvertModel {
     }
 
     public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        profileCombobox.setItems(profiles);
+        try {
+            profiles.addAll(bll.getAllProfiles());
+        } catch (BLLExeption ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
+            alert.showAndWait();
+        }
+        
     }
     
 }

@@ -44,7 +44,7 @@ public class MainModel {
      */
     private void setPane(String PANE_NAME, AnchorPane PANE) {
         try {
-            URL url = new File(System.getProperty("user.dir") + "\\src\\shoreline_exam_2018\\gui\\view\\" + PANE_NAME + "View.fxml").toURI().toURL();
+            URL url = new File(System.getProperty("user.dir") + "/src/shoreline_exam_2018/gui/view/" + PANE_NAME + "View.fxml").toURI().toURL();
             FXMLLoader loader = new FXMLLoader(url);
 
             Node node = (Node) loader.load();
