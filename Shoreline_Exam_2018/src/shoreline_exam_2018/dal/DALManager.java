@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.dal;
 
+import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.dal.database.ProfileDAO;
@@ -13,17 +14,28 @@ import shoreline_exam_2018.dal.database.ProfileDAO;
  *
  * @author alexl
  */
-public class DALManager implements DALFacade {
-    
-    ProfileDAO profileDAO;
+public class DALManager implements DALFacade
+{
 
-    public DALManager() {
+    private ProfileDAO profileDAO;
+    private XLSX_horisontal_Reader xhr;
+
+    public DALManager()
+    {
         this.profileDAO = new ProfileDAO();
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws DALException {
+    public List<Profile> getAllProfiles() throws DALException
+    {
         return profileDAO.getAllProfiles();
     }
-    
+
+    @Override
+    public List<String> getHeadersFromFile(Path path) throws DALException
+    {
+        xhr = new XLSX_horisontal_Reader(path.toString());
+        return xhr.getParameters();
+    }
+
 }

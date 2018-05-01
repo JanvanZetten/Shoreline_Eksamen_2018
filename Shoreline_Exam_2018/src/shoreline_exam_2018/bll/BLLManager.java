@@ -7,10 +7,7 @@ package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.bll.ConversionManager;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.DALFacade;
 import shoreline_exam_2018.dal.DALManager;
@@ -19,28 +16,48 @@ import shoreline_exam_2018.dal.DALManager;
  *
  * @author alexl
  */
-public class BLLManager implements BLLFacade {
-    
+public class BLLManager implements BLLFacade
+{
+
     private ConversionManager cMan;
     private DALFacade dal;
-    
-    public BLLManager() {
+
+    public BLLManager()
+    {
         cMan = new ConversionManager();
         dal = new DALManager();
     }
 
     @Override
-    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile) {
+    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile)
+    {
         return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws BLLExeption {
-        try {
+    public List<Profile> getAllProfiles() throws BLLExeption
+    {
+        try
+        {
             return dal.getAllProfiles();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
-    
+
+    @Override
+    public List<String> getHeadersFromFile(Path path) throws BLLExeption
+    {
+        try
+        {
+            return dal.getHeadersFromFile(path);
+        }
+        catch (DALException ex)
+        {
+            throw new BLLExeption(ex.getMessage(), ex.getCause());
+        }
+    }
+
 }
