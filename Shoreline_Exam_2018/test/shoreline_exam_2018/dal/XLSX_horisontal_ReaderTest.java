@@ -51,6 +51,7 @@ public class XLSX_horisontal_ReaderTest {
      */
     @Test
     public void testHasNext() throws Exception {
+        reader = new XLSX_horisontal_Reader("test/shoreline_exam_2018/MockTilJunitTest.xlsx");
         assertEquals(true, reader.hasNext());
     }
 
