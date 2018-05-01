@@ -106,7 +106,7 @@ public class ConvertModel {
                 } else {
                     setText(item.getName());
                 }
-            }
+            }     
         });
 
     }
