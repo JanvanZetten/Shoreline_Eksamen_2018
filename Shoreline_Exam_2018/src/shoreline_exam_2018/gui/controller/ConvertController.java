@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.ConversionTask;
 
 /**
  * FXML Controller class
@@ -26,7 +27,7 @@ public class ConvertController implements Initializable {
     @FXML
     private Button btnLoadFile;
     @FXML
-    private ListView<?> tblTasks;
+    private ListView<ConversionTask> tblTasks;
     @FXML
     private Button btnConvert;
     
@@ -40,6 +41,8 @@ public class ConvertController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new ConvertModel();
+        model.prepareTasks();
+        
     }    
 
     @FXML

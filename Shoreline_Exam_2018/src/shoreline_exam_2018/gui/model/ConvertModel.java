@@ -5,14 +5,39 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
-import shoreline_exam_2018.gui.model.ConvertModel;
+import shoreline_exam_2018.bll.BLLFacade;
+import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.ConversionTask;
 
 /**
  *
  * @author alexl
  */
 public class ConvertModel {
+    
+    private BLLFacade bll;
+    
+    private List<ConversionTask> tblTasks;
+    private ObservableList<ConversionTask> olTasks;
+    
+    public ConvertModel() {
+        bll = new BLLManager();
+    }
+    
+    /**
+     * Sets array and observable lists for future use to place tasks into view.
+     *
+     * @param tblTasks
+     */
+    public void prepareTasks() {
+        tblTasks = new ArrayList<>();
+        olTasks = FXCollections.observableArrayList();
+    }
 
     public void chooseFile() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
