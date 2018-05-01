@@ -109,7 +109,6 @@ public class XLSX_horisontal_Reader implements InputFileReader {
         if (mainWorkbook.getSheetAt(0).getRow(pointer + 1) != null) {
             return true;
         } else {
-            System.out.println("the pointer: " + pointer);
             closeMainStream();
             return false;
         }
