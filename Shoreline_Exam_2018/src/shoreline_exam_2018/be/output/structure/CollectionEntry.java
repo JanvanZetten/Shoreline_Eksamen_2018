@@ -9,7 +9,7 @@ import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import java.util.List;
 
 /**
- *
+ * Entry for Collections.
  * @author Asbamz
  */
 public abstract class CollectionEntry implements StructEntityInterface
@@ -24,11 +24,19 @@ public abstract class CollectionEntry implements StructEntityInterface
         return columnName;
     }
 
+    /**
+     * Gets collection of entities.
+     * @return
+     */
     public List<StructEntityInterface> getCollection()
     {
         return collection;
     }
 
+    /**
+     * Get datatype.
+     * @return
+     */
     public CollectionStructType getCST()
     {
         return cst;

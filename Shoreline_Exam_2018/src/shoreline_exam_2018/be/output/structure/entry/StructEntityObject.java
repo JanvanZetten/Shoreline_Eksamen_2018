@@ -11,7 +11,7 @@ import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
- *
+ * Object Collection Entity.
  * @author Asbamz
  */
 public class StructEntityObject extends CollectionEntry

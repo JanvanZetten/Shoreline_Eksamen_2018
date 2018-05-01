@@ -9,7 +9,7 @@ import shoreline_exam_2018.be.output.structure.SimpleEntry;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 
 /**
- *
+ * Double Entity.
  * @author Asbamz
  */
 public class StructEntityDouble extends SimpleEntry

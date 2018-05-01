@@ -226,6 +226,11 @@ public class ProfileDAO
         }
     }
 
+    /**
+     * Get All Profiles.
+     * @return
+     * @throws DALException
+     */
     public List<Profile> getAllProfiles() throws DALException
     {
         Connection con = null;

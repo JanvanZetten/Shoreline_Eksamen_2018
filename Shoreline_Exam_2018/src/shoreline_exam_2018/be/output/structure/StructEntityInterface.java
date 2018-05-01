@@ -6,10 +6,14 @@
 package shoreline_exam_2018.be.output.structure;
 
 /**
- *
+ * Interface which describe conversion rules and structure.
  * @author Asbamz
  */
 public interface StructEntityInterface
 {
+    /**
+     * Gets column name.
+     * @return
+     */
     public String getColumnName();
 }
