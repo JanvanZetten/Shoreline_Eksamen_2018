@@ -61,14 +61,7 @@ public class MainController implements Initializable
         model = new MainModel();
         model.prepareTasks();
 
-        try
-        {
-            model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
-        }
-        catch (IOException ex)
-        {
-            Logger.getLogger(MainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings);
     }
 
     /**

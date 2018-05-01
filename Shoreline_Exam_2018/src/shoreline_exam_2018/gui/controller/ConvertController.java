@@ -7,6 +7,7 @@ package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -33,5 +34,15 @@ public class ConvertController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
+
+    @FXML
+    private void handleLoadButton(ActionEvent event) {
+//        model.chooseFile();
+    }
+
+    @FXML
+    private void handleTaskButton(ActionEvent event) {
+//        model.convertTest(tblTasks);
+    }
     
 }
