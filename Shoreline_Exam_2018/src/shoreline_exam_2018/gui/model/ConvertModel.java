@@ -11,22 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ListView;
-import shoreline_exam_2018.bll.BLLFacade;
-import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.ConversionTask;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.util.Callback;
 import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLExeption;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
-import shoreline_exam_2018.gui.model.ConvertModel;
 
 /**
  *
