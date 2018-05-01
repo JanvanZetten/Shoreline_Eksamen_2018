@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.be.output.structure.StructEntryInterface;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;

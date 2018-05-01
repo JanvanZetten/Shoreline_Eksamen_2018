@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.be.output.structure.entry;
 
+import shoreline_exam_2018.be.output.structure.StructEntryInterface;
 import shoreline_exam_2018.be.output.structure.CollectionEntry;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;

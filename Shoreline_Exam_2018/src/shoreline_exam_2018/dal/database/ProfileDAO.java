@@ -19,7 +19,7 @@ import shoreline_exam_2018.be.output.structure.entry.StructEntryArray;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryDate;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryDouble;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryInteger;
-import shoreline_exam_2018.be.output.structure.entry.StructEntryInterface;
+import shoreline_exam_2018.be.output.structure.StructEntryInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryObject;
 import shoreline_exam_2018.be.output.structure.entry.StructEntryString;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
