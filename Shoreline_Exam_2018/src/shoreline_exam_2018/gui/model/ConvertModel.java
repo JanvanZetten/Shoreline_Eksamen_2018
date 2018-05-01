@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package shoreline_exam_2018.gui.model;
-
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
@@ -13,6 +12,10 @@ import javafx.scene.control.ListView;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.ConversionTask;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
+import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.gui.model.ConvertModel;
 
 /**
  *
@@ -44,6 +47,10 @@ public class ConvertModel {
     }
 
     public void convertTest(ListView<?> tblTasks) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

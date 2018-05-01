@@ -42,7 +42,7 @@ public class ConvertController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         model = new ConvertModel();
         model.prepareTasks();
-        
+        model.loadProfilesInCombo(profileCombobox);
     }    
 
     @FXML
