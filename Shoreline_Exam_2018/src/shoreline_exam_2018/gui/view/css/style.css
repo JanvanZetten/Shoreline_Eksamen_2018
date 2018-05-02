@@ -84,14 +84,11 @@ and open the template in the editor.
 /* Set text colour */
 .label {
     -fx-font-family: 'Coolvetica Rg';
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #4D4D4D;
 }
 
-/* Set text colour and makes stroke */
-.label .text {
-    -fx-fill: #FFFFFF;
-    -fx-stroke: #4D4D4D;
-    -fx-stroke-width: 1px;
+#WHITE.label {
+    -fx-text-fill: #FFFFFF;
 }
 
 /* cusom button */
