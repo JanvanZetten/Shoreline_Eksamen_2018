@@ -89,6 +89,12 @@ public class ConversionThread {
         return task;
     }
 
+    public boolean isOperating() {
+        return isOperating;
+    }
+    
+    
+
     void setTask(ConversionTask cTask) {
         this.cTask = cTask;
     }
