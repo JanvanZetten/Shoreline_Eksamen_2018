@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.DALFacade;
 import shoreline_exam_2018.dal.DALManager;
@@ -32,6 +33,19 @@ public class BLLManager implements BLLFacade
     public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile)
     {
         return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
+    }
+
+    @Override
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption
+    {
+        try
+        {
+            return dal.addProfile(name, structure, createdBy);
+        }
+        catch (DALException ex)
+        {
+            throw new BLLExeption(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
