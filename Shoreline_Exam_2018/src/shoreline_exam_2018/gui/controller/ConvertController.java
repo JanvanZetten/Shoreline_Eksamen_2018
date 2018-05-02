@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionTask;
@@ -28,15 +29,16 @@ public class ConvertController implements Initializable {
     @FXML
     private Button btnLoadFile;
     @FXML
-    private ListView<ConversionTask> tblTasks;
-    @FXML
     private Button btnConvert;
-    
-    private ConvertModel model;
+    @FXML
+    private ScrollPane paneScroll;
     @FXML
     private ComboBox<Profile> profileCombobox;
     @FXML
-    private ScrollPane paneTasks;
+    private FlowPane paneTasks;
+    
+    private ConvertModel model;
+    
 
     /**
      * Initializes the controller class.
@@ -46,6 +48,8 @@ public class ConvertController implements Initializable {
         model = new ConvertModel();
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
+        paneTasks.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        
     }    
 
     /**
@@ -65,7 +69,7 @@ public class ConvertController implements Initializable {
      */
     @FXML
     private void handleTaskButton(ActionEvent event) {
-        model.convertTest(tblTasks);
+        model.convertTest(paneTasks);
     }
     
 }

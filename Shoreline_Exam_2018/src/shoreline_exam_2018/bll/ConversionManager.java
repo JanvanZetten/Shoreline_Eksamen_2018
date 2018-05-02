@@ -25,7 +25,8 @@ public class ConversionManager {
     public ConversionTask newConversion(String taskName, Path selectedFilePath, Profile selectedProfile) {
         
         ConversionThread cThread = new ConversionThread();
-        ConversionTask cTask = new ConversionTask("A string that contains the name of the task", cThread, selectedFilePath, selectedProfile);
+        ConversionTask cTask = new ConversionTask(taskName, cThread, selectedFilePath, selectedProfile);
+        cThread.setTask(cTask);
         return cTask;
     }
 }

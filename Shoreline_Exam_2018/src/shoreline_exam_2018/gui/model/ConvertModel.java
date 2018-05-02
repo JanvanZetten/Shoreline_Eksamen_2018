@@ -18,6 +18,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLExeption;
@@ -84,10 +85,14 @@ public class ConvertModel {
      *
      * @param tblTasks
      */
-    public void convertTest(ListView<ConversionTask> tblTasks) {
-        this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
+    public void convertTest(FlowPane list) {
+        tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
         olTasks.addAll(this.tblTasks);
-        tblTasks.setItems(olTasks);
+        list.getChildren().addAll(olTasks);
+        
+        // Clears the list so no duplicates are added
+        tblTasks.clear();
+        olTasks.clear();
     }
 
     
