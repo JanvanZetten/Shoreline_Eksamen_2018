@@ -5,10 +5,16 @@
  */
 package shoreline_exam_2018;
 
+import java.awt.Toolkit;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.URL;
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -16,28 +22,34 @@ import javafx.stage.Stage;
  * @author janvanzetten
  */
 public class Shoreline_Exam_2018 extends Application {
+
     Scene scene;
-    
-     /**
+    Image logo;
+
+    /**
      * this does the slow startup stuff because of preloader
+     *
      * @throws Exception
      */
     @Override
-    public void init() throws Exception
-    {
+    public void init() throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("gui/view/MainView.fxml"));
         scene = new Scene(root);
+        logo = new Image("shoreline_exam_2018/logo.png");
+
     }
-    
+
     /**
-     * This does the startup stuff wich need the JavaFX thread 
+     * This does the startup stuff wich need the JavaFX thread
+     *
      * @param stage
-     * @throws Exception 
+     * @throws Exception
      */
     @Override
     public void start(Stage stage) throws Exception {
         stage.setScene(scene);
         stage.setTitle("Shoreline MappingTool");
+        stage.getIcons().add(logo);
         stage.show();
     }
 
@@ -47,5 +59,5 @@ public class Shoreline_Exam_2018 extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
