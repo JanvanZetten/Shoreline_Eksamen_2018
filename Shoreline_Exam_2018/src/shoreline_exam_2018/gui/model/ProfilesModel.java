@@ -237,10 +237,19 @@ public class ProfilesModel
      */
     public void handleSave()
     {
+        if (structure == null || structure.isEmpty())
+        {
+            AlertFactory.showInformation("No headers", "There was not found any headers.");
+            return;
+        }
+
         List<StructEntityInterface> result = new ArrayList<>();
         for (StructEntityInterface structEntityInterface : structure)
         {
-            result.add(structEntityInterface);
+            if (structEntityInterface != null)
+            {
+                result.add(structEntityInterface);
+            }
         }
         if (!result.isEmpty())
         {
@@ -251,12 +260,15 @@ public class ProfilesModel
                 {
                     Profile profile = bll.addProfile(tp.get(), seo, 0);
 
-                    clearView();
-
                     if (cm != null)
                     {
                         cm.addProfile(profile);
                     }
+
+                    AlertFactory.showInformation("Success", "Profile has succesfully been added to the system.");
+
+                    clearView();
+
                     if (tabConvert != null)
                     {
                         tabConvert.getTabPane().getSelectionModel().select(tabConvert);
@@ -264,18 +276,17 @@ public class ProfilesModel
                 }
                 catch (BLLExeption ex)
                 {
-                    //!!Handle error saving to database.
-                    Logger.getLogger(ProfilesModel.class.getName()).log(Level.SEVERE, null, ex);
+                    AlertFactory.showError("Data error", "An error happened trying to save the profile.\nERROR: " + ex.getMessage());
                 }
             }
             else
             {
-                //!!Handle empty profilename.
+                AlertFactory.showInformation("Name missing", "The profile has to be named.");
             }
         }
         else
         {
-            //!!Handle profile not finished
+            AlertFactory.showInformation("No Structure", "There is no structure. Check the wanted columns.");
         }
     }
 
