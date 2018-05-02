@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ScrollPane;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionTask;
@@ -34,6 +35,8 @@ public class ConvertController implements Initializable {
     private ConvertModel model;
     @FXML
     private ComboBox<Profile> profileCombobox;
+    @FXML
+    private ScrollPane paneTasks;
 
     /**
      * Initializes the controller class.
