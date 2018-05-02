@@ -50,6 +50,12 @@ public class AlertFactory
         showCustomAlert(TITLE_INFO, header, message);
     }
 
+    /**
+     * Shared rules for an Alert.
+     * @param title
+     * @param header
+     * @param message
+     */
     private static void showCustomAlert(String title, String header, String message)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, message, ButtonType.OK);
