@@ -11,6 +11,8 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import shoreline_exam_2018.be.Profile;
 
@@ -24,6 +26,7 @@ public class ConversionTask extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
+    private Button btnResume;
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -39,6 +42,7 @@ public class ConversionTask extends HBox {
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
+        btnResume = new Button();
         
         setLabelInfo(conversionName);
         
@@ -49,32 +53,38 @@ public class ConversionTask extends HBox {
         
         setCancelButtonInfo(cThread);
         
-        Button btnResume = new Button();
-        btnResume.setText("RESUME");
-        
-        //Resumes the paused thread. DOES NOT CURRENTLY WORK IN THE cThread CLASS.
-        btnResume.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                cThread.resumeTask();
-            }
-        });
+        setResumeButtonInfo(cThread);
 
         this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel, btnResume);
     }
     
+    /**
+     * Sets all the information of the label.
+     * @param conversionName 
+     */
     private void setLabelInfo(String conversionName) {
         lblConversionName.setText(conversionName);
     }
     
+    /**
+     * Sets all the information of the progress bar.
+     * @param cThread 
+     */
     private void setProgressBarInfo(ConversionThread cThread) {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
     }
     
+    /**
+     * Sets all the information of the pause button.
+     * @param cThread 
+     */
     private void setPauseButtonInfo(ConversionThread cThread) {
-        btnPause.setText("PAUSE");
+        Image image = new Image("shoreline_exam_2018/resources/pause.png", 36, 36, true, true);
+        ImageView imageView = new ImageView(image);
+        btnPause.setGraphic(imageView);
+        btnPause.setStyle("-fx-border-radius: 50%;");
         
         //NOT WORKING.
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
@@ -86,6 +96,10 @@ public class ConversionTask extends HBox {
         });
     }
 
+    /**
+     * Sets all the information of the cancel button.
+     * @param cThread 
+     */
     private void setCancelButtonInfo(ConversionThread cThread) {
         btnCancel.setText("CANCEL");
         
@@ -93,6 +107,22 @@ public class ConversionTask extends HBox {
             @Override
             public void handle(ActionEvent event) {
                 cThread.cancelTask();
+            }
+        });
+    }
+
+    /**
+     * Sets all the information of the resume button.
+     * @param cThread 
+     */
+    private void setResumeButtonInfo(ConversionThread cThread) {
+        btnResume.setText("RESUME");
+        
+        //Resumes the paused thread. DOES NOT CURRENTLY WORK IN THE cThread CLASS.
+        btnResume.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.resumeTask();
             }
         });
     }
