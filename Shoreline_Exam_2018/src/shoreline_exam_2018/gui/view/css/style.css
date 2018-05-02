@@ -114,6 +114,50 @@ and open the template in the editor.
     -fx-background-color: #DFDFDF;
     -fx-text-fill: #FFFFFF;
     -fx-border-color: #4D4D4D;
+    -fx-font-size: 13px;
+}
+
+/* custom combobox */
+.combo-box-base
+{
+    -fx-background-radius: 0,0,0,0;
+    -fx-background-color: #4D4D4D;
+    -fx-text-fill: rgba(77,77,77,0.5);
+    -fx-border-color: #4D4D4D;
+    -fx-font-size: 13px;
+}
+
+.combo-box .list-cell:selected
+{
+    -fx-background-color: #DFDFDF;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box-popup .list-view .list-cell
+{
+    -fx-background-color: #DFDFDF;
+    -fx-text-fill: rgba(77,77,77,0.5);
+}
+
+.combo-box-popup .list-view .list-cell:selected,
+.combo-box-popup .list-view .list-cell:hover
+{
+    -fx-background-color: #4D4D4D;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box .arrow
+{
+    -fx-background-color: #DFDFDF;
+}
+
+/* Checkbox */
+.check-box .box
+{
+    -fx-background-color: #DFDFDF;
+    -fx-border-color: #4D4D4D;
+    -fx-border-radius: 0px;
+}
 
 .check-box:selected .mark {
     -fx-background-color: #FFFFFF;
