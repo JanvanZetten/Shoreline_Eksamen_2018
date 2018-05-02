@@ -28,12 +28,15 @@
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="191.0" />
               </columnConstraints>
                <children>
-                  <Label text="Profile Name:" />
+                  <Label id="WHITE" text="Profile Name:" />
                   <TextField fx:id="txtFieldProfileName" GridPane.columnIndex="1" />
                </children>
                <GridPane.margin>
                   <Insets />
                </GridPane.margin>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
             </GridPane>
             <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <columnConstraints>
@@ -44,8 +47,11 @@
                   <TextField fx:id="txtfieldSourcefile" editable="false" />
                   <Button mnemonicParsing="false" onAction="#handleSource" text="Source" GridPane.columnIndex="1" />
                </children>
+               <rowConstraints>
+                  <RowConstraints />
+               </rowConstraints>
             </GridPane>
-            <Label text="New Profile" GridPane.columnSpan="2" />
+            <Label id="WHITE" text="New Profile" GridPane.columnSpan="2" />
          </children>
       </GridPane>
         <ScrollPane layoutX="100.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0">
