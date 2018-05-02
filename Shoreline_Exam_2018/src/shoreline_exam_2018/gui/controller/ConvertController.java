@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.be.Profile;
@@ -38,6 +39,10 @@ public class ConvertController implements Initializable {
     private FlowPane paneTasks;
     
     private ConvertModel model;
+    @FXML
+    private TextField inputField;
+    @FXML
+    private TextField outputField;
     
 
     /**
@@ -70,6 +75,10 @@ public class ConvertController implements Initializable {
     @FXML
     private void handleTaskButton(ActionEvent event) {
         model.convertTest(paneTasks);
+    }
+
+    @FXML
+    private void handleOutputButton(ActionEvent event) {
     }
     
 }
