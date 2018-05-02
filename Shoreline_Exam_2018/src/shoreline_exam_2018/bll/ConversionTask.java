@@ -24,7 +24,6 @@ public class ConversionTask extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
-    private boolean activity;
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -40,36 +39,15 @@ public class ConversionTask extends HBox {
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
-        activity = true;
         
-        // Sets the label to have the name of the conversion
-        lblConversionName.setText(conversionName);
+        setLabelInfo(conversionName);
         
         // Sets the progress bar to be connected with the thread
-        progress.setProgress(0);
-        progress.progressProperty().unbind();
-        progress.progressProperty().bind(cThread.getTask().progressProperty());
+        setProgressBarInfo(cThread);
         
-        btnPause.setText("PAUSE");
+        setPauseButtonInfo(cThread);
         
-        //Pauses the running thread. NOT WORKING.
-        btnPause.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                cThread.pauseTask();
-                //NEEDS TO SET RESUME BUTTON TOO
-            }
-        });
-        
-        btnCancel.setText("CANCEL");
-        
-        //Cancels the running thread.
-        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                cThread.cancelTask();
-            }
-        });
+        setCancelButtonInfo(cThread);
         
         Button btnResume = new Button();
         btnResume.setText("RESUME");
@@ -85,7 +63,37 @@ public class ConversionTask extends HBox {
         this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel, btnResume);
     }
     
-    public boolean getActivity() {
-        return activity;
+    private void setLabelInfo(String conversionName) {
+        lblConversionName.setText(conversionName);
+    }
+    
+    private void setProgressBarInfo(ConversionThread cThread) {
+        progress.setProgress(0);
+        progress.progressProperty().unbind();
+        progress.progressProperty().bind(cThread.getTask().progressProperty());
+    }
+    
+    private void setPauseButtonInfo(ConversionThread cThread) {
+        btnPause.setText("PAUSE");
+        
+        //NOT WORKING.
+        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.pauseTask();
+                //NEEDS TO SET RESUME BUTTON TOO
+            }
+        });
+    }
+
+    private void setCancelButtonInfo(ConversionThread cThread) {
+        btnCancel.setText("CANCEL");
+        
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                cThread.cancelTask();
+            }
+        });
     }
 }
