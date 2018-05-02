@@ -20,7 +20,7 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public class ConversionTask extends HBox {
+public class ConversionJob extends HBox {
     
     private Label lblConversionName;
     private ProgressBar progress;
@@ -34,7 +34,7 @@ public class ConversionTask extends HBox {
      * @param conversionName
      * @param cThread 
      */
-    public ConversionTask(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile) {
+    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile) {
         super();
 
         // Creates all elements

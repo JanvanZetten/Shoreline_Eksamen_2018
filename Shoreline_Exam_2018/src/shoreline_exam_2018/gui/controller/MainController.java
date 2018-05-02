@@ -14,7 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import shoreline_exam_2018.bll.ConversionTask;
+import shoreline_exam_2018.bll.ConversionJob;
 
 import shoreline_exam_2018.gui.model.MainModel;
 
@@ -37,7 +37,7 @@ public class MainController implements Initializable
     @FXML
     private Tab tabSettings;
     @FXML
-    private ListView<ConversionTask> tblTasks;
+    private ListView<ConversionJob> tblTasks;
     @FXML
     private Button btnConvert;
     @FXML
