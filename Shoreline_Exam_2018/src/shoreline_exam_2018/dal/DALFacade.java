@@ -8,6 +8,7 @@ package shoreline_exam_2018.dal;
 import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
 /**
  *
@@ -15,6 +16,8 @@ import shoreline_exam_2018.be.Profile;
  */
 public interface DALFacade
 {
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException;
+
     public List<Profile> getAllProfiles() throws DALException;
 
     public List<String> getHeadersFromFile(Path path) throws DALException;

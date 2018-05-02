@@ -37,6 +37,7 @@ public class ConversionThread {
             }
         });
         thread = new Thread(task);
+        thread.setDaemon(true);
         thread.start();
     }
 
@@ -50,9 +51,6 @@ public class ConversionThread {
                 for (int i = 0; i < 100000000000000l; i++) {
                     System.out.println("SPAM " + i); //NEEDS TO HAVE CONVERSION METHOD HERE
                     if (isOperating == true) {
-                        if (cTask.getActivity() == true) {
-                            return true;
-                        }
                         if (isCanceled == true) {
                             return true;
                         }
