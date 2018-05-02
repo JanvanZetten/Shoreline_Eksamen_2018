@@ -11,8 +11,10 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.gui.model.ProfilesModel;
 
 /**
@@ -63,4 +65,13 @@ public class ProfilesController implements Initializable
         pm.handleSave();
     }
 
+    /**
+     * Adds model and tab.
+     * @param cm
+     * @param tabConvert
+     */
+    public void addSharedInfo(ConvertModel cm, Tab tabConvert)
+    {
+        pm.addSharedInfo(cm, tabConvert);
+    }
 }

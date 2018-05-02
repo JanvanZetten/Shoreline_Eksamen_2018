@@ -25,7 +25,8 @@ import shoreline_exam_2018.bll.ConversionTask;
  *
  * @author alexl
  */
-public class ConvertController implements Initializable {
+public class ConvertController implements Initializable
+{
 
     @FXML
     private Button btnLoadFile;
@@ -37,28 +38,27 @@ public class ConvertController implements Initializable {
     private ComboBox<Profile> profileCombobox;
     @FXML
     private FlowPane paneTasks;
-    
+
     private ConvertModel model;
-    
-    
+
     @FXML
     private TextField inputField;
     @FXML
     private TextField outputField;
-    
 
     /**
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
+    public void initialize(URL url, ResourceBundle rb)
+    {
         model = new ConvertModel();
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
         paneTasks.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         inputField.setEditable(false);
         outputField.setEditable(false);
-    }    
+    }
 
     /**
      * Loads a file from a File Chooser.
@@ -66,7 +66,8 @@ public class ConvertController implements Initializable {
      * @param event
      */
     @FXML
-    private void handleLoadButton(ActionEvent event) {
+    private void handleLoadButton(ActionEvent event)
+    {
         inputField.setText(model.chooseFile());
     }
 
@@ -76,12 +77,19 @@ public class ConvertController implements Initializable {
      * @param event
      */
     @FXML
-    private void handleTaskButton(ActionEvent event) {
+    private void handleTaskButton(ActionEvent event)
+    {
         model.convertTest(paneTasks);
     }
 
     @FXML
-    private void handleOutputButton(ActionEvent event) {
+    private void handleOutputButton(ActionEvent event)
+    {
     }
-    
+
+    public ConvertModel getModel()
+    {
+        return model;
+    }
+
 }

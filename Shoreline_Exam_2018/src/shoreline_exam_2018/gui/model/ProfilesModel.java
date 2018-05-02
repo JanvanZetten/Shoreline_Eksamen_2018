@@ -20,6 +20,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
@@ -45,6 +46,8 @@ public class ProfilesModel
     private List<StructEntityInterface> structure;
     private StringProperty tp;
     private TextField txtfieldSourcefile;
+    private ConvertModel cm;
+    private Tab tabConvert;
 
     /**
      * Takes Profile Edit GridPane as parameter. Uses BLLManager
@@ -248,6 +251,14 @@ public class ProfilesModel
                     bll.addProfile(tp.get(), seo, 0);
                     //!!Handle show success.
                     clearView();
+                    if (cm != null)
+                    {
+                        //!!Update profiles and choose new one.
+                    }
+                    if (tabConvert != null)
+                    {
+                        tabConvert.getTabPane().getSelectionModel().select(tabConvert);
+                    }
                 }
                 catch (BLLExeption ex)
                 {
@@ -266,10 +277,24 @@ public class ProfilesModel
         }
     }
 
+    /**
+     * Clear view for information.
+     */
     private void clearView()
     {
         txtfieldSourcefile.setText("");
         tp.set("");
         gridPane.getChildren().clear();
+    }
+
+    /**
+     * Adds model and tab.
+     * @param cm
+     * @param tabConvert
+     */
+    public void addSharedInfo(ConvertModel cm, Tab tabConvert)
+    {
+        this.tabConvert = tabConvert;
+        this.cm = cm;
     }
 }
