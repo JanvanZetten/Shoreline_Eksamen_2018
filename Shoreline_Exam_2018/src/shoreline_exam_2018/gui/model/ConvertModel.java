@@ -29,7 +29,8 @@ import shoreline_exam_2018.bll.BLLManager;
  *
  * @author alexl
  */
-public class ConvertModel {
+public class ConvertModel
+{
 
     private BLLFacade bll;
 
@@ -43,7 +44,8 @@ public class ConvertModel {
     private Profile selectedProfile;
     private String taskName;
 
-    public ConvertModel() {
+    public ConvertModel()
+    {
         bll = new BLLManager();
         profiles = FXCollections.observableArrayList();
     }
@@ -53,7 +55,8 @@ public class ConvertModel {
      *
      * @param tblTasks
      */
-    public void prepareTasks() {
+    public void prepareTasks()
+    {
         tblTasks = new ArrayList<>();
         olTasks = FXCollections.observableArrayList();
     }
@@ -61,7 +64,8 @@ public class ConvertModel {
     /**
      * Opens a file chooser and sets a File object to be the selected file.
      */
-    public String chooseFile() {
+    public String chooseFile()
+    {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
 
@@ -74,7 +78,8 @@ public class ConvertModel {
 
         selectedFile = fc.showOpenDialog(null);
 
-        if (selectedFile != null) {
+        if (selectedFile != null)
+        {
             selectedFilePath = Paths.get(selectedFile.toURI());
             return selectedFilePath.toString();
         }
@@ -86,47 +91,63 @@ public class ConvertModel {
      *
      * @param tblTasks
      */
-    public void convertTest(FlowPane list) {
+    public void convertTest(FlowPane list)
+    {
         tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
         olTasks.addAll(this.tblTasks);
         list.getChildren().addAll(olTasks);
-        
+
         // Clears the list so no duplicates are added
         tblTasks.clear();
         olTasks.clear();
     }
 
-    
     /**
-     * Populates the given combo box with profiles and sets proper naming for these profiles so it looks nicely
-     * @param profileCombobox 
+     * Populates the given combo box with profiles and sets proper naming for
+     * these profiles so it looks nicely
+     * @param profileCombobox
      */
-    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
+    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox)
+    {
         profileCombobox.setItems(profiles);
-        try {
+        try
+        {
             profiles.addAll(bll.getAllProfiles());
-        } catch (BLLExeption ex) {
+        }
+        catch (BLLExeption ex)
+        {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
             alert.showAndWait();
         }
-        
+
         profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
 
         profileCombobox.setButtonCell(new profileListCell());
     }
 
+    /**
+     * Add profile to profiles list.
+     * @param profile
+     */
+    public void addProfile(Profile profile)
+    {
+        profiles.add(profile);
+    }
 }
 
-
-
 //Class for showing the right name in the comboboxs list and button
-class profileListCell extends ListCell<Profile> {
+class profileListCell extends ListCell<Profile>
+{
     @Override
-    protected void updateItem(Profile item, boolean empty) {
+    protected void updateItem(Profile item, boolean empty)
+    {
         super.updateItem(item, empty);
-        if (item == null || empty) {
+        if (item == null || empty)
+        {
             setGraphic(null);
-        } else {
+        }
+        else
+        {
             setText(item.getName());
         }
     }
