@@ -24,6 +24,7 @@ public class ConversionTask extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
+    private boolean activity;
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -39,6 +40,7 @@ public class ConversionTask extends HBox {
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
+        activity = true;
         
         // Sets the label to have the name of the conversion
         lblConversionName.setText(conversionName);
@@ -81,5 +83,9 @@ public class ConversionTask extends HBox {
         });
 
         this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel, btnResume);
+    }
+    
+    public boolean getActivity() {
+        return activity;
     }
 }

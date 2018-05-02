@@ -23,6 +23,8 @@ public class ConversionThread {
     private boolean isCanceled = false;
     private boolean isOperating = true;
 
+    private ConversionTask cTask;
+
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
      * separate thread.
@@ -45,13 +47,17 @@ public class ConversionThread {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                for (int i = 0; i < 1000000000000000000l; i++) {
+                for (int i = 0; i < 100000000000000l; i++) {
                     System.out.println("SPAM " + i); //NEEDS TO HAVE CONVERSION METHOD HERE
                     if (isOperating == true) {
+                        if (cTask.getActivity() == true) {
+                            return true;
+                        }
                         if (isCanceled == true) {
                             return true;
                         }
-                    } 
+                    }
+                    
                 }
                 return true;
             }
@@ -66,8 +72,8 @@ public class ConversionThread {
     }
 
     /**
-     * Resumes the task after it has been paused.
-     * RESUME DOES NOT WORK CURRENTLY. NEEDS IMPLEMENTATION.
+     * Resumes the task after it has been paused. RESUME DOES NOT WORK
+     * CURRENTLY. NEEDS IMPLEMENTATION.
      */
     public void resumeTask() {
         isOperating = true;
@@ -83,5 +89,9 @@ public class ConversionThread {
 
     public Task getTask() {
         return task;
+    }
+
+    void setTask(ConversionTask cTask) {
+        this.cTask = cTask;
     }
 }
