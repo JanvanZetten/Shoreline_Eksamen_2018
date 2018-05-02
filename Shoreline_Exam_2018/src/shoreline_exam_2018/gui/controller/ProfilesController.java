@@ -6,11 +6,12 @@
 package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
-import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import shoreline_exam_2018.gui.model.ProfilesModel;
 
@@ -23,6 +24,10 @@ public class ProfilesController implements Initializable
 {
     @FXML
     private GridPane grid;
+    @FXML
+    private TextField txtfieldSourcefile;
+    @FXML
+    private TextField txtFieldProfileName;
 
     /**
      * Initializes the controller class.
@@ -32,11 +37,30 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(grid);
-            pm.getDataFromFile(Paths.get(System.getProperty("user.dir") + "/test/shoreline_exam_2018/MockTilJunitTest.xlsx"));
+            pm = new ProfilesModel(grid, txtfieldSourcefile, txtFieldProfileName);
         });
     }
 
     private ProfilesModel pm;
+
+    /**
+     * Handle press on Source button.
+     * @param event
+     */
+    @FXML
+    private void handleSource(ActionEvent event)
+    {
+        pm.handleSource();
+    }
+
+    /**
+     * Handle press on Save button.
+     * @param event
+     */
+    @FXML
+    private void handleSave(ActionEvent event)
+    {
+        pm.handleSave();
+    }
 
 }

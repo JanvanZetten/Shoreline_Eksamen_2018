@@ -44,6 +44,6 @@ public abstract class SimpleEntry implements StructEntityInterface
     @Override
     public String toString()
     {
-        return columnName + ":" + sst.name();
+        return inputIndex + "@" + columnName + ":" + sst.name();
     }
 }
