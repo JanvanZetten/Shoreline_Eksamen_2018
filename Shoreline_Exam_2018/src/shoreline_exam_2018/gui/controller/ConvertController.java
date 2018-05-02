@@ -39,6 +39,8 @@ public class ConvertController implements Initializable {
     private FlowPane paneTasks;
     
     private ConvertModel model;
+    
+    
     @FXML
     private TextField inputField;
     @FXML
@@ -54,7 +56,8 @@ public class ConvertController implements Initializable {
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
         paneTasks.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        
+        inputField.setEditable(false);
+        outputField.setEditable(false);
     }    
 
     /**
@@ -64,7 +67,7 @@ public class ConvertController implements Initializable {
      */
     @FXML
     private void handleLoadButton(ActionEvent event) {
-        model.chooseFile();
+        inputField.setText(model.chooseFile());
     }
 
     /**

@@ -61,7 +61,7 @@ public class ConvertModel {
     /**
      * Opens a file chooser and sets a File object to be the selected file.
      */
-    public void chooseFile() {
+    public String chooseFile() {
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser fc = new FileChooser();
 
@@ -70,14 +70,15 @@ public class ConvertModel {
 
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
-        fc.setTitle("Attach a file");
+        fc.setTitle("Load a file");
 
         selectedFile = fc.showOpenDialog(null);
-        //CODE BELOW NEEDS TO BE CHANGED AS IT CURRENTLY STARTS A TASK THE INSTANT 
-        //YOU SELECT A FILE. THERE NEEDS TO BE A BUTTON THAT SAYS "START" INSTEAD
+
         if (selectedFile != null) {
             selectedFilePath = Paths.get(selectedFile.toURI());
+            return selectedFilePath.toString();
         }
+        return "";
     }
 
     /**
