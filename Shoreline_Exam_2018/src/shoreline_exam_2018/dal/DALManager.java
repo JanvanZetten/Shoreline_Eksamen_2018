@@ -8,6 +8,7 @@ package shoreline_exam_2018.dal;
 import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.database.ProfileDAO;
 
 /**
@@ -23,6 +24,12 @@ public class DALManager implements DALFacade
     public DALManager()
     {
         this.profileDAO = new ProfileDAO();
+    }
+
+    @Override
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException
+    {
+        return profileDAO.addProfile(name, structure, createdBy);
     }
 
     @Override

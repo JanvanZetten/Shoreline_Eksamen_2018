@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
 /**
  *
@@ -25,6 +26,8 @@ public interface BLLFacade
      * @return = Returns the Task so that it can be set in the view.
      */
     public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
+
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
 
     public List<Profile> getAllProfiles() throws BLLExeption;
 
