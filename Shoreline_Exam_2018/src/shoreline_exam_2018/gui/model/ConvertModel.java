@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package shoreline_exam_2018.gui.model;
+
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,12 +36,12 @@ public class ConvertModel {
 
     private List<ConversionTask> tblTasks;
     private ObservableList<ConversionTask> olTasks;
-    
+
     private File selectedFile;
     private Path selectedFilePath;
     private Profile selectedProfile;
     private String taskName;
-    
+
     public ConvertModel() {
         bll = new BLLManager();
         profiles = FXCollections.observableArrayList();
@@ -80,7 +81,8 @@ public class ConvertModel {
 
     /**
      * Test method that handles conversion and setting of tasks.
-     * @param tblTasks 
+     *
+     * @param tblTasks
      */
     public void convertTest(ListView<ConversionTask> tblTasks) {
         this.tblTasks.add(bll.setConversionFilePath(taskName, selectedFilePath, selectedProfile));
@@ -88,6 +90,11 @@ public class ConvertModel {
         tblTasks.setItems(olTasks);
     }
 
+    
+    /**
+     * Populates the given combo box with profiles and sets proper naming for these profiles so it looks nicely
+     * @param profileCombobox 
+     */
     public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
         profileCombobox.setItems(profiles);
         try {
@@ -96,19 +103,25 @@ public class ConvertModel {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
             alert.showAndWait();
         }
+        
+        profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
 
-        profileCombobox.setCellFactory((ListView<Profile> l) -> new ListCell<Profile>() {
-            @Override
-            protected void updateItem(Profile item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setGraphic(null);
-                } else {
-                    setText(item.getName());
-                }
-            }     
-        });
-
+        profileCombobox.setButtonCell(new profileListCell());
     }
 
+}
+
+
+
+//Class for showing the right name in the comboboxs list and button
+class profileListCell extends ListCell<Profile> {
+    @Override
+    protected void updateItem(Profile item, boolean empty) {
+        super.updateItem(item, empty);
+        if (item == null || empty) {
+            setGraphic(null);
+        } else {
+            setText(item.getName());
+        }
+    }
 }
