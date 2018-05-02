@@ -34,13 +34,16 @@ public class ConversionTask extends HBox {
     public ConversionTask(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile) {
         super();
 
+        // Creates all elements
         lblConversionName = new Label();
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
         
+        // Sets the label to have the name of the conversion
         lblConversionName.setText(conversionName);
         
+        // Sets the progress bar to be connected with the thread
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
