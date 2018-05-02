@@ -30,9 +30,11 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile)
+    @Deprecated
+    public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile)
     {
-        return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
+        //return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
+        return null;
     }
 
     @Override
@@ -72,6 +74,11 @@ public class BLLManager implements BLLFacade
         {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
+    }
+
+    @Override
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile) throws BLLExeption {
+        return cMan.newConversion(taskName, inputFile, outputFile, profile);
     }
 
 }

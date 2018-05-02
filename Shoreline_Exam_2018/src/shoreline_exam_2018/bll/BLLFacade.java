@@ -25,7 +25,10 @@ public interface BLLFacade
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionTask setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
+    @Deprecated
+    public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
+    
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile) throws BLLExeption;
 
     public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
 
