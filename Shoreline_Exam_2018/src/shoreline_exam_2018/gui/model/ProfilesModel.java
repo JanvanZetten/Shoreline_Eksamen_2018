@@ -24,6 +24,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDouble;
@@ -248,12 +249,13 @@ public class ProfilesModel
                 StructEntityObject seo = new StructEntityObject(tp.get(), result);
                 try
                 {
-                    bll.addProfile(tp.get(), seo, 0);
-                    //!!Handle show success.
+                    Profile profile = bll.addProfile(tp.get(), seo, 0);
+
                     clearView();
+
                     if (cm != null)
                     {
-                        //!!Update profiles and choose new one.
+                        cm.addProfile(profile);
                     }
                     if (tabConvert != null)
                     {
