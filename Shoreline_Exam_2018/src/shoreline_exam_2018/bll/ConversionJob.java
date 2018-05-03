@@ -16,6 +16,8 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -46,6 +48,15 @@ public class ConversionJob extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
         
+        Region region1 = new Region();
+        HBox.setHgrow(region1, Priority.ALWAYS);
+        
+        Region region2 = new Region();
+        HBox.setHgrow(region2, Priority.ALWAYS);
+        
+        Region region3 = new Region();
+        HBox.setHgrow(region3, Priority.ALWAYS);
+        
         this.setStyle("-fx-background-color: #737f8c;" +
                       "-fx-background-radius: 30;");
         
@@ -54,7 +65,7 @@ public class ConversionJob extends HBox {
         setPauseButtonInfo(cThread);
         setCancelButtonInfo(cThread, listJobs);
 
-        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
+        this.getChildren().addAll(region3, lblConversionName, region1, progress, region2, btnPause, btnCancel);
     }
     
     /**
@@ -64,6 +75,7 @@ public class ConversionJob extends HBox {
     private void setLabelInfo(String conversionName) {
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
+        lblConversionName.setAlignment(Pos.CENTER_LEFT);
     }
     
     /**
@@ -112,7 +124,6 @@ public class ConversionJob extends HBox {
      * @param cThread 
      */
     private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs) {
-        btnCancel.setAlignment(Pos.CENTER_RIGHT);
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
         ImageView imageView = new ImageView(image);
@@ -121,7 +132,6 @@ public class ConversionJob extends HBox {
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
                 cThread.cancelTask();
                 listJobs.getItems().remove(ConversionJob.this);
             }
