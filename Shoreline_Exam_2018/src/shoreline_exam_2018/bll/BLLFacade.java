@@ -7,6 +7,7 @@ package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
 import java.util.List;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
@@ -38,7 +39,7 @@ public interface BLLFacade
      * @return a converison job with the given name
      * @throws BLLExeption
      */
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, FlowPane paneJobs) throws BLLExeption;
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption;
 
     public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
 

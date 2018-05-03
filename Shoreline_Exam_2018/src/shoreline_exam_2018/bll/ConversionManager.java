@@ -5,9 +5,8 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.io.File;
 import java.nio.file.Path;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -26,7 +25,7 @@ public class ConversionManager {
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, FlowPane paneJobs) throws BLLExeption {
+    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLExeption {
 
         String inputExtension;
         String outputExtension;
@@ -50,7 +49,7 @@ public class ConversionManager {
 
         if (cThread != null) {
 
-            ConversionJob cJob = new ConversionJob(taskName, cThread, inputPath, selectedProfile, paneJobs);
+            ConversionJob cJob = new ConversionJob(taskName, cThread, inputPath, selectedProfile, listJobs);
             cThread.giveJob(cJob);
             return cJob;
         }
