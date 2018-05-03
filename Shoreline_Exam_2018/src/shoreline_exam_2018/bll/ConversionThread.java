@@ -6,10 +6,6 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_exam_2018.be.Profile;
 
@@ -49,7 +45,6 @@ public class ConversionThread {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                System.out.println("hello from the task line 58 in convervesion thread");
                 
                 try{
                 converter.convertFile(coversionProfile, inputFile, outputfile);
@@ -93,9 +88,10 @@ public class ConversionThread {
     private void startThread(Task task) {
         thread = new Thread(task);
         thread.setDaemon(true);
-        System.out.println("starting thread line 45 in convervesion thread");
         thread.start();
-        System.out.println("thread started line 47 in convervesion thread");
     }
 
+    public boolean isOperating() {
+        return isOperating;
+    }
 }

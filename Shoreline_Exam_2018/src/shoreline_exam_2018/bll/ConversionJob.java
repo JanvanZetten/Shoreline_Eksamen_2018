@@ -26,7 +26,6 @@ public class ConversionJob extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
-    private Button btnResume;
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -42,20 +41,13 @@ public class ConversionJob extends HBox {
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
-        btnResume = new Button();
         
         setLabelInfo(conversionName);
-        
-        // Sets the progress bar to be connected with the thread
         setProgressBarInfo(cThread);
-        
         setPauseButtonInfo(cThread);
-        
         setCancelButtonInfo(cThread);
-        
-        setResumeButtonInfo(cThread);
 
-        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel, btnResume);
+        this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
     }
     
     /**
@@ -77,21 +69,30 @@ public class ConversionJob extends HBox {
     }
     
     /**
-     * Sets all the information of the pause button.
+     * Sets all the information of the pause button. Sets itself to become a 
+     * resume button when pressed, and vice versa.
      * @param cThread 
      */
     private void setPauseButtonInfo(ConversionThread cThread) {
-        Image image = new Image("shoreline_exam_2018/resources/pause.png", 36, 36, true, true);
-        ImageView imageView = new ImageView(image);
-        btnPause.setGraphic(imageView);
-        btnPause.setStyle("-fx-border-radius: 50%;");
+        Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", 36, 36, true, true);
+        ImageView imageViewPause = new ImageView(imagePause);
+        btnPause.setGraphic(imageViewPause);
+        
+        Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", 36, 36, true, true);
+        ImageView imageViewResume = new ImageView(imageResume);
         
         //NOT WORKING.
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                cThread.pauseTask();
-                //NEEDS TO SET RESUME BUTTON TOO
+                if (cThread.isOperating() == true) {
+                    cThread.pauseTask();
+                    btnPause.setGraphic(imageViewResume);
+                }
+                else if (cThread.isOperating() == false) {
+                    cThread.resumeTask();
+                    btnPause.setGraphic(imageViewPause);
+                }
             }
         });
     }
@@ -101,28 +102,14 @@ public class ConversionJob extends HBox {
      * @param cThread 
      */
     private void setCancelButtonInfo(ConversionThread cThread) {
-        btnCancel.setText("CANCEL");
+        Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
+        ImageView imageView = new ImageView(image);
+        btnCancel.setGraphic(imageView);
         
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 cThread.cancelTask();
-            }
-        });
-    }
-
-    /**
-     * Sets all the information of the resume button.
-     * @param cThread 
-     */
-    private void setResumeButtonInfo(ConversionThread cThread) {
-        btnResume.setText("RESUME");
-        
-        //Resumes the paused thread. DOES NOT CURRENTLY WORK IN THE cThread CLASS.
-        btnResume.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                cThread.resumeTask();
             }
         });
     }
