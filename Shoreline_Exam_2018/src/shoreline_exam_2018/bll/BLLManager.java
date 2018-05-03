@@ -7,6 +7,7 @@ package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
 import java.util.List;
+import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.DALException;
@@ -77,8 +78,8 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile) throws BLLExeption {
-        return cMan.newConversion(taskName, inputFile, outputFile, profile);
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, FlowPane paneJobs) throws BLLExeption {
+        return cMan.newConversion(taskName, inputFile, outputFile, profile, paneJobs);
     }
 
 }

@@ -12,8 +12,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.gui.model.ConvertModel;
@@ -33,11 +31,9 @@ public class ConvertController implements Initializable
     @FXML
     private Button btnConvert;
     @FXML
-    private ScrollPane paneScroll;
-    @FXML
     private ComboBox<Profile> profileCombobox;
     @FXML
-    private FlowPane paneTasks;
+    private FlowPane paneJobs;
 
     private ConvertModel model;
 
@@ -55,7 +51,7 @@ public class ConvertController implements Initializable
         model = new ConvertModel();
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
-        paneTasks.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        paneJobs.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         inputField.setEditable(false);
         outputField.setEditable(false);
     }
@@ -79,9 +75,10 @@ public class ConvertController implements Initializable
     @FXML
     private void handleTaskButton(ActionEvent event)
     {
-        ConversionJob StartConversion = model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem());
+
+        ConversionJob StartConversion = model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem(), paneJobs);
         if (StartConversion != null){
-            paneTasks.getChildren().add(StartConversion);
+            paneJobs.getChildren().add(StartConversion);
             inputField.setText("");
             outputField.setText("");
         }
