@@ -5,21 +5,18 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.awt.Color;
 import java.nio.file.Path;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -43,14 +40,14 @@ public class ConversionJob extends HBox {
      */
     public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, FlowPane paneJobs) {
         super();
-
+        
         // Creates all elements
         lblConversionName = new Label();
         progress = new ProgressBar();
         btnPause = new Button();
         btnCancel = new Button();
         
-        this.setStyle("-fx-background-color: #4D4D4D;");
+        this.setStyle("-fx-background-color: #737f8c;");
         
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
@@ -66,6 +63,7 @@ public class ConversionJob extends HBox {
      */
     private void setLabelInfo(String conversionName) {
         lblConversionName.setText(conversionName);
+        lblConversionName.setId("WHITE");
     }
     
     /**
@@ -114,6 +112,7 @@ public class ConversionJob extends HBox {
      * @param cThread 
      */
     private void setCancelButtonInfo(ConversionThread cThread, FlowPane paneJobs) {
+        btnCancel.setAlignment(Pos.CENTER_RIGHT);
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
         ImageView imageView = new ImageView(image);

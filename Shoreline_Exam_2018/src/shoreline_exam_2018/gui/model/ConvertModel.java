@@ -13,8 +13,6 @@ import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.bll.ConversionJob;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -187,9 +185,7 @@ public class ConvertModel {
             return startConversion;
         }
         else{
-            Alert noFiles = new Alert(Alert.AlertType.ERROR, "Please select an input and output file", ButtonType.OK);
-            noFiles.showAndWait();
-            
+            AlertFactory.showError("No input file", "Please select an input and output file");
             return null;
         }
         
