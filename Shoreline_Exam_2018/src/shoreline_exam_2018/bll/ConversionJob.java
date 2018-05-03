@@ -5,14 +5,19 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.awt.Color;
 import java.nio.file.Path;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import shoreline_exam_2018.be.Profile;
@@ -27,6 +32,8 @@ public class ConversionJob extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
+    
+    
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -43,7 +50,7 @@ public class ConversionJob extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
         
-        this.setStyle("-fx-background: #4D4D4D;");
+        this.setStyle("-fx-background-color: #4D4D4D;");
         
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
@@ -77,9 +84,11 @@ public class ConversionJob extends HBox {
      * @param cThread 
      */
     private void setPauseButtonInfo(ConversionThread cThread) {
+        btnPause.setStyle("-fx-background-color: transparent;");
         Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", 36, 36, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
         btnPause.setGraphic(imageViewPause);
+        
         
         Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", 36, 36, true, true);
         ImageView imageViewResume = new ImageView(imageResume);
@@ -105,6 +114,7 @@ public class ConversionJob extends HBox {
      * @param cThread 
      */
     private void setCancelButtonInfo(ConversionThread cThread, FlowPane paneJobs) {
+        btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
