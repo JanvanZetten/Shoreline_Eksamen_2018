@@ -79,7 +79,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
      * @throws BLLExeption if the stuctObject has a structEntry which is not supported. The supported are: StructEntryArray, StructEntryDate, 
      * StructEntryDouble, StructEntryInteger, StructEntryObject and StructEntryString.
      */
-    private List<OutputPair> mapRowToOutputpairWithEntryCollection(CollectionEntry structObject, Row row) throws BLLExeption {
+    private List<OutputPair> mapRowToOutputpairWithEntryCollection(CollectionEntity structObject, Row row) throws BLLExeption {
         List<StructEntityInterface> collection = structObject.getCollection();
         
         List<OutputPair> output = new ArrayList<>();

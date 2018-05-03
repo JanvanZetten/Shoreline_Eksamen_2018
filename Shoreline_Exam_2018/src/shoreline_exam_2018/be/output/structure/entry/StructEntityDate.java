@@ -5,14 +5,14 @@
  */
 package shoreline_exam_2018.be.output.structure.entry;
 
-import shoreline_exam_2018.be.output.structure.SimpleEntry;
+import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 
 /**
  * Date Entity
  * @author Asbamz
  */
-public class StructEntityDate extends SimpleEntry
+public class StructEntityDate extends SimpleEntity
 {
     public StructEntityDate(String columnName, int inputIndex)
     {

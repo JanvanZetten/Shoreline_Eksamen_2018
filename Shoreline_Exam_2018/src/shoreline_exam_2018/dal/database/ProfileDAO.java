@@ -13,8 +13,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.be.output.structure.CollectionEntry;
-import shoreline_exam_2018.be.output.structure.SimpleEntry;
+import shoreline_exam_2018.be.output.structure.CollectionEntity;
+import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDouble;
@@ -71,14 +71,14 @@ public class ProfileDAO
 
             for (StructEntityInterface structEntryInterface : structure.getCollection())
             {
-                if (structEntryInterface instanceof CollectionEntry)
+                if (structEntryInterface instanceof CollectionEntity)
                 {
-                    CollectionEntry ce = (CollectionEntry) structEntryInterface;
+                    CollectionEntity ce = (CollectionEntity) structEntryInterface;
                     addProfileStructureCollection(id, ce);
                 }
-                else if (structEntryInterface instanceof SimpleEntry)
+                else if (structEntryInterface instanceof SimpleEntity)
                 {
-                    SimpleEntry se = (SimpleEntry) structEntryInterface;
+                    SimpleEntity se = (SimpleEntity) structEntryInterface;
                     addProfileStructureSimple(id, se);
                 }
             }
@@ -102,7 +102,7 @@ public class ProfileDAO
      * @param se
      * @throws SQLException
      */
-    private void addProfileStructureSimple(int profileId, SimpleEntry se) throws SQLException
+    private void addProfileStructureSimple(int profileId, SimpleEntity se) throws SQLException
     {
         Connection con = null;
 
@@ -131,7 +131,7 @@ public class ProfileDAO
      * @param ce
      * @throws SQLException
      */
-    private void addProfileStructureCollection(int profileId, CollectionEntry ce) throws SQLException
+    private void addProfileStructureCollection(int profileId, CollectionEntity ce) throws SQLException
     {
         Connection con = null;
 
@@ -208,13 +208,13 @@ public class ProfileDAO
 
             for (StructEntityInterface structEntryInterface : seiLst)
             {
-                if (structEntryInterface instanceof SimpleEntry)
+                if (structEntryInterface instanceof SimpleEntity)
                 {
-                    addProfileStructureSimple(id, (SimpleEntry) structEntryInterface);
+                    addProfileStructureSimple(id, (SimpleEntity) structEntryInterface);
                 }
-                else if (structEntryInterface instanceof CollectionEntry)
+                else if (structEntryInterface instanceof CollectionEntity)
                 {
-                    addProfileStructureCollection(id, (CollectionEntry) structEntryInterface);
+                    addProfileStructureCollection(id, (CollectionEntity) structEntryInterface);
                 }
             }
 

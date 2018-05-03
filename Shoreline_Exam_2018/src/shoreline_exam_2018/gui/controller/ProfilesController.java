@@ -26,8 +26,6 @@ import shoreline_exam_2018.gui.model.ProfilesModel;
 public class ProfilesController implements Initializable
 {
     @FXML
-    private GridPane grid;
-    @FXML
     private TextField txtfieldSourcefile;
     @FXML
     private TextField txtFieldProfileName;
@@ -35,6 +33,8 @@ public class ProfilesController implements Initializable
     private GridPane gridDrag;
     @FXML
     private ScrollPane scrollHeader;
+    @FXML
+    private ScrollPane scrollMain;
 
     /**
      * Initializes the controller class.
@@ -44,7 +44,7 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(grid, gridDrag, scrollHeader, txtfieldSourcefile, txtFieldProfileName);
+            pm = new ProfilesModel(gridDrag, scrollHeader, scrollMain, txtfieldSourcefile, txtFieldProfileName);
         });
     }
 

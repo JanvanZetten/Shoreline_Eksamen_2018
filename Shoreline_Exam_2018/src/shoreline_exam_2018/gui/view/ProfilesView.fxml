@@ -54,25 +54,7 @@
             <Label id="WHITE" text="New Profile" GridPane.columnSpan="2" />
          </children>
       </GridPane>
-        <ScrollPane layoutX="100.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0">
-            <content>
-                <GridPane fx:id="grid" hgap="5.0" vgap="5.0">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" />
-                        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="100.0" />
-                  <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="100.0" prefWidth="100.0" />
-                    </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" />
-               </rowConstraints>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-                </GridPane>
-            </content>
-        </ScrollPane>
+        <ScrollPane fx:id="scrollMain" layoutX="100.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0" />
       <GridPane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

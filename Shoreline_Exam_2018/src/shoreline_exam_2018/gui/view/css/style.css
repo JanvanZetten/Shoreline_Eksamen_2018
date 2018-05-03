@@ -136,7 +136,7 @@ and open the template in the editor.
 .combo-box-popup .list-view .list-cell
 {
     -fx-background-color: #DFDFDF;
-    -fx-text-fill: rgba(77,77,77,0.5);
+    -fx-text-fill: #4D4D4D;
 }
 
 .combo-box-popup .list-view .list-cell:selected,

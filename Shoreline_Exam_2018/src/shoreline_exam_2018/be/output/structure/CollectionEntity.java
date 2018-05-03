@@ -12,7 +12,7 @@ import java.util.List;
  * Entry for Collections.
  * @author Asbamz
  */
-public abstract class CollectionEntry implements StructEntityInterface
+public abstract class CollectionEntity implements StructEntityInterface
 {
     protected String columnName;
     protected List<StructEntityInterface> collection;

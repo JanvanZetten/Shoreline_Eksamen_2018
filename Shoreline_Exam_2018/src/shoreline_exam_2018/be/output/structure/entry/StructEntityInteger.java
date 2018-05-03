@@ -5,14 +5,14 @@
  */
 package shoreline_exam_2018.be.output.structure.entry;
 
-import shoreline_exam_2018.be.output.structure.SimpleEntry;
+import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 
 /**
  * Integer Entity.
  * @author Asbamz
  */
-public class StructEntityInteger extends SimpleEntry
+public class StructEntityInteger extends SimpleEntity
 {
     public StructEntityInteger(String columnName, int inputIndex)
     {

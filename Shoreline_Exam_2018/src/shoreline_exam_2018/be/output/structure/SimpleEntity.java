@@ -11,7 +11,7 @@ import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
  * Entry for simple data.
  * @author Asbamz
  */
-public abstract class SimpleEntry implements StructEntityInterface
+public abstract class SimpleEntity implements StructEntityInterface
 {
     protected String columnName;
     protected int inputIndex;
