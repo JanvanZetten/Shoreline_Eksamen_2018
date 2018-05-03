@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -20,8 +21,8 @@ public class ConversionThread {
     private Thread thread;
     private ConversionInterface converter;
 
-    private boolean isCanceled = false;
-    private boolean isOperating = true;
+    private MutableBoolean isCanceled = new MutableBoolean(false);
+    private MutableBoolean isOperating = new MutableBoolean(true);
     private ConversionJob job = null;
     
 
@@ -49,7 +50,7 @@ public class ConversionThread {
             protected Object call() throws Exception {
                 
                 try{
-                converter.convertFile(coversionProfile, inputFile, outputfile);
+                converter.convertFile(coversionProfile, inputFile, outputfile, isCanceled, isOperating);
                 
                 while(true){
                     if (job != null){
@@ -81,7 +82,7 @@ public class ConversionThread {
      * Pauses the task.
      */
     public void pauseTask() {
-        isOperating = false;
+        isOperating.setValue(false);
     }
 
     /**
@@ -89,15 +90,15 @@ public class ConversionThread {
      * CURRENTLY. NEEDS IMPLEMENTATION.
      */
     public void resumeTask() {
-        isOperating = true;
+        isOperating.setValue(true);
     }
 
     /**
      * Interrupts and cancels a conversion.
      */
     public void cancelTask() {
-        isCanceled = true;
-        //STILL NEEDS TO BE ABLE TO DELETE THE ATTEMPTED CREATED JSON FILE
+        isCanceled.setValue(true);
+        job.conversionDone();
     }
 
     public Task getTask() {
@@ -111,7 +112,7 @@ public class ConversionThread {
     }
 
     public boolean isOperating() {
-        return isOperating;
+        return isOperating.getValue();
     }
 
     void giveJob(ConversionJob cJob) {

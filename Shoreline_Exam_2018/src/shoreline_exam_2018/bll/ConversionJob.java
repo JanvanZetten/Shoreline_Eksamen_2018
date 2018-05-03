@@ -140,6 +140,10 @@ public class ConversionJob extends HBox {
         });
     }
 
+    
+    /**
+     * removes itself from the list given in the constructer
+     */
     void conversionDone() {
         listJobs.getItems().remove(ConversionJob.this);
     }

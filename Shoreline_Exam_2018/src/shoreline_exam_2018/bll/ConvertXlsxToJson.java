@@ -8,7 +8,10 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.*;
@@ -29,7 +32,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
     InputFileReader reader;
 
     @Override
-    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) throws BLLExeption {
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
 
         StructEntityObject structure = selectedProfile.getStructure();
@@ -39,6 +42,17 @@ public class ConvertXlsxToJson implements ConversionInterface {
         try {
             
             while (reader.hasNext()) {
+                
+                if (isCanceld.getValue()){
+                    System.out.println("is Stopped --- written from ConvertXlsxToJson line 46");
+                    return;
+                }
+                while(!isOperating.getValue()){
+                    System.out.println("is Paused --- written from ConvertXlsxToJson line 50");
+                    Thread.sleep(1000);
+                }
+                
+                Thread.sleep(500);
 
                 Row nextRow = reader.getNextRow();
 
@@ -46,12 +60,14 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
                 outputObjects.add(outputpair);
             }
-            System.out.println("Done converting --- written from ConvertXlsxToJson line 53");
+            System.out.println("Done converting --- written from ConvertXlsxToJson line 60");
             
             new JsonDAO().createFile(outputObjects, outputFile);
             
         } catch (DALException ex) {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
+        } catch (InterruptedException ex) {
+            Logger.getLogger(ConvertXlsxToJson.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
