@@ -8,8 +8,6 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
