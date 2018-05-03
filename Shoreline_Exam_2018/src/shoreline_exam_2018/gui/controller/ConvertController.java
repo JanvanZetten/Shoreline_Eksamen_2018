@@ -33,11 +33,9 @@ public class ConvertController implements Initializable
     @FXML
     private Button btnConvert;
     @FXML
-    private ScrollPane paneScroll;
-    @FXML
     private ComboBox<Profile> profileCombobox;
     @FXML
-    private FlowPane paneTasks;
+    private FlowPane paneJobs;
 
     private ConvertModel model;
 
@@ -55,7 +53,7 @@ public class ConvertController implements Initializable
         model = new ConvertModel();
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
-        paneTasks.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        paneJobs.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         inputField.setEditable(false);
         outputField.setEditable(false);
     }
@@ -80,7 +78,7 @@ public class ConvertController implements Initializable
     private void handleTaskButton(ActionEvent event)
     {
         //model.convertTest(paneTasks);
-        paneTasks.getChildren().add(model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem()));
+        paneJobs.getChildren().add(model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem(), paneJobs));
         
     }
 

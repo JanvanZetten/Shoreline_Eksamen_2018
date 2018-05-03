@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import shoreline_exam_2018.be.Profile;
 
@@ -33,7 +34,7 @@ public class ConversionJob extends HBox {
      * @param conversionName
      * @param cThread 
      */
-    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile) {
+    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, FlowPane paneJobs) {
         super();
 
         // Creates all elements
@@ -47,7 +48,7 @@ public class ConversionJob extends HBox {
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
-        setCancelButtonInfo(cThread);
+        setCancelButtonInfo(cThread, paneJobs);
 
         this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
     }
@@ -103,7 +104,7 @@ public class ConversionJob extends HBox {
      * Sets all the information of the cancel button.
      * @param cThread 
      */
-    private void setCancelButtonInfo(ConversionThread cThread) {
+    private void setCancelButtonInfo(ConversionThread cThread, FlowPane paneJobs) {
         Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
@@ -112,6 +113,7 @@ public class ConversionJob extends HBox {
             @Override
             public void handle(ActionEvent event) {
                 cThread.cancelTask();
+                paneJobs.getChildren().remove(ConversionJob.this);
             }
         });
     }
