@@ -21,6 +21,7 @@ public class AlertFactory
     private static final String TITLE_WARNING = "Warning";
     private static final String TITLE_ERROR = "Error";
     private static final String TITLE_INFO = "Information";
+    private static final String TITLE_CONFIRMATION = "Confirmation";
 
     /**
      * Shows Alert Warning.
@@ -48,6 +49,15 @@ public class AlertFactory
     {
         showCustomAlert(TITLE_INFO, header, message);
     }
+    
+    /**
+     * Shows Alert Confirmation.
+     * @param message
+     */
+    public static void showConfirmation(String header, String message)
+    {
+        showCustomConfirmation(TITLE_CONFIRMATION, header, message);
+    }
 
     /**
      * Shared rules for an Alert.
@@ -68,5 +78,20 @@ public class AlertFactory
         alert.getDialogPane().getScene().getStylesheets().add(STYLESHEET);
         alert.showAndWait();
     }
+    
+    private static void showCustomConfirmation(String title, String header, String message)
+    {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        //Image image = new Image();
+        //ImageView imageView = new ImageView(image);
+        //alert.setGraphic(imageView);
+        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
+        stage.getIcons().add(LOGO);
+        alert.getDialogPane().getScene().getStylesheets().add(STYLESHEET);
+        alert.showAndWait();
+    }
+    
 
 }

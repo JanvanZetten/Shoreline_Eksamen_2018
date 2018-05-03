@@ -43,7 +43,7 @@ public class ConversionJob extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
         
-        this.setStyle("-fx-background: #FFFFFF;");
+        this.setStyle("-fx-background: #4D4D4D;");
         
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
@@ -112,6 +112,7 @@ public class ConversionJob extends HBox {
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                
                 cThread.cancelTask();
                 paneJobs.getChildren().remove(ConversionJob.this);
             }

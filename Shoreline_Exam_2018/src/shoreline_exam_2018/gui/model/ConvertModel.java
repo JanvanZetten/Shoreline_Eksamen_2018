@@ -111,8 +111,7 @@ public class ConvertModel {
         try {
             profiles.addAll(bll.getAllProfiles());
         } catch (BLLExeption ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-            alert.showAndWait();
+            AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
         }
 
         profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
@@ -175,8 +174,7 @@ public class ConvertModel {
             try {
                 startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, paneJobs);
             } catch (BLLExeption ex) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
-                alert.showAndWait();
+                AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
             
             selectedFile = null;
