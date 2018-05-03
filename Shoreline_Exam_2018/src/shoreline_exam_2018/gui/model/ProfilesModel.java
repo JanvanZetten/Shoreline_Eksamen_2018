@@ -10,8 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -86,7 +84,7 @@ public class ProfilesModel
         }
         catch (BLLExeption ex)
         {
-            Logger.getLogger(ProfilesModel.class.getName()).log(Level.SEVERE, null, ex);
+            AlertFactory.showError("Could not get data from file", "The program was unable to get any data from " + path.toString() + ", Try another file");
         }
     }
 
