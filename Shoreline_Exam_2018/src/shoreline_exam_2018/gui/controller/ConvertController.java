@@ -79,8 +79,12 @@ public class ConvertController implements Initializable
     @FXML
     private void handleTaskButton(ActionEvent event)
     {
-        //model.convertTest(paneTasks);
-        paneTasks.getChildren().add(model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem()));
+        ConversionJob StartConversion = model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem());
+        if (StartConversion != null){
+            paneTasks.getChildren().add(StartConversion);
+            inputField.setText("");
+            outputField.setText("");
+        }
         
     }
 
