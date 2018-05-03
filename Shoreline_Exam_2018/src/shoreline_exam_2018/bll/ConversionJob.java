@@ -31,7 +31,7 @@ public class ConversionJob extends HBox {
     private Button btnPause;
     private Button btnCancel;
     
-    
+    private int BUTTON_SIZE = 36;
 
     /**
      * Creates a visual task that the user is able to see. Shows progress of a
@@ -95,12 +95,12 @@ public class ConversionJob extends HBox {
      */
     private void setPauseButtonInfo(ConversionThread cThread) {
         btnPause.setStyle("-fx-background-color: transparent;");
-        Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", 36, 36, true, true);
+        Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
         btnPause.setGraphic(imageViewPause);
         
         
-        Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", 36, 36, true, true);
+        Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewResume = new ImageView(imageResume);
         
         //NOT WORKING.
@@ -125,7 +125,7 @@ public class ConversionJob extends HBox {
      */
     private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs) {
         btnCancel.setStyle("-fx-background-color: transparent;");
-        Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
+        Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
         
