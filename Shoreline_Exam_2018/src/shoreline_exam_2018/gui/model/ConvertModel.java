@@ -161,7 +161,7 @@ public class ConvertModel {
         return null;
     }
 
-    public ConversionJob StartConversion() {
+    public ConversionJob StartConversion(Profile currentProfile) {
         String name;
         String pattern = Pattern.quote(System.getProperty("file.separator"));
         String[] split = selectedFile.getAbsolutePath().split(pattern);
@@ -169,7 +169,7 @@ public class ConvertModel {
         name = split[split.length-1];
         
         try {
-            ConversionJob startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), selectedProfile);
+            ConversionJob startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile);
             return startConversion;
         } catch (BLLExeption ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
