@@ -11,12 +11,11 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -38,7 +37,7 @@ public class ConversionJob extends HBox {
      * @param conversionName
      * @param cThread 
      */
-    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, FlowPane paneJobs) {
+    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, ListView<ConversionJob> listJobs) {
         super();
         
         // Creates all elements
@@ -53,7 +52,7 @@ public class ConversionJob extends HBox {
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
-        setCancelButtonInfo(cThread, paneJobs);
+        setCancelButtonInfo(cThread, listJobs);
 
         this.getChildren().addAll(lblConversionName, progress, btnPause, btnCancel);
     }
@@ -112,7 +111,7 @@ public class ConversionJob extends HBox {
      * Sets all the information of the cancel button.
      * @param cThread 
      */
-    private void setCancelButtonInfo(ConversionThread cThread, FlowPane paneJobs) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs) {
         btnCancel.setAlignment(Pos.CENTER_RIGHT);
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", 36, 36, true, true);
@@ -124,8 +123,10 @@ public class ConversionJob extends HBox {
             public void handle(ActionEvent event) {
                 
                 cThread.cancelTask();
-                paneJobs.getChildren().remove(ConversionJob.this);
+                listJobs.getItems().remove(ConversionJob.this);
             }
         });
     }
+    
+    
 }

@@ -164,7 +164,7 @@ public class ConvertModel {
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
-    public ConversionJob StartConversion(Profile currentProfile, FlowPane paneJobs) {
+    public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs) {
         ConversionJob startConversion = null;
         
         if (selectedFile != null && outputFile != null) {
@@ -175,7 +175,7 @@ public class ConvertModel {
             name = split[split.length - 1];
 
             try {
-                startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, paneJobs);
+                startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
             } catch (BLLExeption ex) {
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
