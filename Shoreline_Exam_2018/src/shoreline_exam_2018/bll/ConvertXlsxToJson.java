@@ -31,24 +31,31 @@ public class ConvertXlsxToJson implements ConversionInterface {
     @Override
     public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
-
+        System.out.println("line 34 ");
+        System.out.println(selectedProfile);
+        System.out.println(selectedProfile);
         StructEntityObject structure = selectedProfile.getStructure();
-
+        System.out.println("line 37");
         List<OutputPair> outputObjects = new ArrayList<>();
-
+        System.out.println("line 39");
         try {
-
+            
             while (reader.hasNext()) {
+                System.out.println("line 43");
                 Row nextRow = reader.getNextRow();
+                
+                System.out.println("46");
 
                 OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntryCollection(structure, nextRow));
 
                 outputObjects.add(outputpair);
             }
+            System.out.println("Done");
             
             new JsonDAO().createFile(outputObjects, outputFile);
             
         } catch (DALException ex) {
+            System.out.println("There is an error in Conversion XLSX TO JSON");
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
 

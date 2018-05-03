@@ -25,7 +25,6 @@ public class ConversionThread {
 
     private boolean isCanceled = false;
     private boolean isOperating = true;
-    private final Profile coversionProfile;
     
 
     /**
@@ -39,11 +38,8 @@ public class ConversionThread {
     public ConversionThread(ConversionInterface converter, Path inputFile, Path outputfile, Profile coversionProfile) {
         this.converter = converter;
         task = runConversion(inputFile, outputfile, coversionProfile);
-
-        thread = new Thread(task);
-        thread.setDaemon(true);
-        thread.start();
-        this.coversionProfile = coversionProfile;
+        
+        startThread(task);
     }
 
     /**
@@ -53,8 +49,14 @@ public class ConversionThread {
         return new Task() {
             @Override
             protected Object call() throws Exception {
+                System.out.println("hello from the task line 58 in convervesion thread");
                 
+                try{
                 converter.convertFile(coversionProfile, inputFile, outputfile);
+                }
+                catch(BLLExeption ex){
+                    ex.printStackTrace();
+                }
                 
                 return null;
             }
@@ -86,6 +88,14 @@ public class ConversionThread {
 
     public Task getTask() {
         return task;
+    }
+
+    private void startThread(Task task) {
+        thread = new Thread(task);
+        thread.setDaemon(true);
+        System.out.println("starting thread line 45 in convervesion thread");
+        thread.start();
+        System.out.println("thread started line 47 in convervesion thread");
     }
 
 }

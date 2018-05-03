@@ -80,7 +80,7 @@ public class ConvertController implements Initializable
     private void handleTaskButton(ActionEvent event)
     {
         //model.convertTest(paneTasks);
-        paneTasks.getChildren().add(model.StartConversion());
+        paneTasks.getChildren().add(model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem()));
         
     }
 
