@@ -1,23 +1,104 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Line?>
 
-<AnchorPane id="AnchorPane" prefHeight="544.0" prefWidth="956.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ConvertController">
+<AnchorPane id="AnchorPane" prefHeight="544.0" prefWidth="956.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ConvertController">
     <children>
-        <Button fx:id="btnConvert" layoutX="400.0" layoutY="149.0" maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleTaskButton" prefHeight="29.0" prefWidth="149.0" text="Start Conversion" />
-      <ComboBox fx:id="profileCombobox" layoutX="397.0" layoutY="59.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="150.0" promptText="Chosse Profile..." />
       <ScrollPane layoutX="124.0" layoutY="158.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="200.0">
          <content>
             <FlowPane fx:id="paneJobs" prefHeight="200.0" prefWidth="200.0" />
          </content></ScrollPane>
-        <Button fx:id="btnLoadFile" layoutX="230.0" layoutY="59.0" maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleLoadButton" prefHeight="29.0" text="Browse" />
-      <TextField fx:id="inputField" layoutX="79.0" layoutY="59.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" promptText="Input file..." />
-      <Button layoutX="226.0" layoutY="149.0" maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleOutputButton" prefHeight="29.0" text="Browse" />
-      <TextField fx:id="outputField" layoutX="75.0" layoutY="149.0" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" promptText="output file..." />   
+      <GridPane prefHeight="199.0" prefWidth="956.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="150.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="10.0" prefWidth="50.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label id="WHITE" text="Input file:" GridPane.halignment="RIGHT">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </Label>
+                  <Label id="WHITE" text="Output file:" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="5.0" />
+                     </GridPane.margin>
+                  </Label>
+               </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                    <Button fx:id="btnLoadFile" maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleLoadButton" prefHeight="29.0" prefWidth="60.0" text="Browse" GridPane.halignment="RIGHT">
+                     <GridPane.margin>
+                        <Insets bottom="1.0" />
+                     </GridPane.margin></Button>
+                  <TextField fx:id="inputField" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="Input file...">
+                     <GridPane.margin>
+                        <Insets right="60.0" />
+                     </GridPane.margin></TextField>
+                  <TextField fx:id="outputField" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="output file..." GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="60.0" />
+                     </GridPane.margin></TextField>
+                  <Button maxHeight="29.0" maxWidth="-Infinity" minHeight="29.0" mnemonicParsing="false" onAction="#handleOutputButton" prefHeight="29.0" prefWidth="60.0" text="Browse" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="1.0" />
+                     </GridPane.margin></Button>
+               </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="3">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+               <children>
+                  <ComboBox fx:id="profileCombobox" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="Chosse Profile...">
+                     <GridPane.margin>
+                        <Insets right="50.0" />
+                     </GridPane.margin></ComboBox>
+                    <Button fx:id="btnConvert" maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleTaskButton" prefHeight="29.0" prefWidth="1000.0" text="Start Conversion" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets right="50.0" />
+                     </GridPane.margin></Button>
+               </children>
+            </GridPane>
+            <Line endY="60.0" startY="-60.0" stroke="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+         </children>
+      </GridPane>   
     </children>
 </AnchorPane>
