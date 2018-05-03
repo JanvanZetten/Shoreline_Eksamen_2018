@@ -54,7 +54,7 @@
             <Label id="WHITE" text="New Profile" GridPane.columnSpan="2" />
          </children>
       </GridPane>
-        <ScrollPane layoutX="100.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0">
+        <ScrollPane layoutX="100.0" layoutY="47.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="170.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0">
             <content>
                 <GridPane fx:id="grid" hgap="5.0" vgap="5.0">
                     <columnConstraints>
@@ -85,5 +85,20 @@
             <Button mnemonicParsing="false" onAction="#handleSave" text="Save" GridPane.columnIndex="1" />
          </children>
       </GridPane>
+      <ScrollPane fx:id="scrollHeader" layoutX="-179.0" layoutY="100.0" prefHeight="200.0" prefWidth="160.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="95.0">
+         <content>
+            <GridPane fx:id="gridDrag" hgap="5.0" vgap="5.0">
+              <columnConstraints>
+                <ColumnConstraints halignment="CENTER" hgrow="NEVER" maxWidth="148.0" minWidth="148.0" prefWidth="148.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <padding>
+                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+               </padding>
+            </GridPane>
+         </content>
+      </ScrollPane>
     </children>
 </AnchorPane>
