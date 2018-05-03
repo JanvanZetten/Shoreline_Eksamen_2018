@@ -9,6 +9,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.bll.ConversionJob;
@@ -162,8 +163,8 @@ public class ConvertModel {
 
     public ConversionJob StartConversion() {
         String name;
-   
-        String[] split = selectedFile.getAbsolutePath().split(File.separator);
+        String pattern = Pattern.quote(System.getProperty("file.separator"));
+        String[] split = selectedFile.getAbsolutePath().split(pattern);
         
         name = split[split.length-1];
         
