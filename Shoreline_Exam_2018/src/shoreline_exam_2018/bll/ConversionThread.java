@@ -21,6 +21,7 @@ public class ConversionThread {
 
     private boolean isCanceled = false;
     private boolean isOperating = true;
+    private ConversionJob job = null;
     
 
     /**
@@ -48,6 +49,13 @@ public class ConversionThread {
                 
                 try{
                 converter.convertFile(coversionProfile, inputFile, outputfile);
+                
+                while(true){
+                    if (job != null){
+                        job.con
+                    }
+                }
+                
                 }
                 catch(BLLExeption ex){
                     ex.printStackTrace();
@@ -93,5 +101,9 @@ public class ConversionThread {
 
     public boolean isOperating() {
         return isOperating;
+    }
+
+    void giveJob(ConversionJob cJob) {
+        this.job = cJob;
     }
 }

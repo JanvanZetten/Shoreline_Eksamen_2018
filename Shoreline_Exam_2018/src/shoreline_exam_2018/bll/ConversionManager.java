@@ -50,6 +50,7 @@ public class ConversionManager {
         if (cThread != null) {
 
             ConversionJob cJob = new ConversionJob(taskName, cThread, inputPath, selectedProfile, listJobs);
+            cThread.giveJob(cJob);
             return cJob;
         }
         else 
