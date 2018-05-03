@@ -32,8 +32,6 @@ public class ConvertXlsxToJson implements ConversionInterface {
     public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
 
-        System.out.println(selectedProfile);
-        System.out.println(selectedProfile);
         StructEntityObject structure = selectedProfile.getStructure();
 
         List<OutputPair> outputObjects = new ArrayList<>();
