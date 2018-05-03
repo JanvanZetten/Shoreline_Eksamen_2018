@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
@@ -30,6 +31,10 @@ public class ProfilesController implements Initializable
     private TextField txtfieldSourcefile;
     @FXML
     private TextField txtFieldProfileName;
+    @FXML
+    private GridPane gridDrag;
+    @FXML
+    private ScrollPane scrollHeader;
 
     /**
      * Initializes the controller class.
@@ -39,7 +44,7 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(grid, txtfieldSourcefile, txtFieldProfileName);
+            pm = new ProfilesModel(grid, gridDrag, scrollHeader, txtfieldSourcefile, txtFieldProfileName);
         });
     }
 
