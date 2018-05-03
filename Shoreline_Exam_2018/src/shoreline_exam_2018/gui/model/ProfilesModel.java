@@ -146,31 +146,29 @@ public class ProfilesModel
             {
                 if (cb.isSelected())
                 {
-                    if (!newValue.equals(oldValue) && cmb.getValue() != null)
+                    if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
                     {
                         switch (cmb.getValue())
                         {
                             case DATE:
                                 structure.set(index, new StructEntityDate(tf.getText(), index));
-                                break;
+                                return;
                             case DOUBLE:
                                 structure.set(index, new StructEntityDouble(tf.getText(), index));
-                                break;
+                                return;
                             case INTEGER:
                                 structure.set(index, new StructEntityInteger(tf.getText(), index));
-                                break;
+                                return;
                             case STRING:
                                 structure.set(index, new StructEntityString(tf.getText(), index));
-                                break;
+                                return;
                             default:
                                 break;
                         }
                     }
                 }
-                else
-                {
-                    structure.set(index, null);
-                }
+
+                structure.set(index, null);
             }
         };
         return cl;

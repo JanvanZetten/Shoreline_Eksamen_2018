@@ -112,7 +112,7 @@ and open the template in the editor.
 .text-field {
     -fx-background-radius: 0,0,0,0;
     -fx-background-color: #DFDFDF;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #4D4D4D;
     -fx-border-color: #4D4D4D;
     -fx-font-size: 13px;
 }
@@ -130,7 +130,7 @@ and open the template in the editor.
 .combo-box .list-cell:selected
 {
     -fx-background-color: #DFDFDF;
-    -fx-text-fill: #FFFFFF;
+    -fx-text-fill: #4D4D4D;
 }
 
 .combo-box-popup .list-view .list-cell
