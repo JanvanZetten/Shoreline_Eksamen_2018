@@ -21,8 +21,8 @@ public class ConversionManager {
      * user can see).
      *
      * @param taskName = The name of the Conversion
-     * @param inputPath
-     * @param outputPath
+     * @param inputPath the input file
+     * @param outputPath the output file
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
