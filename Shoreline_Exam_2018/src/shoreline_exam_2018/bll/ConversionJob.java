@@ -28,7 +28,7 @@ public class ConversionJob extends HBox {
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
-    
+    private ListView<ConversionJob> listJobs;
     
 
     /**
@@ -39,6 +39,8 @@ public class ConversionJob extends HBox {
      */
     public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, ListView<ConversionJob> listJobs) {
         super();
+        
+        this.listJobs = listJobs;
         
         // Creates all elements
         lblConversionName = new Label();
@@ -126,6 +128,10 @@ public class ConversionJob extends HBox {
                 listJobs.getItems().remove(ConversionJob.this);
             }
         });
+    }
+
+    void conversionDone() {
+        listJobs.getItems().remove(ConversionJob.this);
     }
     
     

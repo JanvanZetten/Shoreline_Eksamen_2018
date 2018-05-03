@@ -43,8 +43,6 @@ public class ConvertXlsxToJson implements ConversionInterface {
             while (reader.hasNext()) {
 
                 Row nextRow = reader.getNextRow();
-                
-                Thread.sleep(500);
 
                 OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntryCollection(structure, nextRow));
 
@@ -56,10 +54,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
             
         } catch (DALException ex) {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ConvertXlsxToJson.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
