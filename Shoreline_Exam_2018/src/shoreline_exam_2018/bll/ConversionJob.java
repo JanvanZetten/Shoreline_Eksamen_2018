@@ -47,7 +47,8 @@ public class ConversionJob extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
         
-        this.setStyle("-fx-background-color: #737f8c;");
+        this.setStyle("-fx-background-color: #737f8c;" +
+                      "-fx-background-radius: 30;");
         
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
