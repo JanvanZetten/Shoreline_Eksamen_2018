@@ -6,6 +6,7 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import shoreline_exam_2018.be.Profile;
 
@@ -52,8 +53,18 @@ public class ConversionThread {
                 
                 while(true){
                     if (job != null){
-                        job.con
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                job.conversionDone();
+                            }
+                        });
+                        break;
                     }
+                    else {
+                        Thread.sleep(10);
+                    }
+                    
                 }
                 
                 }

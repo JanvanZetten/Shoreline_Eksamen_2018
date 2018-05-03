@@ -8,8 +8,6 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -43,8 +41,6 @@ public class ConvertXlsxToJson implements ConversionInterface {
             while (reader.hasNext()) {
 
                 Row nextRow = reader.getNextRow();
-                
-                Thread.sleep(500);
 
                 OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntryCollection(structure, nextRow));
 
@@ -56,10 +52,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
             
         } catch (DALException ex) {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ConvertXlsxToJson.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     /**
