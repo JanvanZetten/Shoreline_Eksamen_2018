@@ -161,6 +161,11 @@ public class ConvertModel {
         return null;
     }
 
+    /**
+     * Start a conversion with the given input and output files 
+     * @param currentProfile the profile to use for conversion
+     * @return the conversion job that is started
+     */
     public ConversionJob StartConversion(Profile currentProfile) {
         ConversionJob startConversion = null;
         
