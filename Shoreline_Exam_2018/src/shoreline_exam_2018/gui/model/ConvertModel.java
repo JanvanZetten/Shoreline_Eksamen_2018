@@ -41,8 +41,8 @@ public class ConvertModel {
     private List<ConversionJob> tblTasks;
     private ObservableList<ConversionJob> olTasks;
 
-    private File selectedFile;
-    private File outputFile;
+    private File selectedFile = null;
+    private File outputFile = null;
     private Profile selectedProfile;
     private String taskName;
 
@@ -78,7 +78,7 @@ public class ConvertModel {
         selectedFile = fc.showOpenDialog(null);
 
         if (selectedFile != null) {
-            
+
             return selectedFile.toString();
         }
         return "";
@@ -94,7 +94,7 @@ public class ConvertModel {
         tblTasks.add(bll.setConversionFilePath(taskName, selectedFile.toPath(), selectedProfile));
         olTasks.addAll(this.tblTasks);
         list.getChildren().addAll(olTasks);
-        
+
         // Clears the list so no duplicates are added
         tblTasks.clear();
         olTasks.clear();
@@ -151,9 +151,9 @@ public class ConvertModel {
         if (result.isPresent()) {
             fileName = result.get();
             if (!fileName.trim().isEmpty()) {
-                
+
                 String filePath = selectedDirectory.getAbsolutePath() + File.separator + fileName + ".json";
-                
+
                 outputFile = new File(filePath);
                 return filePath;
             }
@@ -161,20 +161,34 @@ public class ConvertModel {
         return null;
     }
 
+
     public ConversionJob StartConversion(Profile currentProfile, FlowPane paneJobs) {
-        String name;
-        String pattern = Pattern.quote(System.getProperty("file.separator"));
-        String[] split = selectedFile.getAbsolutePath().split(pattern);
+        ConversionJob startConversion = null;
         
-        name = split[split.length-1];
-        
-        try {
-            ConversionJob startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, paneJobs);
+        if (selectedFile != null && outputFile != null) {
+            String name;
+            String pattern = Pattern.quote(System.getProperty("file.separator"));
+            String[] split = selectedFile.getAbsolutePath().split(pattern);
+
+            name = split[split.length - 1];
+
+            try {
+                startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, paneJobs);
+            } catch (BLLExeption ex) {
+                Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
+                alert.showAndWait();
+            }
+            
+            selectedFile = null;
+            outputFile = null;
             return startConversion;
-        } catch (BLLExeption ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR, ex.getMessage(), ButtonType.CLOSE);
         }
-        return null;
+        else{
+            Alert noFiles = new Alert(Alert.AlertType.ERROR, "Please select an input and output file", ButtonType.OK);
+            noFiles.showAndWait();
+            
+            return null;
+        }
         
     }
 }
