@@ -6,6 +6,8 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import javafx.beans.property.DoubleProperty;
+import javafx.concurrent.Task;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 
@@ -13,7 +15,9 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public interface ConversionInterface {    
+public interface ConversionInterface {  
+    
+    //for use in multithreaded conversion
    
     /**
      * Converts the file.
@@ -22,8 +26,9 @@ public interface ConversionInterface {
      * @param outputFile the placement and naming of the output file 
      * @param isCanceld Set to true if it should be canceled
      * @param isOperating set to false when it is wished to pause it
+     * @param progress the percent of done
      */
-    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating) throws BLLExeption;
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, DoubleProperty progress) throws BLLExeption;
     
     
 }

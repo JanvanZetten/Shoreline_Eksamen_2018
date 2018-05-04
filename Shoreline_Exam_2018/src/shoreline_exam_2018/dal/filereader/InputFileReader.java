@@ -36,4 +36,6 @@ public interface InputFileReader {
      */
     Row getNextRow() throws DALException;
     
+    int numberOfRows() throws DALException;
+    
 }

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.property.DoubleProperty;
+import javafx.concurrent.Task;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
@@ -38,16 +40,19 @@ public class ConvertXlsxToJson implements ConversionInterface {
      * @throws shoreline_exam_2018.bll.BLLExeption
      */
     @Override
-    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating) throws BLLExeption {
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, DoubleProperty progress) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
-
+        
         StructEntityObject structure = selectedProfile.getStructure();
 
         List<OutputPair> outputObjects = new ArrayList<>();
 
         try {
-            
+            int totalRows = reader.numberOfRows();
+            int currentrow = 0;
             while (reader.hasNext()) {
+                
+                progress.setValue(totalRows/currentrow*100); // sets the percent of done
                 
                 if (isCanceld.getValue()){
                     return;
@@ -61,6 +66,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
                 OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntityCollection(structure, nextRow));
 
                 outputObjects.add(outputpair);
+                currentrow ++;
             }
             
             System.out.println("Done converting --- written from ConvertXlsxToJson line 60");
