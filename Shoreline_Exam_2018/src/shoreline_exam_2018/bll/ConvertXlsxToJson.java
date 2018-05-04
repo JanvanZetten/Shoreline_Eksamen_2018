@@ -31,6 +31,12 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
     InputFileReader reader;
 
+    
+    /**
+     * 
+     * Convert inputfile acording to the given profile and write it to the outputfile
+     * @throws shoreline_exam_2018.bll.BLLExeption
+     */
     @Override
     public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
@@ -44,22 +50,19 @@ public class ConvertXlsxToJson implements ConversionInterface {
             while (reader.hasNext()) {
                 
                 if (isCanceld.getValue()){
-                    
                     return;
                 }
                 while(!isOperating.getValue()){
-                    
                     Thread.sleep(1000);
                 }
                 
-               
-
                 Row nextRow = reader.getNextRow();
 
                 OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntityCollection(structure, nextRow));
 
                 outputObjects.add(outputpair);
             }
+            
             System.out.println("Done converting --- written from ConvertXlsxToJson line 60");
             
             new JsonDAO().createFile(outputObjects, outputFile);
