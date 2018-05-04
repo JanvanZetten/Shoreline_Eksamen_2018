@@ -8,6 +8,7 @@ package shoreline_exam_2018.gui.model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,7 +49,7 @@ public class ProfileGrid extends GridPane
     private int rowCount; // The number of rows in grid.
     private double indent; // Indent for collections.
 
-    private HashMap<String, Integer> headerMap; // Mapping column headers from input file to their index.
+    private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
     private HashMap<Integer, ProfileGrid> collectionMap; // Mapping row index to a ProfileGrid.
     private List<StructEntityInterface> structure; // The structure of made from grid elements.
     private ChangeListener masterListener; // Master ChangeListener to notify changes to collections owning this ProfileGrid.
@@ -211,10 +212,13 @@ public class ProfileGrid extends GridPane
         TextField fromHeader = new TextField();
         fromHeader.setEditable(false);
 
+        // Label to show an example.
+        Label example = new Label("");
+
         // On drag from this element. The text is copied.
         fromHeader.setOnDragDetected(e ->
         {
-            if (!fromHeader.getText().isEmpty())
+            if (headersIndexAndExamples.get(fromHeader.getText()) != null)
             {
                 Dragboard db = fromHeader.startDragAndDrop(TransferMode.COPY);
                 db.setDragView(getDragAndDropScene(new TextField(fromHeader.getText())).snapshot(null), e.getX(), e.getY());
@@ -236,9 +240,10 @@ public class ProfileGrid extends GridPane
             Dragboard db = e.getDragboard();
             if (db.hasString())
             {
-                if (headerMap.get(db.getString()) != null)
+                if (headersIndexAndExamples.get(db.getString()) != null)
                 {
                     fromHeader.setText(db.getString());
+                    example.setText(headersIndexAndExamples.get(db.getString()).getValue());
                 }
                 e.setDropCompleted(true);
             }
@@ -255,7 +260,7 @@ public class ProfileGrid extends GridPane
             List<StructEntityInterface> sei = getStructure();
             if (sei.size() > 0)
             {
-                Integer fromIndex = headerMap.get(fromHeader.getText());
+                Integer fromIndex = headersIndexAndExamples.get(fromHeader.getText()).getKey();
 
                 if (fromIndex == null)
                 {
@@ -264,13 +269,11 @@ public class ProfileGrid extends GridPane
                 sei.set(index, null);
             }
             fromHeader.setText("");
+            example.setText("");
         });
 
         // Set margin for first element.
         GridPane.setMargin(fromHeader, new Insets(0.0, 0.0, 0.0, indent));
-
-        // Label to show an example.
-        Label example = new Label("");
 
         // ComboBox to choose SimpleStructType.
         ComboBox<SimpleStructType> cmbType = getSimpleTypeBox();
@@ -329,7 +332,7 @@ public class ProfileGrid extends GridPane
         ProfileGrid col = new ProfileGrid(false, indent + DEFAULT_INDENT, cl);
 
         // Add header mapping to ProfileGrid and add the new grid to this grid.
-        col.addHeaderHashMap(headerMap);
+        col.addHashMap(headersIndexAndExamples);
         GridPane.setConstraints(col, 0, rowCount, 4, 1);
         this.getChildren().add(col);
         rowCount++;
@@ -431,7 +434,7 @@ public class ProfileGrid extends GridPane
             {
                 if (!fromHeader.getText().isEmpty())
                 {
-                    Integer fromIndex = headerMap.get(fromHeader.getText());
+                    Integer fromIndex = headersIndexAndExamples.get(fromHeader.getText()).getKey();
                     if (fromIndex != null)
                     {
                         if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
@@ -500,13 +503,13 @@ public class ProfileGrid extends GridPane
     }
 
     /**
-     * Add Header Map from other class.
-     * @param headerMap
+     * Add Map from other class.
+     * @param headersIndexAndExamples
      */
-    void addHeaderHashMap(HashMap<String, Integer> headerMap)
+    public void addHashMap(HashMap<String, Entry<Integer, String>> headersIndexAndExamples)
     {
         clear();
-        this.headerMap = headerMap;
+        this.headersIndexAndExamples = headersIndexAndExamples;
     }
 
     /**

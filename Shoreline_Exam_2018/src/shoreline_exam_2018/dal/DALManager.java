@@ -6,7 +6,12 @@
 package shoreline_exam_2018.dal;
 
 import java.nio.file.Path;
+import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.database.ProfileDAO;
@@ -39,10 +44,51 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public List<String> getHeadersFromFile(Path path) throws DALException
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException
     {
         xhr = new XLSX_horisontal_Reader(path.toString());
-        return xhr.getParameters();
+        HashMap<String, Entry<Integer, String>> hae = new HashMap();
+        List<String> headers = xhr.getParameters();
+        Row row = null;
+        if (xhr.hasNext())
+        {
+            row = xhr.getNextRow();
+        }
+
+        for (int i = 0; i < headers.size(); i++)
+        {
+            String str = "";
+            if (row != null)
+            {
+                Cell currentCell = row.getCell(i);
+                if (currentCell != null)
+                {
+                    switch (currentCell.getCellTypeEnum())
+                    {
+                        case STRING:
+                            str = currentCell.getStringCellValue();
+                            break;
+                        case BOOLEAN:
+                            str = Boolean.toString(currentCell.getBooleanCellValue());
+                            break;
+                        case FORMULA:
+                            str = currentCell.getCellFormula();
+                            break;
+                        case NUMERIC:
+                            str = Double.toString(currentCell.getNumericCellValue());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                hae.put(headers.get(i), new SimpleImmutableEntry<>(i, str));
+            }
+            else
+            {
+                hae.put(headers.get(i), new SimpleImmutableEntry<>(i, str));
+            }
+        }
+        return hae;
     }
 
 }

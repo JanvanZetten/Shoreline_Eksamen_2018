@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -42,7 +43,7 @@ public class ProfilesModel
     private GridPane gridDrag; // Grid Pane which contains column headers from input file.
     private ScrollPane scrollHeader; // ScrollPane for gridDrag.
     private ScrollPane scrollMain; // ScrollPane for ProfileGrid.
-    private HashMap<String, Integer> headerMap; // Mapping column headers to their index.
+    private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers to their index and example.
     private int headerRowCount; // gridDrag row count.
     private StringProperty tp; // Profile Name StringProperty.
     private TextField txtfieldSourcefile; // SourceFile TextField.
@@ -103,14 +104,11 @@ public class ProfilesModel
      * Add headers to scrollHeader grid pane / gridDrag
      * @param header
      */
-    private void addInputHeaders(String header)
+    private void addInputHeadersAndExamples(int index, String header, String example)
     {
         // Makes TextField to hold header name.
         TextField tfHeader = new TextField(header);
         tfHeader.setEditable(false);
-
-        // Add to map.
-        headerMap.put(header, headerRowCount);
 
         // Make drag and drop copying compatible.
         tfHeader.setOnDragDetected(e ->
@@ -136,13 +134,13 @@ public class ProfilesModel
     {
         try
         {
-            List<String> headers = bll.getHeadersFromFile(path);
             clearData();
-            for (String header : headers)
+            headersIndexAndExamples = bll.getHeadersAndExamplesFromFile(path);
+            for (String string : headersIndexAndExamples.keySet())
             {
-                addInputHeaders(header);
+                addInputHeadersAndExamples(headersIndexAndExamples.get(string).getKey(), string, headersIndexAndExamples.get(string).getValue());
             }
-            pg.addHeaderHashMap(headerMap);
+            pg.addHashMap(headersIndexAndExamples);
         }
         catch (BLLExeption ex)
         {
@@ -230,7 +228,7 @@ public class ProfilesModel
     private void clearData()
     {
         scrollMain.setContent(null);
-        headerMap = new HashMap<>();
+        headersIndexAndExamples = new HashMap<>();
         headerRowCount = 0;
         pg = new ProfileGrid(true);
         scrollMain.setContent(pg);
