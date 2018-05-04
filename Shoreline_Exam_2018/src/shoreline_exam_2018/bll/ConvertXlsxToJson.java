@@ -56,7 +56,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
                 Row nextRow = reader.getNextRow();
 
-                OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntryCollection(structure, nextRow));
+                OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntityCollection(structure, nextRow));
 
                 outputObjects.add(outputpair);
             }
@@ -79,7 +79,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
      * @throws BLLExeption if the stuctObject has a structEntry which is not supported. The supported are: StructEntryArray, StructEntryDate, 
      * StructEntryDouble, StructEntryInteger, StructEntryObject and StructEntryString.
      */
-    private List<OutputPair> mapRowToOutputpairWithEntryCollection(CollectionEntity structObject, Row row) throws BLLExeption {
+    private List<OutputPair> mapRowToOutputpairWithEntityCollection(CollectionEntity structObject, Row row) throws BLLExeption {
         List<StructEntityInterface> collection = structObject.getCollection();
         
         List<OutputPair> output = new ArrayList<>();
@@ -90,7 +90,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
             if (structEntry instanceof StructEntityArray) {
                 
-                List<OutputPair> jsonArray = mapRowToOutputpairWithEntryCollection((StructEntityArray)structEntry, row);
+                List<OutputPair> jsonArray = mapRowToOutputpairWithEntityCollection((StructEntityArray)structEntry, row);
                 output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
                 
             } else if (structEntry instanceof StructEntityDate) {
@@ -108,7 +108,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
                 output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
 
             } else if (structEntry instanceof StructEntityObject) {
-                List<OutputPair> jsonObject = mapRowToOutputpairWithEntryCollection((StructEntityObject)structEntry, row);
+                List<OutputPair> jsonObject = mapRowToOutputpairWithEntityCollection((StructEntityObject)structEntry, row);
                 output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
                 
             } else if (structEntry instanceof StructEntityString) {
