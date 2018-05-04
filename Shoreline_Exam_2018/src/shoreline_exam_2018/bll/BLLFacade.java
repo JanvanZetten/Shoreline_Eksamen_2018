@@ -6,9 +6,10 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
@@ -29,9 +30,10 @@ public interface BLLFacade
      */
     @Deprecated
     public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
-    
+
     /**
-     * Starts a conversion with the given input and output file using the given profile,
+     * Starts a conversion with the given input and output file using the given
+     * profile,
      * @param taskName the name for the conversion job it returns
      * @param inputFile
      * @param outputFile
@@ -45,5 +47,5 @@ public interface BLLFacade
 
     public List<Profile> getAllProfiles() throws BLLExeption;
 
-    public List<String> getHeadersFromFile(Path path) throws BLLExeption;
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption;
 }

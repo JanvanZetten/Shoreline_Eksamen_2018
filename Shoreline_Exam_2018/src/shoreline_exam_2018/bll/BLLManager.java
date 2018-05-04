@@ -6,9 +6,10 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import javafx.scene.control.ListView;
-import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.DALException;
@@ -66,11 +67,11 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public List<String> getHeadersFromFile(Path path) throws BLLExeption
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption
     {
         try
         {
-            return dal.getHeadersFromFile(path);
+            return dal.getHeadersAndExamplesFromFile(path);
         }
         catch (DALException ex)
         {
@@ -79,7 +80,8 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption {
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption
+    {
         return cMan.newConversion(taskName, inputFile, outputFile, profile, listJobs);
     }
 
