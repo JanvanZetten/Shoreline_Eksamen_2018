@@ -236,7 +236,10 @@ public class ProfileGrid extends GridPane
             Dragboard db = e.getDragboard();
             if (db.hasString())
             {
-                fromHeader.setText(db.getString());
+                if (headerMap.get(db.getString()) != null)
+                {
+                    fromHeader.setText(db.getString());
+                }
                 e.setDropCompleted(true);
             }
             else
