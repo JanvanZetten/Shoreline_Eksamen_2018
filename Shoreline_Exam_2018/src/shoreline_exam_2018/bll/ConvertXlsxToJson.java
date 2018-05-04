@@ -18,8 +18,8 @@ import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.structure.*;
 import shoreline_exam_2018.be.output.structure.entry.*;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.InputFileReader;
-import shoreline_exam_2018.dal.XLSX_horisontal_Reader;
+import shoreline_exam_2018.dal.filereader.InputFileReader;
+import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.json.JsonDAO;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 

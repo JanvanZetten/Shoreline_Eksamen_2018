@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal;
+package shoreline_exam_2018.dal.filereader;
 
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.dal.DALException;
 
 /**
  *
