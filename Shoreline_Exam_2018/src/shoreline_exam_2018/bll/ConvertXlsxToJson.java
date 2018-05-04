@@ -44,15 +44,15 @@ public class ConvertXlsxToJson implements ConversionInterface {
             while (reader.hasNext()) {
                 
                 if (isCanceld.getValue()){
-                    System.out.println("is Stopped --- written from ConvertXlsxToJson line 46");
+                    
                     return;
                 }
                 while(!isOperating.getValue()){
-                    System.out.println("is Paused --- written from ConvertXlsxToJson line 50");
+                    
                     Thread.sleep(1000);
                 }
                 
-                Thread.sleep(500);
+               
 
                 Row nextRow = reader.getNextRow();
 
