@@ -8,7 +8,6 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -16,8 +15,10 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -55,13 +56,13 @@ public class ConversionJob extends HBox {
 
         this.setStyle("-fx-background-color: #737f8c;"
                 + "-fx-background-radius: 30;");
-        
+
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
         setCancelButtonInfo(cThread, listJobs);
         setGridInfo(grid);
-        
+
         this.getChildren().addAll(grid);
     }
 
@@ -137,13 +138,41 @@ public class ConversionJob extends HBox {
     }
 
     private void setGridInfo(GridPane grid) {
-        grid.add(lblConversionName, 0, 0);
-        grid.add(progress, 1, 0);
-        grid.add(btnPause, 2, 0);
-        grid.add(btnCancel, 3, 0);
+        this.setHgrow(grid, Priority.ALWAYS);
+        
+        Label filler = new Label();
+        filler.setText("  ");
+        
+        grid.addColumn(0, filler);
+        grid.add(lblConversionName, 1, 0);
+        grid.add(progress, 2, 0);
+        grid.add(btnPause, 3, 0);
+        grid.add(btnCancel, 4, 0);
+        grid.setGridLinesVisible(true);
+        
+        
+        grid.setMaxWidth(this.getMaxWidth());
+
+        ColumnConstraints col1 = new ColumnConstraints();
+        col1.setMinWidth(USE_PREF_SIZE);
+
+        ColumnConstraints col2 = new ColumnConstraints();
+        col2.setPercentWidth(40);
+        
+        ColumnConstraints col3 = new ColumnConstraints();
+        col3.setPercentWidth(40);
+        
+        ColumnConstraints col4 = new ColumnConstraints();
+        col4.setMinWidth(USE_PREF_SIZE);
+        col4.setMaxWidth(USE_PREF_SIZE);
+        
+        ColumnConstraints col5 = new ColumnConstraints();
+        col5.setMinWidth(USE_PREF_SIZE);
+        col5.setMaxWidth(USE_PREF_SIZE);
+
+        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
     }
 
-    
     /**
      * removes itself from the list given in the constructer
      */
