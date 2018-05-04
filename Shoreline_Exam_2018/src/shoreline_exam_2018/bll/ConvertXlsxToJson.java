@@ -110,7 +110,6 @@ public class ConvertXlsxToJson implements ConversionInterface
 
         for (StructEntityInterface structEntry : collection)
         {
-            System.out.println(structEntry);
             //check what object this structE
             if (structEntry instanceof StructEntityArray)
             {
