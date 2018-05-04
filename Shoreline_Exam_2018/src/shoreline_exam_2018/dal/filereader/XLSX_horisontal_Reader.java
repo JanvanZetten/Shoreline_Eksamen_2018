@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.dal;
+package shoreline_exam_2018.dal.filereader;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import shoreline_exam_2018.dal.DALException;
 
 /**
  *
@@ -29,6 +30,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
     private boolean open = false;
     private Workbook mainWorkbook;
     private int pointer = 0;
+    private static final int SHEET_NUMBER = 0;
 
     /**
      * give it the filename as a path to where the file is located
@@ -38,7 +40,6 @@ public class XLSX_horisontal_Reader implements InputFileReader {
      */
     public XLSX_horisontal_Reader(String FileName) {
         this.FileName = FileName;
-
     }
 
     /**
@@ -54,7 +55,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
         List<String> parameterList = new ArrayList<>();
 
         Workbook workbook = openStream();
-        Iterator<Row> iterator = workbook.getSheetAt(0).iterator();
+        Iterator<Row> iterator = workbook.getSheetAt(SHEET_NUMBER).iterator();
 
         int cellPointer = 0;
 
@@ -106,7 +107,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
             makeTimeout();
             open = true;
         }
-        if (mainWorkbook.getSheetAt(0).getRow(pointer + 1) != null) {
+        if (mainWorkbook.getSheetAt(SHEET_NUMBER).getRow(pointer + 1) != null) {
             return true;
         } else {
             closeMainStream();
@@ -123,7 +124,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
             open = true;
         }
         pointer++;
-        return mainWorkbook.getSheetAt(0).getRow(pointer);
+        return mainWorkbook.getSheetAt(SHEET_NUMBER).getRow(pointer);
     }
 
     /**
@@ -194,4 +195,24 @@ public class XLSX_horisontal_Reader implements InputFileReader {
         return false;
     }
 
+    /**
+     * Get the number of rows in the file
+     * @return
+     * @throws DALException 
+     */
+    @Override
+    public int numberOfRows() throws DALException{
+        Workbook thisWorkbook = openStream();
+        
+        int lastRowNumber = thisWorkbook.getSheetAt(SHEET_NUMBER).getLastRowNum();
+        
+        try {
+            thisWorkbook.close();
+        } catch (IOException ex) {
+            throw new DALException(ex.getMessage(), ex.getCause());
+        }
+        
+        return lastRowNumber;
+    }
+    
 }

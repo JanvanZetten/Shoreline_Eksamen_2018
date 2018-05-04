@@ -7,6 +7,10 @@ package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
 import javafx.application.Platform;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
@@ -24,11 +28,11 @@ public class ConversionThread {
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
     private ConversionJob job = null;
-    
 
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
      * separate thread.
+     *
      * @param converter
      * @param inputFile
      * @param outputfile
@@ -37,7 +41,7 @@ public class ConversionThread {
     public ConversionThread(ConversionInterface converter, Path inputFile, Path outputfile, Profile coversionProfile) {
         this.converter = converter;
         task = runConversion(inputFile, outputfile, coversionProfile);
-        
+
         startThread(task);
     }
 
@@ -48,31 +52,38 @@ public class ConversionThread {
         return new Task() {
             @Override
             protected Object call() throws Exception {
-                
-                try{
-                converter.convertFile(coversionProfile, inputFile, outputfile, isCanceled, isOperating);
-                
-                while(true){
-                    if (job != null){
-                        Platform.runLater(new Runnable() {
-                            @Override
-                            public void run() {
-                                job.conversionDone();
-                            }
-                        });
-                        break;
+
+                try {
+                    DoubleProperty progress = new SimpleDoubleProperty(0.0);
+
+                    progress.addListener(new ChangeListener<Number>() {
+                        @Override
+                        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
+                            updateProgress(newValue.doubleValue(), 100.0);
+                        }
+                    });
+
+                    converter.convertFile(coversionProfile, inputFile, outputfile, isCanceled, isOperating, progress);
+
+                    while (true) {
+                        if (job != null) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    job.conversionDone();
+                                }
+                            });
+                            break;
+                        } else {
+                            Thread.sleep(10);
+                        }
+
                     }
-                    else {
-                        Thread.sleep(10);
-                    }
-                    
-                }
-                
-                }
-                catch(BLLExeption ex){
+
+                } catch (BLLExeption ex) {
                     ex.printStackTrace();
                 }
-                
+
                 return null;
             }
         };
