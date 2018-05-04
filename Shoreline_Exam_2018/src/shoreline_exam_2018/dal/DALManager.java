@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.dal;
 
+import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;

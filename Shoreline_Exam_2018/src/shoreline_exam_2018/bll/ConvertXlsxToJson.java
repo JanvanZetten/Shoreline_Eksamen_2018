@@ -18,8 +18,8 @@ import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.structure.*;
 import shoreline_exam_2018.be.output.structure.entry.*;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.InputFileReader;
-import shoreline_exam_2018.dal.XLSX_horisontal_Reader;
+import shoreline_exam_2018.dal.filereader.InputFileReader;
+import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.json.JsonDAO;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
@@ -31,6 +31,12 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
     InputFileReader reader;
 
+    
+    /**
+     * 
+     * Convert inputfile acording to the given profile and write it to the outputfile
+     * @throws shoreline_exam_2018.bll.BLLExeption
+     */
     @Override
     public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating) throws BLLExeption {
         reader = new XLSX_horisontal_Reader(inputFile.toString());
@@ -44,22 +50,19 @@ public class ConvertXlsxToJson implements ConversionInterface {
             while (reader.hasNext()) {
                 
                 if (isCanceld.getValue()){
-                    System.out.println("is Stopped --- written from ConvertXlsxToJson line 46");
                     return;
                 }
                 while(!isOperating.getValue()){
-                    System.out.println("is Paused --- written from ConvertXlsxToJson line 50");
                     Thread.sleep(1000);
                 }
                 
-                Thread.sleep(500);
-
                 Row nextRow = reader.getNextRow();
 
-                OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntryCollection(structure, nextRow));
+                OutputPair outputpair = new JsonPairJson("", mapRowToOutputpairWithEntityCollection(structure, nextRow));
 
                 outputObjects.add(outputpair);
             }
+            
             System.out.println("Done converting --- written from ConvertXlsxToJson line 60");
             
             new JsonDAO().createFile(outputObjects, outputFile);
@@ -79,7 +82,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
      * @throws BLLExeption if the stuctObject has a structEntry which is not supported. The supported are: StructEntryArray, StructEntryDate, 
      * StructEntryDouble, StructEntryInteger, StructEntryObject and StructEntryString.
      */
-    private List<OutputPair> mapRowToOutputpairWithEntryCollection(CollectionEntity structObject, Row row) throws BLLExeption {
+    private List<OutputPair> mapRowToOutputpairWithEntityCollection(CollectionEntity structObject, Row row) throws BLLExeption {
         List<StructEntityInterface> collection = structObject.getCollection();
         
         List<OutputPair> output = new ArrayList<>();
@@ -90,7 +93,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
 
             if (structEntry instanceof StructEntityArray) {
                 
-                List<OutputPair> jsonArray = mapRowToOutputpairWithEntryCollection((StructEntityArray)structEntry, row);
+                List<OutputPair> jsonArray = mapRowToOutputpairWithEntityCollection((StructEntityArray)structEntry, row);
                 output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
                 
             } else if (structEntry instanceof StructEntityDate) {
@@ -108,7 +111,7 @@ public class ConvertXlsxToJson implements ConversionInterface {
                 output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
 
             } else if (structEntry instanceof StructEntityObject) {
-                List<OutputPair> jsonObject = mapRowToOutputpairWithEntryCollection((StructEntityObject)structEntry, row);
+                List<OutputPair> jsonObject = mapRowToOutputpairWithEntityCollection((StructEntityObject)structEntry, row);
                 output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
                 
             } else if (structEntry instanceof StructEntityString) {
