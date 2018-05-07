@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -29,6 +31,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
@@ -52,9 +57,14 @@ public class ProfileGrid extends GridPane
     private final double DEFAULT_COMBOBOX_SIZE = 120.0;
     private final double DEFAULT_LABEL_SIZE = 160.0;
     private final double DEFAULT_TEXTFIELD_SIZE = 160.0;
+    private final double DEFAULT_RECTANGLE_WIDTH = 4.0;
+    private final double INDENT; // Indent for collections.
+    private final Paint[] COLOURS = new Paint[]
+    {
+        Color.web("4986A8"), Color.web("2C546D"), Color.web("737F8C"), Color.web("4D4D4D")
+    };
 
     private int rowCount; // The number of rows in grid.
-    private double indent; // Indent for collections.
 
     private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
     private HashMap<Integer, ProfileGrid> collectionMap; // Mapping row index to a ProfileGrid.
@@ -67,7 +77,7 @@ public class ProfileGrid extends GridPane
      */
     public ProfileGrid(boolean isMaster)
     {
-        this(isMaster, isMaster ? 0.0 : DEFAULT_INDENT);
+        this(isMaster, isMaster ? 120.0 : DEFAULT_INDENT);
     }
 
     /**
@@ -87,7 +97,7 @@ public class ProfileGrid extends GridPane
         {
             setupGridPane(-0.1);
         }
-        this.indent = indent;
+        this.INDENT = indent;
         clear();
     }
 
@@ -101,6 +111,43 @@ public class ProfileGrid extends GridPane
     {
         this(isMaster, indent);
         this.masterListener = masterListener;
+    }
+
+    /**
+     * Setup grid.
+     * @return
+     */
+    private void setupGridPane(double padding)
+    {
+        // Clear constraints and settings.
+        this.getChildren().clear();
+        this.getRowConstraints().clear();
+        this.getColumnConstraints().clear();
+
+        // Set gap between grid elements and padding around grid.
+        this.setHgap(5.0);
+        this.setVgap(5.0);
+        this.setPadding(new Insets(padding, padding, padding, padding));
+
+        // Set constraints so that the whole view is used.
+        ColumnConstraints c1 = new ColumnConstraints();
+        c1.setMinWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
+        c1.setPrefWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
+        c1.setMaxWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
+        ColumnConstraints c2 = new ColumnConstraints();
+        c2.setMinWidth(DEFAULT_LABEL_SIZE);
+        c2.setPrefWidth(DEFAULT_LABEL_SIZE);
+        c2.setMaxWidth(DEFAULT_LABEL_SIZE);
+        ColumnConstraints c3 = new ColumnConstraints();
+        c3.setMinWidth(DEFAULT_COMBOBOX_SIZE);
+        c3.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        c3.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
+        ColumnConstraints c4 = new ColumnConstraints();
+        c4.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        c4.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        c4.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+        this.getColumnConstraints().addAll(c1, c2, c3, c4);
+        this.setGridLinesVisible(true);
     }
 
     /**
@@ -129,12 +176,16 @@ public class ProfileGrid extends GridPane
         // Set size.
         lbl1.setMinWidth(DEFAULT_LABEL_SIZE);
         lbl1.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl1.setMaxWidth(DEFAULT_LABEL_SIZE);
         lbl2.setMinWidth(DEFAULT_LABEL_SIZE);
         lbl2.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl2.setMaxWidth(DEFAULT_LABEL_SIZE);
         lbl3.setMinWidth(DEFAULT_LABEL_SIZE);
         lbl3.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl3.setMaxWidth(DEFAULT_LABEL_SIZE);
         lbl4.setMinWidth(DEFAULT_LABEL_SIZE);
         lbl4.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl4.setMaxWidth(DEFAULT_LABEL_SIZE);
 
         this.getChildren().addAll(lbl1, lbl2, lbl3, lbl4);
         rowCount++;
@@ -187,8 +238,10 @@ public class ProfileGrid extends GridPane
         // Set size.
         btn.setMinWidth(DEFAULT_BUTTON_SIZE);
         btn.setPrefWidth(DEFAULT_BUTTON_SIZE);
+        btn.setMaxWidth(DEFAULT_BUTTON_SIZE);
         cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
         cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
 
         GridPane.setHalignment(btn, HPos.LEFT);
         GridPane.setHalignment(cmbType, HPos.LEFT);
@@ -199,39 +252,8 @@ public class ProfileGrid extends GridPane
         gp.getChildren().addAll(btn, cmbType);
 
         // Set margin for first item and adds them to the grid.
-        GridPane.setMargin(cmbType, new Insets(0.0, 0.0, 0.0, indent));
+        GridPane.setMargin(cmbType, new Insets(0.0, 0.0, 0.0, INDENT));
         this.getChildren().addAll(gp);
-    }
-
-    /**
-     * Setup grid.
-     * @return
-     */
-    private void setupGridPane(double padding)
-    {
-        // Clear constraints and settings.
-        this.getChildren().clear();
-        this.getRowConstraints().clear();
-        this.getColumnConstraints().clear();
-
-        // Set gap between grid elements and padding around grid.
-        this.setHgap(5.0);
-        this.setVgap(5.0);
-        this.setPadding(new Insets(padding, padding, padding, padding));
-
-        // Set constraints so that the whole view is used.
-        ColumnConstraints c1 = new ColumnConstraints();
-        c1.setFillWidth(true);
-        ColumnConstraints c2 = new ColumnConstraints();
-        c2.setPercentWidth(25);
-        ColumnConstraints c3 = new ColumnConstraints();
-        c3.setPercentWidth(25);
-        ColumnConstraints c4 = new ColumnConstraints();
-        c4.setPercentWidth(25);
-        ColumnConstraints c5 = new ColumnConstraints();
-        c5.setPercentWidth(25);
-        this.getColumnConstraints().addAll(c1, c2, c3, c4, c5);
-        this.setGridLinesVisible(true);
     }
 
     /**
@@ -246,6 +268,7 @@ public class ProfileGrid extends GridPane
         // Make TextField which represent the header from the input file.
         TextField fromHeader = new TextField();
         fromHeader.setEditable(false);
+        Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH, fromHeader.heightProperty());
 
         // Label to show an example.
         Label example = new Label("");
@@ -308,7 +331,7 @@ public class ProfileGrid extends GridPane
         });
 
         // Set margin for first element.
-        GridPane.setMargin(fromHeader, new Insets(0.0, 0.0, 0.0, indent));
+        GridPane.setMargin(rect, new Insets(0.0, 0.0, 0.0, INDENT));
 
         // ComboBox to choose SimpleStructType.
         ComboBox<SimpleStructType> cmbType = getSimpleTypeBox();
@@ -333,19 +356,28 @@ public class ProfileGrid extends GridPane
         // Set size.
         fromHeader.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         fromHeader.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        fromHeader.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
         example.setMinWidth(DEFAULT_LABEL_SIZE);
         example.setPrefWidth(DEFAULT_LABEL_SIZE);
+        example.setMaxWidth(DEFAULT_LABEL_SIZE);
         cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
         cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
         toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        toColumn.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+
+        GridPane gp = new GridPane();
+        GridPane.setConstraints(rect, 0, 0);
+        GridPane.setConstraints(fromHeader, 1, 0);
+        gp.getChildren().addAll(rect, fromHeader);
 
         // Set constraints and add to grid.
-        GridPane.setConstraints(fromHeader, 0, rowCount);
+        GridPane.setConstraints(gp, 0, rowCount);
         GridPane.setConstraints(example, 1, rowCount);
         GridPane.setConstraints(cmbType, 2, rowCount);
         GridPane.setConstraints(toColumn, 3, rowCount);
-        this.getChildren().addAll(fromHeader, example, cmbType, toColumn);
+        this.getChildren().addAll(gp, example, cmbType, toColumn);
         rowCount++;
     }
 
@@ -355,36 +387,42 @@ public class ProfileGrid extends GridPane
     private void addCollectionRow()
     {
         // Nodes for row.
-        ComboBox<CollectionStructType> cmbType = getCollectionTypeBox();
         TextField toColumn = new TextField();
+        Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH + DEFAULT_TEXTFIELD_SIZE + DEFAULT_LABEL_SIZE, toColumn.heightProperty());
+        ComboBox<CollectionStructType> cmbType = getCollectionTypeBox();
 
         // Index of row.
         int index = structure.size();
         structure.add(null);
 
         // Set Grid constraints.
+        GridPane.setMargin(rect, new Insets(0.0, 0.0, 0.0, INDENT));
+        GridPane.setConstraints(rect, 0, rowCount);
+        GridPane.setColumnSpan(rect, 2);
         GridPane.setConstraints(cmbType, 2, rowCount);
         GridPane.setConstraints(toColumn, 3, rowCount);
 
         // Set size.
         cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
         cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
         toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        toColumn.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
 
         // Add nodes to Grid.
-        this.getChildren().addAll(cmbType, toColumn);
+        this.getChildren().addAll(rect, cmbType, toColumn);
         rowCount++;
 
         // Make ChangeListener.
         ChangeListener cl = getCollectionChangeListener(index, cmbType, toColumn);
 
         // Make new grid for structure handling.
-        ProfileGrid col = new ProfileGrid(false, indent + DEFAULT_INDENT, cl);
+        ProfileGrid col = new ProfileGrid(false, INDENT + DEFAULT_INDENT, cl);
 
         // Add header mapping to ProfileGrid and add the new grid to this grid.
         col.addHashMap(headersIndexAndExamples);
-        GridPane.setConstraints(col, 0, rowCount, 4, 1);
+        GridPane.setConstraints(col, 0, rowCount, 5, 1);
         this.getChildren().add(col);
         rowCount++;
 
@@ -577,5 +615,22 @@ public class ProfileGrid extends GridPane
             addHeader();
         }
         addRowAdder();
+    }
+
+    /**
+     * Creates a rectangle with the right indent colour.
+     * @param width
+     * @param height
+     * @return
+     */
+    private Rectangle getRectangle(double width, ReadOnlyDoubleProperty height)
+    {
+        Rectangle rect = new Rectangle();
+        rect.setWidth(width);
+        rect.heightProperty().bind(height);
+        GridPane.setValignment(rect, VPos.TOP);
+        Double colourCount = (INDENT / DEFAULT_INDENT) % COLOURS.length;
+        rect.setFill(COLOURS[colourCount.intValue()]);
+        return rect;
     }
 }
