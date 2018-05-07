@@ -6,9 +6,11 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
@@ -23,70 +25,49 @@ public class ConversionThread {
 
     private Task task;
     private Thread thread;
-    private ConversionInterface converter;
-
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
+    private BooleanProperty isDone;
     private ConversionJob job = null;
 
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
      * separate thread.
      *
-     * @param converter
      * @param inputFile
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(ConversionInterface converter, Path inputFile, Path outputfile, Profile coversionProfile) {
-        this.converter = converter;
-        task = runConversion(inputFile, outputfile, coversionProfile);
+    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) {
+        this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
+        task = new XLSXtoJSONTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 
-        startThread(task);
-    }
-
-    /**
-     * Runs the convert function on a separate thread.
-     */
-    private Task runConversion(Path inputFile, Path outputfile, Profile coversionProfile) {
-        return new Task() {
+        isDone.addListener(new ChangeListener<Boolean>() {
             @Override
-            protected Object call() throws Exception {
-
-                try {
-                    DoubleProperty progress = new SimpleDoubleProperty(0.0);
-
-                    progress.addListener(new ChangeListener<Number>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-                            updateProgress(newValue.doubleValue(), 100.0);
-                        }
-                    });
-
-                    converter.convertFile(coversionProfile, inputFile, outputfile, isCanceled, isOperating, progress);
-
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                if (newValue) {
                     while (true) {
                         if (job != null) {
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    job.conversionDone();
-                                }
+                            Platform.runLater(() -> {
+                                job.conversionDone();
                             });
                             break;
                         } else {
-                            Thread.sleep(10);
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException ex) {
+                                Logger.getLogger(ConversionThread.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
-
+                        
                     }
-
-                } catch (BLLExeption ex) {
-                    ex.printStackTrace();
+                    isDone.removeListener(this);
+                    isDone = null;
                 }
-
-                return null;
             }
-        };
+        });
+
+        startThread(task);
     }
 
     /**
@@ -127,6 +108,6 @@ public class ConversionThread {
     }
 
     void giveJob(ConversionJob cJob) {
-        this.job = cJob;
+        job = cJob;
     }
 }
