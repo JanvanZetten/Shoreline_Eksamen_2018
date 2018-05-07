@@ -14,6 +14,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -27,6 +28,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Priority;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
@@ -46,6 +48,11 @@ public class ProfileGrid extends GridPane
     private static final String STYLESHEET = "shoreline_exam_2018/gui/view/css/style.css"; // Root CSS
     private static final double DEFAULT_INDENT = 10.0; // Indent for collections.
     private final boolean IS_MASTER; // Is this the master grid
+    private final double DEFAULT_BUTTON_SIZE = 60.0;
+    private final double DEFAULT_COMBOBOX_SIZE = 120.0;
+    private final double DEFAULT_LABEL_SIZE = 160.0;
+    private final double DEFAULT_TEXTFIELD_SIZE = 160.0;
+
     private int rowCount; // The number of rows in grid.
     private double indent; // Indent for collections.
 
@@ -118,6 +125,17 @@ public class ProfileGrid extends GridPane
         GridPane.setConstraints(lbl2, 1, rowCount);
         GridPane.setConstraints(lbl3, 2, rowCount);
         GridPane.setConstraints(lbl4, 3, rowCount);
+
+        // Set size.
+        lbl1.setMinWidth(DEFAULT_LABEL_SIZE);
+        lbl1.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl2.setMinWidth(DEFAULT_LABEL_SIZE);
+        lbl2.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl3.setMinWidth(DEFAULT_LABEL_SIZE);
+        lbl3.setPrefWidth(DEFAULT_LABEL_SIZE);
+        lbl4.setMinWidth(DEFAULT_LABEL_SIZE);
+        lbl4.setPrefWidth(DEFAULT_LABEL_SIZE);
+
         this.getChildren().addAll(lbl1, lbl2, lbl3, lbl4);
         rowCount++;
     }
@@ -151,6 +169,10 @@ public class ProfileGrid extends GridPane
             }
         });
 
+        GridPane gp = new GridPane();
+        gp.setHgap(5.0);
+        gp.setVgap(5.0);
+
         // Add listener to check if new rows are added. If so the row for the combobox and button is changed to the last one.
         this.getChildren().addListener(new ListChangeListener<Node>()
         {
@@ -158,14 +180,27 @@ public class ProfileGrid extends GridPane
             public void onChanged(ListChangeListener.Change<? extends Node> c)
             {
                 int row = getRowCount();
-                GridPane.setConstraints(cmbType, 0, row);
-                GridPane.setConstraints(btn, 1, row);
+                GridPane.setConstraints(gp, 0, row);
             }
         });
 
+        // Set size.
+        btn.setMinWidth(DEFAULT_BUTTON_SIZE);
+        btn.setPrefWidth(DEFAULT_BUTTON_SIZE);
+        cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+
+        GridPane.setHalignment(btn, HPos.LEFT);
+        GridPane.setHalignment(cmbType, HPos.LEFT);
+
+        GridPane.setConstraints(cmbType, 0, 0);
+        GridPane.setConstraints(btn, 1, 0);
+
+        gp.getChildren().addAll(btn, cmbType);
+
         // Set margin for first item and adds them to the grid.
         GridPane.setMargin(cmbType, new Insets(0.0, 0.0, 0.0, indent));
-        this.getChildren().addAll(cmbType, btn);
+        this.getChildren().addAll(gp);
     }
 
     /**
@@ -196,7 +231,7 @@ public class ProfileGrid extends GridPane
         ColumnConstraints c5 = new ColumnConstraints();
         c5.setPercentWidth(25);
         this.getColumnConstraints().addAll(c1, c2, c3, c4, c5);
-        this.setGridLinesVisible(false);
+        this.setGridLinesVisible(true);
     }
 
     /**
@@ -295,6 +330,16 @@ public class ProfileGrid extends GridPane
             toColumn.textProperty().addListener(masterListener);
         }
 
+        // Set size.
+        fromHeader.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        fromHeader.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        example.setMinWidth(DEFAULT_LABEL_SIZE);
+        example.setPrefWidth(DEFAULT_LABEL_SIZE);
+        cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+
         // Set constraints and add to grid.
         GridPane.setConstraints(fromHeader, 0, rowCount);
         GridPane.setConstraints(example, 1, rowCount);
@@ -320,6 +365,12 @@ public class ProfileGrid extends GridPane
         // Set Grid constraints.
         GridPane.setConstraints(cmbType, 2, rowCount);
         GridPane.setConstraints(toColumn, 3, rowCount);
+
+        // Set size.
+        cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
+        cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+        toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
 
         // Add nodes to Grid.
         this.getChildren().addAll(cmbType, toColumn);
