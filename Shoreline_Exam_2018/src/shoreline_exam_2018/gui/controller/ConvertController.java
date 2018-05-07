@@ -51,19 +51,24 @@ public class ConvertController implements Initializable
 
     /**
      * Loads a file from a File Chooser.
-     *
-     * @param event
      */
     @FXML
     private void handleLoadButton(ActionEvent event)
     {
         inputField.setText(model.chooseFile());
     }
+    
+    /**
+     * Sets a destination folder and file name.
+     */
+    @FXML
+    private void handleOutputButton(ActionEvent event)
+    {
+        outputField.setText(model.chooseDestination());
+    }
 
     /**
-     * Test button which creates a task and sets it into the view.
-     *
-     * @param event
+     * Starts conversion and resets fields if the job is created.
      */
     @FXML
     private void handleTaskButton(ActionEvent event)
@@ -76,12 +81,6 @@ public class ConvertController implements Initializable
             outputField.setText("");
         }
         
-    }
-
-    @FXML
-    private void handleOutputButton(ActionEvent event)
-    {
-        outputField.setText(model.chooseDestination());
     }
 
     public ConvertModel getModel()
