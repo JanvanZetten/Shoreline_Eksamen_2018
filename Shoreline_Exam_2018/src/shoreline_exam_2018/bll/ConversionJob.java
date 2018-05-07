@@ -139,38 +139,29 @@ public class ConversionJob extends HBox {
 
     private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
-        
+
         Label filler = new Label();
         filler.setText("  ");
-        
+
         grid.addColumn(0, filler);
         grid.add(lblConversionName, 1, 0);
         grid.add(progress, 2, 0);
         grid.add(btnPause, 3, 0);
         grid.add(btnCancel, 4, 0);
         grid.setGridLinesVisible(true);
-        
-        
-        grid.setMaxWidth(this.getMaxWidth());
 
-        ColumnConstraints col1 = new ColumnConstraints();
-        col1.setMinWidth(USE_PREF_SIZE);
+        ColumnConstraints neverGrow = new ColumnConstraints();
+        neverGrow.setHgrow(Priority.NEVER);
 
-        ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(40);
-        
-        ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(40);
-        
-        ColumnConstraints col4 = new ColumnConstraints();
-        col4.setMinWidth(USE_PREF_SIZE);
-        col4.setMaxWidth(USE_PREF_SIZE);
-        
-        ColumnConstraints col5 = new ColumnConstraints();
-        col5.setMinWidth(USE_PREF_SIZE);
-        col5.setMaxWidth(USE_PREF_SIZE);
+        ColumnConstraints alwaysGrow = new ColumnConstraints();
+        alwaysGrow.setHgrow(Priority.ALWAYS);
 
-        grid.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
+        grid.getColumnConstraints().addAll(
+                neverGrow,
+                alwaysGrow,
+                alwaysGrow,
+                neverGrow,
+                neverGrow);
     }
 
     /**
