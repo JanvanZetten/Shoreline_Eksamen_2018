@@ -52,6 +52,7 @@ public class ProfileGrid extends GridPane
 {
     private static final String STYLESHEET = "shoreline_exam_2018/gui/view/css/style.css"; // Root CSS
     private static final double DEFAULT_INDENT = 10.0; // Indent for collections.
+    private static final double DEFAULT_GAP = 5.0;
     private final boolean IS_MASTER; // Is this the master grid
     private final double DEFAULT_BUTTON_SIZE = 60.0;
     private final double DEFAULT_COMBOBOX_SIZE = 120.0;
@@ -77,7 +78,7 @@ public class ProfileGrid extends GridPane
      */
     public ProfileGrid(boolean isMaster)
     {
-        this(isMaster, isMaster ? 120.0 : DEFAULT_INDENT);
+        this(isMaster, isMaster ? 0.0 : DEFAULT_INDENT);
     }
 
     /**
@@ -89,6 +90,7 @@ public class ProfileGrid extends GridPane
     {
         super();
         IS_MASTER = isMaster;
+        this.INDENT = indent;
         if (IS_MASTER)
         {
             setupGridPane(5.0);
@@ -97,7 +99,6 @@ public class ProfileGrid extends GridPane
         {
             setupGridPane(-0.1);
         }
-        this.INDENT = indent;
         clear();
     }
 
@@ -125,8 +126,8 @@ public class ProfileGrid extends GridPane
         this.getColumnConstraints().clear();
 
         // Set gap between grid elements and padding around grid.
-        this.setHgap(5.0);
-        this.setVgap(5.0);
+        this.setHgap(DEFAULT_GAP);
+        this.setVgap(DEFAULT_GAP);
         this.setPadding(new Insets(padding, padding, padding, padding));
 
         // Set constraints so that the whole view is used.
@@ -134,6 +135,7 @@ public class ProfileGrid extends GridPane
         c1.setMinWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
         c1.setPrefWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
         c1.setMaxWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
+        System.out.println(DEFAULT_TEXTFIELD_SIZE + " " + DEFAULT_RECTANGLE_WIDTH + " " + INDENT);
         ColumnConstraints c2 = new ColumnConstraints();
         c2.setMinWidth(DEFAULT_LABEL_SIZE);
         c2.setPrefWidth(DEFAULT_LABEL_SIZE);
@@ -202,6 +204,7 @@ public class ProfileGrid extends GridPane
         obsCmb.add("Collection");
         ComboBox<String> cmbType = new ComboBox(obsCmb);
         cmbType.getSelectionModel().selectFirst();
+        Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH, cmbType.heightProperty());
 
         // Button for adding new row.
         Button btn = new Button("Add");
@@ -221,6 +224,7 @@ public class ProfileGrid extends GridPane
         });
 
         GridPane gp = new GridPane();
+        GridPane cgp = new GridPane();
         gp.setHgap(5.0);
         gp.setVgap(5.0);
 
@@ -243,16 +247,20 @@ public class ProfileGrid extends GridPane
         cmbType.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
         cmbType.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
 
+        GridPane.setHalignment(rect, HPos.LEFT);
         GridPane.setHalignment(btn, HPos.LEFT);
         GridPane.setHalignment(cmbType, HPos.LEFT);
 
-        GridPane.setConstraints(cmbType, 0, 0);
+        GridPane.setConstraints(rect, 0, 0);
+        GridPane.setConstraints(cmbType, 1, 0);
+        GridPane.setConstraints(cgp, 0, 0);
         GridPane.setConstraints(btn, 1, 0);
 
-        gp.getChildren().addAll(btn, cmbType);
+        cgp.getChildren().addAll(rect, cmbType);
+        gp.getChildren().addAll(cgp, btn);
 
         // Set margin for first item and adds them to the grid.
-        GridPane.setMargin(cmbType, new Insets(0.0, 0.0, 0.0, INDENT));
+        GridPane.setMargin(cgp, new Insets(0.0, 0.0, 0.0, INDENT));
         this.getChildren().addAll(gp);
     }
 
@@ -387,9 +395,9 @@ public class ProfileGrid extends GridPane
     private void addCollectionRow()
     {
         // Nodes for row.
-        TextField toColumn = new TextField();
-        Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH + DEFAULT_TEXTFIELD_SIZE + DEFAULT_LABEL_SIZE, toColumn.heightProperty());
         ComboBox<CollectionStructType> cmbType = getCollectionTypeBox();
+        Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH + DEFAULT_TEXTFIELD_SIZE + DEFAULT_LABEL_SIZE + (DEFAULT_GAP * 2), cmbType.heightProperty());
+        TextField toColumn = new TextField();
 
         // Index of row.
         int index = structure.size();
