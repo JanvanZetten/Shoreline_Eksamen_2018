@@ -83,26 +83,8 @@ public class ConvertModel {
     }
 
     /**
-     * Test method that handles conversion and setting of tasks.
-     *
-     * @param tblTasks
-     */
-    @Deprecated
-    public void convertTest(FlowPane list) {
-        tblTasks.add(bll.setConversionFilePath(taskName, selectedFile.toPath(), selectedProfile));
-        olTasks.addAll(this.tblTasks);
-        list.getChildren().addAll(olTasks);
-
-        // Clears the list so no duplicates are added
-        tblTasks.clear();
-        olTasks.clear();
-    }
-
-    /**
      * Populates the given combo box with profiles and sets proper naming for
      * these profiles so it looks nicely
-     *
-     * @param profileCombobox
      */
     public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
         profileCombobox.setItems(profiles);
@@ -119,8 +101,6 @@ public class ConvertModel {
 
     /**
      * Add profile to profiles list.
-     *
-     * @param profile
      */
     public void addProfile(Profile profile) {
         profiles.add(profile);

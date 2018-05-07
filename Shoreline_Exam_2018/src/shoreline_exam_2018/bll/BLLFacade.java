@@ -21,31 +21,38 @@ public interface BLLFacade
 {
 
     /**
-     * Creates a conversion that is based on the file path of a file and a
-     * profile.
-     * @param taskName = The name of the Conversion
-     * @param selectedFilePath = The path of the file attempted to convert
-     * @param selectedProfile = The selected profile for the conversion
-     * @return = Returns the Task so that it can be set in the view.
-     */
-    @Deprecated
-    public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
-
-    /**
-     * Starts a conversion with the given input and output file using the given
-     * profile,
-     * @param taskName the name for the conversion job it returns
-     * @param inputFile
-     * @param outputFile
-     * @param profile
-     * @return a converison job with the given name
+     * Starts a conversion with the given input and output file using the given profile.
+     * @param taskName      = Name for the conversion job.
+     * @param inputFile     = The input file that is being converted.
+     * @param outputFile    = The output file that is being converted to.
+     * @param profile       = The profile that is used for the conversion.
+     * @return              = A converison job.
      * @throws BLLExeption
      */
     public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption;
 
+    /**
+     * Adds a profile to the database.
+     * @param name          = Name of the profile.
+     * @param structure     = The StructEntityObject that determines how it should convert.
+     * @param createdBy     = ID of the user who created the profile.
+     * @return              = The profile that was made with this method.
+     * @throws BLLExeption 
+     */
     public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
 
+    /**
+     * Gets all profiles from the database and returns them in a list.
+     * @return
+     * @throws BLLExeption 
+     */
     public List<Profile> getAllProfiles() throws BLLExeption;
 
+    /**
+     * Returns a hashmap that shows headers and examples when creating a profile.
+     * @param path          = The path to the file.
+     * @return
+     * @throws BLLExeption 
+     */
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption;
 }

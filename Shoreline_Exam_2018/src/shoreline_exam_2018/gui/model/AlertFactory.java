@@ -60,7 +60,7 @@ public class AlertFactory
     }
 
     /**
-     * Shared rules for an Alert.
+     * Shared rules for an information alert.
      * @param title
      * @param header
      * @param message
@@ -79,9 +79,15 @@ public class AlertFactory
         alert.showAndWait();
     }
     
+    /**
+     * Shared rules for a confirmation alert.
+     * @param title
+     * @param header
+     * @param message 
+     */
     private static void showCustomConfirmation(String title, String header, String message)
     {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.OK);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES);
         alert.setTitle(title);
         alert.setHeaderText(header);
         //Image image = new Image();
