@@ -62,8 +62,8 @@ public class ProfileGrid extends GridPane
     private final double INDENT; // Indent for collections.
     private final Paint[] COLOURS = new Paint[]
     {
-        Color.web("4986A8"), Color.web("2C546D"), Color.web("737F8C"), Color.web("4D4D4D")
-    };
+        Color.web("737F8C"), Color.web("4986A8"), Color.web("2C546D"), Color.web("4D4D4D")
+    }; //
 
     private int rowCount; // The number of rows in grid.
 
@@ -135,7 +135,6 @@ public class ProfileGrid extends GridPane
         c1.setMinWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
         c1.setPrefWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
         c1.setMaxWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
-        System.out.println(DEFAULT_TEXTFIELD_SIZE + " " + DEFAULT_RECTANGLE_WIDTH + " " + INDENT);
         ColumnConstraints c2 = new ColumnConstraints();
         c2.setMinWidth(DEFAULT_LABEL_SIZE);
         c2.setPrefWidth(DEFAULT_LABEL_SIZE);
@@ -322,7 +321,6 @@ public class ProfileGrid extends GridPane
         // On drag from element to another i done. Reset element.
         fromHeader.setOnDragDone(e ->
         {
-
             List<StructEntityInterface> sei = getStructure();
             if (sei.size() > 0)
             {
