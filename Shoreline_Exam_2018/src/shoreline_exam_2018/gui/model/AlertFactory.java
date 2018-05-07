@@ -98,6 +98,4 @@ public class AlertFactory
         alert.getDialogPane().getScene().getStylesheets().add(STYLESHEET);
         alert.showAndWait();
     }
-    
-
 }
