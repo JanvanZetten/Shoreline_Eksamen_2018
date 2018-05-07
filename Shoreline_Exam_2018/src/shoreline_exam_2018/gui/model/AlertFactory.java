@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.util.Optional;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -22,6 +23,7 @@ public class AlertFactory
     private static final String TITLE_ERROR = "Error";
     private static final String TITLE_INFO = "Information";
     private static final String TITLE_CONFIRMATION = "Confirmation";
+    private static Optional<ButtonType> result;
 
     /**
      * Shows Alert Warning.
@@ -87,7 +89,7 @@ public class AlertFactory
      */
     private static void showCustomConfirmation(String title, String header, String message)
     {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
         alert.setTitle(title);
         alert.setHeaderText(header);
         //Image image = new Image();
@@ -96,6 +98,16 @@ public class AlertFactory
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(LOGO);
         alert.getDialogPane().getScene().getStylesheets().add(STYLESHEET);
-        alert.showAndWait();
+        result = alert.showAndWait();
     }
+
+    /**
+     * Gets the result of the confirmation alert.
+     * @return 
+     */
+    public static Optional<ButtonType> getResult() {
+        return result;
+    }
+    
+    
 }

@@ -6,9 +6,13 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressBar;
@@ -41,7 +45,11 @@ public class ConversionJob extends HBox {
      * @param conversionName
      * @param cThread
      */
-    public ConversionJob(String conversionName, ConversionThread cThread, Path selectedFilePath, Profile selectedProfile, ListView<ConversionJob> listJobs) {
+    public ConversionJob(String conversionName,
+            ConversionThread cThread,
+            Path selectedFilePath,
+            Profile selectedProfile,
+            ListView<ConversionJob> listJobs) {
         super();
 
         this.listJobs = listJobs;
@@ -59,7 +67,7 @@ public class ConversionJob extends HBox {
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
-        setCancelButtonInfo(cThread, listJobs);
+        setCancelButtonInfo(cThread, listJobs, selectedProfile);
         setGridInfo(grid);
 
         this.getChildren().addAll(grid);
@@ -121,7 +129,7 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
@@ -130,15 +138,25 @@ public class ConversionJob extends HBox {
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                cThread.cancelTask();
-                listJobs.getItems().remove(ConversionJob.this);
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Cancel confirmation");
+                alert.setHeaderText("Cancelling conversion");
+                alert.setContentText("Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK) {
+                    cThread.cancelTask();
+                    listJobs.getItems().remove(ConversionJob.this);
+                } 
             }
         });
     }
 
     /**
-     * Sets all information inside the GridPane and scales whatever needs scaling.
-     * @param grid 
+     * Sets all information inside the GridPane and scales whatever needs
+     * scaling.
+     *
+     * @param grid
      */
     private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
