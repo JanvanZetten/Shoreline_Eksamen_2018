@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.bll;
+package shoreline_exam_2018.bll.converters;
 
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -19,6 +19,7 @@ import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.OutputDAO;
 import shoreline_exam_2018.dal.output.json.JsonDAO;
 import shoreline_exam_2018.be.output.jsonpair.*;
+import shoreline_exam_2018.bll.BLLExeption;
 
 /**
  *

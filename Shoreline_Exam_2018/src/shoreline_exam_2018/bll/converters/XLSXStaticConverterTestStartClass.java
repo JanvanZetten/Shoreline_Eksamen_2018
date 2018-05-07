@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.bll;
+package shoreline_exam_2018.bll.converters;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shoreline_exam_2018.bll.BLLExeption;
 
 /**
  *
