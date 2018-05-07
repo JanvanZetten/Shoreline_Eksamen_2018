@@ -81,8 +81,8 @@ public class ConversionJob extends HBox {
      * @param cThread
      */
     private void setProgressBarInfo(ConversionThread cThread) {
-        //progress.setProgress(0);
-        //progress.progressProperty().unbind();
+        progress.setProgress(0);
+        progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
     }
 
