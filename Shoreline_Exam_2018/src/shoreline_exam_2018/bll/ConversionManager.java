@@ -44,7 +44,7 @@ public class ConversionManager {
         ConversionThread cThread = null;
 
         if (inputExtension.equalsIgnoreCase("XLSX") && outputExtension.equalsIgnoreCase("json")) {
-            cThread = new ConversionThread(new ConvertXlsxToJson(), inputPath, outputPath, selectedProfile);
+            cThread = new ConversionThread(inputPath, outputPath, selectedProfile);
         }
 
         if (cThread != null) {
