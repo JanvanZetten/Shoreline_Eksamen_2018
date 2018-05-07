@@ -147,7 +147,7 @@ public class ConvertModel {
     public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs) {
         ConversionJob startConversion = null;
         
-        if (selectedFile != null && outputFile != null) {
+        if (selectedFile != null && outputFile != null && currentProfile != null) {
             String name;
             String pattern = Pattern.quote(System.getProperty("file.separator"));
             String[] split = selectedFile.getAbsolutePath().split(pattern);
@@ -165,7 +165,7 @@ public class ConvertModel {
             return startConversion;
         }
         else{
-            AlertFactory.showError("No input file", "Please select an input and output file");
+            AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
             return null;
         }
         
