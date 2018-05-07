@@ -21,17 +21,6 @@ public interface BLLFacade
 {
 
     /**
-     * Creates a conversion that is based on the file path of a file and a
-     * profile.
-     * @param taskName = The name of the Conversion
-     * @param selectedFilePath = The path of the file attempted to convert
-     * @param selectedProfile = The selected profile for the conversion
-     * @return = Returns the Task so that it can be set in the view.
-     */
-    @Deprecated
-    public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile);
-
-    /**
      * Starts a conversion with the given input and output file using the given
      * profile,
      * @param taskName the name for the conversion job it returns

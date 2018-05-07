@@ -33,14 +33,6 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    @Deprecated
-    public ConversionJob setConversionFilePath(String taskName, Path selectedFilePath, Profile selectedProfile)
-    {
-        //return cMan.newConversion(taskName, selectedFilePath, selectedProfile);
-        return null;
-    }
-
-    @Override
     public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption
     {
         try
