@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.MutableBoolean;
@@ -35,19 +36,22 @@ public class XLSXtoJSONTask extends Task {
     private InputFileReader reader;
     private RowToOutputPairMapper mapper;
     private ConversionJob job;
+    private BooleanProperty isDone;
 
-    public XLSXtoJSONTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, ConversionJob job) {
+    public XLSXtoJSONTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) {
         this.selectedProfile = selectedProfile;
         this.inputFile = inputFile;
         this.outputFile = outputFile;
         this.isCanceld = isCanceld;
         this.isOperating = isOperating;
-        this.job = job;
+        this.isDone = isDone;
+        job = null;
         mapper = new RowToOutputPairMapper();
     }
 
     @Override
     protected Object call() throws Exception {
+        updateProgress(0, 1);
         reader = new XLSX_horisontal_Reader(inputFile.toString());
 
         StructEntityObject structure = selectedProfile.getStructure();
@@ -58,6 +62,7 @@ public class XLSXtoJSONTask extends Task {
             int totalRows = reader.numberOfRows();
             int currentrow = 0;
             while (reader.hasNext()) {
+                
                 currentrow++;
 
                 updateProgress(currentrow, totalRows);
@@ -82,22 +87,7 @@ public class XLSXtoJSONTask extends Task {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
         
-        
-        while (true) {
-                if (job != null) {
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            job.conversionDone();
-                        }
-                    });
-                    break;
-                } else {
-                    Thread.sleep(10);
-                }
-
-            }
-        
+        isDone.setValue(Boolean.TRUE);
         
         return null;
     }
