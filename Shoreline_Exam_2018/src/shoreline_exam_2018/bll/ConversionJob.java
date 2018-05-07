@@ -8,7 +8,6 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -137,6 +136,10 @@ public class ConversionJob extends HBox {
         });
     }
 
+    /**
+     * Sets all information inside the GridPane and scales whatever needs scaling.
+     * @param grid 
+     */
     private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
 
@@ -148,7 +151,6 @@ public class ConversionJob extends HBox {
         grid.add(progress, 2, 0);
         grid.add(btnPause, 3, 0);
         grid.add(btnCancel, 4, 0);
-        grid.setGridLinesVisible(true);
 
         ColumnConstraints neverGrow = new ColumnConstraints();
         neverGrow.setHgrow(Priority.NEVER);
@@ -165,18 +167,9 @@ public class ConversionJob extends HBox {
     }
 
     /**
-     * removes itself from the list given in the constructer
+     * Removes itself from the list given in the constructer
      */
     void conversionDone() {
         listJobs.getItems().remove(ConversionJob.this);
-    }
-
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return node;
-            }
-        }
-        return null;
     }
 }
