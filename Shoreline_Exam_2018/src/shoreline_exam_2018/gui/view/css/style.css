@@ -109,6 +109,10 @@ and open the template in the editor.
 
 /* cusom textfield */
 /* Remove textfields round corners, set background colour, set text colour and set border colour */
+#DRAGANDDROP.text-field:hover {
+    -fx-cursor: hand;
+}
+
 .text-field {
     -fx-background-radius: 0,0,0,0;
     -fx-background-color: #DFDFDF;
@@ -177,4 +181,8 @@ and open the template in the editor.
 
 .check-box:selected .box {
     -fx-background-color: #4D4D4D;
+}
+
+.progress-bar .bar {
+    -fx-background-color: greenyellow;
 }

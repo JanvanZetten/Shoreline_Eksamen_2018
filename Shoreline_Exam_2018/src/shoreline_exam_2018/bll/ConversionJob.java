@@ -62,7 +62,7 @@ public class ConversionJob extends HBox {
         GridPane grid = new GridPane();
 
         this.setStyle("-fx-background-color: #737f8c;"
-                + "-fx-background-radius: 30;");
+                + "-fx-background-radius: 10;");
 
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);

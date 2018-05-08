@@ -108,6 +108,7 @@ public class ProfilesModel
     {
         // Makes TextField to hold header name.
         TextField tfHeader = new TextField(header);
+        tfHeader.setId("DRAGANDDROP");
         tfHeader.setEditable(false);
 
         // Make drag and drop copying compatible.
