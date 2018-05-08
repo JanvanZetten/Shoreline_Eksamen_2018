@@ -55,22 +55,22 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Button maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleLoadButton" prefHeight="29.0" prefWidth="60.0" text="Browse" GridPane.halignment="RIGHT">
+                        <TextField fx:id="inputField" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="Input file...">
+                            <GridPane.margin>
+                                <Insets right="80.0" />
+                            </GridPane.margin>
+                        </TextField>
+                        <Button maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleLoadButton" prefHeight="29.0" prefWidth="80.0" text="Browse" GridPane.halignment="RIGHT">
                             <GridPane.margin>
                                 <Insets bottom="1.0" />
                             </GridPane.margin>
                         </Button>
-                        <TextField fx:id="inputField" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="Input file...">
-                            <GridPane.margin>
-                                <Insets right="60.0" />
-                            </GridPane.margin>
-                        </TextField>
                         <TextField fx:id="outputField" maxHeight="30.0" minHeight="30.0" prefHeight="30.0" prefWidth="1000.0" promptText="output file..." GridPane.rowIndex="1">
                             <GridPane.margin>
-                                <Insets right="60.0" />
+                                <Insets right="80.0" />
                             </GridPane.margin>
                         </TextField>
-                        <Button maxHeight="29.0" maxWidth="-Infinity" minHeight="29.0" mnemonicParsing="false" onAction="#handleOutputButton" prefHeight="29.0" prefWidth="60.0" text="Browse" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+                        <Button maxHeight="29.0" maxWidth="-Infinity" minHeight="29.0" mnemonicParsing="false" onAction="#handleOutputButton" prefHeight="29.0" prefWidth="80.0" text="Browse" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
                             <GridPane.margin>
                                 <Insets bottom="1.0" />
                             </GridPane.margin>
