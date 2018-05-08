@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
+import org.apache.poi.xssf.usermodel.*;
 import shoreline_exam_2018.dal.DALException;
 
 /**
@@ -136,7 +137,7 @@ public class XLSX_horisontal_Reader implements InputFileReader {
     private Workbook openStream() throws DALException {
         try {
             FileInputStream excelFile = new FileInputStream(new File(FileName));
-            return new XSSFWorkbook(excelFile);
+            return new SXSSFWorkbook(new XSSFWorkbook(excelFile));
         } catch (FileNotFoundException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         } catch (IOException ex) {
