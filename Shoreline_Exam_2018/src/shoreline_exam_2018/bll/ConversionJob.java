@@ -22,6 +22,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -162,14 +163,19 @@ public class ConversionJob extends HBox {
     private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
 
-        Label filler = new Label();
-        filler.setText("  ");
+        Label filler1 = new Label();
+        filler1.setText("  ");
+        
+        Region filler2 = new Region();
+        filler2.setMaxWidth(100);
+        filler2.setMinWidth(100);
 
-        grid.addColumn(0, filler);
+        grid.addColumn(0, filler1);
         grid.add(lblConversionName, 1, 0);
         grid.add(progress, 2, 0);
-        grid.add(btnPause, 3, 0);
-        grid.add(btnCancel, 4, 0);
+        grid.addColumn(3, filler2);
+        grid.add(btnPause, 4, 0);
+        grid.add(btnCancel, 5, 0);
 
         ColumnConstraints neverGrow = new ColumnConstraints();
         neverGrow.setHgrow(Priority.NEVER);
@@ -181,6 +187,7 @@ public class ConversionJob extends HBox {
                 neverGrow,
                 alwaysGrow,
                 alwaysGrow,
+                neverGrow,
                 neverGrow,
                 neverGrow);
     }
