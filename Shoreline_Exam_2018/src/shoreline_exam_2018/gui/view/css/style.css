@@ -9,7 +9,7 @@ and open the template in the editor.
 */
 
 @font-face {
-    src: url('coolvetica.ttf');
+    src: url('DINPro-Regular_13937.ttf');
 }
 
 /* cusom background */
@@ -76,7 +76,7 @@ and open the template in the editor.
 /* cusom root */
 /* Set standard font family */
 .root {
-    -fx-font-family: 'Coolvetica Rg';
+    -fx-font-family: 'DINPro-Regular';
     -fx-font-size: 13px;
 }
 
@@ -84,7 +84,7 @@ and open the template in the editor.
 /* Label does not care about root settings, so the font family is added again */
 /* Set text colour */
 .label {
-    -fx-font-family: 'Coolvetica Rg';
+    -fx-font-family: 'DINPro-Regular';
     -fx-text-fill: #4D4D4D;
     -fx-font-size: 15px;
 }
@@ -187,14 +187,14 @@ and open the template in the editor.
     -fx-background-radius: 0, 0, 0, 0;
     -fx-background-color: white;
 }
- 
+
 .progress-bar .track{
     -fx-background-insets: 20;
     -fx-background-radius: 0, 0, 0, 0;
 }
- 
-.progress-bar .bar { 
+
+.progress-bar .bar {
     -fx-background-color: #0DF279;
-    -fx-background-insets: 0, 0, 0, 0; 
+    -fx-background-insets: 0, 0, 0, 0;
     -fx-background-radius: 0, 0, 0, 0;
 }
