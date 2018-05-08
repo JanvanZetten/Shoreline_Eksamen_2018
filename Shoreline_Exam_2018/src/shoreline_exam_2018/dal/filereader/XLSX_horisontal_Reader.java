@@ -138,10 +138,10 @@ public class XLSX_horisontal_Reader implements InputFileReader {
     private Workbook openStream() throws DALException {
         try {
             FileInputStream excelFile = new FileInputStream(new File(FileName));
-            return new XSSFWorkbook(new File(FileName));
+            return new XSSFWorkbook(excelFile);
         } catch (FileNotFoundException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
-        } catch (IOException | InvalidFormatException ex) {
+        } catch (IOException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
     }
