@@ -178,3 +178,7 @@ and open the template in the editor.
 .check-box:selected .box {
     -fx-background-color: #4D4D4D;
 }
+
+.progress-bar .bar { 
+    -fx-background-color: greenyellow;
+}
