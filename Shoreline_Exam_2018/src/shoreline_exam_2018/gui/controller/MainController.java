@@ -10,11 +10,8 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import shoreline_exam_2018.bll.ConversionJob;
 
 import shoreline_exam_2018.gui.model.MainModel;
 
@@ -29,25 +26,13 @@ public class MainController implements Initializable
     @FXML
     private Tab tabConvert;
     @FXML
-    private Button btnLoadFile;
-    @FXML
     private Tab tabProfiles;
-    @FXML
-    private Tab tabLog;
-    @FXML
-    private Tab tabSettings;
-    @FXML
-    private ListView<ConversionJob> tblTasks;
-    @FXML
-    private Button btnConvert;
     @FXML
     private AnchorPane paneConvert;
     @FXML
     private AnchorPane paneProfiles;
-    @FXML
-    private AnchorPane paneLog;
-    @FXML
-    private AnchorPane paneSettings;
+    private AnchorPane paneLog = new AnchorPane();
+    private AnchorPane paneSettings = new AnchorPane();
 
     /**
      * Initializes the MainController.
