@@ -92,6 +92,7 @@ public class ConversionJob extends HBox {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
+        progress.setMaxWidth(Double.MAX_VALUE);
     }
 
     /**
@@ -175,7 +176,7 @@ public class ConversionJob extends HBox {
 
         ColumnConstraints alwaysGrow = new ColumnConstraints();
         alwaysGrow.setHgrow(Priority.ALWAYS);
-
+        
         grid.getColumnConstraints().addAll(
                 neverGrow,
                 alwaysGrow,

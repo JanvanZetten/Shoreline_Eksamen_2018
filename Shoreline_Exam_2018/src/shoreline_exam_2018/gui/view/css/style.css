@@ -183,6 +183,18 @@ and open the template in the editor.
     -fx-background-color: #4D4D4D;
 }
 
-.progress-bar .bar {
-    -fx-background-color: greenyellow;
+.progress-bar {
+    -fx-background-radius: 0, 0, 0, 0;
+    -fx-background-color: white;
+}
+ 
+.progress-bar .track{
+    -fx-background-insets: 20;
+    -fx-background-radius: 0, 0, 0, 0;
+}
+ 
+.progress-bar .bar { 
+    -fx-background-color: #0DF279;
+    -fx-background-insets: 0, 0, 0, 0; 
+    -fx-background-radius: 0, 0, 0, 0;
 }
