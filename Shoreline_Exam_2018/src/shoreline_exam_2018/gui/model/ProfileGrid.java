@@ -274,6 +274,7 @@ public class ProfileGrid extends GridPane
 
         // Make TextField which represent the header from the input file.
         TextField fromHeader = new TextField();
+        fromHeader.setId("DRAGANDDROP");
         fromHeader.setEditable(false);
         Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH, fromHeader.heightProperty());
 
