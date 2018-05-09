@@ -5,7 +5,6 @@
  */
 package shoreline_exam_2018.gui.model;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -56,7 +55,7 @@ public class MainModel
     {
         try
         {
-            URL url = new File(System.getProperty("user.dir") + "/src/shoreline_exam_2018/gui/view/" + PANE_NAME + "View.fxml").toURI().toURL();
+            URL url = getClass().getResource("/shoreline_exam_2018/gui/view/" + PANE_NAME + "View.fxml");
             FXMLLoader loader = new FXMLLoader(url);
 
             Node node = (Node) loader.load();
