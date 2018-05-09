@@ -163,8 +163,9 @@ public class ConversionJob extends HBox {
     private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
 
-        Label filler1 = new Label();
-        filler1.setText("  ");
+        Region filler1 = new Region();
+        filler1.setMaxWidth(100);
+        filler1.setMinWidth(100);
         
         Region filler2 = new Region();
         filler2.setMaxWidth(100);
