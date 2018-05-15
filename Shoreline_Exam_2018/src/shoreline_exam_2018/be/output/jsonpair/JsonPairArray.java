@@ -48,4 +48,10 @@ public class JsonPairArray implements OutputPair<JSONArray>
     {
         return value;
     }
+
+    @Override
+    public String toString()
+    {
+        return value.toJSONString();
+    }
 }

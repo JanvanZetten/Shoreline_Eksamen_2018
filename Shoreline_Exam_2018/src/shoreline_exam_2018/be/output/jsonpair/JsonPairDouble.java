@@ -39,4 +39,9 @@ public class JsonPairDouble implements OutputPair<Double>
         return value;
     }
 
+    @Override
+    public String toString()
+    {
+        return "\"" + key + "\":" + value;
+    }
 }

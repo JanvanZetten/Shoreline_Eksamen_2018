@@ -39,4 +39,9 @@ public class JsonPairString implements OutputPair<String>
         return value;
     }
 
+    @Override
+    public String toString()
+    {
+        return "\"" + key + "\":\"" + value + "\"";
+    }
 }

@@ -21,7 +21,6 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import shoreline_exam_2018.dal.output.OutputDAO;
 import shoreline_exam_2018.be.output.OutputPair;
-import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairDate;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairString;
@@ -53,6 +52,8 @@ public class JsonDAOTest
     @Test
     public void testCreateFile() throws Exception
     {
+        /*
+        System.out.println("JsonDAO:testCreateFile");
         List<OutputPair> thisShouldWork = new ArrayList<>();
         thisShouldWork.add(new JsonPairString("siteName", ""));
         thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
@@ -91,6 +92,70 @@ public class JsonDAOTest
 
             JSONArray jsonObject = (JSONArray) obj;
             assertTrue(jsonObject.toJSONString().equals(jsonArr.getValue().toJSONString()));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            Files.deleteIfExists(Paths.get(System.getProperty("user.dir") + "/test.json"));
+        }
+         */
+    }
+
+    /**
+     * Test of createFile method, of class JsonDAO.
+     */
+    @Test
+    public void writeObjectToFile() throws Exception
+    {
+        System.out.println("JsonDAO:writeObjectToFile");
+        List<OutputPair> thisShouldWork = new ArrayList<>();
+        thisShouldWork.add(new JsonPairString("siteName", ""));
+        thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
+        thisShouldWork.add(new JsonPairString("type", "SAP import field -> 'Order Type'"));
+        thisShouldWork.add(new JsonPairString("externalWorkOrderId", "SAP import field -> 'Order'"));
+        thisShouldWork.add(new JsonPairString("systemStatus", "SAP import field -> 'System status'"));
+        thisShouldWork.add(new JsonPairString("userStatus", "SAP import field -> 'User status'"));
+        thisShouldWork.add(new JsonPairDate("createdOn", Calendar.getInstance().getTime()));
+        thisShouldWork.add(new JsonPairString("createdBy", "SAP"));
+        thisShouldWork.add(new JsonPairString("name", "SAP import field -> 'Opr. short text' if empty then  'Description2'"));
+        thisShouldWork.add(new JsonPairString("priority", "SAP import field -> 'priority' if set else 'Low'"));
+        thisShouldWork.add(new JsonPairString("status", "NEW"));
+
+        List<OutputPair> oioArr = new ArrayList<>();
+        oioArr.add(new JsonPairString("latestFinishDate", "Datetime Object"));
+        oioArr.add(new JsonPairString("earliestStartDate", "Datetime Object"));
+        oioArr.add(new JsonPairString("latestStartDate", "Datetime Object"));
+        oioArr.add(new JsonPairString("estimatedTime", ""));
+        OutputPair oio = new JsonPairJson("planning", oioArr);
+        thisShouldWork.add(oio);
+
+        JsonPairJson jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
+
+        OutputDAO jdao = new JsonDAO(Paths.get(System.getProperty("user.dir") + "/test.json"));
+        jdao.writeObjectToFile(jsonObj);
+        Thread.sleep(3000);
+        jdao.writeObjectToFile(jsonObj);
+
+        JSONParser parser = new JSONParser();
+        jdao.closeStream();
+
+        JSONArray jarr = new JSONArray();
+        jarr.add(jsonObj);
+        jarr.add(jsonObj);
+
+        try (FileReader file = new FileReader(System.getProperty("user.dir") + "/test.json"))
+        {
+            Object obj = parser.parse(file);
+
+            JSONArray jsonObject = (JSONArray) obj;
+            assertTrue(jsonObject.toJSONString().equals(jarr.toJSONString()));
         }
         catch (FileNotFoundException e)
         {

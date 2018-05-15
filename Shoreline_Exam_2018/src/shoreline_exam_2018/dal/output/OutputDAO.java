@@ -16,12 +16,26 @@ import shoreline_exam_2018.dal.DALException;
  */
 public interface OutputDAO
 {
+
+    /**
+     * Close stream for file writing.
+     * @throws DALException
+     */
+    public void closeStream() throws DALException;
+
     /**
      * Creates a file with given entities.
      * @param entities
      * @param outputPath
-     * @throws shoreline_exam_2018.dal.DALException in case of file already
-     * exist. Other exceptions.
+     * @throws DALException
      */
+    @Deprecated
     public void createFile(List<OutputPair> entities, Path outputPath) throws DALException;
+
+    /**
+     * Creates or appends to file.
+     * @param entity
+     * @throws DALException
+     */
+    public void writeObjectToFile(OutputPair entity) throws DALException;
 }

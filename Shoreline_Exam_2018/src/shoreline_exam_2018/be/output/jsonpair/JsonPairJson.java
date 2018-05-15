@@ -46,4 +46,10 @@ public class JsonPairJson implements OutputPair<JSONObject>
     {
         return value;
     }
+
+    @Override
+    public String toString()
+    {
+        return value.toJSONString();
+    }
 }
