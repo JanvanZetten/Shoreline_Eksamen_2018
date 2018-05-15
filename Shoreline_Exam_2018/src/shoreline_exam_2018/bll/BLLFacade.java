@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
 /**
@@ -55,4 +56,8 @@ public interface BLLFacade
      * @throws BLLExeption 
      */
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption;
+    
+    public User login(String username, String password) throws BLLExeption;
+    
+    public String encrypt(String base) throws BLLExeption;
 }

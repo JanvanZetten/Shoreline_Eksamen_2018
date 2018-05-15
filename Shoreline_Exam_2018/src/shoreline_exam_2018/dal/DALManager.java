@@ -11,11 +11,15 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.database.ProfileDAO;
+import shoreline_exam_2018.dal.database.UserDAO;
 
 /**
  *
@@ -25,11 +29,15 @@ public class DALManager implements DALFacade
 {
 
     private ProfileDAO profileDAO;
+    private UserDAO userDAO;
     private XLSX_horisontal_Reader xhr;
+    
+    private User currentUser;
 
     public DALManager()
     {
         this.profileDAO = new ProfileDAO();
+        this.userDAO = new UserDAO();
     }
 
     @Override
@@ -90,6 +98,12 @@ public class DALManager implements DALFacade
             }
         }
         return hae;
+    }
+
+    @Override
+    public User userLogin(String user, String password) throws DALException {
+            currentUser = userDAO.login(user, password);
+            return currentUser;
     }
 
 }

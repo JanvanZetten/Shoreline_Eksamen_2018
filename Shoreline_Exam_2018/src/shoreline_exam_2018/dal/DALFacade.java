@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 
 /**
@@ -23,4 +24,6 @@ public interface DALFacade
     public List<Profile> getAllProfiles() throws DALException;
 
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException;
+    
+    public User userLogin(String user, String password) throws DALException;
 }

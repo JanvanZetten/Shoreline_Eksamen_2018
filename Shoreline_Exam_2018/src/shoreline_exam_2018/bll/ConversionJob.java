@@ -159,7 +159,7 @@ public class ConversionJob extends HBox {
                         //Deletes the output file from the outputPath.
                         Files.delete(outputPath);
                     } catch (IOException ex) {
-                        Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
+                        //DO NOTHING
                     }
                 } 
             }
