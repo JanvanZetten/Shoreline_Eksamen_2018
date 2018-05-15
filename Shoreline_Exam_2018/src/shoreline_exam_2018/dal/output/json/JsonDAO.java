@@ -39,6 +39,11 @@ public class JsonDAO implements OutputDAO
 
     }
 
+    /**
+     * OutputDAO which writes each separate object to an output file.
+     * @param outputPath
+     * @throws DALException
+     */
     public JsonDAO(Path outputPath) throws DALException
     {
         this.outputPath = outputPath;
@@ -107,10 +112,16 @@ public class JsonDAO implements OutputDAO
      */
     private void addSquareBrackets() throws DALException
     {
+        // Get Path.
         Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmp_" + outputPath.getFileName());
+
+        // Open writer stream.
         try (FileWriter file = new FileWriter(tmp.toFile()))
         {
+            // Write beginning "[".
             file.write("[");
+
+            // Open reader stream. Read all characters from original file and write to tmp.
             try (FileReader fr = new FileReader(outputPath.toFile()))
             {
                 int c = fr.read();
@@ -120,7 +131,11 @@ public class JsonDAO implements OutputDAO
                     c = fr.read();
                 }
             }
+
+            // Write end "]".
             file.write("]");
+
+            // Flush and close writer so that the tmp can be copied and deleted.
             file.flush();
             file.close();
             Files.copy(tmp, outputPath, StandardCopyOption.REPLACE_EXISTING);
@@ -139,13 +154,18 @@ public class JsonDAO implements OutputDAO
      */
     private void removeSquareBrackets() throws DALException
     {
+        // Get Path.
         Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmp_" + outputPath.getFileName());
+
+        // Open write stream.
         try (FileWriter file = new FileWriter(tmp.toFile()))
         {
+            // Open read stream.
             try (FileReader fr = new FileReader(outputPath.toFile()))
             {
                 boolean isFirstChar = true;
                 int buf = -2;
+
                 int c = fr.read();
                 while (c != -1)
                 {
@@ -162,11 +182,14 @@ public class JsonDAO implements OutputDAO
                     buf = c;
                     c = fr.read();
                 }
+                // If not end "]"
                 if (buf != 93)
                 {
                     file.write(buf);
                 }
             }
+
+            // Flush and close writer so that the tmp can be copied and deleted.
             file.flush();
             file.close();
             Files.copy(tmp, outputPath, StandardCopyOption.REPLACE_EXISTING);
@@ -178,6 +201,12 @@ public class JsonDAO implements OutputDAO
         }
     }
 
+    /**
+     * Runnable to countdown to close file.
+     * @param dao for object reference.
+     * @param time until closing stream.
+     * @return
+     */
     private Runnable closeTimer(JsonDAO dao, long time)
     {
         Runnable r = new Runnable()
@@ -187,10 +216,10 @@ public class JsonDAO implements OutputDAO
             @Override
             public void run()
             {
-                setLastTime(System.currentTimeMillis());
+                dao.setLastTime(System.currentTimeMillis());
                 try
                 {
-                    while (total > System.currentTimeMillis() - getLastTime())
+                    while (total > System.currentTimeMillis() - dao.getLastTime())
                     {
                         try
                         {
@@ -227,17 +256,25 @@ public class JsonDAO implements OutputDAO
         return r;
     }
 
+    /**
+     * Get lastTime
+     * @return
+     */
     private long getLastTime()
     {
         return lastTime;
     }
 
+    /**
+     * Set lastTime.
+     */
     private void setLastTime(Long lastTime)
     {
         this.lastTime = lastTime;
     }
 
     @Override
+    @Deprecated
     public void createFile(List<OutputPair> entities, Path outputPath) throws DALException
     {
         JsonPairArray jsonArr = new JsonPairArray("jsonArray", entities);
@@ -258,17 +295,22 @@ public class JsonDAO implements OutputDAO
     {
         try
         {
+            // Open stream if it is not open.
             if (!isOpen)
             {
                 openStream();
             }
+            // Else extend open time.
             else
             {
                 setLastTime(System.currentTimeMillis());
             }
+
+            // Write object to file. Only add comma if not first.
             fw.write(isFirst ? entity.toString() : ", " + entity.toString());
             fw.flush();
 
+            // Set first to false if first.
             if (isFirst)
             {
                 isFirst = false;
