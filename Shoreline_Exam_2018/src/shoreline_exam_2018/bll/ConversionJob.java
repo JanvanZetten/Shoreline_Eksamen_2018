@@ -5,8 +5,12 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -46,9 +50,10 @@ public class ConversionJob extends HBox {
      * @param conversionName
      * @param cThread
      */
-    public ConversionJob(String conversionName,
+    public ConversionJob(
+            String conversionName,
             ConversionThread cThread,
-            Path selectedFilePath,
+            Path outputPath,
             Profile selectedProfile,
             ListView<ConversionJob> listJobs) {
         super();
@@ -68,7 +73,7 @@ public class ConversionJob extends HBox {
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
-        setCancelButtonInfo(cThread, listJobs, selectedProfile);
+        setCancelButtonInfo(cThread, listJobs, selectedProfile, outputPath);
         setGridInfo(grid);
 
         this.getChildren().addAll(grid);
@@ -82,6 +87,7 @@ public class ConversionJob extends HBox {
     private void setLabelInfo(String conversionName) {
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
+        lblConversionName.setStyle("-fx-font-size: 20px");
     }
 
     /**
@@ -131,7 +137,7 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile, Path outputPath) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
@@ -147,8 +153,14 @@ public class ConversionJob extends HBox {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    cThread.cancelTask();
-                    listJobs.getItems().remove(ConversionJob.this);
+                    try {
+                        cThread.cancelTask();
+                        listJobs.getItems().remove(ConversionJob.this);
+                        //Deletes the output file from the outputPath.
+                        Files.delete(outputPath);
+                    } catch (IOException ex) {
+                        Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } 
             }
         });
@@ -192,11 +204,5 @@ public class ConversionJob extends HBox {
                 neverGrow,
                 neverGrow);
     }
-
-    /**
-     * Removes itself from the list given in the constructer
-     */
-    void conversionDone() {
-        listJobs.getItems().remove(ConversionJob.this);
-    }
+    
 }
