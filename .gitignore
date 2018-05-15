@@ -83,10 +83,10 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-/MyTunes/nbproject/private/
 /Shoreline_Exam_2018/nbproject/private/
 /Shoreline_Exam_2018-Preloader/nbproject/private/
 /Shoreline_Exam_2018/lib/poi-3.17
+/Shoreline_Exam_2018/lib/slf4j-1.7.25
 *.orig
 *.properties
 
