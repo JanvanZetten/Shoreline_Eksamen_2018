@@ -56,7 +56,6 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements InputFileReader
     @Override
     public List<String> getParameters() throws DALException {
         List<String> parameterList = new ArrayList<>();
-
         Workbook workbook = openStream();
         Iterator<Row> localiterator = workbook.getSheetAt(SHEET_NUMBER).iterator();
 
@@ -86,7 +85,6 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements InputFileReader
                         default:
                             parameterList.add("");
                             break;
-
                     }
                 }
 
@@ -140,7 +138,7 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements InputFileReader
         try {
             FileInputStream excelFile = new FileInputStream(new File(FileName));
             
-            Workbook workbook = StreamingReader.builder().open(excelFile);
+            Workbook workbook = StreamingReader.builder().rowCacheSize(100).bufferSize(4096).open(excelFile);
             
             return workbook;
         } catch (FileNotFoundException ex) {

@@ -93,6 +93,7 @@ public class XLSX_horisontal_Reader_for_Big_DocumentsTest {
         assertEquals(4, currentrow.getCell(3).getNumericCellValue(), 0.01);
         assertEquals(5, currentrow.getCell(4).getNumericCellValue(), 0.01);
         Thread.sleep(11000);
+        currentrow = reader.getNextRow();
         assertEquals(6, currentrow.getCell(0).getNumericCellValue(), 0.01);
         assertEquals(7, currentrow.getCell(1).getNumericCellValue(), 0.01);
         assertEquals(8, currentrow.getCell(2).getNumericCellValue(), 0.01);
