@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
@@ -13,7 +15,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.User;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.gui.model.AlertFactory;
@@ -38,7 +40,7 @@ public class LoginModel {
             bll.login(username, password);
             openMainView(root, loginStage);
             
-        } catch (BLLExeption ex) {
+        } catch (BLLException ex) {
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
     }
@@ -60,10 +62,15 @@ public class LoginModel {
             mainStage.setScene(mainScene);
             mainStage.centerOnScreen();
             
-            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in", bll.getcurrentUser());
+            String ipaddress = InetAddress.getLocalHost().toString();
+            String[] split = ipaddress.split("/");
+            
+            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in from the IP address " + split[1], bll.getcurrentUser());
             
             loginStage.close();
-        } catch (BLLExeption ex) {
+        } catch (BLLException ex) {
+            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownHostException ex) {
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }

@@ -25,7 +25,7 @@ public class ConversionManager {
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLExeption {
+    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLException {
 
         String inputExtension;
         String outputExtension;
@@ -55,7 +55,7 @@ public class ConversionManager {
         }
         else 
         {
-            throw new BLLExeption("one of the file types might not be supported");
+            throw new BLLException("one of the file types might not be supported");
         }
 
     }

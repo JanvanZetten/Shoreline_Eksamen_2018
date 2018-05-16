@@ -29,9 +29,9 @@ public class LogManager
     /**
      * Return all logs from data layer.
      * @return logs
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public List<Log> getAllLogs() throws BLLExeption
+    public List<Log> getAllLogs() throws BLLException
     {
         try
         {
@@ -39,7 +39,7 @@ public class LogManager
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -49,9 +49,9 @@ public class LogManager
      * @param message
      * @param creator
      * @return
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public Log addLog(LogType type, String message, User creator) throws BLLExeption
+    public Log addLog(LogType type, String message, User creator) throws BLLException
     {
         try
         {
@@ -59,7 +59,7 @@ public class LogManager
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 }

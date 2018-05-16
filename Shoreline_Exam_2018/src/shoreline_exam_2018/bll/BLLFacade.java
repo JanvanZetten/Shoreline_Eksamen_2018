@@ -32,9 +32,9 @@ public interface BLLFacade
      * @param outputFile = The output file that is being converted to.
      * @param profile = The profile that is used for the conversion.
      * @return = A converison job.
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption;
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLException;
 
     /**
      * Adds a profile to the database.
@@ -43,46 +43,46 @@ public interface BLLFacade
      * convert.
      * @param createdBy = ID of the user who created the profile.
      * @return = The profile that was made with this method.
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLException;
 
     /**
      * Gets all profiles from the database and returns them in a list.
      * @return
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public List<Profile> getAllProfiles() throws BLLExeption;
+    public List<Profile> getAllProfiles() throws BLLException;
 
     /**
      * Returns a hashmap that shows headers and examples when creating a
      * profile.
      * @param path = The path to the file.
      * @return
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption;
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLException;
 
     /**
      * Attempts to log the user in. If it fails, it throws back an exception.
      * @param username =
      * @param password
      * @return
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public User login(String username, String password) throws BLLExeption;
+    public User login(String username, String password) throws BLLException;
 
     /**
      * Encrypts the password of a given string.
      * @param base = The password that is to be encrypted
      * @return = The encrypted passwaord
-     * @throws BLLExeption
+     * @throws BLLException
      */
-    public String encrypt(String base) throws BLLExeption;
+    public String encrypt(String base) throws BLLException;
 
-    public List<Log> getAllLogs() throws BLLExeption;
+    public List<Log> getAllLogs() throws BLLException;
 
-    public Log addLog(LogType type, String message, User creator) throws BLLExeption;
+    public Log addLog(LogType type, String message, User creator) throws BLLException;
 
     public User getcurrentUser();
 }

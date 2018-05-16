@@ -16,7 +16,7 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.ConversionJob;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
@@ -85,7 +85,7 @@ public class XLSXtoJSONTask extends Task {
             new JsonWriter().createFile(outputObjects, outputFile);
 
         } catch (DALException | InterruptedException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
         
         isDone.setValue(Boolean.TRUE);
