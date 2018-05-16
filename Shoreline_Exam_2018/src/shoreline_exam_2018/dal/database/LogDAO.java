@@ -100,7 +100,7 @@ public class LogDAO
             statement.setString(1, type.name());
             statement.setString(2, message);
             statement.setInt(3, creator.getId());
-            statement.setDate(4, new java.sql.Date(cal.getTime().getTime()));
+            statement.setTimestamp(4, new java.sql.Timestamp(cal.getTimeInMillis()));
 
             statement.executeUpdate();
 
