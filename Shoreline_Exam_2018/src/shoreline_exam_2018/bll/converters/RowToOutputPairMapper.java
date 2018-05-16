@@ -13,7 +13,7 @@ import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.structure.*;
 import shoreline_exam_2018.be.output.structure.entry.*;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 
 /**
  *
@@ -29,12 +29,12 @@ public class RowToOutputPairMapper {
      * what
      * @param row the row from which to load the data
      * @return a list of outputpairs
-     * @throws BLLExeption if the stuctObject has a structEntry which is not
+     * @throws BLLException if the stuctObject has a structEntry which is not
      * supported. The supported are: StructEntryArray, StructEntryDate,
      * StructEntryDouble, StructEntryInteger, StructEntryObject and
      * StructEntryString.
      */
-    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, Row row) throws BLLExeption {
+    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, Row row) throws BLLException {
         List<StructEntityInterface> collection = structObject.getCollection();
 
         List<OutputPair> output = new ArrayList<>();
@@ -70,7 +70,7 @@ public class RowToOutputPairMapper {
                         row.getCell(((StructEntityString) structEntry).getInputIndex()).getStringCellValue()));
 
             } else {
-                throw new BLLExeption("The struct entry type is not supported");
+                throw new BLLException("The struct entry type is not supported");
             }
 
         }

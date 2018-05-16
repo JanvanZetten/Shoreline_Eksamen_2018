@@ -7,7 +7,7 @@ package shoreline_exam_2018.bll.converters;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 
 /**
  *
@@ -25,7 +25,7 @@ public class XLSXStaticConverterTestStartClass {
         
         try {
             converter.convert();
-        } catch (BLLExeption ex) {
+        } catch (BLLException ex) {
             Logger.getLogger(XLSXStaticConverterTestStartClass.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

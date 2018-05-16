@@ -17,14 +17,16 @@ import javafx.concurrent.Task;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.converters.ConverterTask;
+import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
  *
  * @author alexl
  */
-public class ConversionThread {
+public class ConversionThread
+{
 
-    private Task task;
+    private ConverterTask task;
     private Thread thread;
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
@@ -39,28 +41,40 @@ public class ConversionThread {
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLExeption {
+    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
+    {
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
         task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 
-        isDone.addListener(new ChangeListener<Boolean>() {
+        isDone.addListener(new ChangeListener<Boolean>()
+        {
             @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                if (newValue) {
-                    while (true) {
-                        if (job != null) {
-                            Platform.runLater(() -> {
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue)
+            {
+                if (newValue)
+                {
+                    while (true)
+                    {
+                        if (job != null)
+                        {
+                            Platform.runLater(() ->
+                            {
                                 job.conversionDone();
                             });
                             break;
-                        } else {
-                            try {
+                        }
+                        else
+                        {
+                            try
+                            {
                                 Thread.sleep(10);
-                            } catch (InterruptedException ex) {
+                            }
+                            catch (InterruptedException ex)
+                            {
                                 Logger.getLogger(ConversionThread.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
-                        
+
                     }
                     isDone.removeListener(this);
                     isDone = null;
@@ -74,7 +88,8 @@ public class ConversionThread {
     /**
      * Pauses the task.
      */
-    public void pauseTask() {
+    public void pauseTask()
+    {
         isOperating.setValue(false);
     }
 
@@ -82,32 +97,50 @@ public class ConversionThread {
      * Resumes the task after it has been paused. RESUME DOES NOT WORK
      * CURRENTLY. NEEDS IMPLEMENTATION.
      */
-    public void resumeTask() {
+    public void resumeTask()
+    {
         isOperating.setValue(true);
     }
 
     /**
      * Interrupts and cancels a conversion.
      */
-    public void cancelTask() {
+    public void cancelTask()
+    {
         isCanceled.setValue(true);
     }
 
-    public Task getTask() {
+    public Task getTask()
+    {
         return task;
     }
 
-    private void startThread(Task task) {
+    private void startThread(ConverterTask task)
+    {
         thread = new Thread(task);
         thread.setDaemon(true);
+        thread.setUncaughtExceptionHandler((t, e) ->
+        {
+            try
+            {
+                task.stop();
+                AlertFactory.showError("Conversion Error", e.getMessage());
+            }
+            catch (BLLException ex)
+            {
+                AlertFactory.showError("Conversion Error", "Error trying to stop converter task on error: " + e.getMessage());
+            }
+        });
         thread.start();
     }
 
-    public boolean isOperating() {
+    public boolean isOperating()
+    {
         return isOperating.getValue();
     }
 
-    void giveJob(ConversionJob cJob) {
+    void giveJob(ConversionJob cJob)
+    {
         job = cJob;
     }
 }

@@ -9,17 +9,17 @@ package shoreline_exam_2018.bll;
  *
  * @author janvanzetten
  */
-public class BLLExeption extends Exception {
+public class BLLException extends Exception {
 
-    public BLLExeption(String message, Throwable cause) {
+    public BLLException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public BLLExeption(String message) {
+    public BLLException(String message) {
         super(message);
     }
 
-    public BLLExeption(Throwable cause) {
+    public BLLException(Throwable cause) {
         super(cause);
     }
     

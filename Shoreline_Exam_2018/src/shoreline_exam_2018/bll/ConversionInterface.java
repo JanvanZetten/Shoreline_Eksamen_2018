@@ -28,7 +28,7 @@ public interface ConversionInterface {
      * @param isOperating set to false when it is wished to pause it
      * @param progress the percent of done
      */
-    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, DoubleProperty progress) throws BLLExeption;
+    public void convertFile(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, DoubleProperty progress) throws BLLException;
     
     
 }
