@@ -24,7 +24,8 @@ import shoreline_exam_2018.dal.output.json.JsonWriter;
  *
  * @author janvanzetten
  */
-public class ConverterTask extends Task {
+public class ConverterTask extends Task
+{
 
     Reader reader;
     Writer writer;
@@ -36,9 +37,11 @@ public class ConverterTask extends Task {
     Path inputFile;
     Path outputFile;
 
-    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException {
-        
-        try {
+    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
+    {
+
+        try
+        {
             reader = new XLSX_horisontal_Reader_for_Big_Documents(inputFile.toString());
             writer = new JsonWriter(outputFile);
             mapper = new RowToOutputPairMapper();
@@ -49,32 +52,37 @@ public class ConverterTask extends Task {
             this.isOperating = isOperating;
             this.isDone = isDone;
 
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    protected Object call() throws Exception {
-        updateProgress(0,1);
+    protected Object call() throws Exception
+    {
+        updateProgress(0, 1);
         int currentrow = 0;
         int totalRows = reader.numberOfRows();
 
-        while (reader.hasNext()) {
+        while (reader.hasNext())
+        {
             Row input = read();
-            
+
             currentrow++;
 
             updateProgress(currentrow, totalRows);
 
-            if (isCanceld.getValue()) {
+            if (isCanceld.getValue())
+            {
                 stop();
                 return null;
             }
-            while (!isOperating.getValue()) {
+            while (!isOperating.getValue())
+            {
                 Thread.sleep(1000);
             }
-
 
             OutputPair output = convert(input);
 
@@ -87,16 +95,19 @@ public class ConverterTask extends Task {
         return null;
     }
 
-    
     /**
      * Reads the next row from the reader
      * @return
-     * @throws BLLException 
+     * @throws BLLException
      */
-    private Row read() throws BLLException {
-        try {
+    private Row read() throws BLLException
+    {
+        try
+        {
             return reader.getNextRow();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -105,12 +116,16 @@ public class ConverterTask extends Task {
      * converts the row to a outputpair Object
      * @param input
      * @return
-     * @throws BLLException 
+     * @throws BLLException
      */
-    private OutputPair convert(Row input) throws BLLException {
-        try {
+    private OutputPair convert(Row input) throws BLLException
+    {
+        try
+        {
             return new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(selectedProfile.getStructure(), input));
-        } catch (BLLException ex) {
+        }
+        catch (BLLException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -118,27 +133,34 @@ public class ConverterTask extends Task {
     /**
      * Writes the outputobject
      * @param output
-     * @throws BLLException 
+     * @throws BLLException
      */
-    private void write(OutputPair output) throws BLLException {
-        try {
+    private void write(OutputPair output) throws BLLException
+    {
+        try
+        {
             writer.writeObjectToFile(output);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
-    
     /**
      * does everything for stopping the conversion also for ended conversion
-     * @throws BLLException 
+     * @throws BLLException
      */
-    private void stop() throws BLLException {
+    public void stop() throws BLLException
+    {
         isDone.setValue(Boolean.TRUE);
-        
-        try {
+
+        try
+        {
             writer.closeStream();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }

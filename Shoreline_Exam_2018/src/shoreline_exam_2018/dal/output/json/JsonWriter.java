@@ -92,6 +92,7 @@ public class JsonWriter implements Writer
                 AlertFactory.showError("Writer Thread Error", "Error trying to close stream after " + e.getMessage() + " exception.");
             }
         });
+        t.setDaemon(true);
         t.start();
     }
 
