@@ -5,8 +5,6 @@
  */
 package shoreline_exam_2018.gui.model;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.be.Log;
@@ -23,6 +21,7 @@ public class LogModel
 
     ObservableList<Log> logList;
     BLLFacade bll = BLLManager.getInstance();
+    boolean run = true;
 
     public LogModel()
     {

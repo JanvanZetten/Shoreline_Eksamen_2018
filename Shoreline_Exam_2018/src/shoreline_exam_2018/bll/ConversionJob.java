@@ -217,6 +217,7 @@ public class ConversionJob extends HBox {
         try {
             listJobs.getItems().remove(ConversionJob.this);
             bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + lblConversionName.getText(), bll.getcurrentUser());
+            
         } catch (BLLExeption ex) {
             Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
         }

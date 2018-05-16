@@ -34,4 +34,8 @@ public class LogViewController implements Initializable {
          listviewLog.setItems(model.getLogItems());
     }    
     
+    @FXML
+    public void updateList() {
+        model.loadLogItems();
+    }
 }

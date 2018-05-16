@@ -39,7 +39,6 @@ public class LoginModel {
         try {
             bll.login(username, password);
             openMainView(root, loginStage);
-            
         } catch (BLLExeption ex) {
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
