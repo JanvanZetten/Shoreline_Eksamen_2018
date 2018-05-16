@@ -94,6 +94,7 @@ public class JsonWriter implements Writer
         {
             try
             {
+                fw.flush();
                 fw.close();
                 addSquareBrackets();
                 isOpen = false;
@@ -113,7 +114,7 @@ public class JsonWriter implements Writer
     private void addSquareBrackets() throws DALException
     {
         // Get Path.
-        Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmp_" + outputPath.getFileName());
+        Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmpa_" + outputPath.getFileName());
 
         // Open writer stream.
         try (FileWriter file = new FileWriter(tmp.toFile()))
@@ -155,7 +156,7 @@ public class JsonWriter implements Writer
     private void removeSquareBrackets() throws DALException
     {
         // Get Path.
-        Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmp_" + outputPath.getFileName());
+        Path tmp = Paths.get(outputPath.getParent().toString() + "/_tmpr_" + outputPath.getFileName());
 
         // Open write stream.
         try (FileWriter file = new FileWriter(tmp.toFile()))
