@@ -57,7 +57,7 @@ public class ProfilesModel
      */
     public ProfilesModel(GridPane gridDrag, ScrollPane scrollHeader, ScrollPane scrollMain, TextField source, TextField tf)
     {
-        this.bll = new BLLManager();
+        this.bll = BLLManager.getInstance();
         this.gridDrag = gridDrag;
         this.scrollHeader = scrollHeader;
         this.scrollMain = scrollMain;

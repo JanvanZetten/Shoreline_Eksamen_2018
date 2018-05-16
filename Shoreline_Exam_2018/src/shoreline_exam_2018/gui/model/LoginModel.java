@@ -27,7 +27,7 @@ public class LoginModel {
     private BLLFacade bll;
 
     public LoginModel() {
-        bll = new BLLManager();
+        bll = BLLManager.getInstance();
     }
 
     /**

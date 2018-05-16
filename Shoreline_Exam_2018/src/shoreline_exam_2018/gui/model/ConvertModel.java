@@ -44,7 +44,7 @@ public class ConvertModel {
     private String taskName;
 
     public ConvertModel() {
-        bll = new BLLManager();
+        bll = BLLManager.getInstance();
         profiles = FXCollections.observableArrayList();
         olTasks = FXCollections.observableArrayList();
     }
