@@ -16,15 +16,15 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.output.OutputDAO;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
 import shoreline_exam_2018.be.output.OutputPair;
+import shoreline_exam_2018.dal.output.Writer;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonDAO implements OutputDAO
+public class JsonWriter implements Writer
 {
     private Path outputPath;
     private FileWriter fw;
@@ -34,17 +34,17 @@ public class JsonDAO implements OutputDAO
     private long lastTime;
 
     @Deprecated
-    public JsonDAO()
+    public JsonWriter()
     {
 
     }
 
     /**
-     * OutputDAO which writes each separate object to an output file.
+     * Writer which writes each separate object to an output file.
      * @param outputPath
      * @throws DALException
      */
-    public JsonDAO(Path outputPath) throws DALException
+    public JsonWriter(Path outputPath) throws DALException
     {
         this.outputPath = outputPath;
         this.isOpen = false;
@@ -207,7 +207,7 @@ public class JsonDAO implements OutputDAO
      * @param time until closing stream.
      * @return
      */
-    private Runnable closeTimer(JsonDAO dao, long time)
+    private Runnable closeTimer(JsonWriter dao, long time)
     {
         Runnable r = new Runnable()
         {
@@ -248,7 +248,7 @@ public class JsonDAO implements OutputDAO
                         // Call an exception handler
                         //
 
-                        Logger.getLogger(JsonDAO.class.getName()).log(Level.SEVERE, null, ex1);
+                        Logger.getLogger(JsonWriter.class.getName()).log(Level.SEVERE, null, ex1);
                     }
                 }
             }

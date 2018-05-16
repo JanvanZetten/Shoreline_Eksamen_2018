@@ -8,7 +8,6 @@ package shoreline_exam_2018.bll.converters;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import org.apache.poi.ss.usermodel.Row;
@@ -20,9 +19,9 @@ import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.bll.BLLExeption;
 import shoreline_exam_2018.bll.ConversionJob;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.filereader.InputFileReader;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
-import shoreline_exam_2018.dal.output.json.JsonDAO;
+import shoreline_exam_2018.dal.output.json.JsonWriter;
+import shoreline_exam_2018.dal.filereader.Reader;
 
 /**
  *
@@ -35,7 +34,7 @@ public class XLSXtoJSONTask extends Task {
     private Path outputFile;
     private MutableBoolean isCanceld;
     private MutableBoolean isOperating;
-    private InputFileReader reader;
+    private Reader reader;
     private RowToOutputPairMapper mapper;
     private ConversionJob job;
     private BooleanProperty isDone;
@@ -83,7 +82,7 @@ public class XLSXtoJSONTask extends Task {
                 outputObjects.add(outputpair);
             }
 
-            new JsonDAO().createFile(outputObjects, outputFile);
+            new JsonWriter().createFile(outputObjects, outputFile);
 
         } catch (DALException | InterruptedException ex) {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
