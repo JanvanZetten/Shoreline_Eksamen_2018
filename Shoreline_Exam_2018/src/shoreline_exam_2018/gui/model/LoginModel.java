@@ -45,6 +45,7 @@ public class LoginModel {
 
     /**
      * Opens the MainView on login. Closes the LoginView. Sets the user that has logged in.
+     * Also writes a log when succesfully logging in.
      * @param root
      * @param loginStage 
      */
