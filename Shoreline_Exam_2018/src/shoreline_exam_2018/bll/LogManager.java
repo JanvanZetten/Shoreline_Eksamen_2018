@@ -15,7 +15,7 @@ import shoreline_exam_2018.dal.DALFacade;
 import shoreline_exam_2018.dal.DALManager;
 
 /**
- *
+ * Manages Log data.
  * @author Asbamz
  */
 public class LogManager
@@ -30,7 +30,7 @@ public class LogManager
     }
 
     /**
-     * Get reference to observable list with logs.
+     * Returns reference to observable list with logs.
      * @return
      */
     public ObservableList<Log> getObsLogList()
@@ -39,7 +39,7 @@ public class LogManager
     }
 
     /**
-     * Get all logs to observable.
+     * Get all logs from data layer and saves it in an observable list.
      * @throws BLLExeption
      */
     public void getAllLogs() throws BLLExeption
@@ -55,7 +55,7 @@ public class LogManager
     }
 
     /**
-     * Add log to data.
+     * Add log to data layer.
      * @param type
      * @param message
      * @param creator

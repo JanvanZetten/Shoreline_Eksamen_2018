@@ -19,7 +19,7 @@ import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.database.connection.DBConnectorPool;
 
 /**
- *
+ * Data Access Object to get and add Logs.
  * @author Asbamz
  */
 public class LogDAO

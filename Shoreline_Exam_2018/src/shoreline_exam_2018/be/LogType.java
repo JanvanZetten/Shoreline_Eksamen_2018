@@ -6,7 +6,7 @@
 package shoreline_exam_2018.be;
 
 /**
- *
+ * The different types of Logs.
  * @author Asbamz
  */
 public enum LogType
