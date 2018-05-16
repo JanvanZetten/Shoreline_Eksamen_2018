@@ -51,9 +51,14 @@ public class LoginController implements Initializable {
      */
     @FXML
     private void handleLogin(ActionEvent event) {
-        model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText(), buttonLogin, preloadMainView, loginStage);
+        model.attemptLogin(textfieldUsername.getText(), textviewPassword.getText(), preloadMainView, loginStage);
     }
     
+    /**
+     * Sets nodes so that LoginModel is able to close LoginView and open MainView.
+     * @param preloadMainView
+     * @param loginStage 
+     */
     public void setPreLoad(Parent preloadMainView, Stage loginStage) {
         this.preloadMainView = preloadMainView;
         this.loginStage = loginStage;
