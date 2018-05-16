@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.Parent;
@@ -60,10 +62,15 @@ public class LoginModel {
             mainStage.setScene(mainScene);
             mainStage.centerOnScreen();
             
-            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in", bll.getcurrentUser());
+            String ipaddress = InetAddress.getLocalHost().toString();
+            String[] split = ipaddress.split("/");
+            
+            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in from the IP address " + split[1], bll.getcurrentUser());
             
             loginStage.close();
         } catch (BLLExeption ex) {
+            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownHostException ex) {
             Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
