@@ -33,6 +33,7 @@ public class BLLManager implements BLLFacade
     private ConversionManager cMan;
     private DALFacade dal;
     private LogManager logMng;
+    private User currentUser;
 
     public BLLManager()
     {
@@ -147,6 +148,15 @@ public class BLLManager implements BLLFacade
     public void addLog(LogType type, String message, User creator) throws BLLExeption
     {
         logMng.addLog(type, message, creator);
+    }
+
+    @Override
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+    }
+    
+    public User getcurrentUser() {
+        return currentUser;
     }
 
 }

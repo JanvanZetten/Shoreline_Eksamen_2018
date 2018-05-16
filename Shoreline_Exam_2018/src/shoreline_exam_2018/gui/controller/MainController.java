@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import shoreline_exam_2018.be.User;
 
 import shoreline_exam_2018.gui.model.MainModel;
 
@@ -53,6 +54,10 @@ public class MainController implements Initializable
         {
             model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings, tabConvert);
         });
+    }
+
+    public void setCurrentUser(User currentUser) {
+        model.setCurrentUser(currentUser);
     }
 
 }

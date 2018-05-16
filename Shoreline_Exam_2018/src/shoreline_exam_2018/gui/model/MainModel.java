@@ -15,6 +15,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.gui.controller.ConvertController;
 import shoreline_exam_2018.gui.controller.ProfilesController;
 
@@ -27,6 +28,7 @@ public class MainModel
 
     private Tab tabConvert;
     private ConvertModel cm;
+    private User currentUser;
 
     /**
      * Sets the tabs in all the tabs of the MainView.
@@ -100,5 +102,9 @@ public class MainModel
     public void setTabConvert(Tab tabConvert)
     {
         this.tabConvert = tabConvert;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
     }
 }
