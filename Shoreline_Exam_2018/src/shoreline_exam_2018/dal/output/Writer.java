@@ -14,7 +14,7 @@ import shoreline_exam_2018.dal.DALException;
  *
  * @author Asbamz
  */
-public interface OutputDAO
+public interface Writer
 {
 
     /**

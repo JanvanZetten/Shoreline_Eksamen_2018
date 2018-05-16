@@ -13,7 +13,7 @@ import shoreline_exam_2018.dal.DALException;
  *
  * @author janvanzetten
  */
-public interface InputFileReader {
+public interface Reader {
     
     /**
      * get the parameters of the file

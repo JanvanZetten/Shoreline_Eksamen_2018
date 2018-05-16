@@ -19,11 +19,11 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import shoreline_exam_2018.dal.output.OutputDAO;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairDate;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairString;
+import shoreline_exam_2018.dal.output.Writer;
 
 /**
  *
@@ -47,13 +47,13 @@ public class JsonDAOTest
     }
 
     /**
-     * Test of createFile method, of class JsonDAO.
+     * Test of createFile method, of class JsonWriter.
      */
     @Test
     public void testCreateFile() throws Exception
     {
         /*
-        System.out.println("JsonDAO:testCreateFile");
+        System.out.println("JsonWriter:testCreateFile");
         List<OutputPair> thisShouldWork = new ArrayList<>();
         thisShouldWork.add(new JsonPairString("siteName", ""));
         thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
@@ -80,7 +80,7 @@ public class JsonDAOTest
         List<OutputPair> jpArr = new ArrayList<>();
         jpArr.add(jsonObj);
 
-        OutputDAO jdao = new JsonDAO();
+        Writer jdao = new JsonWriter();
         jdao.createFile(jpArr, Paths.get(System.getProperty("user.dir") + "/test.json"));
         JsonPairArray jsonArr = new JsonPairArray("jsonArray", jpArr);
 
@@ -109,7 +109,7 @@ public class JsonDAOTest
     }
 
     /**
-     * Test of createFile method, of class JsonDAO.
+     * Test of createFile method, of class JsonWriter.
      */
     @Test
     public void writeObjectToFile() throws Exception
@@ -138,7 +138,7 @@ public class JsonDAOTest
 
         JsonPairJson jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
 
-        OutputDAO jdao = new JsonDAO(Paths.get(System.getProperty("user.dir") + "/test.json"));
+        Writer jdao = new JsonWriter(Paths.get(System.getProperty("user.dir") + "/test.json"));
         jdao.writeObjectToFile(jsonObj);
         Thread.sleep(3000);
         jdao.writeObjectToFile(jsonObj);
