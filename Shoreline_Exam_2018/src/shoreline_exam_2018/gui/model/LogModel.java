@@ -5,8 +5,6 @@
  */
 package shoreline_exam_2018.gui.model;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
