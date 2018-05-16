@@ -59,7 +59,7 @@ public class LogDAO
                 String type = rs.getString("type");
                 String message = rs.getString("message");
                 int createdBy = rs.getInt("createdBy");
-                Date date = rs.getTimestamp("date");
+                Date date = rs.getDate("date");
                 Log log = new Log(logId, LogType.valueOf(type), message, createdBy, date);
 
                 logs.add(log);
@@ -96,11 +96,11 @@ public class LogDAO
 
             Calendar cal = Calendar.getInstance();
 
-            PreparedStatement statement = con.prepareStatement(sql);
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, type.name());
             statement.setString(2, message);
             statement.setInt(3, creator.getId());
-            statement.setTimestamp(4, new java.sql.Timestamp(cal.getTime().getTime()));
+            statement.setDate(4, new java.sql.Date(cal.getTime().getTime()));
 
             statement.executeUpdate();
 
