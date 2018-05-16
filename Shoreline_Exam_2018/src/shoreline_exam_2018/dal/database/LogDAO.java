@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -46,7 +45,7 @@ public class LogDAO
         try
         {
             con = dbcp.checkOut();
-            String sql = "SELECT * FROM Log";
+            String sql = "SELECT l.*, u.id, u.name FROM Log l JOIN [User] u ON u.id = l.createdBy;";
 
             Statement st = con.createStatement();
             ResultSet rs = st.executeQuery(sql);
@@ -58,8 +57,8 @@ public class LogDAO
                 int logId = rs.getInt("id");
                 String type = rs.getString("type");
                 String message = rs.getString("message");
-                int createdBy = rs.getInt("createdBy");
                 Date date = rs.getDate("date");
+                User createdBy = new User(rs.getInt(6), rs.getString("name"));
                 Log log = new Log(logId, LogType.valueOf(type), message, createdBy, date);
 
                 logs.add(log);
@@ -108,7 +107,7 @@ public class LogDAO
             rs.next();
             int id = rs.getInt(1);
 
-            return new Log(id, type, message, creator.getId(), cal.getTime());
+            return new Log(id, type, message, creator, cal.getTime());
         }
         catch (SQLException ex)
         {

@@ -16,10 +16,10 @@ public class Log
     private int id;
     private LogType type;
     private String message;
-    private int createdBy;
+    private User createdBy;
     private Date date;
 
-    public Log(int id, LogType type, String message, int createdBy, Date date)
+    public Log(int id, LogType type, String message, User createdBy, Date date)
     {
         this.id = id;
         this.type = type;
@@ -43,15 +43,12 @@ public class Log
         return message;
     }
 
-    public int getCreatedBy()
+    public User getCreatedBy()
     {
         return createdBy;
     }
     
-    @Override
-    public String toString() {
-        return "Log{" + "id=" + id + ", type=" + type + ", message=" + message + ", createdBy=" + createdBy + '}';
-    }
+    
     public Date getDate()
     {
         return date;

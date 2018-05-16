@@ -30,8 +30,13 @@ public class LogViewController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
          model = new LogModel();
+         model.setListItemString(listviewLog);
          model.loadLogItems();
          listviewLog.setItems(model.getLogItems());
     }    
     
+    @FXML
+    public void updateList() {
+        model.loadLogItems();
+    }
 }
