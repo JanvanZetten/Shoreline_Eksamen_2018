@@ -33,7 +33,7 @@ public class LogModel {
         logList.clear();
         try {
             logList.addAll(bll.getAllLogs());
-        } catch (BLLExeption ex) {
+        } catch (BLLException ex) {
             AlertFactory.showError("Could not load Log items", ex.getMessage());
         }
     }
