@@ -5,8 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import java.util.List;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.User;
@@ -21,32 +20,22 @@ import shoreline_exam_2018.dal.DALManager;
 public class LogManager
 {
     DALFacade dal;
-    ObservableList<Log> logList;
 
     public LogManager()
     {
         this.dal = new DALManager();
-        logList = FXCollections.observableArrayList();
     }
 
     /**
-     * Returns reference to observable list with logs.
-     * @return
-     */
-    public ObservableList<Log> getObsLogList()
-    {
-        return logList;
-    }
-
-    /**
-     * Get all logs from data layer and saves it in an observable list.
+     * Return all logs from data layer.
+     * @return logs
      * @throws BLLExeption
      */
-    public void getAllLogs() throws BLLExeption
+    public List<Log> getAllLogs() throws BLLExeption
     {
         try
         {
-            logList.addAll(dal.getAllLogs());
+            return dal.getAllLogs();
         }
         catch (DALException ex)
         {
@@ -66,9 +55,7 @@ public class LogManager
     {
         try
         {
-            Log log = dal.addLog(type, message, creator);
-            logList.add(log);
-            return log;
+            return dal.addLog(type, message, creator);
         }
         catch (DALException ex)
         {

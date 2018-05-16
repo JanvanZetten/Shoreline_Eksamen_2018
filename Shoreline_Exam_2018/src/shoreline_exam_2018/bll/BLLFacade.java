@@ -65,26 +65,24 @@ public interface BLLFacade
 
     /**
      * Attempts to log the user in. If it fails, it throws back an exception.
-     * @param username  =
+     * @param username =
      * @param password
      * @return
-     * @throws BLLExeption 
+     * @throws BLLExeption
      */
     public User login(String username, String password) throws BLLExeption;
 
     /**
-     * Encrypts the password of a given string. 
-     * @param base  = The password that is to be encrypted
-     * @return      = The encrypted passwaord
-     * @throws BLLExeption 
+     * Encrypts the password of a given string.
+     * @param base = The password that is to be encrypted
+     * @return = The encrypted passwaord
+     * @throws BLLExeption
      */
     public String encrypt(String base) throws BLLExeption;
 
-    public ObservableList<Log> getObsLogList();
+    public List<Log> getAllLogs() throws BLLExeption;
 
-    public void getAllLogs() throws BLLExeption;
+    public Log addLog(LogType type, String message, User creator) throws BLLExeption;
 
-    public void addLog(LogType type, String message, User creator) throws BLLExeption;
-    
     public User getcurrentUser();
 }

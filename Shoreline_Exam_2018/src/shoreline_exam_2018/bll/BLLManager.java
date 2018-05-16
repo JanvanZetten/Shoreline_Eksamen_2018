@@ -27,14 +27,16 @@ import shoreline_exam_2018.dal.DALManager;
  *
  * @author alexl
  */
-public class BLLManager implements BLLFacade {
+public class BLLManager implements BLLFacade
+{
 
     private ConversionManager cMan;
     private DALFacade dal;
     private LogManager logMng;
     private static final BLLManager INSTANCE = new BLLManager();
 
-    private BLLManager() {
+    private BLLManager()
+    {
         cMan = new ConversionManager();
         dal = new DALManager();
         logMng = new LogManager();
@@ -42,70 +44,93 @@ public class BLLManager implements BLLFacade {
 
     /**
      * Singleton method. Guarantees that BLLManager exists only once, and as a
-     * consequence, ensures that other class made by BLLManager also only exist once.
+     * consequence, ensures that other class made by BLLManager also only exist
+     * once.
      *
      * @return
      */
-    public static BLLManager getInstance() {
+    public static BLLManager getInstance()
+    {
         return INSTANCE;
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption {
-        try {
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption
+    {
+        try
+        {
             return dal.addProfile(name, structure, createdBy);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws BLLExeption {
-        try {
+    public List<Profile> getAllProfiles() throws BLLExeption
+    {
+        try
+        {
             return dal.getAllProfiles();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption {
-        try {
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption
+    {
+        try
+        {
             return dal.getHeadersAndExamplesFromFile(path);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption {
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption
+    {
         return cMan.newConversion(taskName, inputFile, outputFile, profile, listJobs);
     }
 
     @Override
-    public User login(String username, String password) throws BLLExeption {
-        try {
+    public User login(String username, String password) throws BLLExeption
+    {
+        try
+        {
             User currentUser = dal.userLogin(username, encrypt(password));
             return currentUser;
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public String encrypt(String base) throws BLLExeption {
-        try {
+    public String encrypt(String base) throws BLLExeption
+    {
+        try
+        {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
             byte[] hash = digest.digest(base.getBytes("UTF-8"));
 
             StringBuffer hexString = new StringBuffer();
 
-            for (int i = 0; i < hash.length; i++) {
+            for (int i = 0; i < hash.length; i++)
+            {
 
                 String hex = Integer.toHexString(0xff & hash[i]);
 
-                if (hex.length() == 1) {
+                if (hex.length() == 1)
+                {
                     hexString.append('0');
                 }
 
@@ -113,28 +138,28 @@ public class BLLManager implements BLLFacade {
             }
 
             return hexString.toString();
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
+        }
+        catch (NoSuchAlgorithmException | UnsupportedEncodingException ex)
+        {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public ObservableList<Log> getObsLogList() {
-        return logMng.getObsLogList();
+    public List<Log> getAllLogs() throws BLLExeption
+    {
+        return logMng.getAllLogs();
     }
 
     @Override
-    public void getAllLogs() throws BLLExeption {
-        logMng.getAllLogs();
+    public Log addLog(LogType type, String message, User creator) throws BLLExeption
+    {
+        return logMng.addLog(type, message, creator);
     }
 
     @Override
-    public void addLog(LogType type, String message, User creator) throws BLLExeption {
-        logMng.addLog(type, message, creator);
-    }
-
-    @Override
-    public User getcurrentUser() {
+    public User getcurrentUser()
+    {
         return dal.getCurrentUser();
     }
 
