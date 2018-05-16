@@ -87,6 +87,12 @@ public class ConverterTask extends Task {
         return null;
     }
 
+    
+    /**
+     * Reads the next row from the reader
+     * @return
+     * @throws BLLExeption 
+     */
     private Row read() throws BLLExeption {
         try {
             return reader.getNextRow();
@@ -95,6 +101,12 @@ public class ConverterTask extends Task {
         }
     }
 
+    /**
+     * converts the row to a outputpair Object
+     * @param input
+     * @return
+     * @throws BLLExeption 
+     */
     private OutputPair convert(Row input) throws BLLExeption {
         try {
             return new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(selectedProfile.getStructure(), input));
@@ -103,6 +115,11 @@ public class ConverterTask extends Task {
         }
     }
 
+    /**
+     * Writes the outputobject
+     * @param output
+     * @throws BLLExeption 
+     */
     private void write(OutputPair output) throws BLLExeption {
         try {
             writer.writeObjectToFile(output);
@@ -111,6 +128,11 @@ public class ConverterTask extends Task {
         }
     }
 
+    
+    /**
+     * does everything for stopping the conversion also for ended conversion
+     * @throws BLLExeption 
+     */
     private void stop() throws BLLExeption {
         isDone.setValue(Boolean.TRUE);
         
