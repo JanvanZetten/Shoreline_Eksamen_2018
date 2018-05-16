@@ -7,7 +7,7 @@ package shoreline_exam_2018.gui.model;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.bll.BLLExeption;
@@ -29,22 +29,28 @@ public class LoginModel {
     }
 
     /**
-     * Logs the user in.
+     * Logs the user in. Displays an error if a wrong login atempt is made.
      */
-    public void attemptLogin(String username, String password, Button button, Parent root, Stage loginStage) {
+    public void attemptLogin(String username, String password, Parent root, Stage loginStage) {
         try {
             currentUser = bll.login(username, password);
-            openMainView(button, root, loginStage);
+            openMainView(root, loginStage);
         } catch (BLLExeption ex) {
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
     }
 
-    private void openMainView(Button button, Parent root, Stage loginStage) {
+    /**
+     * Opens the MainView on login. Closes the LoginView.
+     * @param root
+     * @param loginStage 
+     */
+    private void openMainView(Parent root, Stage loginStage) {
             Scene mainScene = new Scene(root);
             Stage mainStage = new Stage();
             mainStage.setScene(mainScene);
             mainStage.setTitle("Shoreline MappingTool");
+            mainStage.getIcons().add(new Image("shoreline_exam_2018/logo.png"));
             mainStage.show();
             mainStage.setScene(mainScene);
             mainStage.centerOnScreen();

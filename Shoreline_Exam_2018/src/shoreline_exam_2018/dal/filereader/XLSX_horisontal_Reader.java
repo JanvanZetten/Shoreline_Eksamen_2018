@@ -24,7 +24,7 @@ import shoreline_exam_2018.dal.DALException;
  *
  * @author janvanzetten
  */
-public class XLSX_horisontal_Reader implements InputFileReader {
+public class XLSX_horisontal_Reader implements Reader {
 
     private static final long EXPIRATION_TIME = 10000; //in milliseconds
     private long timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;

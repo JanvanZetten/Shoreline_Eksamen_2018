@@ -5,10 +5,10 @@
  */
 package shoreline_exam_2018.bll;
 
-import shoreline_exam_2018.bll.converters.XLSXtoJSONTask;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.converters.ConverterTask;
 
 /**
  *
@@ -38,9 +39,9 @@ public class ConversionThread {
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) {
+    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLExeption {
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
-        task = new XLSXtoJSONTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
+        task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 
         isDone.addListener(new ChangeListener<Boolean>() {
             @Override
@@ -48,6 +49,9 @@ public class ConversionThread {
                 if (newValue) {
                     while (true) {
                         if (job != null) {
+                            Platform.runLater(() -> {
+                                job.conversionDone();
+                            });
                             break;
                         } else {
                             try {

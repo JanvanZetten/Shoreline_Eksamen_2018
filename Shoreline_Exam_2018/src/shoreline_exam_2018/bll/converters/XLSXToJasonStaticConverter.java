@@ -14,12 +14,12 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.dal.DALException;
-import shoreline_exam_2018.dal.filereader.InputFileReader;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
-import shoreline_exam_2018.dal.output.OutputDAO;
-import shoreline_exam_2018.dal.output.json.JsonDAO;
+import shoreline_exam_2018.dal.output.json.JsonWriter;
 import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.dal.output.Writer;
+import shoreline_exam_2018.dal.filereader.Reader;
 
 /**
  *
@@ -27,7 +27,7 @@ import shoreline_exam_2018.bll.BLLExeption;
  */
 public class XLSXToJasonStaticConverter {
 
-    InputFileReader inputReader;
+    Reader inputReader;
     String jsonFilePath;
     int counter = 0;
 
@@ -124,7 +124,7 @@ public class XLSXToJasonStaticConverter {
                 outputObjects.add(outputpair);
             }
 
-            OutputDAO output = new JsonDAO();
+            Writer output = new JsonWriter();
             output.createFile(outputObjects, Paths.get(jsonFilePath));
 
         } catch (DALException ex) {

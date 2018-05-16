@@ -26,8 +26,7 @@ public class Shoreline_Exam_2018 extends Application {
     LoginController loginController;
 
     /**
-     * this does the slow startup stuff because of preloader
-     *
+     * This does the slow startup stuff because of preloader
      * @throws Exception
      */
     @Override
@@ -37,14 +36,13 @@ public class Shoreline_Exam_2018 extends Application {
 
         scene = new Scene(root);
         logo = new Image("shoreline_exam_2018/logo.png");
+        
         preloadMainView = FXMLLoader.load(getClass().getResource("/shoreline_exam_2018/gui/view/MainView.fxml"));
-
         loginController = (LoginController) loader.getController();
     }
 
     /**
      * This does the startup stuff wich need the JavaFX thread
-     *
      * @param stage
      * @throws Exception
      */
