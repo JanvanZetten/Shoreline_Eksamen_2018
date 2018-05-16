@@ -14,6 +14,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.converters.ConverterTask;
@@ -32,6 +33,7 @@ public class ConversionThread
     private MutableBoolean isOperating = new MutableBoolean(true);
     private BooleanProperty isDone;
     private ConversionJob job = null;
+    private BLLFacade bll;
 
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
@@ -43,6 +45,7 @@ public class ConversionThread
      */
     public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
     {
+        bll = BLLManager.getInstance();
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
         task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 
@@ -119,22 +122,51 @@ public class ConversionThread
     {
         thread = new Thread(task);
         thread.setDaemon(true);
+
+        // On failure.
         task.setOnFailed(e ->
         {
+            // Get exception.
             Throwable ex = task.getException();
+
+            // If any exception was caught.
             if (ex != null)
             {
+                String header = "Conversion Error";
                 try
                 {
+                    // Stop task.
                     task.stop();
-                    AlertFactory.showError("Conversion Error", ex.getMessage());
+
+                    // Show Alert window.
+                    AlertFactory.showError(header, ex.getMessage());
+
+                    // Log error.
+                    try
+                    {
+                        bll.addLog(LogType.CONVERSION, ex.getMessage(), bll.getcurrentUser());
+                    }
+                    catch (BLLException ex2)
+                    {
+                        AlertFactory.showError("Log Error", "Error logging to database.");
+                    }
                 }
                 catch (BLLException ex1)
                 {
-                    AlertFactory.showError("Conversion Error", "Error trying to stop converter task on error: " + ex1.getMessage());
+                    String str = "Error trying to stop converter task on error: " + ex1.getMessage();
+                    AlertFactory.showError(header, str);
+                    try
+                    {
+                        bll.addLog(LogType.CONVERSION, str, bll.getcurrentUser());
+                    }
+                    catch (BLLException ex2)
+                    {
+                        AlertFactory.showError("Log Error", "Error logging to database.");
+                    }
                 }
             }
         });
+
         thread.start();
     }
 
