@@ -21,6 +21,8 @@ import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.database.LogDAO;
 import shoreline_exam_2018.dal.database.ProfileDAO;
 import shoreline_exam_2018.dal.database.UserDAO;
+import shoreline_exam_2018.dal.filereader.Reader;
+import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader_for_Big_Documents;
 
 /**
  *
@@ -32,7 +34,7 @@ public class DALManager implements DALFacade
     private ProfileDAO profileDAO;
     private UserDAO userDAO;
     private LogDAO logDAO;
-    private XLSX_horisontal_Reader xhr;
+    private Reader reader;
 
     private User currentUser;
 
@@ -58,13 +60,13 @@ public class DALManager implements DALFacade
     @Override
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException
     {
-        xhr = new XLSX_horisontal_Reader(path.toString());
+        reader = new XLSX_horisontal_Reader_for_Big_Documents(path.toString());
         HashMap<String, Entry<Integer, String>> hae = new HashMap();
-        List<String> headers = xhr.getParameters();
+        List<String> headers = reader.getParameters();
         Row row = null;
-        if (xhr.hasNext())
+        if (reader.hasNext())
         {
-            row = xhr.getNextRow();
+            row = reader.getNextRow();
         }
 
         for (int i = 0; i < headers.size(); i++)
