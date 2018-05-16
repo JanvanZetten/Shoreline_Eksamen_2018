@@ -28,6 +28,8 @@ public interface DALFacade
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException;
 
     public User userLogin(String user, String password) throws DALException;
+    
+    public User getCurrentUser();
 
     public List<Log> getAllLogs() throws DALException;
 

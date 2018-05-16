@@ -5,10 +5,8 @@
  */
 package shoreline_exam_2018.gui.model;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,7 +16,6 @@ import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.bll.BLLExeption;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
-import shoreline_exam_2018.gui.controller.MainController;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
@@ -28,7 +25,6 @@ import shoreline_exam_2018.gui.model.AlertFactory;
 public class LoginModel {
 
     private BLLFacade bll;
-    private User currentUser;
 
     public LoginModel() {
         bll = new BLLManager();
@@ -39,7 +35,7 @@ public class LoginModel {
      */
     public void attemptLogin(String username, String password, Parent root, Stage loginStage) {
         try {
-            currentUser = bll.login(username, password);
+            bll.login(username, password);
             openMainView(root, loginStage);
             
         } catch (BLLExeption ex) {
@@ -63,12 +59,11 @@ public class LoginModel {
             mainStage.setScene(mainScene);
             mainStage.centerOnScreen();
             
-            bll.setCurrentUser(currentUser);
-            bll.addLog(LogType.LOGIN, "User " + currentUser.getName() + " has logged in", currentUser);
+            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in", bll.getcurrentUser());
             
             loginStage.close();
         } catch (BLLExeption ex) {
-            AlertFactory.showError("An error has occured", "Could not create log object.");
-        }
+            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+        } 
     }
 }

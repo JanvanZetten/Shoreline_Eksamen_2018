@@ -5,7 +5,6 @@
  */
 package shoreline_exam_2018.dal;
 
-import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
@@ -109,6 +108,11 @@ public class DALManager implements DALFacade
     public User userLogin(String user, String password) throws DALException
     {
         currentUser = userDAO.login(user, password);
+        return currentUser;
+    }
+    
+    @Override
+    public User getCurrentUser() {
         return currentUser;
     }
 

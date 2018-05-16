@@ -43,4 +43,11 @@ public class Log
     {
         return createdBy;
     }
+
+    @Override
+    public String toString() {
+        return "Log{" + "id=" + id + ", type=" + type + ", message=" + message + ", createdBy=" + createdBy + '}';
+    }
+    
+    
 }

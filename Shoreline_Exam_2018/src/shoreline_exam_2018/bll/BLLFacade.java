@@ -86,5 +86,5 @@ public interface BLLFacade
 
     public void addLog(LogType type, String message, User creator) throws BLLExeption;
     
-    public void setCurrentUser(User currentUser);
+    public User getcurrentUser();
 }
