@@ -56,10 +56,13 @@ public class ConverterTask extends Task {
 
     @Override
     protected Object call() throws Exception {
+        updateProgress(0,1);
         int currentrow = 0;
         int totalRows = reader.numberOfRows();
 
         while (reader.hasNext()) {
+            Row input = read();
+            
             currentrow++;
 
             updateProgress(currentrow, totalRows);
@@ -72,9 +75,6 @@ public class ConverterTask extends Task {
                 Thread.sleep(1000);
             }
 
-            
-            
-            Row input = read();
 
             OutputPair output = convert(input);
 
