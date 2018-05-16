@@ -9,6 +9,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.bll.BLLExeption;
 import shoreline_exam_2018.bll.BLLFacade;
@@ -18,33 +20,45 @@ import shoreline_exam_2018.bll.BLLManager;
  *
  * @author janvanzetten
  */
-public class LogModel
-{
+public class LogModel {
 
     ObservableList<Log> logList;
     BLLFacade bll = BLLManager.getInstance();
 
-    public LogModel()
-    {
+    public LogModel() {
         logList = FXCollections.observableArrayList();
     }
 
-    public void loadLogItems()
-    {
+    public void loadLogItems() {
         logList.clear();
-        try
-        {
+        try {
             logList.addAll(bll.getAllLogs());
-        }
-        catch (BLLExeption ex)
-        {
+        } catch (BLLExeption ex) {
             AlertFactory.showError("Could not load Log items", ex.getMessage());
         }
     }
 
-    public ObservableList<Log> getLogItems()
-    {
+    public ObservableList<Log> getLogItems() {
         return logList;
+    }
+
+    public void setListItemString(ListView<Log> listviewLog) {
+        listviewLog.setCellFactory(param -> new ListCell<Log>() {
+            @Override
+            protected void updateItem(Log item, boolean empty) {
+                super.updateItem(item, empty);
+
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(getName(item));
+                }
+            }
+
+            private String getName(Log item) {
+                return item.getMessage() + " : " + item.getDate().toString();
+            }
+        });
     }
 
 }
