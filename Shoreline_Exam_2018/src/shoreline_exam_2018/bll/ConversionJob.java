@@ -34,7 +34,8 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public class ConversionJob extends HBox {
+public class ConversionJob extends HBox
+{
 
     private Label lblConversionName;
     private ProgressBar progress;
@@ -57,9 +58,10 @@ public class ConversionJob extends HBox {
             ConversionThread cThread,
             Path outputPath,
             Profile selectedProfile,
-            ListView<ConversionJob> listJobs) {
+            ListView<ConversionJob> listJobs)
+    {
         super();
-        
+
         bll = BLLManager.getInstance();
 
         this.listJobs = listJobs;
@@ -88,7 +90,8 @@ public class ConversionJob extends HBox {
      *
      * @param conversionName
      */
-    private void setLabelInfo(String conversionName) {
+    private void setLabelInfo(String conversionName)
+    {
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
         lblConversionName.setStyle("-fx-font-size: 20px");
@@ -99,7 +102,8 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setProgressBarInfo(ConversionThread cThread) {
+    private void setProgressBarInfo(ConversionThread cThread)
+    {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
@@ -112,7 +116,8 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setPauseButtonInfo(ConversionThread cThread) {
+    private void setPauseButtonInfo(ConversionThread cThread)
+    {
         btnPause.setStyle("-fx-background-color: transparent;");
         Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
@@ -122,13 +127,18 @@ public class ConversionJob extends HBox {
         ImageView imageViewResume = new ImageView(imageResume);
 
         //NOT WORKING.
-        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+        btnPause.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
-                if (cThread.isOperating() == true) {
+            public void handle(ActionEvent event)
+            {
+                if (cThread.isOperating() == true)
+                {
                     cThread.pauseTask();
                     btnPause.setGraphic(imageViewResume);
-                } else if (cThread.isOperating() == false) {
+                }
+                else if (cThread.isOperating() == false)
+                {
                     cThread.resumeTask();
                     btnPause.setGraphic(imageViewPause);
                 }
@@ -141,31 +151,29 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile, Path outputPath) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile, Path outputPath)
+    {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
 
-        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Cancel confirmation");
                 alert.setHeaderText("Cancelling conversion");
                 alert.setContentText("Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
-                    try {
-                        cThread.cancelTask();
-                        listJobs.getItems().remove(ConversionJob.this);
-                        //Deletes the output file from the outputPath.
-                        Files.delete(outputPath);
-                    } catch (IOException ex) {
-                        //DO NOTHING
-                    }
-                } 
+                if (result.get() == ButtonType.OK)
+                {
+                    cThread.cancelTask();
+                    listJobs.getItems().remove(ConversionJob.this);
+                }
             }
         });
     }
@@ -176,13 +184,14 @@ public class ConversionJob extends HBox {
      *
      * @param grid
      */
-    private void setGridInfo(GridPane grid) {
+    private void setGridInfo(GridPane grid)
+    {
         this.setHgrow(grid, Priority.ALWAYS);
 
         Region filler1 = new Region();
         filler1.setMaxWidth(100);
         filler1.setMinWidth(100);
-        
+
         Region filler2 = new Region();
         filler2.setMaxWidth(100);
         filler2.setMinWidth(100);
@@ -199,7 +208,7 @@ public class ConversionJob extends HBox {
 
         ColumnConstraints alwaysGrow = new ColumnConstraints();
         alwaysGrow.setHgrow(Priority.ALWAYS);
-        
+
         grid.getColumnConstraints().addAll(
                 neverGrow,
                 alwaysGrow,
@@ -208,17 +217,13 @@ public class ConversionJob extends HBox {
                 neverGrow,
                 neverGrow);
     }
-    
+
     /**
-     * Removes itself from the list given in the constructer. 
-     * Also writes a log when a conversion is succesfully done.
+     * Removes itself from the list given in the constructer. Also writes a log
+     * when a conversion is succesfully done.
      */
-    void conversionDone() {
-        try {
-            listJobs.getItems().remove(ConversionJob.this);
-            bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + lblConversionName.getText(), bll.getcurrentUser());
-        } catch (BLLException ex) {
-            Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    void conversionDone()
+    {
+        listJobs.getItems().remove(ConversionJob.this);
     }
 }

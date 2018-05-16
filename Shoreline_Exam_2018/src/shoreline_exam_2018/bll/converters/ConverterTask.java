@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.bll.converters;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
@@ -54,6 +56,7 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
+            System.out.println("Constructor: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -76,6 +79,8 @@ public class ConverterTask extends Task
             if (isCanceld.getValue())
             {
                 stop();
+                //Deletes the output file from the outputPath.
+                Files.delete(outputFile);
                 return null;
             }
             while (!isOperating.getValue())
@@ -107,6 +112,7 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
+            System.out.println("read: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -125,6 +131,7 @@ public class ConverterTask extends Task
         }
         catch (BLLException ex)
         {
+            System.out.println("convert: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -142,6 +149,7 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
+            System.out.println("write: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -152,14 +160,13 @@ public class ConverterTask extends Task
      */
     public void stop() throws BLLException
     {
-        isDone.setValue(Boolean.TRUE);
-
         try
         {
             writer.closeStream();
         }
         catch (DALException ex)
         {
+            System.out.println("stop: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }

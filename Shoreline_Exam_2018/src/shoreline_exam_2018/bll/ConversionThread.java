@@ -18,6 +18,7 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.converters.ConverterTask;
+import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
@@ -26,7 +27,7 @@ import shoreline_exam_2018.gui.model.AlertFactory;
  */
 public class ConversionThread
 {
-
+    private String taskName;
     private ConverterTask task;
     private Thread thread;
     private MutableBoolean isCanceled = new MutableBoolean(false);
@@ -43,8 +44,9 @@ public class ConversionThread
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
+    public ConversionThread(String taskName, Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
     {
+        this.taskName = taskName;
         bll = BLLManager.getInstance();
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
         task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
@@ -127,16 +129,17 @@ public class ConversionThread
         task.setOnFailed(e ->
         {
             // Get exception.
-            Throwable ex = task.getException();
+            Exception ex = (Exception) task.getException();
 
             // If any exception was caught.
             if (ex != null)
             {
-                String header = "Conversion Error";
-                try
+                if (ex instanceof DALException || ex instanceof BLLException)
                 {
+                    String header = "Conversion Error";
+
                     // Stop task.
-                    task.stop();
+                    isCanceled.setValue(true);
 
                     // Show Alert window.
                     AlertFactory.showError(header, ex.getMessage());
@@ -150,23 +153,27 @@ public class ConversionThread
                     {
                         AlertFactory.showError("Log Error", "Error logging to database.");
                     }
-                }
-                catch (BLLException ex1)
-                {
-                    String str = "Error trying to stop converter task on error: " + ex1.getMessage();
-                    AlertFactory.showError(header, str);
-                    try
-                    {
-                        bll.addLog(LogType.CONVERSION, str, bll.getcurrentUser());
-                    }
-                    catch (BLLException ex2)
-                    {
-                        AlertFactory.showError("Log Error", "Error logging to database.");
-                    }
+
+                    // Stop task.
+                    isCanceled.setValue(true);
                 }
             }
         });
 
+        // On success.
+        task.setOnSucceeded(e ->
+        {
+            isDone.setValue(Boolean.TRUE);
+
+            try
+            {
+                bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + taskName, bll.getcurrentUser());
+            }
+            catch (BLLException ex)
+            {
+                AlertFactory.showError("Log Error", "Error logging to database.");
+            }
+        });
         thread.start();
     }
 
