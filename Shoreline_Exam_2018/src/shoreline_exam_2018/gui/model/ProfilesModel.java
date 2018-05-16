@@ -202,7 +202,7 @@ public class ProfilesModel
                     cm.addProfile(profile);
                 }
 
-                //bll.addLog(LogType.PROFILE, "Profile " + tp.get() + " was successfully added to the system.", creator);
+                bll.addLog(LogType.PROFILE, "Profile " + tp.get() + " was successfully added to the system.", bll.getcurrentUser());
                 AlertFactory.showInformation("Success", "Profile has successfully been added to the system.");
 
                 clearView();
