@@ -27,6 +27,9 @@ public class LogModel {
         logList = FXCollections.observableArrayList();
     }
 
+    /**
+     * load/reload the logItems and put it in the observable list 
+     */
     public void loadLogItems() {
         logList.clear();
         try {
@@ -36,10 +39,20 @@ public class LogModel {
         }
     }
 
+    
+    /**
+     * get observable list with log items
+     * @return 
+     */
     public ObservableList<Log> getLogItems() {
         return logList;
     }
 
+    
+    /**
+     * sets the listitem text for logitems 
+     * @param listviewLog for which to set the text
+     */
     public void setListItemString(ListView<Log> listviewLog) {
         listviewLog.setCellFactory(param -> new ListCell<Log>() {
             @Override
