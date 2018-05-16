@@ -27,7 +27,6 @@ public class Shoreline_Exam_2018 extends Application {
 
     /**
      * This does the slow startup stuff because of preloader
-     * Sets
      * @throws Exception
      */
     @Override
@@ -44,7 +43,6 @@ public class Shoreline_Exam_2018 extends Application {
 
     /**
      * This does the startup stuff wich need the JavaFX thread
-     *
      * @param stage
      * @throws Exception
      */
