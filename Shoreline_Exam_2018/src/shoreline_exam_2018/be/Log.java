@@ -6,7 +6,7 @@
 package shoreline_exam_2018.be;
 
 /**
- *
+ * Business Entity representation of a Log.
  * @author Asbamz
  */
 public class Log
