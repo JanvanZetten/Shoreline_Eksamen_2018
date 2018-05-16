@@ -119,16 +119,20 @@ public class ConversionThread
     {
         thread = new Thread(task);
         thread.setDaemon(true);
-        thread.setUncaughtExceptionHandler((t, e) ->
+        task.setOnFailed(e ->
         {
-            try
+            Throwable ex = task.getException();
+            if (ex != null)
             {
-                task.stop();
-                AlertFactory.showError("Conversion Error", e.getMessage());
-            }
-            catch (BLLException ex)
-            {
-                AlertFactory.showError("Conversion Error", "Error trying to stop converter task on error: " + e.getMessage());
+                try
+                {
+                    task.stop();
+                    AlertFactory.showError("Conversion Error", ex.getMessage());
+                }
+                catch (BLLException ex1)
+                {
+                    AlertFactory.showError("Conversion Error", "Error trying to stop converter task on error: " + ex1.getMessage());
+                }
             }
         });
         thread.start();

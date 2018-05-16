@@ -26,7 +26,6 @@ import shoreline_exam_2018.dal.output.json.JsonWriter;
  */
 public class ConverterTask extends Task
 {
-
     Reader reader;
     Writer writer;
     RowToOutputPairMapper mapper;
