@@ -24,6 +24,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
+import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
@@ -201,7 +202,8 @@ public class ProfilesModel
                     cm.addProfile(profile);
                 }
 
-                AlertFactory.showInformation("Success", "Profile has succesfully been added to the system.");
+                //bll.addLog(LogType.PROFILE, "Profile " + tp.get() + " was successfully added to the system.", creator);
+                AlertFactory.showInformation("Success", "Profile has successfully been added to the system.");
 
                 clearView();
 

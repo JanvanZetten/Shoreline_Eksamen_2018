@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.be;
 
+import java.util.Date;
+
 /**
  * Business Entity representation of a Log.
  * @author Asbamz
@@ -15,13 +17,15 @@ public class Log
     private LogType type;
     private String message;
     private int createdBy;
+    private Date date;
 
-    public Log(int id, LogType type, String message, int createdBy)
+    public Log(int id, LogType type, String message, int createdBy, Date date)
     {
         this.id = id;
         this.type = type;
         this.message = message;
         this.createdBy = createdBy;
+        this.date = date;
     }
 
     public int getId()
@@ -42,5 +46,10 @@ public class Log
     public int getCreatedBy()
     {
         return createdBy;
+    }
+
+    public Date getDate()
+    {
+        return date;
     }
 }

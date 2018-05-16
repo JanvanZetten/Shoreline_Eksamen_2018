@@ -10,7 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
@@ -56,7 +59,8 @@ public class LogDAO
                 String type = rs.getString("type");
                 String message = rs.getString("message");
                 int createdBy = rs.getInt("createdBy");
-                Log log = new Log(logId, LogType.valueOf(type), message, createdBy);
+                Date date = rs.getTimestamp("date");
+                Log log = new Log(logId, LogType.valueOf(type), message, createdBy, date);
 
                 logs.add(log);
             }
@@ -88,12 +92,15 @@ public class LogDAO
         try
         {
             con = dbcp.checkOut();
-            String sql = "INSERT INTO Log VALUES(?, ?, ?);";
+            String sql = "INSERT INTO Log VALUES(?, ?, ?, ?);";
+
+            Calendar cal = Calendar.getInstance();
 
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setString(1, type.name());
             statement.setString(2, message);
             statement.setInt(3, creator.getId());
+            statement.setTimestamp(4, new java.sql.Timestamp(cal.getTime().getTime()));
 
             statement.executeUpdate();
 
@@ -101,7 +108,7 @@ public class LogDAO
             rs.next();
             int id = rs.getInt(1);
 
-            return new Log(id, type, message, creator.getId());
+            return new Log(id, type, message, creator.getId(), cal.getTime());
         }
         catch (SQLException ex)
         {
