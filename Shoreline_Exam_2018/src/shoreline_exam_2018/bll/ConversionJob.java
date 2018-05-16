@@ -203,4 +203,10 @@ public class ConversionJob extends HBox {
                 neverGrow);
     }
     
+    /**
+     * Removes itself from the list given in the constructer
+     */
+    void conversionDone() {
+        listJobs.getItems().remove(ConversionJob.this);
+    }
 }

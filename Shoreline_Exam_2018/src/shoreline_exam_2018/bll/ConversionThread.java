@@ -9,6 +9,7 @@ import shoreline_exam_2018.bll.converters.XLSXtoJSONTask;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
@@ -48,6 +49,9 @@ public class ConversionThread {
                 if (newValue) {
                     while (true) {
                         if (job != null) {
+                            Platform.runLater(() -> {
+                                job.conversionDone();
+                            });
                             break;
                         } else {
                             try {

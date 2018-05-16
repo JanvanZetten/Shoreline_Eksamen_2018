@@ -60,12 +60,12 @@ public class BLLManager implements BLLFacade {
             throw new BLLExeption(ex.getMessage(), ex.getCause());
         }
     }
-
+    
     @Override
     public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption {
         return cMan.newConversion(taskName, inputFile, outputFile, profile, listJobs);
     }
-
+    
     @Override
     public User login(String username, String password) throws BLLExeption{
         try {
