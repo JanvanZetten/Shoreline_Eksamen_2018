@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -25,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
+import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 
 /**
@@ -38,6 +41,7 @@ public class ConversionJob extends HBox {
     private Button btnPause;
     private Button btnCancel;
     private ListView<ConversionJob> listJobs;
+    private BLLManager bll;
 
     private int BUTTON_SIZE = 36;
 
@@ -55,6 +59,8 @@ public class ConversionJob extends HBox {
             Profile selectedProfile,
             ListView<ConversionJob> listJobs) {
         super();
+        
+        bll = BLLManager.getInstance();
 
         this.listJobs = listJobs;
 
@@ -207,6 +213,11 @@ public class ConversionJob extends HBox {
      * Removes itself from the list given in the constructer
      */
     void conversionDone() {
-        listJobs.getItems().remove(ConversionJob.this);
+        try {
+            listJobs.getItems().remove(ConversionJob.this);
+            bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + lblConversionName.getText(), bll.getcurrentUser());
+        } catch (BLLExeption ex) {
+            Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
