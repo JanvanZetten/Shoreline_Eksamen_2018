@@ -38,8 +38,6 @@ public class ConversionManager
         String[] inputSplit = inputString.split("\\.");
         String[] outputSplit = outptuString.split("\\.");
 
-        System.out.println(inputPath.toString());
-
         inputExtension = inputSplit[inputSplit.length - 1];
         outputExtension = outputSplit[outputSplit.length - 1];
 

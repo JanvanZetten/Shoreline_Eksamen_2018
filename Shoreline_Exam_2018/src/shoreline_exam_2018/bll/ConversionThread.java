@@ -64,7 +64,7 @@ public class ConversionThread
                         {
                             Platform.runLater(() ->
                             {
-                                job.conversionDone();
+                                job.removeFromList();
                             });
                             break;
                         }
@@ -156,6 +156,7 @@ public class ConversionThread
 
                     // Stop task.
                     isCanceled.setValue(true);
+                    job.removeFromList();
                 }
             }
         });

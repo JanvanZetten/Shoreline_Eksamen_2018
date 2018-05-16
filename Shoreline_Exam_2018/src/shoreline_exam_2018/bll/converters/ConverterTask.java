@@ -40,7 +40,6 @@ public class ConverterTask extends Task
 
     public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
     {
-
         try
         {
             reader = new XLSX_horisontal_Reader_for_Big_Documents(inputFile.toString());
@@ -52,11 +51,9 @@ public class ConverterTask extends Task
             this.isCanceld = isCanceld;
             this.isOperating = isOperating;
             this.isDone = isDone;
-
         }
         catch (DALException ex)
         {
-            System.out.println("Constructor: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -64,39 +61,50 @@ public class ConverterTask extends Task
     @Override
     protected Object call() throws Exception
     {
-        updateProgress(0, 1);
-        int currentrow = 0;
-        int totalRows = reader.numberOfRows();
-
-        while (reader.hasNext())
+        try
         {
-            Row input = read();
+            updateProgress(0, 1);
+            int currentrow = 0;
+            int totalRows = reader.numberOfRows();
 
-            currentrow++;
-
-            updateProgress(currentrow, totalRows);
-
-            if (isCanceld.getValue())
+            while (reader.hasNext())
             {
-                stop();
-                //Deletes the output file from the outputPath.
-                Files.delete(outputFile);
-                return null;
+                Row input = read();
+
+                currentrow++;
+
+                updateProgress(currentrow, totalRows);
+
+                if (isCanceld.getValue())
+                {
+                    stop();
+                    //Deletes the output file from the outputPath.
+                    Files.delete(outputFile);
+                    return null;
+                }
+                while (!isOperating.getValue())
+                {
+                    Thread.sleep(1000);
+                }
+
+                OutputPair output = convert(input);
+
+                write(output);
+
             }
-            while (!isOperating.getValue())
-            {
-                Thread.sleep(1000);
-            }
 
-            OutputPair output = convert(input);
+            stop();
 
-            write(output);
-
+            return null;
         }
+        catch (BLLException | DALException ex)
+        {
+            stop();
+            //Deletes the output file from the outputPath.
+            Files.delete(outputFile);
 
-        stop();
-
-        return null;
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
     }
 
     /**
@@ -112,7 +120,6 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
-            System.out.println("read: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -131,7 +138,6 @@ public class ConverterTask extends Task
         }
         catch (BLLException ex)
         {
-            System.out.println("convert: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -149,7 +155,6 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
-            System.out.println("write: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -166,7 +171,6 @@ public class ConverterTask extends Task
         }
         catch (DALException ex)
         {
-            System.out.println("stop: " + ex.getMessage());
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }

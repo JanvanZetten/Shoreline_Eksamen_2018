@@ -219,10 +219,9 @@ public class ConversionJob extends HBox
     }
 
     /**
-     * Removes itself from the list given in the constructer. Also writes a log
-     * when a conversion is succesfully done.
+     * Removes itself from the list given in the constructer.
      */
-    void conversionDone()
+    void removeFromList()
     {
         listJobs.getItems().remove(ConversionJob.this);
     }
