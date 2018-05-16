@@ -23,16 +23,24 @@ public class MainController implements Initializable
 {
 
     private MainModel model;
+    
     @FXML
     private Tab tabConvert;
     @FXML
     private Tab tabProfiles;
     @FXML
+    private Tab tabLog;
+    @FXML
+    private Tab tabSettings;
+    
+    @FXML
     private AnchorPane paneConvert;
     @FXML
     private AnchorPane paneProfiles;
-    private AnchorPane paneLog = new AnchorPane();
-    private AnchorPane paneSettings = new AnchorPane();
+    @FXML
+    private AnchorPane paneLog;
+    @FXML
+    private AnchorPane paneSettings;
 
     /**
      * Initializes the MainController.
