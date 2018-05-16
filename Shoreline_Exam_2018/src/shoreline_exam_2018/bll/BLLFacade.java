@@ -9,7 +9,10 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
+import shoreline_exam_2018.be.Log;
+import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
@@ -22,41 +25,44 @@ public interface BLLFacade
 {
 
     /**
-     * Starts a conversion with the given input and output file using the given profile.
-     * @param taskName      = Name for the conversion job.
-     * @param inputFile     = The input file that is being converted.
-     * @param outputFile    = The output file that is being converted to.
-     * @param profile       = The profile that is used for the conversion.
-     * @return              = A converison job.
+     * Starts a conversion with the given input and output file using the given
+     * profile.
+     * @param taskName = Name for the conversion job.
+     * @param inputFile = The input file that is being converted.
+     * @param outputFile = The output file that is being converted to.
+     * @param profile = The profile that is used for the conversion.
+     * @return = A converison job.
      * @throws BLLExeption
      */
     public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption;
 
     /**
      * Adds a profile to the database.
-     * @param name          = Name of the profile.
-     * @param structure     = The StructEntityObject that determines how it should convert.
-     * @param createdBy     = ID of the user who created the profile.
-     * @return              = The profile that was made with this method.
-     * @throws BLLExeption 
+     * @param name = Name of the profile.
+     * @param structure = The StructEntityObject that determines how it should
+     * convert.
+     * @param createdBy = ID of the user who created the profile.
+     * @return = The profile that was made with this method.
+     * @throws BLLExeption
      */
     public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption;
 
     /**
      * Gets all profiles from the database and returns them in a list.
      * @return
-     * @throws BLLExeption 
+     * @throws BLLExeption
      */
     public List<Profile> getAllProfiles() throws BLLExeption;
 
     /**
-     * Returns a hashmap that shows headers and examples when creating a profile.
-     * @param path          = The path to the file.
+     * Returns a hashmap that shows headers and examples when creating a
+     * profile.
+     * @param path = The path to the file.
      * @return
-     * @throws BLLExeption 
+     * @throws BLLExeption
      */
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption;
-    
+
     /**
      * Attempts to log the user in. If it fails, it throws back an exception.
      * @param username  =
@@ -65,7 +71,7 @@ public interface BLLFacade
      * @throws BLLExeption 
      */
     public User login(String username, String password) throws BLLExeption;
-    
+
     /**
      * Encrypts the password of a given string. 
      * @param base  = The password that is to be encrypted
@@ -73,4 +79,10 @@ public interface BLLFacade
      * @throws BLLExeption 
      */
     public String encrypt(String base) throws BLLExeption;
+
+    public ObservableList<Log> getObsLogList();
+
+    public void getAllLogs() throws BLLExeption;
+
+    public void addLog(LogType type, String message, User creator) throws BLLExeption;
 }

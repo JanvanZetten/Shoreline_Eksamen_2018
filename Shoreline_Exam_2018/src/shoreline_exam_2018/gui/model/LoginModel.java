@@ -7,7 +7,6 @@ package shoreline_exam_2018.gui.model;
 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shoreline_exam_2018.be.User;
@@ -30,7 +29,7 @@ public class LoginModel {
     }
 
     /**
-     * Logs the user in.
+     * Logs the user in. Displays an error if a wrong login atempt is made.
      */
     public void attemptLogin(String username, String password, Parent root, Stage loginStage) {
         try {
@@ -41,6 +40,11 @@ public class LoginModel {
         }
     }
 
+    /**
+     * Opens the MainView on login. Closes the LoginView.
+     * @param root
+     * @param loginStage 
+     */
     private void openMainView(Parent root, Stage loginStage) {
             Scene mainScene = new Scene(root);
             Stage mainStage = new Stage();
