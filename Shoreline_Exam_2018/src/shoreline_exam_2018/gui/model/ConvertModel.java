@@ -24,6 +24,7 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 
 /**
  *
@@ -90,6 +91,7 @@ public class ConvertModel {
         try {
             profiles.addAll(bll.getAllProfiles());
         } catch (BLLException ex) {
+            LoggingHelper.logException(ex);
             AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
         }
 
@@ -156,6 +158,7 @@ public class ConvertModel {
             try {
                 startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
             } catch (BLLException ex) {
+                LoggingHelper.logException(ex);
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
             

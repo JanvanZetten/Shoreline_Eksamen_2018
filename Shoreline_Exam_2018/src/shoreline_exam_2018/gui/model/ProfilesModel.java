@@ -30,6 +30,7 @@ import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.bll.Utilities.StructEntityUtils;
 
 /**
@@ -146,6 +147,7 @@ public class ProfilesModel
         }
         catch (BLLException ex)
         {
+            LoggingHelper.logException(ex);
             AlertFactory.showError("Could not get data from file", "The program was unable to get any data from " + path.toString() + ", Try another file");
         }
     }
@@ -215,6 +217,7 @@ public class ProfilesModel
             }
             catch (BLLException ex)
             {
+                LoggingHelper.logException(ex);
                 AlertFactory.showError("Data error", "An error happened trying to save the profile.\nERROR: " + ex.getMessage());
             }
         }

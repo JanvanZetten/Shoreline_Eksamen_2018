@@ -16,6 +16,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import shoreline_exam_2018.be.User;
+import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.gui.controller.ConvertController;
 import shoreline_exam_2018.gui.controller.ProfilesController;
 
@@ -87,10 +88,12 @@ public class MainModel
         }
         catch (MalformedURLException ex)
         {
+            LoggingHelper.logException(ex);
             Logger.getLogger(MainModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         catch (IOException ex)
         {
+            LoggingHelper.logException(ex);
             Logger.getLogger(MainModel.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
