@@ -10,6 +10,8 @@ import java.util.ResourceBundle;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
+import shoreline_exam_2018.be.Log;
+import shoreline_exam_2018.gui.model.LogModel;
 
 /**
  * FXML Controller class
@@ -19,14 +21,17 @@ import javafx.scene.control.ListView;
 public class LogViewController implements Initializable {
 
     @FXML
-    private ListView<?> listviewLog;
+    private ListView<Log> listviewLog;
+    private LogModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+         model = new LogModel();
+         model.loadLogItems();
+         listviewLog.setItems(model.getLogItems());
     }    
     
 }
