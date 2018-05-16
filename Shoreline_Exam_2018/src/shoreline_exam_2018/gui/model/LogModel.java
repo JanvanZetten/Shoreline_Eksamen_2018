@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.be.Log;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 
@@ -36,7 +36,7 @@ public class LogModel
         {
             logList.addAll(bll.getAllLogs());
         }
-        catch (BLLExeption ex)
+        catch (BLLException ex)
         {
             AlertFactory.showError("Could not load Log items", ex.getMessage());
         }

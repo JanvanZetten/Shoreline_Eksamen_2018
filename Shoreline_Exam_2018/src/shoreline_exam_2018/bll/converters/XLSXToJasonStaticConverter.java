@@ -17,7 +17,7 @@ import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.json.JsonWriter;
 import shoreline_exam_2018.be.output.jsonpair.*;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.dal.output.Writer;
 import shoreline_exam_2018.dal.filereader.Reader;
 
@@ -39,9 +39,9 @@ public class XLSXToJasonStaticConverter {
     
     /**
      * converts XLSX as in given example to Json file 
-     * @throws BLLExeption 
+     * @throws BLLException 
      */
-    public void convert() throws BLLExeption {
+    public void convert() throws BLLException {
         
         
         
@@ -128,7 +128,7 @@ public class XLSXToJasonStaticConverter {
             output.createFile(outputObjects, Paths.get(jsonFilePath));
 
         } catch (DALException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
 
     }

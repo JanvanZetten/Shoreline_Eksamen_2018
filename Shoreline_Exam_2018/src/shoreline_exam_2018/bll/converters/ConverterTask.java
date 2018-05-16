@@ -13,7 +13,7 @@ import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.output.Writer;
 import shoreline_exam_2018.dal.filereader.Reader;
@@ -36,7 +36,7 @@ public class ConverterTask extends Task {
     Path inputFile;
     Path outputFile;
 
-    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLExeption {
+    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException {
         
         try {
             reader = new XLSX_horisontal_Reader_for_Big_Documents(inputFile.toString());
@@ -50,7 +50,7 @@ public class ConverterTask extends Task {
             this.isDone = isDone;
 
         } catch (DALException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -91,13 +91,13 @@ public class ConverterTask extends Task {
     /**
      * Reads the next row from the reader
      * @return
-     * @throws BLLExeption 
+     * @throws BLLException 
      */
-    private Row read() throws BLLExeption {
+    private Row read() throws BLLException {
         try {
             return reader.getNextRow();
         } catch (DALException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
@@ -105,41 +105,41 @@ public class ConverterTask extends Task {
      * converts the row to a outputpair Object
      * @param input
      * @return
-     * @throws BLLExeption 
+     * @throws BLLException 
      */
-    private OutputPair convert(Row input) throws BLLExeption {
+    private OutputPair convert(Row input) throws BLLException {
         try {
             return new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(selectedProfile.getStructure(), input));
-        } catch (BLLExeption ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+        } catch (BLLException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     /**
      * Writes the outputobject
      * @param output
-     * @throws BLLExeption 
+     * @throws BLLException 
      */
-    private void write(OutputPair output) throws BLLExeption {
+    private void write(OutputPair output) throws BLLException {
         try {
             writer.writeObjectToFile(output);
         } catch (DALException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     
     /**
      * does everything for stopping the conversion also for ended conversion
-     * @throws BLLExeption 
+     * @throws BLLException 
      */
-    private void stop() throws BLLExeption {
+    private void stop() throws BLLException {
         isDone.setValue(Boolean.TRUE);
         
         try {
             writer.closeStream();
         } catch (DALException ex) {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 

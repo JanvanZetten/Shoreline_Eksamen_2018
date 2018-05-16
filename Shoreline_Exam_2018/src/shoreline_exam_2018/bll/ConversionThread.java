@@ -39,7 +39,7 @@ public class ConversionThread {
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLExeption {
+    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException {
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
         task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 

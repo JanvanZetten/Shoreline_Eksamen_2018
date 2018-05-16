@@ -19,6 +19,7 @@ import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.dal.output.Writer;
+import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
  *
@@ -80,6 +81,17 @@ public class JsonWriter implements Writer
         }
         isOpen = true;
         t = new Thread(closeTimer(this, 10000));
+        t.setUncaughtExceptionHandler((thr, e) ->
+        {
+            try
+            {
+                closeStream();
+            }
+            catch (DALException ex)
+            {
+                AlertFactory.showError("Writer Thread Error", "Error trying to close stream after " + e.getMessage() + " exception.");
+            }
+        });
         t.start();
     }
 

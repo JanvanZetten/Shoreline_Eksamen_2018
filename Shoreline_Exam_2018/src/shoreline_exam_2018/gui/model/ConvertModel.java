@@ -21,7 +21,7 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.bll.BLLExeption;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 
@@ -89,7 +89,7 @@ public class ConvertModel {
         profileCombobox.setItems(profiles);
         try {
             profiles.addAll(bll.getAllProfiles());
-        } catch (BLLExeption ex) {
+        } catch (BLLException ex) {
             AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
         }
 
@@ -155,7 +155,7 @@ public class ConvertModel {
 
             try {
                 startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
-            } catch (BLLExeption ex) {
+            } catch (BLLException ex) {
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
             

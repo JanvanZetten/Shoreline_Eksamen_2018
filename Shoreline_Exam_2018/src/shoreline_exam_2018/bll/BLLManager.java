@@ -55,7 +55,7 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLExeption
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLException
     {
         try
         {
@@ -63,12 +63,12 @@ public class BLLManager implements BLLFacade
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws BLLExeption
+    public List<Profile> getAllProfiles() throws BLLException
     {
         try
         {
@@ -76,12 +76,12 @@ public class BLLManager implements BLLFacade
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLExeption
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLException
     {
         try
         {
@@ -89,18 +89,18 @@ public class BLLManager implements BLLFacade
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLExeption
+    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLException
     {
         return cMan.newConversion(taskName, inputFile, outputFile, profile, listJobs);
     }
 
     @Override
-    public User login(String username, String password) throws BLLExeption
+    public User login(String username, String password) throws BLLException
     {
         try
         {
@@ -109,12 +109,12 @@ public class BLLManager implements BLLFacade
         }
         catch (DALException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public String encrypt(String base) throws BLLExeption
+    public String encrypt(String base) throws BLLException
     {
         try
         {
@@ -141,18 +141,18 @@ public class BLLManager implements BLLFacade
         }
         catch (NoSuchAlgorithmException | UnsupportedEncodingException ex)
         {
-            throw new BLLExeption(ex.getMessage(), ex.getCause());
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public List<Log> getAllLogs() throws BLLExeption
+    public List<Log> getAllLogs() throws BLLException
     {
         return logMng.getAllLogs();
     }
 
     @Override
-    public Log addLog(LogType type, String message, User creator) throws BLLExeption
+    public Log addLog(LogType type, String message, User creator) throws BLLException
     {
         return logMng.addLog(type, message, creator);
     }
