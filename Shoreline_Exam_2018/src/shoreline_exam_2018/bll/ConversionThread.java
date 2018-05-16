@@ -143,6 +143,7 @@ public class ConversionThread
 
                     // Show Alert window.
                     AlertFactory.showError(header, ex.getMessage());
+                    LoggingHelper.logException(ex);
 
                     // Log error.
                     try
