@@ -25,10 +25,14 @@ public interface DALFacade
 
     public List<Profile> getAllProfiles() throws DALException;
 
+    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws DALException;
+
+    public List<StructEntityObject> getAllStructures() throws DALException;
+
     public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException;
 
     public User userLogin(String user, String password) throws DALException;
-    
+
     public User getCurrentUser();
 
     public List<Log> getAllLogs() throws DALException;

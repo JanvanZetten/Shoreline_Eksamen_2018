@@ -56,6 +56,23 @@ public interface BLLFacade
     public List<Profile> getAllProfiles() throws BLLException;
 
     /**
+     * Adds a Default structure to the data layer.
+     * @param name
+     * @param structure
+     * @param createdBy
+     * @return
+     * @throws BLLException
+     */
+    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws BLLException;
+
+    /**
+     * Gets all default structures from the data layer.
+     * @return
+     * @throws BLLException
+     */
+    public List<StructEntityObject> getAllStructures() throws BLLException;
+
+    /**
      * Returns a hashmap that shows headers and examples when creating a
      * profile.
      * @param path = The path to the file.
