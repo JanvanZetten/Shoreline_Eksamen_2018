@@ -648,6 +648,10 @@ public class ProfileGrid extends GridPane
         return rect;
     }
 
+    /**
+     * Load a structure to profile view.
+     * @param structure
+     */
     public void loadStructure(List<StructEntityInterface> structure)
     {
         for (StructEntityInterface sei : structure)
@@ -663,6 +667,10 @@ public class ProfileGrid extends GridPane
         }
     }
 
+    /**
+     * Setup simple structure.
+     * @param se
+     */
     private void loadSimpleStructure(SimpleEntity se)
     {
         SimpleEntry<ComboBox<SimpleStructType>, TextField> entry = addSimpleRow();
@@ -687,6 +695,10 @@ public class ProfileGrid extends GridPane
         }
     }
 
+    /**
+     * Setup collection structure and add collection to new ProfileGrid.
+     * @param ce
+     */
     private void loadCollectionStructure(CollectionEntity ce)
     {
         SimpleEntry<ComboBox<CollectionStructType>, SimpleEntry<TextField, ProfileGrid>> entry = addCollectionRow();

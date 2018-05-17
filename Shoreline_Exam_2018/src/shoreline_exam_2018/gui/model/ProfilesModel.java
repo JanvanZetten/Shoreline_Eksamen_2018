@@ -355,11 +355,13 @@ public class ProfilesModel
         List<StructEntityObject> structures;
         try
         {
+            // Get all structures.
             structures = bll.getAllStructures();
             if (structures != null)
             {
                 if (!structures.isEmpty())
                 {
+                    // Take the latest.
                     StructEntityObject newest = structures.get(structures.size() - 1);
                     pg.loadStructure(newest.getCollection());
                 }
