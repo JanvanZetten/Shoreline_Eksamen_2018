@@ -37,7 +37,7 @@ public class LoggingHelper {
     public static void logException(String Message){
         User currentUser = dal.getCurrentUser();
         try {
-            dal.addLog(LogType.ERROR, currentUser + "had an error: " + Message, currentUser);
+            dal.addLog(LogType.ERROR, currentUser.getName() + "had an error: " + Message, currentUser);
         } catch (DALException ex1) {
             Logger.getLogger(LoggingHelper.class.getName()).log(Level.SEVERE, null, ex1);
         }
