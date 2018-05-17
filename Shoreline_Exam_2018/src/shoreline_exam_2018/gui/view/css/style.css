@@ -30,6 +30,7 @@ and open the template in the editor.
     -fx-font-size: 20px;
 }
 
+
 /* Set background colour of pane behind tabs */
 .tab-pane .tab-header-background {
     -fx-background-color: #2C546D;
@@ -206,4 +207,9 @@ and open the template in the editor.
     -fx-background-color: #0DF279;
     -fx-background-insets: 0, 0, 0, 0;
     -fx-background-radius: 0, 0, 0, 0;
+}
+
+#ICONTAB.tab {
+    -fx-pref-width: 57px;
+    -fx-alignment: center-right;
 }

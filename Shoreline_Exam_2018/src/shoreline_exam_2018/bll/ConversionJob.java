@@ -5,15 +5,10 @@
  */
 package shoreline_exam_2018.bll;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -28,9 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
-import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.gui.controller.LogViewController;
 
 /**
  *
