@@ -6,7 +6,6 @@
 package shoreline_exam_2018.dal.filereader;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,6 +20,11 @@ import shoreline_exam_2018.be.InputObject;
  */
 public class InputObjectConverter {
 
+    /**
+     * Convert Apache POI Row to InpuObject
+     * @param row the row to convert
+     * @return inputObject with data from row
+     */
     public static InputObject rowToInputObject(Row row) {
         List<InputField> fields = new ArrayList<>();
         

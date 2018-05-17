@@ -7,7 +7,6 @@ package shoreline_exam_2018.dal;
 
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Row;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
