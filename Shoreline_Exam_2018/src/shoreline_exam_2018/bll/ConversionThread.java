@@ -135,7 +135,7 @@ public class ConversionThread
                 {
                     AlertFactory.showError("Conversion Error", ex.getMessage());
                     LoggingHelper.logException(ex);
-
+                    
                     isCanceled.setValue(true);
                     job.removeFromList();
                 }

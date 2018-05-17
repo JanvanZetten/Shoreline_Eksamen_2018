@@ -37,7 +37,7 @@ public class DALManager implements DALFacade
     private DBChangeDAO changeDAO;
     private Reader reader;
 
-    private User currentUser;
+    private static User currentUser;
 
     public DALManager()
     {
