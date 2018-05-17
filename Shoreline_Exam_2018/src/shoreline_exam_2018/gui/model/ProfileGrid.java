@@ -32,6 +32,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -67,8 +68,6 @@ public class ProfileGrid extends GridPane
     {
         Color.web("737F8C"), Color.web("4986A8"), Color.web("2C546D"), Color.web("4D4D4D")
     }; //
-
-    private int rowCount; // The number of rows in grid.
 
     private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
     private HashMap<Integer, ProfileGrid> collectionMap; // Mapping row index to a ProfileGrid.
@@ -151,7 +150,7 @@ public class ProfileGrid extends GridPane
         c4.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
         c4.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
         this.getColumnConstraints().addAll(c1, c2, c3, c4);
-        this.setGridLinesVisible(true);
+        this.setGridLinesVisible(false);
     }
 
     /**
@@ -172,10 +171,10 @@ public class ProfileGrid extends GridPane
         Label lbl2 = new Label("Example");
         Label lbl3 = new Label("Data Type");
         Label lbl4 = new Label("To Column");
-        GridPane.setConstraints(lbl1, 0, rowCount);
-        GridPane.setConstraints(lbl2, 1, rowCount);
-        GridPane.setConstraints(lbl3, 2, rowCount);
-        GridPane.setConstraints(lbl4, 3, rowCount);
+        GridPane.setConstraints(lbl1, 0, 0);
+        GridPane.setConstraints(lbl2, 1, 0);
+        GridPane.setConstraints(lbl3, 2, 0);
+        GridPane.setConstraints(lbl4, 3, 0);
 
         // Set size.
         lbl1.setMinWidth(DEFAULT_LABEL_SIZE);
@@ -192,7 +191,6 @@ public class ProfileGrid extends GridPane
         lbl4.setMaxWidth(DEFAULT_LABEL_SIZE);
 
         this.getChildren().addAll(lbl1, lbl2, lbl3, lbl4);
-        rowCount++;
     }
 
     /**
@@ -233,11 +231,32 @@ public class ProfileGrid extends GridPane
         // Add listener to check if new rows are added. If so the row for the combobox and button is changed to the last one.
         this.getChildren().addListener(new ListChangeListener<Node>()
         {
+
             @Override
             public void onChanged(ListChangeListener.Change<? extends Node> c)
             {
-                int row = getRowCount();
-                GridPane.setConstraints(gp, 0, row);
+                while (c.next())
+                {
+                    if (c.wasAdded())
+                    {
+                        int row = getRowCount();
+                        if (row > -1)
+                        {
+                            GridPane.setConstraints(gp, 0, row);
+                        }
+                        GridPane.setConstraints(gp, 0, row);
+                        break;
+                    }
+                    else if (c.wasRemoved())
+                    {
+                        int row = getRowCount();
+                        if (row > 0)
+                        {
+                            GridPane.setConstraints(gp, 0, row - 1);
+                        }
+                        break;
+                    }
+                }
             }
         });
 
@@ -349,6 +368,13 @@ public class ProfileGrid extends GridPane
         // TextField for the name of the output column.
         TextField toColumn = new TextField();
 
+        // Delete button.
+        Button btnDelete = new Button("Delete");
+        btnDelete.setOnAction((event) ->
+        {
+            removeSimpleStructure(GridPane.getRowIndex(btnDelete));
+        });
+
         // Create and adds a ChangeListener.
         ChangeListener cl = getSimpleChangeListener(index, fromHeader, cmbType, toColumn);
         fromHeader.textProperty().addListener(cl);
@@ -376,6 +402,9 @@ public class ProfileGrid extends GridPane
         toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
 
         GridPane gp = new GridPane();
         GridPane.setConstraints(rect, 0, 0);
@@ -383,12 +412,13 @@ public class ProfileGrid extends GridPane
         gp.getChildren().addAll(rect, fromHeader);
 
         // Set constraints and add to grid.
+        int rowCount = getRowCount() - 1;
         GridPane.setConstraints(gp, 0, rowCount);
         GridPane.setConstraints(example, 1, rowCount);
         GridPane.setConstraints(cmbType, 2, rowCount);
         GridPane.setConstraints(toColumn, 3, rowCount);
-        this.getChildren().addAll(gp, example, cmbType, toColumn);
-        rowCount++;
+        GridPane.setConstraints(btnDelete, 4, rowCount);
+        this.getChildren().addAll(gp, example, cmbType, toColumn, btnDelete);
 
         return new SimpleEntry<>(cmbType, toColumn);
     }
@@ -403,16 +433,25 @@ public class ProfileGrid extends GridPane
         Rectangle rect = getRectangle(DEFAULT_RECTANGLE_WIDTH + DEFAULT_TEXTFIELD_SIZE + DEFAULT_LABEL_SIZE + (DEFAULT_GAP * 2), cmbType.heightProperty());
         TextField toColumn = new TextField();
 
+        // Delete button.
+        Button btnDelete = new Button("Delete");
+        btnDelete.setOnAction((event) ->
+        {
+            removeCollectionStructure(GridPane.getRowIndex(btnDelete));
+        });
+
         // Index of row.
         int index = structure.size();
         structure.add(null);
 
         // Set Grid constraints.
+        int rowCount = getRowCount() - 1;
         GridPane.setMargin(rect, new Insets(0.0, 0.0, 0.0, INDENT));
         GridPane.setConstraints(rect, 0, rowCount);
         GridPane.setColumnSpan(rect, 2);
         GridPane.setConstraints(cmbType, 2, rowCount);
         GridPane.setConstraints(toColumn, 3, rowCount);
+        GridPane.setConstraints(btnDelete, 4, rowCount);
 
         // Set size.
         cmbType.setMinWidth(DEFAULT_COMBOBOX_SIZE);
@@ -421,10 +460,13 @@ public class ProfileGrid extends GridPane
         toColumn.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
         toColumn.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+        btnDelete.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
 
         // Add nodes to Grid.
-        this.getChildren().addAll(rect, cmbType, toColumn);
-        rowCount++;
+        this.getChildren().addAll(rect, cmbType, toColumn, btnDelete);
+        rowCount = getRowCount() - 1;
 
         // Make ChangeListener.
         ChangeListener cl = getCollectionChangeListener(index, cmbType, toColumn);
@@ -436,7 +478,6 @@ public class ProfileGrid extends GridPane
         col.addHashMap(headersIndexAndExamples);
         GridPane.setConstraints(col, 0, rowCount, 5, 1);
         this.getChildren().add(col);
-        rowCount++;
 
         // Map Grid to row index and add listeners
         collectionMap.put(index, col);
@@ -453,6 +494,8 @@ public class ProfileGrid extends GridPane
         return new SimpleEntry<>(cmbType, new SimpleEntry<>(toColumn, col));
     }
 
+    private int count = 0;
+
     /**
      * Count rows in gridpane.
      * @param pane
@@ -460,19 +503,17 @@ public class ProfileGrid extends GridPane
      */
     private int getRowCount()
     {
-        int numRows = this.getRowConstraints().size();
+        int numRows = 0;
         for (int i = 0; i < this.getChildren().size(); i++)
         {
             Node child = this.getChildren().get(i);
-            if (child.isManaged())
+            Integer rowIndex = GridPane.getRowIndex(child);
+            if (rowIndex != null)
             {
-                Integer rowIndex = GridPane.getRowIndex(child);
-                if (rowIndex != null)
-                {
-                    numRows = Math.max(numRows, rowIndex + 1);
-                }
+                numRows = Math.max(numRows, rowIndex + 1);
             }
         }
+        count++;
         return numRows;
     }
 
@@ -620,10 +661,11 @@ public class ProfileGrid extends GridPane
      */
     private void clear()
     {
-        rowCount = 0;
         structure = new ArrayList<>();
         collectionMap = new HashMap();
         this.getChildren().clear();
+        this.getColumnConstraints().clear();
+        this.getRowConstraints().clear();
         if (IS_MASTER)
         {
             addHeader();
@@ -716,5 +758,59 @@ public class ProfileGrid extends GridPane
                 break;
         }
         entry.getValue().getValue().loadStructure(ce.getCollection());
+    }
+
+    /**
+     * Removes simple structure.
+     * @param i
+     */
+    private void removeSimpleStructure(int i)
+    {
+        for (int j = 0; j < this.getChildren().size(); j *= 1)
+        {
+            if (GridPane.getRowIndex(this.getChildren().get(j)) == i)
+            {
+                this.getChildren().remove(this.getChildren().get(j));
+            }
+            else
+            {
+                j++;
+            }
+        }
+        for (int j = 0; j < this.getChildren().size(); j++)
+        {
+            int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
+            if (rowIndex > i)
+            {
+                GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 1);
+            }
+        }
+    }
+
+    /**
+     * Removes Collection structure.
+     * @param i
+     */
+    private void removeCollectionStructure(int i)
+    {
+        for (int j = 0; j < this.getChildren().size(); j *= 1)
+        {
+            if (GridPane.getRowIndex(this.getChildren().get(j)) == i || GridPane.getRowIndex(this.getChildren().get(j)) == i + 1)
+            {
+                this.getChildren().remove(this.getChildren().get(j));
+            }
+            else
+            {
+                j++;
+            }
+        }
+        for (int j = 0; j < this.getChildren().size(); j++)
+        {
+            int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
+            if (rowIndex > i)
+            {
+                GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 2);
+            }
+        }
     }
 }
