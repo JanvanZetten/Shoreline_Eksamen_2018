@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -10,20 +11,20 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="350.0" styleClass="pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.LoginController">
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="350.0" styleClass="login-pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.LoginController">
    <children>
-      <GridPane AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
+      <GridPane prefHeight="353.0" prefWidth="350.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="10.0">
         <columnConstraints>
           <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="174.0" minHeight="10.0" prefHeight="128.0" valignment="CENTER" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="293.0" minHeight="10.0" prefHeight="181.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="168.0" minHeight="0.0" prefHeight="81.0" valignment="CENTER" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button mnemonicParsing="false" onAction="#handleLogin" text="Log in" GridPane.rowIndex="2" />
-            <Label text="Login">
+            <Button mnemonicParsing="false" onAction="#handleLogin" styleClass="button-login" text="Log in" GridPane.rowIndex="2" />
+            <Label id="WHITE" style="-fx-font-size: 50;" text="Shoreline" GridPane.valignment="TOP">
                <font>
                   <Font size="31.0" />
                </font>
@@ -33,12 +34,16 @@
                 <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="BOTTOM" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="textfieldUsername" onAction="#handleLogin" promptText="Username..." text="alex" />
-                  <TextField fx:id="textviewPassword" onAction="#handleLogin" promptText="Password" text="123" GridPane.rowIndex="1" />
+                  <TextField fx:id="textfieldUsername" onAction="#handleLogin" promptText="Username..." text="alex" GridPane.rowIndex="1" />
+                  <PasswordField fx:id="textviewPassword" onAction="#handleLogin" text="123" GridPane.rowIndex="3" />
+                  <Label id="WHITE" text="Username:" GridPane.halignment="LEFT" />
+                  <Label id="WHITE" text="Password:" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -47,6 +52,7 @@
                   <Insets left="50.0" right="50.0" />
                </GridPane.margin>
             </GridPane>
+            <Label id="WHITE" style="-fx-font-size: 50;" text="Login" GridPane.valignment="BOTTOM" />
          </children>
       </GridPane>
    </children>

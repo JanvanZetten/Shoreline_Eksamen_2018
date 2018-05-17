@@ -18,6 +18,10 @@ and open the template in the editor.
     -fx-background-color: #4986A8;
 }
 
+.login-pane {
+    -fx-background-color: linear-gradient(from 25% 25% to 100% 100%, #2C546D, #4986A8);
+}
+
 /* cusom tab pane */
 /* Set minimum height and width and font size */
 .tab-pane {
@@ -93,7 +97,7 @@ and open the template in the editor.
     -fx-text-fill: #FFFFFF;
 }
 
-/* cusom button */
+/* custom button */
 /* Removes button round corners, set button background colour and set text colour */
 .button {
     -fx-background-radius: 0,0,0,0;
@@ -105,6 +109,11 @@ and open the template in the editor.
 /* Show cursor hand on hover */
 .button:hover {
     -fx-cursor: hand;
+}
+
+.button-login {
+    -fx-background-insets: -5, -10, -5, -10;
+    -fx-font-size: 20px;
 }
 
 /* cusom textfield */
