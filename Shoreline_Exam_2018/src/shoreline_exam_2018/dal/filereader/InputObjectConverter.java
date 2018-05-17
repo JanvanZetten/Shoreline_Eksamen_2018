@@ -6,6 +6,7 @@
 package shoreline_exam_2018.dal.filereader;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
@@ -22,54 +23,57 @@ public class InputObjectConverter {
 
     public static InputObject rowToInputObject(Row row) {
         List<InputField> fields = new ArrayList<>();
-
-        for (Cell cell : row) {
+        
+        for (int cn=0; cn<row.getLastCellNum(); cn++) {
+            Cell cell = row.getCell(cn);
             InputField input;
-            switch (cell.getCellTypeEnum()) {
-                case FORMULA:
-                    switch (cell.getCachedFormulaResultTypeEnum()) {
-                        case STRING:
-                            if (cell.getStringCellValue().isEmpty()){
+            if (cell == null) {
+                input = new InputField(InputFieldType.EMPTY);
+            } else {
+                switch (cell.getCellTypeEnum()) {
+                    case FORMULA:
+                        switch (cell.getCachedFormulaResultTypeEnum()) {
+                            case STRING:
+                                if (cell.getStringCellValue().isEmpty()) {
+                                    input = new InputField(InputFieldType.EMPTY);
+                                } else {
+                                    input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                                }
+                                break;
+                            case NUMERIC:
+                                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                                    input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
+                                } else {
+                                    input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
+                                }
+                                break;
+                            default:
                                 input = new InputField(InputFieldType.EMPTY);
-                            }else{
-                                input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
-                            }
-                            break;
-                        case NUMERIC:
-                            if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                                input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
-                            } else {
-                                input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
-                            }
-                            break;
-                        default: 
+                        }
+                        break;
+                    case STRING:
+                        if (cell.getStringCellValue().isEmpty()) {
                             input = new InputField(InputFieldType.EMPTY);
-                    }
-                    break;
-                case STRING:
-                    if (cell.getStringCellValue().isEmpty()){
-                                input = new InputField(InputFieldType.EMPTY);
-                            }else{
-                                input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
-                            }
-                    break;
-                case NUMERIC:
-                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                        input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
-                    } else {
-                        input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
-                    }
-                    break;
-                case BOOLEAN:
-                    input = new InputField(InputFieldType.STRING, Boolean.toString(cell.getBooleanCellValue()));
-                    break;
-                default:
-                    input = new InputField(InputFieldType.EMPTY);
+                        } else {
+                            input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                        }
+                        break;
+                    case NUMERIC:
+                        if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                            input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
+                        } else {
+                            input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
+                        }
+                        break;
+                    case BOOLEAN:
+                        input = new InputField(InputFieldType.STRING, Boolean.toString(cell.getBooleanCellValue()));
+                        break;
+                    default:
+                        input = new InputField(InputFieldType.EMPTY);
 
+                }
             }
-            
             fields.add(input);
-
         }
 
         return new InputObject(fields);
