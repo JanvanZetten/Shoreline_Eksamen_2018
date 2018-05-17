@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.bll.converters;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
@@ -100,10 +101,18 @@ public class ConverterTask extends Task
         catch (BLLException | DALException ex)
         {
             stop();
-            //Deletes the output file from the outputPath.
-            Files.delete(outputFile);
+            String str = "";
 
-            throw new BLLException(ex.getMessage(), ex.getCause());
+            try
+            {
+                Files.delete(outputFile);
+            }
+            catch (IOException e)
+            {
+                str += e.getMessage();
+            }
+
+            throw new BLLException(ex.getMessage() + " " + str, ex.getCause());
         }
     }
 
