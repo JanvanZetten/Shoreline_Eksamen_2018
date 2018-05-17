@@ -53,10 +53,16 @@ public class InputField {
     }
     
     public String getStringValue(){
+        if (type == InputFieldType.EMPTY){
+            return "";
+        }
         return stringField;
     }
     
     public Date getDateValue(){
+        if (type == InputFieldType.EMPTY){
+            return null;
+        }
         return dateField;
     }
     

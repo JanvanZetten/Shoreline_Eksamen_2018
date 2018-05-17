@@ -38,7 +38,10 @@ public class InputObjectConverter {
                                 input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
                             }
                             break;
+                        default: 
+                            input = new InputField(InputFieldType.EMPTY);
                     }
+                    break;
                 case STRING:
                     input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
                     break;
@@ -51,6 +54,7 @@ public class InputObjectConverter {
                     break;
                 case BOOLEAN:
                     input = new InputField(InputFieldType.STRING, Boolean.toString(cell.getBooleanCellValue()));
+                    break;
                 default:
                     input = new InputField(InputFieldType.EMPTY);
 
