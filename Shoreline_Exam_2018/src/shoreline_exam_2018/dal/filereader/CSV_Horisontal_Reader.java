@@ -21,7 +21,6 @@ public class CSV_Horisontal_Reader implements Reader{
     }
 
     
-    
     @Override
     public List<String> getParameters() throws DALException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
