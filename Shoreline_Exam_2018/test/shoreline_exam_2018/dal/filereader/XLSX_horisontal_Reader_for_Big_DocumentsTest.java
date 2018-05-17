@@ -78,7 +78,7 @@ public class XLSX_horisontal_Reader_for_Big_DocumentsTest {
             InputObject currentObject = reader.getNext();
             assertEquals(1, currentObject.getField(0).getDoubleValue(), 0.01);
             assertEquals(2, currentObject.getField(1).getDoubleValue(), 0.01);
-            assertEquals(null, currentObject.getField(2));
+            assertEquals(null, currentObject.getField(2).getValue());
             assertEquals(5, currentObject.getField(3).getDoubleValue(), 0.01);
             assertEquals(6, currentObject.getField(4).getDoubleValue(), 0.01);
         }

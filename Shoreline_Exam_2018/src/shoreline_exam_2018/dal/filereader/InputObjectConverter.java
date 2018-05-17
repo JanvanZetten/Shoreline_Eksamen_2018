@@ -29,7 +29,11 @@ public class InputObjectConverter {
                 case FORMULA:
                     switch (cell.getCachedFormulaResultTypeEnum()) {
                         case STRING:
-                            input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                            if (cell.getStringCellValue().isEmpty()){
+                                input = new InputField(InputFieldType.EMPTY);
+                            }else{
+                                input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                            }
                             break;
                         case NUMERIC:
                             if (HSSFDateUtil.isCellDateFormatted(cell)) {
@@ -43,7 +47,11 @@ public class InputObjectConverter {
                     }
                     break;
                 case STRING:
-                    input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                    if (cell.getStringCellValue().isEmpty()){
+                                input = new InputField(InputFieldType.EMPTY);
+                            }else{
+                                input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                            }
                     break;
                 case NUMERIC:
                     if (HSSFDateUtil.isCellDateFormatted(cell)) {
