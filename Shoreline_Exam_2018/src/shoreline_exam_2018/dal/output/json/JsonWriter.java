@@ -13,8 +13,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairArray;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -67,7 +65,11 @@ public class JsonWriter implements Writer
      */
     private void openStream() throws DALException
     {
-        if (!isFirst)
+        if (!isFirst && !outputPath.toFile().exists())
+        {
+            throw new DALException("The processing file could not be found.");
+        }
+        else if (!isFirst)
         {
             removeSquareBrackets();
         }
@@ -255,14 +257,11 @@ public class JsonWriter implements Writer
                     try
                     {
                         dao.closeStream();
+                        throw new RuntimeException(ex.getMessage(), ex.getCause());
                     }
                     catch (DALException ex1)
                     {
-                        //
-                        // Call an exception handler
-                        //
-
-                        Logger.getLogger(JsonWriter.class.getName()).log(Level.SEVERE, null, ex1);
+                        throw new RuntimeException(ex1.getMessage(), ex1.getCause());
                     }
                 }
             }

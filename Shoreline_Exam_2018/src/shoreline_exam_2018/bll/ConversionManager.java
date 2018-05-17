@@ -13,7 +13,8 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public class ConversionManager {
+public class ConversionManager
+{
 
     /**
      * Creates a Thread (the one working) and a Task (the visual element the
@@ -25,35 +26,36 @@ public class ConversionManager {
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLException {
+    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLException
+    {
 
         String inputExtension;
         String outputExtension;
-        
+
         String inputString = inputPath.toString();
         String outptuString = outputPath.toString();
 
         String[] inputSplit = inputString.split("\\.");
         String[] outputSplit = outptuString.split("\\.");
-        
-        System.out.println(inputPath.toString());
-        
+
         inputExtension = inputSplit[inputSplit.length - 1];
         outputExtension = outputSplit[outputSplit.length - 1];
 
         ConversionThread cThread = null;
 
-        if (inputExtension.equalsIgnoreCase("XLSX") && outputExtension.equalsIgnoreCase("json")) {
-            cThread = new ConversionThread(inputPath, outputPath, selectedProfile);
+        if (inputExtension.equalsIgnoreCase("XLSX") && outputExtension.equalsIgnoreCase("json"))
+        {
+            cThread = new ConversionThread(taskName, inputPath, outputPath, selectedProfile);
         }
 
-        if (cThread != null) {
+        if (cThread != null)
+        {
 
             ConversionJob cJob = new ConversionJob(taskName, cThread, outputPath, selectedProfile, listJobs);
             cThread.giveJob(cJob);
             return cJob;
         }
-        else 
+        else
         {
             throw new BLLException("one of the file types might not be supported");
         }

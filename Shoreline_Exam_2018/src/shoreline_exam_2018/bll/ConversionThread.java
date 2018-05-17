@@ -14,9 +14,11 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
+import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.converters.ConverterTask;
+import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
@@ -25,13 +27,14 @@ import shoreline_exam_2018.gui.model.AlertFactory;
  */
 public class ConversionThread
 {
-
+    private String taskName;
     private ConverterTask task;
     private Thread thread;
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
     private BooleanProperty isDone;
     private ConversionJob job = null;
+    private BLLFacade bll;
 
     /**
      * Creates listeners for a progressbar for a task and runs the task on a
@@ -41,8 +44,10 @@ public class ConversionThread
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
+    public ConversionThread(String taskName, Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
     {
+        this.taskName = taskName;
+        bll = BLLManager.getInstance();
         this.isDone = new SimpleBooleanProperty(Boolean.FALSE);
         task = new ConverterTask(coversionProfile, inputFile, outputfile, isCanceled, isOperating, isDone);
 
@@ -59,7 +64,7 @@ public class ConversionThread
                         {
                             Platform.runLater(() ->
                             {
-                                job.conversionDone();
+                                job.removeFromList();
                             });
                             break;
                         }
@@ -119,16 +124,56 @@ public class ConversionThread
     {
         thread = new Thread(task);
         thread.setDaemon(true);
-        thread.setUncaughtExceptionHandler((t, e) ->
+
+        // On failure.
+        task.setOnFailed(e ->
         {
+            // Get exception.
+            Exception ex = (Exception) task.getException();
+
+            // If any exception was caught.
+            if (ex != null)
+            {
+                if (ex instanceof BLLException)
+                {
+                    String header = "Conversion Error";
+
+                    // Stop task.
+                    isCanceled.setValue(true);
+
+                    // Show Alert window.
+                    AlertFactory.showError(header, ex.getMessage());
+                    LoggingHelper.logException(ex);
+
+                    // Log error.
+                    try
+                    {
+                        bll.addLog(LogType.CONVERSION, ex.getMessage(), bll.getcurrentUser());
+                    }
+                    catch (BLLException ex2)
+                    {
+                        AlertFactory.showError("Log Error", "Error logging to database.");
+                    }
+
+                    // Stop task.
+                    isCanceled.setValue(true);
+                    job.removeFromList();
+                }
+            }
+        });
+
+        // On success.
+        task.setOnSucceeded(e ->
+        {
+            isDone.setValue(Boolean.TRUE);
+
             try
             {
-                task.stop();
-                AlertFactory.showError("Conversion Error", e.getMessage());
+                bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + taskName, bll.getcurrentUser());
             }
             catch (BLLException ex)
             {
-                AlertFactory.showError("Conversion Error", "Error trying to stop converter task on error: " + e.getMessage());
+                AlertFactory.showError("Log Error", "Error logging to database.");
             }
         });
         thread.start();

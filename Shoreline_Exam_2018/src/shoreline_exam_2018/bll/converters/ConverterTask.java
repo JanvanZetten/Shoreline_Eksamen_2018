@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.bll.converters;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
@@ -26,7 +28,6 @@ import shoreline_exam_2018.dal.output.json.JsonWriter;
  */
 public class ConverterTask extends Task
 {
-
     Reader reader;
     Writer writer;
     RowToOutputPairMapper mapper;
@@ -39,7 +40,6 @@ public class ConverterTask extends Task
 
     public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
     {
-
         try
         {
             reader = new XLSX_horisontal_Reader_for_Big_Documents(inputFile.toString());
@@ -51,7 +51,6 @@ public class ConverterTask extends Task
             this.isCanceld = isCanceld;
             this.isOperating = isOperating;
             this.isDone = isDone;
-
         }
         catch (DALException ex)
         {
@@ -62,37 +61,50 @@ public class ConverterTask extends Task
     @Override
     protected Object call() throws Exception
     {
-        updateProgress(0, 1);
-        int currentrow = 0;
-        int totalRows = reader.numberOfRows();
-
-        while (reader.hasNext())
+        try
         {
-            Row input = read();
+            updateProgress(0, 1);
+            int currentrow = 0;
+            int totalRows = reader.numberOfRows();
 
-            currentrow++;
-
-            updateProgress(currentrow, totalRows);
-
-            if (isCanceld.getValue())
+            while (reader.hasNext())
             {
-                stop();
-                return null;
+                Row input = read();
+
+                currentrow++;
+
+                updateProgress(currentrow, totalRows);
+
+                if (isCanceld.getValue())
+                {
+                    stop();
+                    //Deletes the output file from the outputPath.
+                    Files.delete(outputFile);
+                    return null;
+                }
+                while (!isOperating.getValue())
+                {
+                    Thread.sleep(1000);
+                }
+
+                OutputPair output = convert(input);
+
+                write(output);
+
             }
-            while (!isOperating.getValue())
-            {
-                Thread.sleep(1000);
-            }
 
-            OutputPair output = convert(input);
+            stop();
 
-            write(output);
-
+            return null;
         }
+        catch (BLLException | DALException ex)
+        {
+            stop();
+            //Deletes the output file from the outputPath.
+            Files.delete(outputFile);
 
-        stop();
-
-        return null;
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
     }
 
     /**
@@ -153,8 +165,6 @@ public class ConverterTask extends Task
      */
     public void stop() throws BLLException
     {
-        isDone.setValue(Boolean.TRUE);
-
         try
         {
             writer.closeStream();

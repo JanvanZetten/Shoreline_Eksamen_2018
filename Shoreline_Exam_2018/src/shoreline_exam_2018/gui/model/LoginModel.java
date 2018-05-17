@@ -14,10 +14,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import shoreline_exam_2018.be.LogType;
-import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
@@ -40,6 +40,7 @@ public class LoginModel {
             bll.login(username, password);
             openMainView(root, loginStage);
         } catch (BLLException ex) {
+            LoggingHelper.logException(ex);
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
     }
@@ -67,10 +68,9 @@ public class LoginModel {
             bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in from the IP address " + split[1], bll.getcurrentUser());
             
             loginStage.close();
-        } catch (BLLException ex) {
-            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(LoginModel.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BLLException | UnknownHostException ex) {
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not open main view", ex.getMessage());
         } 
     }
 }

@@ -62,7 +62,7 @@ public class ConversionJob extends HBox {
             Profile selectedProfile,
             ListView<ConversionJob> listJobs) {
         super();
-        
+
         bll = BLLManager.getInstance();
 
         this.listJobs = listJobs;
@@ -125,7 +125,6 @@ public class ConversionJob extends HBox {
         Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewResume = new ImageView(imageResume);
 
-        //NOT WORKING.
         btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -161,15 +160,9 @@ public class ConversionJob extends HBox {
 
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    try {
-                        cThread.cancelTask();
-                        listJobs.getItems().remove(ConversionJob.this);
-                        //Deletes the output file from the outputPath.
-                        Files.delete(outputPath);
-                    } catch (IOException ex) {
-                        //DO NOTHING
-                    }
-                } 
+                    cThread.cancelTask();
+                    listJobs.getItems().remove(ConversionJob.this);
+                }
             }
         });
     }
@@ -186,7 +179,7 @@ public class ConversionJob extends HBox {
         Region filler1 = new Region();
         filler1.setMaxWidth(100);
         filler1.setMinWidth(100);
-        
+
         Region filler2 = new Region();
         filler2.setMaxWidth(100);
         filler2.setMinWidth(100);
@@ -203,7 +196,7 @@ public class ConversionJob extends HBox {
 
         ColumnConstraints alwaysGrow = new ColumnConstraints();
         alwaysGrow.setHgrow(Priority.ALWAYS);
-        
+
         grid.getColumnConstraints().addAll(
                 neverGrow,
                 alwaysGrow,
@@ -212,17 +205,11 @@ public class ConversionJob extends HBox {
                 neverGrow,
                 neverGrow);
     }
-    
+
     /**
-     * Removes itself from the list given in the constructer. 
-     * Also writes a log when a conversion is succesfully done.
+     * Removes itself from the list given in the constructer.
      */
-    void conversionDone() {
-        try {
-            listJobs.getItems().remove(ConversionJob.this);
-            bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + lblConversionName.getText(), bll.getcurrentUser());
-        } catch (BLLException ex) {
-            Logger.getLogger(ConversionJob.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    void removeFromList() {
+        listJobs.getItems().remove(ConversionJob.this);
     }
 }

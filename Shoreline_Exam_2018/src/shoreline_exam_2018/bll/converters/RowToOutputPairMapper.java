@@ -19,7 +19,8 @@ import shoreline_exam_2018.bll.BLLException;
  *
  * @author Jan
  */
-public class RowToOutputPairMapper {
+public class RowToOutputPairMapper
+{
 
     /**
      * get a List of outputpairs with the data from the row and the structure
@@ -34,47 +35,82 @@ public class RowToOutputPairMapper {
      * StructEntryDouble, StructEntryInteger, StructEntryObject and
      * StructEntryString.
      */
-    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, Row row) throws BLLException {
+    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, Row row) throws BLLException
+    {
         List<StructEntityInterface> collection = structObject.getCollection();
 
         List<OutputPair> output = new ArrayList<>();
 
-        for (StructEntityInterface structEntry : collection) {
+        for (StructEntityInterface structEntry : collection)
+        {
             //check what object this structE
-            if (structEntry instanceof StructEntityArray) {
-
+            if (structEntry instanceof StructEntityArray)
+            {
                 List<OutputPair> jsonArray = mapRowToOutputpairListWithEntityCollection((StructEntityArray) structEntry, row);
                 output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
 
-            } else if (structEntry instanceof StructEntityDate) {
+            }
+            else if (structEntry instanceof StructEntityDate)
+            {
+                if (row.getCell(((StructEntityDate) structEntry).getInputIndex()) != null)
+                {
+                    output.add(new JsonPairDate(structEntry.getColumnName(),
+                            row.getCell(((StructEntityDate) structEntry).getInputIndex()).getDateCellValue()));
+                }
+                else
+                {
+                    throw new BLLException("The struct entry type is not supported");
+                }
 
-                output.add(new JsonPairDate(structEntry.getColumnName(),
-                        row.getCell(((StructEntityDate) structEntry).getInputIndex()).getDateCellValue()));
-
-            } else if (structEntry instanceof StructEntityDouble) {
-
-                output.add(new JsonPairDouble(structEntry.getColumnName(),
-                        row.getCell(((StructEntityDouble) structEntry).getInputIndex()).getNumericCellValue()));
-
-            } else if (structEntry instanceof StructEntityInteger) {
-                Double asDouble = row.getCell(((StructEntityInteger) structEntry).getInputIndex()).getNumericCellValue();
-                output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
-
-            } else if (structEntry instanceof StructEntityObject) {
+            }
+            else if (structEntry instanceof StructEntityDouble)
+            {
+                if (row.getCell(((StructEntityDouble) structEntry).getInputIndex()) != null)
+                {
+                    output.add(new JsonPairDouble(structEntry.getColumnName(),
+                            row.getCell(((StructEntityDouble) structEntry).getInputIndex()).getNumericCellValue()));
+                }
+                else
+                {
+                    throw new BLLException("The struct entry type is not supported");
+                }
+            }
+            else if (structEntry instanceof StructEntityInteger)
+            {
+                if (row.getCell(((StructEntityInteger) structEntry).getInputIndex()) != null)
+                {
+                    Double asDouble = row.getCell(((StructEntityInteger) structEntry).getInputIndex()).getNumericCellValue();
+                    output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
+                }
+                else
+                {
+                    throw new BLLException("The struct entry type is not supported");
+                }
+            }
+            else if (structEntry instanceof StructEntityObject)
+            {
                 List<OutputPair> jsonObject = mapRowToOutputpairListWithEntityCollection((StructEntityObject) structEntry, row);
                 output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
 
-            } else if (structEntry instanceof StructEntityString) {
-
-                output.add(new JsonPairString(structEntry.getColumnName(),
-                        row.getCell(((StructEntityString) structEntry).getInputIndex()).getStringCellValue()));
-
-            } else {
+            }
+            else if (structEntry instanceof StructEntityString)
+            {
+                if (row.getCell(((StructEntityString) structEntry).getInputIndex()) != null)
+                {
+                    output.add(new JsonPairString(structEntry.getColumnName(),
+                            row.getCell(((StructEntityString) structEntry).getInputIndex()).getStringCellValue()));
+                }
+                else
+                {
+                    throw new BLLException("The struct entry type is not supported");
+                }
+            }
+            else
+            {
                 throw new BLLException("The struct entry type is not supported");
             }
 
         }
-
         return output;
 
     }

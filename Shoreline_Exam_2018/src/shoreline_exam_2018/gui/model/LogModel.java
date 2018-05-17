@@ -15,6 +15,7 @@ import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 
 /**
  *
@@ -46,6 +47,7 @@ public class LogModel {
                 System.out.println(logList);
             }
         } catch (BLLException ex) {
+            LoggingHelper.logException(ex);
             AlertFactory.showError("Could not load Log items", ex.getMessage());
         }
     }
