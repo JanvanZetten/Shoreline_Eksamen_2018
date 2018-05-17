@@ -19,7 +19,7 @@ import shoreline_exam_2018.gui.model.LogModel;
  *
  * @author alexl
  */
-public class LogViewController implements Initializable {
+public class LogController implements Initializable {
 
     @FXML
     private ListView<Log> listviewLog;
