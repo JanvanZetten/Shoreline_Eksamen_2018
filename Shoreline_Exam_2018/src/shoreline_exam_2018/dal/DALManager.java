@@ -22,6 +22,7 @@ import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.dal.database.DBChangeDAO;
 import shoreline_exam_2018.dal.database.LogDAO;
 import shoreline_exam_2018.dal.database.ProfileDAO;
+import shoreline_exam_2018.dal.database.StructureDAO;
 import shoreline_exam_2018.dal.database.UserDAO;
 import shoreline_exam_2018.dal.filereader.Reader;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader_for_Big_Documents;
@@ -34,6 +35,7 @@ public class DALManager implements DALFacade
 {
 
     private ProfileDAO profileDAO;
+    private StructureDAO structureDAO;
     private UserDAO userDAO;
     private LogDAO logDAO;
     private DBChangeDAO changeDAO;
@@ -44,6 +46,7 @@ public class DALManager implements DALFacade
     public DALManager()
     {
         this.profileDAO = new ProfileDAO();
+        this.structureDAO = new StructureDAO();
         this.userDAO = new UserDAO();
         this.logDAO = new LogDAO();
         this.changeDAO = new DBChangeDAO();
@@ -59,6 +62,18 @@ public class DALManager implements DALFacade
     public List<Profile> getAllProfiles() throws DALException
     {
         return profileDAO.getAllProfiles();
+    }
+
+    @Override
+    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws DALException
+    {
+        return structureDAO.addStructure(name, structure, createdBy);
+    }
+
+    @Override
+    public List<StructEntityObject> getAllStructures() throws DALException
+    {
+        return structureDAO.getAllStructures();
     }
 
     @Override
@@ -111,9 +126,10 @@ public class DALManager implements DALFacade
         currentUser = userDAO.login(user, password);
         return currentUser;
     }
-    
+
     @Override
-    public User getCurrentUser() {
+    public User getCurrentUser()
+    {
         return currentUser;
     }
 
@@ -130,7 +146,8 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public int getNewestLog() throws DALException {
+    public int getNewestLog() throws DALException
+    {
         return changeDAO.getNewestLog();
     }
 }
