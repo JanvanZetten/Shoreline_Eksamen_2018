@@ -134,7 +134,7 @@ public class ConversionThread
             // If any exception was caught.
             if (ex != null)
             {
-                if (ex instanceof DALException || ex instanceof BLLException)
+                if (ex instanceof BLLException)
                 {
                     String header = "Conversion Error";
 
