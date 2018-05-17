@@ -20,48 +20,64 @@ import shoreline_exam_2018.be.InputObject;
  */
 public class InputObjectConverter {
 
+    /**
+     * Convert Apache POI Row to InpuObject
+     * @param row the row to convert
+     * @return inputObject with data from row
+     */
     public static InputObject rowToInputObject(Row row) {
         List<InputField> fields = new ArrayList<>();
-
-        for (Cell cell : row) {
+        
+        for (int cn=0; cn<row.getLastCellNum(); cn++) {
+            Cell cell = row.getCell(cn);
             InputField input;
-            switch (cell.getCellTypeEnum()) {
-                case FORMULA:
-                    switch (cell.getCachedFormulaResultTypeEnum()) {
-                        case STRING:
-                            input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
-                            break;
-                        case NUMERIC:
-                            if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                                input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
-                            } else {
-                                input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
-                            }
-                            break;
-                        default: 
+            if (cell == null) {
+                input = new InputField(InputFieldType.EMPTY);
+            } else {
+                switch (cell.getCellTypeEnum()) {
+                    case FORMULA:
+                        switch (cell.getCachedFormulaResultTypeEnum()) {
+                            case STRING:
+                                if (cell.getStringCellValue().isEmpty()) {
+                                    input = new InputField(InputFieldType.EMPTY);
+                                } else {
+                                    input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                                }
+                                break;
+                            case NUMERIC:
+                                if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                                    input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
+                                } else {
+                                    input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
+                                }
+                                break;
+                            default:
+                                input = new InputField(InputFieldType.EMPTY);
+                        }
+                        break;
+                    case STRING:
+                        if (cell.getStringCellValue().isEmpty()) {
                             input = new InputField(InputFieldType.EMPTY);
-                    }
-                    break;
-                case STRING:
-                    input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
-                    break;
-                case NUMERIC:
-                    if (HSSFDateUtil.isCellDateFormatted(cell)) {
-                        input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
-                    } else {
-                        input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
-                    }
-                    break;
-                case BOOLEAN:
-                    input = new InputField(InputFieldType.STRING, Boolean.toString(cell.getBooleanCellValue()));
-                    break;
-                default:
-                    input = new InputField(InputFieldType.EMPTY);
+                        } else {
+                            input = new InputField(InputFieldType.STRING, cell.getStringCellValue());
+                        }
+                        break;
+                    case NUMERIC:
+                        if (HSSFDateUtil.isCellDateFormatted(cell)) {
+                            input = new InputField(InputFieldType.DATE, cell.getDateCellValue());
+                        } else {
+                            input = new InputField(InputFieldType.NUMERIC, cell.getNumericCellValue());
+                        }
+                        break;
+                    case BOOLEAN:
+                        input = new InputField(InputFieldType.STRING, Boolean.toString(cell.getBooleanCellValue()));
+                        break;
+                    default:
+                        input = new InputField(InputFieldType.EMPTY);
 
+                }
             }
-            
             fields.add(input);
-
         }
 
         return new InputObject(fields);

@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll.converters;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputFieldType;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.*;
@@ -53,14 +54,14 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityDate)
             {
-                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null )
                 {
                     output.add(new JsonPairDate(structEntry.getColumnName(),
                             inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getDateValue()));
                 }
                 else
                 {
-                    throw new BLLException("The struct entry type is not supported");
+                    throw new BLLException("The field is missing, check profile");
                 }
 
             }
@@ -73,7 +74,7 @@ public class RowToOutputPairMapper
                 }
                 else
                 {
-                    throw new BLLException("The struct entry type is not supported");
+                    throw new BLLException("The field is missing, check profile");
                 }
             }
             else if (structEntry instanceof StructEntityInteger)
@@ -86,7 +87,7 @@ public class RowToOutputPairMapper
                 }
                 else
                 {
-                    throw new BLLException("The struct entry type is not supported");
+                    throw new BLLException("The field is missing, check profile");
                 }
             }
             else if (structEntry instanceof StructEntityObject)
@@ -104,7 +105,7 @@ public class RowToOutputPairMapper
                 }
                 else
                 {
-                    throw new BLLException("The struct entry type is not supported");
+                    throw new BLLException("The field is missing, check profile");
                 }
             }
             else

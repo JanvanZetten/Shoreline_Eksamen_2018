@@ -17,28 +17,42 @@ public class InputField {
     double numericfield;
     InputFieldType type;
 
+    /**
+     * Field with no initial value
+     * @param type 
+     */
     public InputField(InputFieldType type) {
         this.type = type;
     }
     
-    public InputField(InputFieldType type, Object field) {
+    /**
+     * Field with initial value
+     * @param type the fieleds type as enum 
+     * @param value the initial value
+     */
+    public InputField(InputFieldType type, Object value) {
         this.type = type;
         
         switch(type){
             case STRING:
-                stringField = (String) field;
+                stringField = (String) value;
                 break;
             case DATE:
-                dateField = (Date) field;
+                dateField = (Date) value;
                 break;
             case NUMERIC:
-                numericfield = (Double) field;
+                numericfield = (Double) value;
                 break;
             default:
                 break;
         }
     }
     
+    
+    /**
+     * Gets the value as object
+     * @return 
+     */
     public Object getValue(){
         switch(type){
             case STRING:
@@ -52,6 +66,11 @@ public class InputField {
         }
     }
     
+    
+    /**
+     * Gets the string value. Should only be used if type is STRING
+     * @return the string or empty string if type is empty
+     */
     public String getStringValue(){
         if (type == InputFieldType.EMPTY){
             return "";
@@ -59,6 +78,10 @@ public class InputField {
         return stringField;
     }
     
+    /**
+     * Gets the date value. Should only be used if type is DATE
+     * @return the date or null when type is empty
+     */
     public Date getDateValue(){
         if (type == InputFieldType.EMPTY){
             return null;
@@ -66,10 +89,18 @@ public class InputField {
         return dateField;
     }
     
+    /**
+     * Gets the double value. Should only be used if type is NUMERIC
+     * @return 
+     */
     public double getDoubleValue(){
         return numericfield;
     }
     
+    /**
+     * Gets the int value. Should only be used if type is NUMERIC
+     * @return 
+     */
     public int getIntValue(){
         Double asdouble = numericfield;
         return asdouble.intValue();

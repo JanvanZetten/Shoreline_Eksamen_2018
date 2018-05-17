@@ -7,7 +7,6 @@ package shoreline_exam_2018.dal;
 
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Row;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -66,7 +65,7 @@ public class XLSX_horisontal_ReaderTest {
         InputObject currentrow = reader.getNext();
         assertEquals(1, currentrow.getField(0).getDoubleValue(), 0.01);
         assertEquals(2, currentrow.getField(1).getDoubleValue(), 0.01);
-        assertEquals(null, currentrow.getField(2));
+        assertEquals(null, currentrow.getField(2).getValue());
         assertEquals(5, currentrow.getField(3).getDoubleValue(), 0.01);
         assertEquals(6, currentrow.getField(4).getDoubleValue(), 0.01);
         }
