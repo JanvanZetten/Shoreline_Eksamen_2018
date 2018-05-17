@@ -19,6 +19,7 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.dal.database.DBChangeDAO;
 import shoreline_exam_2018.dal.database.LogDAO;
 import shoreline_exam_2018.dal.database.ProfileDAO;
 import shoreline_exam_2018.dal.database.UserDAO;
@@ -35,6 +36,7 @@ public class DALManager implements DALFacade
     private ProfileDAO profileDAO;
     private UserDAO userDAO;
     private LogDAO logDAO;
+    private DBChangeDAO changeDAO;
     private Reader reader;
 
     private User currentUser;
@@ -44,6 +46,7 @@ public class DALManager implements DALFacade
         this.profileDAO = new ProfileDAO();
         this.userDAO = new UserDAO();
         this.logDAO = new LogDAO();
+        this.changeDAO = new DBChangeDAO();
     }
 
     @Override
@@ -124,5 +127,10 @@ public class DALManager implements DALFacade
     public Log addLog(LogType type, String message, User creator) throws DALException
     {
         return logDAO.addLog(type, message, creator);
+    }
+
+    @Override
+    public int getNewestLog() throws DALException {
+        return changeDAO.getNewestLog();
     }
 }

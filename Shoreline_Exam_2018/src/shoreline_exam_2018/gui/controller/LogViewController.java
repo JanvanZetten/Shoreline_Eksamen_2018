@@ -7,6 +7,7 @@ package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ListView;
@@ -31,12 +32,24 @@ public class LogViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
          model = new LogModel();
          model.setListItemString(listviewLog);
-         model.loadLogItems();
          listviewLog.setItems(model.getLogItems());
+         
+         Platform.runLater(new Runnable()
+         {
+            @Override
+            public void run()
+            {
+                listviewLog.widthProperty().addListener((observable, oldValue, newValue)
+                        ->
+                {
+                    listviewLog.refresh();
+                });
+                model.addListener((c)
+                        ->
+                {
+                });
+            }
+         });
     }    
     
-    @FXML
-    public void updateList() {
-        model.loadLogItems();
-    }
 }

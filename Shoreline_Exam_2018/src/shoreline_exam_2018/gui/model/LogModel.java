@@ -5,7 +5,9 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.util.List;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -23,10 +25,13 @@ public class LogModel {
 
     ObservableList<Log> logList;
     BLLFacade bll = BLLManager.getInstance();
+    AutoUpdater aupdate;
     boolean run = true;
 
     public LogModel() {
         logList = FXCollections.observableArrayList();
+        aupdate = new AutoUpdater(this);
+        aupdate.setAsObserver();
     }
 
     /**
@@ -35,7 +40,10 @@ public class LogModel {
     public void loadLogItems() {
         logList.clear();
         try {
-            logList.addAll(bll.getAllLogs());
+            List<Log> allLogs = bll.getAllLogs();
+            if (allLogs != null) {
+                logList.addAll(allLogs);
+            }
         } catch (BLLException ex) {
             LoggingHelper.logException(ex);
             AlertFactory.showError("Could not load Log items", ex.getMessage());
@@ -49,6 +57,11 @@ public class LogModel {
      */
     public ObservableList<Log> getLogItems() {
         return logList;
+    }
+    
+    public void addListener(ListChangeListener cl)
+    {
+        logList.addListener(cl);
     }
 
     
