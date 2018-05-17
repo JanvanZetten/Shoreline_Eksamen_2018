@@ -16,6 +16,7 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.gui.model.AutoUpdater;
 
 /**
  *
@@ -85,4 +86,8 @@ public interface BLLFacade
     public Log addLog(LogType type, String message, User creator) throws BLLException;
 
     public User getcurrentUser();
+
+    public void createChangeListener(AutoUpdater aThis);
+
+    public int getNewestLog() throws BLLException;
 }
