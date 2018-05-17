@@ -125,37 +125,17 @@ public class ConversionThread
         thread = new Thread(task);
         thread.setDaemon(true);
 
-        // On failure.
         task.setOnFailed(e ->
         {
-            // Get exception.
             Exception ex = (Exception) task.getException();
 
-            // If any exception was caught.
             if (ex != null)
             {
                 if (ex instanceof BLLException)
                 {
-                    String header = "Conversion Error";
-
-                    // Stop task.
-                    isCanceled.setValue(true);
-
-                    // Show Alert window.
-                    AlertFactory.showError(header, ex.getMessage());
+                    AlertFactory.showError("Conversion Error", ex.getMessage());
                     LoggingHelper.logException(ex);
 
-                    // Log error.
-                    try
-                    {
-                        bll.addLog(LogType.CONVERSION, ex.getMessage(), bll.getcurrentUser());
-                    }
-                    catch (BLLException ex2)
-                    {
-                        AlertFactory.showError("Log Error", "Error logging to database.");
-                    }
-
-                    // Stop task.
                     isCanceled.setValue(true);
                     job.removeFromList();
                 }
