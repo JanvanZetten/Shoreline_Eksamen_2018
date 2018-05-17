@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**
@@ -117,7 +118,7 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements Reader {
     }
 
     @Override
-    public Row getNextRow() throws DALException {
+    public InputObject getNext() throws DALException {
         timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
         if (!open) {
             mainWorkbook = openStream();
@@ -125,7 +126,7 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements Reader {
             open = true;
         }
         
-        return iterator.next();
+        return InputObjectConverter.rowToInputObject(iterator.next());
     }
 
     /**

@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll.converters;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.structure.*;
@@ -23,19 +24,19 @@ public class RowToOutputPairMapper
 {
 
     /**
-     * get a List of outputpairs with the data from the row and the structure
-     * and fields from the structObject
+     * get a List of outputpairs with the data from the inputObject and the structure
+ and fields from the structObject
      *
      * @param structObject the object describing which data should convert to
      * what
-     * @param row the row from which to load the data
+     * @param inputObject the inputObject from which to load the data
      * @return a list of outputpairs
      * @throws BLLException if the stuctObject has a structEntry which is not
      * supported. The supported are: StructEntryArray, StructEntryDate,
      * StructEntryDouble, StructEntryInteger, StructEntryObject and
      * StructEntryString.
      */
-    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, Row row) throws BLLException
+    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, InputObject inputObject) throws BLLException
     {
         List<StructEntityInterface> collection = structObject.getCollection();
 
@@ -46,16 +47,16 @@ public class RowToOutputPairMapper
             //check what object this structE
             if (structEntry instanceof StructEntityArray)
             {
-                List<OutputPair> jsonArray = mapRowToOutputpairListWithEntityCollection((StructEntityArray) structEntry, row);
+                List<OutputPair> jsonArray = mapRowToOutputpairListWithEntityCollection((StructEntityArray) structEntry, inputObject);
                 output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
 
             }
             else if (structEntry instanceof StructEntityDate)
             {
-                if (row.getCell(((StructEntityDate) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null)
                 {
                     output.add(new JsonPairDate(structEntry.getColumnName(),
-                            row.getCell(((StructEntityDate) structEntry).getInputIndex()).getDateCellValue()));
+                            inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getDateValue()));
                 }
                 else
                 {
@@ -65,10 +66,10 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityDouble)
             {
-                if (row.getCell(((StructEntityDouble) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()) != null)
                 {
                     output.add(new JsonPairDouble(structEntry.getColumnName(),
-                            row.getCell(((StructEntityDouble) structEntry).getInputIndex()).getNumericCellValue()));
+                            inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue()));
                 }
                 else
                 {
@@ -77,10 +78,11 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityInteger)
             {
-                if (row.getCell(((StructEntityInteger) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()) != null)
                 {
-                    Double asDouble = row.getCell(((StructEntityInteger) structEntry).getInputIndex()).getNumericCellValue();
-                    output.add(new JsonPairInteger(structEntry.getColumnName(), asDouble.intValue()));
+
+                    output.add(new JsonPairInteger(structEntry.getColumnName(), 
+                            inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getIntValue()));
                 }
                 else
                 {
@@ -89,16 +91,16 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityObject)
             {
-                List<OutputPair> jsonObject = mapRowToOutputpairListWithEntityCollection((StructEntityObject) structEntry, row);
+                List<OutputPair> jsonObject = mapRowToOutputpairListWithEntityCollection((StructEntityObject) structEntry, inputObject);
                 output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
 
             }
             else if (structEntry instanceof StructEntityString)
             {
-                if (row.getCell(((StructEntityString) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityString) structEntry).getInputIndex()) != null)
                 {
                     output.add(new JsonPairString(structEntry.getColumnName(),
-                            row.getCell(((StructEntityString) structEntry).getInputIndex()).getStringCellValue()));
+                            inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getStringValue()));
                 }
                 else
                 {

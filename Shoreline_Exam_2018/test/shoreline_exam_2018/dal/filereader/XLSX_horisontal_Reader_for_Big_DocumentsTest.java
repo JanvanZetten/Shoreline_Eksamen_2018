@@ -13,6 +13,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**
@@ -67,38 +68,38 @@ public class XLSX_horisontal_Reader_for_Big_DocumentsTest {
     }
 
     /**
-     * Test of getNextRow method, of class
-     * XLSX_horisontal_Reader_for_Big_Documents.
+     * Test of getNext method, of class
+ XLSX_horisontal_Reader_for_Big_Documents.
      */
     @Test
     public void testGetNextRow() throws Exception {
         reader = new XLSX_horisontal_Reader_for_Big_Documents("test/shoreline_exam_2018/MockTilJunitTest.xlsx");
         for (int i = 0; i < 2; i++) {
-            Row currentrow = reader.getNextRow();
-            assertEquals(1, currentrow.getCell(0).getNumericCellValue(), 0.01);
-            assertEquals(2, currentrow.getCell(1).getNumericCellValue(), 0.01);
-            assertEquals(null, currentrow.getCell(2));
-            assertEquals(5, currentrow.getCell(3).getNumericCellValue(), 0.01);
-            assertEquals(6, currentrow.getCell(4).getNumericCellValue(), 0.01);
+            InputObject currentObject = reader.getNext();
+            assertEquals(1, currentObject.getField(0).getDoubleValue(), 0.01);
+            assertEquals(2, currentObject.getField(1).getDoubleValue(), 0.01);
+            assertEquals(null, currentObject.getField(2));
+            assertEquals(5, currentObject.getField(3).getDoubleValue(), 0.01);
+            assertEquals(6, currentObject.getField(4).getDoubleValue(), 0.01);
         }
     }
     
     @Test
     public void timeOutTest() throws Exception{
         reader = new XLSX_horisontal_Reader_for_Big_Documents("test/shoreline_exam_2018/MockTilJuintMedForskelligData.xlsx");
-        Row currentrow = reader.getNextRow();
-        assertEquals(1, currentrow.getCell(0).getNumericCellValue(), 0.01);
-        assertEquals(2, currentrow.getCell(1).getNumericCellValue(), 0.01);
-        assertEquals(3, currentrow.getCell(2).getNumericCellValue(), 0.01);
-        assertEquals(4, currentrow.getCell(3).getNumericCellValue(), 0.01);
-        assertEquals(5, currentrow.getCell(4).getNumericCellValue(), 0.01);
+        InputObject currentrow = reader.getNext();
+        assertEquals(1, currentrow.getField(0).getDoubleValue(), 0.01);
+        assertEquals(2, currentrow.getField(1).getDoubleValue(), 0.01);
+        assertEquals(3, currentrow.getField(2).getDoubleValue(), 0.01);
+        assertEquals(4, currentrow.getField(3).getDoubleValue(), 0.01);
+        assertEquals(5, currentrow.getField(4).getDoubleValue(), 0.01);
         Thread.sleep(11000);
-        currentrow = reader.getNextRow();
-        assertEquals(6, currentrow.getCell(0).getNumericCellValue(), 0.01);
-        assertEquals(7, currentrow.getCell(1).getNumericCellValue(), 0.01);
-        assertEquals(8, currentrow.getCell(2).getNumericCellValue(), 0.01);
-        assertEquals(9, currentrow.getCell(3).getNumericCellValue(), 0.01);
-        assertEquals(10, currentrow.getCell(4).getNumericCellValue(), 0.01);
+        currentrow = reader.getNext();
+        assertEquals(6, currentrow.getField(0).getDoubleValue(), 0.01);
+        assertEquals(7, currentrow.getField(1).getDoubleValue(), 0.01);
+        assertEquals(8, currentrow.getField(2).getDoubleValue(), 0.01);
+        assertEquals(9, currentrow.getField(3).getDoubleValue(), 0.01);
+        assertEquals(10, currentrow.getField(4).getDoubleValue(), 0.01);
     }
 
     /**

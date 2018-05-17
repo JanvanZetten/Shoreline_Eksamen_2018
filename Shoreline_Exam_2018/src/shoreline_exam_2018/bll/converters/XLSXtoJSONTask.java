@@ -11,6 +11,7 @@ import java.util.List;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -75,9 +76,9 @@ public class XLSXtoJSONTask extends Task {
                     Thread.sleep(1000);
                 }
 
-                Row nextRow = reader.getNextRow();
+                InputObject inputobject = reader.getNext();
 
-                OutputPair outputpair = new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(structure, nextRow));
+                OutputPair outputpair = new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(structure, inputobject));
 
                 outputObjects.add(outputpair);
             }

@@ -18,6 +18,7 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.apache.poi.xssf.usermodel.*;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**
@@ -118,7 +119,7 @@ public class XLSX_horisontal_Reader implements Reader {
     }
 
     @Override
-    public Row getNextRow() throws DALException {
+    public InputObject getNext() throws DALException {
         timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
         if (!open) {
             mainWorkbook = openStream();
@@ -126,7 +127,7 @@ public class XLSX_horisontal_Reader implements Reader {
             open = true;
         }
         pointer++;
-        return mainWorkbook.getSheetAt(SHEET_NUMBER).getRow(pointer);
+        return InputObjectConverter.rowToInputObject(mainWorkbook.getSheetAt(SHEET_NUMBER).getRow(pointer));
     }
 
     /**

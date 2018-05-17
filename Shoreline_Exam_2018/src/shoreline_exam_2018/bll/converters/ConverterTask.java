@@ -5,12 +5,12 @@
  */
 package shoreline_exam_2018.bll.converters;
 
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -69,7 +69,7 @@ public class ConverterTask extends Task
 
             while (reader.hasNext())
             {
-                Row input = read();
+                InputObject input = read();
 
                 currentrow++;
 
@@ -112,11 +112,11 @@ public class ConverterTask extends Task
      * @return
      * @throws BLLException
      */
-    private Row read() throws BLLException
+    private InputObject read() throws BLLException
     {
         try
         {
-            return reader.getNextRow();
+            return reader.getNext();
         }
         catch (DALException ex)
         {
@@ -130,7 +130,7 @@ public class ConverterTask extends Task
      * @return
      * @throws BLLException
      */
-    private OutputPair convert(Row input) throws BLLException
+    private OutputPair convert(InputObject input) throws BLLException
     {
         try
         {

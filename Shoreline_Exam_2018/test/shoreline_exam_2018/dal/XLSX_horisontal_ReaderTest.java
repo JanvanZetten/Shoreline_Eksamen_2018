@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import shoreline_exam_2018.be.InputObject;
 
 /**
  *
@@ -57,17 +58,17 @@ public class XLSX_horisontal_ReaderTest {
     }
 
     /**
-     * Test of getNextRow method, of class XLSX_horisontal_Reader.
+     * Test of getNext method, of class XLSX_horisontal_Reader.
      */
     @Test
     public void testGetNextRow() throws Exception {
         for (int i = 0; i < 2; i++) {
-        Row currentrow = reader.getNextRow();
-        assertEquals(1, currentrow.getCell(0).getNumericCellValue(), 0.01);
-        assertEquals(2, currentrow.getCell(1).getNumericCellValue(), 0.01);
-        assertEquals(null, currentrow.getCell(2));
-        assertEquals(5, currentrow.getCell(3).getNumericCellValue(), 0.01);
-        assertEquals(6, currentrow.getCell(4).getNumericCellValue(), 0.01);
+        InputObject currentrow = reader.getNext();
+        assertEquals(1, currentrow.getField(0).getDoubleValue(), 0.01);
+        assertEquals(2, currentrow.getField(1).getDoubleValue(), 0.01);
+        assertEquals(null, currentrow.getField(2));
+        assertEquals(5, currentrow.getField(3).getDoubleValue(), 0.01);
+        assertEquals(6, currentrow.getField(4).getDoubleValue(), 0.01);
         }
         
     }

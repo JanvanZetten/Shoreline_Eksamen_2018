@@ -7,6 +7,7 @@ package shoreline_exam_2018.dal.filereader;
 
 import java.util.List;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**
@@ -34,7 +35,7 @@ public interface Reader {
      * @return
      * @throws DALException 
      */
-    Row getNextRow() throws DALException;
+    InputObject getNext() throws DALException;
     
     int numberOfRows() throws DALException;
     
