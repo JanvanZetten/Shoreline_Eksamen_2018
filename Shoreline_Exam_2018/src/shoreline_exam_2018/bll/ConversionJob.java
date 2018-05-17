@@ -36,7 +36,8 @@ import shoreline_exam_2018.gui.controller.LogViewController;
  *
  * @author alexl
  */
-public class ConversionJob extends HBox {
+public class ConversionJob extends HBox
+{
 
     private Label lblConversionName;
     private ProgressBar progress;
@@ -60,7 +61,8 @@ public class ConversionJob extends HBox {
             ConversionThread cThread,
             Path outputPath,
             Profile selectedProfile,
-            ListView<ConversionJob> listJobs) {
+            ListView<ConversionJob> listJobs)
+    {
         super();
 
         bll = BLLManager.getInstance();
@@ -92,7 +94,8 @@ public class ConversionJob extends HBox {
      *
      * @param conversionName
      */
-    private void setLabelInfo(String conversionName) {
+    private void setLabelInfo(String conversionName)
+    {
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
         lblConversionName.setStyle("-fx-font-size: 20px");
@@ -103,7 +106,8 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setProgressBarInfo(ConversionThread cThread) {
+    private void setProgressBarInfo(ConversionThread cThread)
+    {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
@@ -116,7 +120,8 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setPauseButtonInfo(ConversionThread cThread) {
+    private void setPauseButtonInfo(ConversionThread cThread)
+    {
         btnPause.setStyle("-fx-background-color: transparent;");
         Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
@@ -125,13 +130,18 @@ public class ConversionJob extends HBox {
         Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewResume = new ImageView(imageResume);
 
-        btnPause.setOnAction(new EventHandler<ActionEvent>() {
+        btnPause.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
-                if (cThread.isOperating() == true) {
+            public void handle(ActionEvent event)
+            {
+                if (cThread.isOperating() == true)
+                {
                     cThread.pauseTask();
                     btnPause.setGraphic(imageViewResume);
-                } else if (cThread.isOperating() == false) {
+                }
+                else if (cThread.isOperating() == false)
+                {
                     cThread.resumeTask();
                     btnPause.setGraphic(imageViewPause);
                 }
@@ -144,23 +154,28 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile)
+    {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
 
-        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+        btnCancel.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
-            public void handle(ActionEvent event) {
+            public void handle(ActionEvent event)
+            {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Cancel confirmation");
                 alert.setHeaderText("Cancelling conversion");
                 alert.setContentText("Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                if (result.get() == ButtonType.OK)
+                {
                     cThread.cancelTask();
+                    cThread.resumeTask();
                     listJobs.getItems().remove(ConversionJob.this);
                 }
             }
@@ -173,7 +188,8 @@ public class ConversionJob extends HBox {
      *
      * @param grid
      */
-    private void setGridInfo(GridPane grid) {
+    private void setGridInfo(GridPane grid)
+    {
         this.setHgrow(grid, Priority.ALWAYS);
 
         Region filler1 = new Region();
@@ -209,7 +225,8 @@ public class ConversionJob extends HBox {
     /**
      * Removes itself from the list given in the constructer.
      */
-    void removeFromList() {
+    void removeFromList()
+    {
         listJobs.getItems().remove(ConversionJob.this);
     }
 }
