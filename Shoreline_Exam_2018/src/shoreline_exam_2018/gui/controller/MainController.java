@@ -10,8 +10,12 @@ import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Tab;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import shoreline_exam_2018.be.User;
 
 import shoreline_exam_2018.gui.model.MainModel;
@@ -42,6 +46,8 @@ public class MainController implements Initializable
     private AnchorPane paneLog;
     @FXML
     private AnchorPane paneSettings;
+    
+    private int GRAPHIC_SIZE = 36;
 
     /**
      * Initializes the MainController.
@@ -54,6 +60,8 @@ public class MainController implements Initializable
         {
             model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings, tabConvert);
         });
+        tabLog.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/log.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
+        tabSettings.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/settings.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
     }
 
     public void setCurrentUser(User currentUser) {

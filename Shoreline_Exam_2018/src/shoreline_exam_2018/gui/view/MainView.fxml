@@ -6,7 +6,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="593.0" prefWidth="956.0" styleClass="pane" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.MainController">
    <children>
-      <TabPane layoutX="14.0" layoutY="46.0" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <TabPane layoutX="14.0" layoutY="46.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@css/style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
           <Tab fx:id="tabConvert" text="Convert">
             <content>
@@ -18,12 +18,12 @@
                   <AnchorPane fx:id="paneProfiles" prefHeight="200.0" prefWidth="200.0" />
                </content>
           </Tab>
-            <Tab fx:id="tabLog" text="Log">
+            <Tab id="ICONTAB" fx:id="tabLog">
               <content>
                 <AnchorPane fx:id="paneLog" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
             </Tab>
-            <Tab fx:id="tabSettings" text="Settings">
+            <Tab id="ICONTAB" fx:id="tabSettings">
               <content>
                 <AnchorPane fx:id="paneSettings" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
               </content>
