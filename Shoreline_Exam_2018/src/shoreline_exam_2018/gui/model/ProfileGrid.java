@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +35,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import shoreline_exam_2018.be.output.structure.CollectionEntity;
+import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
@@ -266,7 +269,7 @@ public class ProfileGrid extends GridPane
     /**
      * Add a row for simple datatype.
      */
-    private void addSimpleRow()
+    private SimpleEntry<ComboBox<SimpleStructType>, TextField> addSimpleRow()
     {
         // Get row index.
         int index = structure.size();
@@ -386,12 +389,14 @@ public class ProfileGrid extends GridPane
         GridPane.setConstraints(toColumn, 3, rowCount);
         this.getChildren().addAll(gp, example, cmbType, toColumn);
         rowCount++;
+
+        return new SimpleEntry<>(cmbType, toColumn);
     }
 
     /**
      * Add a row for collection.
      */
-    private void addCollectionRow()
+    private SimpleEntry<ComboBox<CollectionStructType>, SimpleEntry<TextField, ProfileGrid>> addCollectionRow()
     {
         // Nodes for row.
         ComboBox<CollectionStructType> cmbType = getCollectionTypeBox();
@@ -444,6 +449,8 @@ public class ProfileGrid extends GridPane
             cmbType.valueProperty().addListener(masterListener);
             toColumn.textProperty().addListener(masterListener);
         }
+
+        return new SimpleEntry<>(cmbType, new SimpleEntry<>(toColumn, col));
     }
 
     /**
@@ -639,5 +646,63 @@ public class ProfileGrid extends GridPane
         Double colourCount = (INDENT / DEFAULT_INDENT) % COLOURS.length;
         rect.setFill(COLOURS[colourCount.intValue()]);
         return rect;
+    }
+
+    public void loadStructure(List<StructEntityInterface> structure)
+    {
+        for (StructEntityInterface sei : structure)
+        {
+            if (sei instanceof SimpleEntity)
+            {
+                loadSimpleStructure((SimpleEntity) sei);
+            }
+            else if (sei instanceof CollectionEntity)
+            {
+                loadCollectionStructure((CollectionEntity) sei);
+            }
+        }
+    }
+
+    private void loadSimpleStructure(SimpleEntity se)
+    {
+        SimpleEntry<ComboBox<SimpleStructType>, TextField> entry = addSimpleRow();
+        entry.getValue().setText(se.getColumnName());
+        switch (se.getSST())
+        {
+            case DATE:
+                entry.getKey().getSelectionModel().select(SimpleStructType.DATE);
+                break;
+            case DOUBLE:
+                entry.getKey().getSelectionModel().select(SimpleStructType.DOUBLE);
+                break;
+            case INTEGER:
+                entry.getKey().getSelectionModel().select(SimpleStructType.INTEGER);
+                break;
+            case STRING:
+                entry.getKey().getSelectionModel().select(SimpleStructType.STRING);
+                break;
+            default:
+                entry.getKey().getSelectionModel().selectFirst();
+                break;
+        }
+    }
+
+    private void loadCollectionStructure(CollectionEntity ce)
+    {
+        SimpleEntry<ComboBox<CollectionStructType>, SimpleEntry<TextField, ProfileGrid>> entry = addCollectionRow();
+        entry.getValue().getKey().setText(ce.getColumnName());
+        switch (ce.getCST())
+        {
+            case ARRAY:
+                entry.getKey().getSelectionModel().select(CollectionStructType.ARRAY);
+                break;
+            case OBJECT:
+                entry.getKey().getSelectionModel().select(CollectionStructType.OBJECT);
+                break;
+            default:
+                entry.getKey().getSelectionModel().selectFirst();
+                break;
+        }
+        entry.getValue().getValue().loadStructure(ce.getCollection());
     }
 }

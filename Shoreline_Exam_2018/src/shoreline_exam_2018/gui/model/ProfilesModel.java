@@ -11,6 +11,8 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
@@ -62,6 +64,7 @@ public class ProfilesModel
         this.gridDrag = gridDrag;
         this.scrollHeader = scrollHeader;
         this.scrollMain = scrollMain;
+        this.pg = new ProfileGrid(true);
 
         // Makes ScrollPaneHeader accept drag and drop copying.
         this.scrollHeader.setOnDragOver(e ->
@@ -137,13 +140,13 @@ public class ProfilesModel
     {
         try
         {
-            clearData();
             headersIndexAndExamples = bll.getHeadersAndExamplesFromFile(path);
             for (String string : headersIndexAndExamples.keySet())
             {
                 addInputHeadersAndExamples(headersIndexAndExamples.get(string).getKey(), string, headersIndexAndExamples.get(string).getValue());
             }
             pg.addHashMap(headersIndexAndExamples);
+            clearData();
         }
         catch (BLLException ex)
         {
@@ -183,7 +186,7 @@ public class ProfilesModel
         // Checks if any entity is null/not filled out.
         if (StructEntityUtils.isAnyEntryNull(result))
         {
-            AlertFactory.showInformation("Empty headers", "Some of the headers in output structure is empty.");
+            AlertFactory.showInformation("Empty Collection", "Some of the Collection in output structure is empty.");
             return;
         }
 
@@ -233,11 +236,10 @@ public class ProfilesModel
      */
     private void clearData()
     {
-        scrollMain.setContent(null);
         headersIndexAndExamples = new HashMap<>();
         headerRowCount = 0;
-        pg = new ProfileGrid(true);
         scrollMain.setContent(pg);
+        loadStructure();
     }
 
     /**
@@ -249,8 +251,6 @@ public class ProfilesModel
         txtfieldSourcefile.setText("");
         tp.set("");
         gridDrag.getChildren().clear();
-        pg = new ProfileGrid(true);
-        scrollMain.setContent(pg);
     }
 
     /**
@@ -288,6 +288,53 @@ public class ProfilesModel
         this.cm = cm;
     }
 
+    public void handleSaveStructure()
+    {
+        // Gets structure from Master Grid.
+        List<StructEntityInterface> result = pg.getStructure();
+
+        // Checks if empty.
+        if (result == null || result.isEmpty())
+        {
+            AlertFactory.showInformation("No Structure", "There was not found any structure.");
+            return;
+        }
+
+        // Checks if any entity is null/not filled out.
+        if (StructEntityUtils.isAnyEntryNull(result))
+        {
+            AlertFactory.showInformation("Empty Collection", "Some of the collection in output structure is empty.");
+            return;
+        }
+
+        // If name is not null nor empty.
+        if (tp.isNotEmpty().get() && tp.isNotNull().get())
+        {
+            // Create Object with ProfileName and Structure.
+            StructEntityObject seo = new StructEntityObject(tp.get(), result);
+
+            try
+            {
+                // Add Structure to database.
+                StructEntityObject structure = bll.addStructure(tp.get(), seo, bll.getcurrentUser().getId());
+
+                bll.addLog(LogType.PROFILE, "Structure " + tp.get() + " was successfully added to the system.", bll.getcurrentUser());
+                AlertFactory.showInformation("Success", "Structure has successfully been added to the system.");
+
+                clearView();
+            }
+            catch (BLLException ex)
+            {
+                LoggingHelper.logException(ex);
+                AlertFactory.showError("Data error", "An error happened trying to save the structure.\nERROR: " + ex.getMessage());
+            }
+        }
+        else
+        {
+            AlertFactory.showInformation("Name missing", "The structure has to be named.");
+        }
+    }
+
     /**
      * Getting the right style for drag and drop
      * @param node
@@ -298,5 +345,30 @@ public class ProfilesModel
         Scene scene = new Scene(parent);
         scene.getStylesheets().add(STYLESHEET);
         return scene;
+    }
+
+    /**
+     * Load default structure.
+     */
+    private void loadStructure()
+    {
+        List<StructEntityObject> structures;
+        try
+        {
+            structures = bll.getAllStructures();
+            if (structures != null)
+            {
+                if (!structures.isEmpty())
+                {
+                    StructEntityObject newest = structures.get(structures.size() - 1);
+                    pg.loadStructure(newest.getCollection());
+                }
+            }
+        }
+        catch (BLLException ex)
+        {
+            AlertFactory.showWarning("Loading structure", "Was not able to load default structure.");
+            LoggingHelper.logException(ex);
+        }
     }
 }

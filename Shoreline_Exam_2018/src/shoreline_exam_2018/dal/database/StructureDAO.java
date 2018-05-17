@@ -106,11 +106,12 @@ public class StructureDAO
         try
         {
             con = dbcp.checkOut();
-            String sql = "INSERT INTO StructSimple VALUES(?, ?);";
+            String sql = "INSERT INTO StructSimple VALUES(?, ?, ?);";
 
             PreparedStatement statement = con.prepareStatement(sql);
             statement.setInt(1, structureId);
-            statement.setString(2, se.getSST().name());
+            statement.setString(2, se.getColumnName());
+            statement.setString(3, se.getSST().name());
 
             statement.executeUpdate();
         }
@@ -302,19 +303,19 @@ public class StructureDAO
 
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
                 {
-                    simples.add(new StructEntityDate("", -1));
+                    simples.add(new StructEntityDate(rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.DOUBLE.name()))
                 {
-                    simples.add(new StructEntityDouble("", -1));
+                    simples.add(new StructEntityDouble(rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.INTEGER.name()))
                 {
-                    simples.add(new StructEntityInteger("", -1));
+                    simples.add(new StructEntityInteger(rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.STRING.name()))
                 {
-                    simples.add(new StructEntityString("", -1));
+                    simples.add(new StructEntityString(rs.getString("columnName"), -1));
                 }
             }
 
@@ -332,7 +333,7 @@ public class StructureDAO
             {
                 id = rs.getInt("id");
 
-                objects.add(new StructEntityObject("", getStructure(rs.getInt("otsId"))));
+                objects.add(new StructEntityObject(rs.getString("columnName"), getStructure(rs.getInt("otsId"))));
             }
 
             /*
@@ -349,7 +350,7 @@ public class StructureDAO
             {
                 id = rs.getInt("id");
 
-                arrays.add(new StructEntityArray("", getStructure(rs.getInt("atsId"))));
+                arrays.add(new StructEntityArray(rs.getString("columnName"), getStructure(rs.getInt("atsId"))));
             }
 
             lst.addAll(simples);

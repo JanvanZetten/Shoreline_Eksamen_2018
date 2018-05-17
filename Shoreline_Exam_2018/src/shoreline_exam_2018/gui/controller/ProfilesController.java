@@ -79,4 +79,10 @@ public class ProfilesController implements Initializable
     {
         pm.addSharedInfo(cm, tabConvert);
     }
+
+    @FXML
+    private void handleSaveStructure(ActionEvent event)
+    {
+        pm.handleSaveStructure();
+    }
 }
