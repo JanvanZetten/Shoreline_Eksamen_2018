@@ -34,4 +34,6 @@ public interface DALFacade
     public List<Log> getAllLogs() throws DALException;
 
     public Log addLog(LogType type, String message, User creator) throws DALException;
+
+    public int getNewestLog() throws DALException;
 }

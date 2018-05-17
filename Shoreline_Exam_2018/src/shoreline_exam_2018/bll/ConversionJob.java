@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -29,6 +30,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.gui.controller.LogViewController;
 
 /**
  *
@@ -42,6 +44,7 @@ public class ConversionJob extends HBox {
     private Button btnCancel;
     private ListView<ConversionJob> listJobs;
     private BLLManager bll;
+    private Path outputPath;
 
     private int BUTTON_SIZE = 36;
 
@@ -70,6 +73,7 @@ public class ConversionJob extends HBox {
         btnPause = new Button();
         btnCancel = new Button();
         GridPane grid = new GridPane();
+        this.outputPath = outputPath;
 
         this.setStyle("-fx-background-color: #737f8c;"
                 + "-fx-background-radius: 10;");
@@ -77,7 +81,7 @@ public class ConversionJob extends HBox {
         setLabelInfo(conversionName);
         setProgressBarInfo(cThread);
         setPauseButtonInfo(cThread);
-        setCancelButtonInfo(cThread, listJobs, selectedProfile, outputPath);
+        setCancelButtonInfo(cThread, listJobs, selectedProfile);
         setGridInfo(grid);
 
         this.getChildren().addAll(grid);
@@ -141,7 +145,7 @@ public class ConversionJob extends HBox {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile, Path outputPath) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
