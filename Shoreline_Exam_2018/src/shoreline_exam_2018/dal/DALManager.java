@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map.Entry;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import shoreline_exam_2018.be.InputField;
+import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -65,34 +67,30 @@ public class DALManager implements DALFacade
         reader = new XLSX_horisontal_Reader_for_Big_Documents(path.toString());
         HashMap<String, Entry<Integer, String>> hae = new HashMap();
         List<String> headers = reader.getParameters();
-        Row row = null;
+        InputObject inputObject = null;
         if (reader.hasNext())
         {
-            row = reader.getNextRow();
+            inputObject = reader.getNext();
         }
 
         for (int i = 0; i < headers.size(); i++)
         {
             String str = "";
-            if (row != null)
+            if (inputObject != null)
             {
-                Cell currentCell = row.getCell(i);
+                InputField currentCell = inputObject.getField(i);
                 if (currentCell != null)
                 {
-                    switch (currentCell.getCellTypeEnum())
+                    switch (currentCell.getType())
                     {
                         case STRING:
-                            str = currentCell.getStringCellValue();
-                            break;
-                        case BOOLEAN:
-                            str = Boolean.toString(currentCell.getBooleanCellValue());
-                            break;
-                        case FORMULA:
-                            str = currentCell.getCellFormula();
+                            str = currentCell.getStringValue();
                             break;
                         case NUMERIC:
-                            str = Double.toString(currentCell.getNumericCellValue());
+                            str = Double.toString(currentCell.getDoubleValue());
                             break;
+                        case DATE:
+                            str = currentCell.getDateValue().toString();
                         default:
                             break;
                     }
