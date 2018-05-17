@@ -38,13 +38,11 @@ public class LogModel {
      * load/reload the logItems and put it in the observable list 
      */
     public void loadLogItems() {
-        System.out.println(logList);
         logList.clear();
         try {
             List<Log> allLogs = bll.getAllLogs();
             if (allLogs != null) {
                 logList.addAll(allLogs);
-                System.out.println(logList);
             }
         } catch (BLLException ex) {
             LoggingHelper.logException(ex);

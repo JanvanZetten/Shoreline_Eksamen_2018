@@ -32,7 +32,6 @@ public class LogViewController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
          model = new LogModel();
          model.setListItemString(listviewLog);
-//         model.loadLogItems();
          listviewLog.setItems(model.getLogItems());
          
          Platform.runLater(new Runnable()
@@ -48,14 +47,9 @@ public class LogViewController implements Initializable {
                 model.addListener((c)
                         ->
                 {
-                    updateList();
                 });
             }
          });
     }    
     
-    @FXML
-    public void updateList() {
-//        model.loadLogItems();
-    }
 }
