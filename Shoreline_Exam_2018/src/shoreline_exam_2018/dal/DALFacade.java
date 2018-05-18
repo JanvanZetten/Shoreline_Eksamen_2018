@@ -125,4 +125,12 @@ public interface DALFacade
      * @return 
      */
     public String[] getDefaultDirectories();
+
+    
+    /**
+     * cheks if the file already exists
+     * @param file
+     * @return 
+     */
+    public boolean doesFileExist(Path file);
 }

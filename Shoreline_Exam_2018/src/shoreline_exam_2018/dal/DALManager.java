@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.dal;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
@@ -165,5 +166,11 @@ public class DALManager implements DALFacade {
         directories[0] = defaultOutputDir;
         System.out.println(directories[1]);
         return directories;
+    }
+
+    @Override
+    public boolean doesFileExist(Path file) {
+        File realfile = file.toFile();
+        return (realfile.exists() && !realfile.isDirectory());
     }
 }

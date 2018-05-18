@@ -71,6 +71,7 @@ public class ProfileGrid extends GridPane
 
     private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
     private HashMap<Integer, ProfileGrid> collectionMap; // Mapping row index to a ProfileGrid.
+    private HashMap<Node, Integer> nodeIndexMap; // Mapping Nodes to structure index.
     private List<StructEntityInterface> structure; // The structure of made from grid elements.
     private ChangeListener masterListener; // Master ChangeListener to notify changes to collections owning this ProfileGrid.
 
@@ -375,20 +376,6 @@ public class ProfileGrid extends GridPane
             removeSimpleStructure(GridPane.getRowIndex(btnDelete));
         });
 
-        // Create and adds a ChangeListener.
-        ChangeListener cl = getSimpleChangeListener(index, fromHeader, cmbType, toColumn);
-        fromHeader.textProperty().addListener(cl);
-        cmbType.valueProperty().addListener(cl);
-        toColumn.textProperty().addListener(cl);
-
-        // Add masterListener.
-        if (masterListener != null)
-        {
-            fromHeader.textProperty().addListener(masterListener);
-            cmbType.valueProperty().addListener(masterListener);
-            toColumn.textProperty().addListener(masterListener);
-        }
-
         // Set size.
         fromHeader.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
         fromHeader.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
@@ -419,6 +406,27 @@ public class ProfileGrid extends GridPane
         GridPane.setConstraints(toColumn, 3, rowCount);
         GridPane.setConstraints(btnDelete, 4, rowCount);
         this.getChildren().addAll(gp, example, cmbType, toColumn, btnDelete);
+
+        // Map nodes to structure index
+        nodeIndexMap.put(gp, index);
+        nodeIndexMap.put(example, index);
+        nodeIndexMap.put(cmbType, index);
+        nodeIndexMap.put(toColumn, index);
+        nodeIndexMap.put(btnDelete, index);
+
+        // Create and adds a ChangeListener.
+        ChangeListener cl = getSimpleChangeListener(fromHeader, cmbType, toColumn);
+        fromHeader.textProperty().addListener(cl);
+        cmbType.valueProperty().addListener(cl);
+        toColumn.textProperty().addListener(cl);
+
+        // Add masterListener.
+        if (masterListener != null)
+        {
+            fromHeader.textProperty().addListener(masterListener);
+            cmbType.valueProperty().addListener(masterListener);
+            toColumn.textProperty().addListener(masterListener);
+        }
 
         return new SimpleEntry<>(cmbType, toColumn);
     }
@@ -469,7 +477,7 @@ public class ProfileGrid extends GridPane
         rowCount = getRowCount() - 1;
 
         // Make ChangeListener.
-        ChangeListener cl = getCollectionChangeListener(index, cmbType, toColumn);
+        ChangeListener cl = getCollectionChangeListener(cmbType, toColumn);
 
         // Make new grid for structure handling.
         ProfileGrid col = new ProfileGrid(false, INDENT + DEFAULT_INDENT, cl);
@@ -478,6 +486,12 @@ public class ProfileGrid extends GridPane
         col.addHashMap(headersIndexAndExamples);
         GridPane.setConstraints(col, 0, rowCount, 5, 1);
         this.getChildren().add(col);
+
+        // Map nodes to structure index
+        nodeIndexMap.put(col, index);
+        nodeIndexMap.put(cmbType, index);
+        nodeIndexMap.put(toColumn, index);
+        nodeIndexMap.put(btnDelete, index);
 
         // Map Grid to row index and add listeners
         collectionMap.put(index, col);
@@ -493,8 +507,6 @@ public class ProfileGrid extends GridPane
 
         return new SimpleEntry<>(cmbType, new SimpleEntry<>(toColumn, col));
     }
-
-    private int count = 0;
 
     /**
      * Count rows in gridpane.
@@ -513,7 +525,6 @@ public class ProfileGrid extends GridPane
                 numRows = Math.max(numRows, rowIndex + 1);
             }
         }
-        count++;
         return numRows;
     }
 
@@ -561,49 +572,56 @@ public class ProfileGrid extends GridPane
         return scene;
     }
 
+    private HashMap<Node, Integer> getNodeIndex()
+    {
+        return nodeIndexMap;
+    }
+
     /**
      * Updates structure list for simple datatypes to fit changed information.
-     * @param index
      * @param cmb
      * @param tf
      * @param cb
      * @return
      */
-    private ChangeListener getSimpleChangeListener(int index, TextField fromHeader, ComboBox<SimpleStructType> cmb, TextField tf)
+    private ChangeListener getSimpleChangeListener(TextField fromHeader, ComboBox<SimpleStructType> cmb, TextField tf)
     {
         ChangeListener cl = new ChangeListener()
         {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue)
             {
-                if (!fromHeader.getText().isEmpty())
+                if (fromHeader != null && cmb != null && tf != null)
                 {
-                    Integer fromIndex = headersIndexAndExamples.get(fromHeader.getText()).getKey();
-                    if (fromIndex != null)
+                    if (!fromHeader.getText().isEmpty())
                     {
-                        if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
+                        Integer fromIndex = headersIndexAndExamples.get(fromHeader.getText()).getKey();
+                        if (fromIndex != null)
                         {
-                            switch (cmb.getValue())
+                            if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
                             {
-                                case DATE:
-                                    structure.set(index, new StructEntityDate(tf.getText(), fromIndex));
-                                    return;
-                                case DOUBLE:
-                                    structure.set(index, new StructEntityDouble(tf.getText(), fromIndex));
-                                    return;
-                                case INTEGER:
-                                    structure.set(index, new StructEntityInteger(tf.getText(), fromIndex));
-                                    return;
-                                case STRING:
-                                    structure.set(index, new StructEntityString(tf.getText(), fromIndex));
-                                    return;
-                                default:
-                                    break;
+                                switch (cmb.getValue())
+                                {
+                                    case DATE:
+                                        structure.set(nodeIndexMap.get(cmb), new StructEntityDate(tf.getText(), fromIndex));
+                                        return;
+                                    case DOUBLE:
+                                        structure.set(nodeIndexMap.get(cmb), new StructEntityDouble(tf.getText(), fromIndex));
+                                        return;
+                                    case INTEGER:
+                                        structure.set(nodeIndexMap.get(cmb), new StructEntityInteger(tf.getText(), fromIndex));
+                                        return;
+                                    case STRING:
+                                        structure.set(nodeIndexMap.get(cmb), new StructEntityString(tf.getText(), fromIndex));
+                                        return;
+                                    default:
+                                        break;
+                                }
                             }
                         }
-                    }
 
-                    structure.set(index, null);
+                        structure.set(nodeIndexMap.get(cmb), null);
+                    }
                 }
             }
         };
@@ -613,34 +631,36 @@ public class ProfileGrid extends GridPane
     /**
      * Updates structure list for collection datatypes to fit changed
      * information.
-     * @param index
      * @param cmb
      * @param tf
      * @param cb
      * @return
      */
-    private ChangeListener getCollectionChangeListener(int index, ComboBox<CollectionStructType> cmb, TextField tf)
+    private ChangeListener getCollectionChangeListener(ComboBox<CollectionStructType> cmb, TextField tf)
     {
         ChangeListener cl = new ChangeListener()
         {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue)
             {
-                if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
+                if (cmb != null && tf != null)
                 {
-                    switch (cmb.getValue())
+                    if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
                     {
-                        case ARRAY:
-                            structure.set(index, new StructEntityArray(tf.getText(), collectionMap.get(index).getStructure()));
-                            return;
-                        case OBJECT:
-                            structure.set(index, new StructEntityObject(tf.getText(), collectionMap.get(index).getStructure()));
-                            return;
-                        default:
-                            break;
+                        switch (cmb.getValue())
+                        {
+                            case ARRAY:
+                                structure.set(getNodeIndex().get(cmb), new StructEntityArray(tf.getText(), collectionMap.get(getNodeIndex().get(cmb)).getStructure()));
+                                return;
+                            case OBJECT:
+                                structure.set(getNodeIndex().get(cmb), new StructEntityObject(tf.getText(), collectionMap.get(getNodeIndex().get(cmb)).getStructure()));
+                                return;
+                            default:
+                                break;
+                        }
                     }
+                    structure.set(getNodeIndex().get(cmb), null);
                 }
-                structure.set(index, null);
             }
         };
         return cl;
@@ -663,6 +683,7 @@ public class ProfileGrid extends GridPane
     {
         structure = new ArrayList<>();
         collectionMap = new HashMap();
+        nodeIndexMap = new HashMap();
         this.getChildren().clear();
         this.getColumnConstraints().clear();
         this.getRowConstraints().clear();
@@ -766,10 +787,20 @@ public class ProfileGrid extends GridPane
      */
     private void removeSimpleStructure(int i)
     {
+        boolean hasRemoved = false;
         for (int j = 0; j < this.getChildren().size(); j *= 1)
         {
             if (GridPane.getRowIndex(this.getChildren().get(j)) == i)
             {
+                if (!hasRemoved && structure.size() > i - 1)
+                {
+                    structure.remove(i - 1);
+                    hasRemoved = true;
+                }
+                if (nodeIndexMap.containsKey(this.getChildren().get(j)))
+                {
+                    nodeIndexMap.remove(this.getChildren().get(j));
+                }
                 this.getChildren().remove(this.getChildren().get(j));
             }
             else
@@ -782,6 +813,10 @@ public class ProfileGrid extends GridPane
             int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
             if (rowIndex > i)
             {
+                if (nodeIndexMap.containsKey(this.getChildren().get(j)))
+                {
+                    nodeIndexMap.replace(this.getChildren().get(j), (nodeIndexMap.get(this.getChildren().get(j)) - 1));
+                }
                 GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 1);
             }
         }
@@ -793,11 +828,22 @@ public class ProfileGrid extends GridPane
      */
     private void removeCollectionStructure(int i)
     {
+        boolean hasRemoved = false;
         for (int j = 0; j < this.getChildren().size(); j *= 1)
         {
-            if (GridPane.getRowIndex(this.getChildren().get(j)) == i || GridPane.getRowIndex(this.getChildren().get(j)) == i + 1)
+            Node node = this.getChildren().get(j);
+            if (GridPane.getRowIndex(node) == i && !hasRemoved && structure.size() > i - 1)
             {
-                this.getChildren().remove(this.getChildren().get(j));
+                structure.remove(i - 1);
+                hasRemoved = true;
+            }
+            if (GridPane.getRowIndex(node) == i || GridPane.getRowIndex(node) == i + 1)
+            {
+                if (nodeIndexMap.containsKey(node))
+                {
+                    nodeIndexMap.remove(node);
+                }
+                this.getChildren().remove(node);
             }
             else
             {
@@ -809,6 +855,10 @@ public class ProfileGrid extends GridPane
             int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
             if (rowIndex > i)
             {
+                if (nodeIndexMap.containsKey(this.getChildren().get(j)))
+                {
+                    nodeIndexMap.replace(this.getChildren().get(j), (nodeIndexMap.get(this.getChildren().get(j)) - 2));
+                }
                 GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 2);
             }
         }
