@@ -18,7 +18,6 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.converters.ConverterTask;
-import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**

@@ -22,13 +22,14 @@ public class InputObjectConverter {
 
     /**
      * Convert Apache POI Row to InpuObject
+     *
      * @param row the row to convert
      * @return inputObject with data from row
      */
     public static InputObject rowToInputObject(Row row) {
         List<InputField> fields = new ArrayList<>();
-        
-        for (int cn=0; cn<row.getLastCellNum(); cn++) {
+
+        for (int cn = 0; cn < row.getLastCellNum(); cn++) {
             Cell cell = row.getCell(cn);
             InputField input;
             if (cell == null) {
@@ -77,6 +78,40 @@ public class InputObjectConverter {
 
                 }
             }
+            fields.add(input);
+        }
+
+        return new InputObject(fields);
+    }
+
+    
+    /**
+     *Converts string array to inputObject. (does not convert to dates)
+     * @param row
+     * @return inputobject
+     */
+    static InputObject StringArrayToInputObject(String[] row) {
+        List<InputField> fields = new ArrayList<>();
+        InputField input;
+        for (String string : row) {
+
+            if (string == null || string.trim().isEmpty()) {
+                input = new InputField(InputFieldType.EMPTY);
+            } else {
+                if (string.matches("-?\\d+(\\.\\d+)?")) {
+                    try {
+                        Double numeric = Double.parseDouble(string);
+                        input = new InputField(InputFieldType.NUMERIC, numeric);
+                    } catch (NumberFormatException ex) {
+                        input = new InputField(InputFieldType.STRING, string);
+                    }
+                }
+                else{
+                    input = new InputField(InputFieldType.STRING, string);
+                }
+                
+            }
+
             fields.add(input);
         }
 
