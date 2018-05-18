@@ -211,5 +211,5 @@ and open the template in the editor.
 
 #ICONTAB.tab {
     -fx-pref-width: 57px;
-    -fx-alignment: center-right;
+    -fx-alignment: CENTER_RIGHT;
 }
