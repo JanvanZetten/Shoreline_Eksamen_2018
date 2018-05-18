@@ -5,13 +5,12 @@
  */
 package shoreline_exam_2018.dal;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.InputField;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.Log;
@@ -31,8 +30,7 @@ import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader_for_Big_Documen
  *
  * @author alexl
  */
-public class DALManager implements DALFacade
-{
+public class DALManager implements DALFacade {
 
     private ProfileDAO profileDAO;
     private StructureDAO structureDAO;
@@ -40,64 +38,57 @@ public class DALManager implements DALFacade
     private LogDAO logDAO;
     private DBChangeDAO changeDAO;
     private Reader reader;
+    private PropertiesWriter propWriter;
 
     private static User currentUser;
+    private static String defaultInputDir;
+    private static String defaultOutputDir;
 
-    public DALManager()
-    {
+    public DALManager() {
         this.profileDAO = new ProfileDAO();
         this.structureDAO = new StructureDAO();
         this.userDAO = new UserDAO();
         this.logDAO = new LogDAO();
         this.changeDAO = new DBChangeDAO();
+        this.propWriter = new PropertiesWriter();
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException
-    {
+    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException {
         return profileDAO.addProfile(name, structure, createdBy);
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws DALException
-    {
+    public List<Profile> getAllProfiles() throws DALException {
         return profileDAO.getAllProfiles();
     }
 
     @Override
-    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws DALException
-    {
+    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws DALException {
         return structureDAO.addStructure(name, structure, createdBy);
     }
 
     @Override
-    public List<StructEntityObject> getAllStructures() throws DALException
-    {
+    public List<StructEntityObject> getAllStructures() throws DALException {
         return structureDAO.getAllStructures();
     }
 
     @Override
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException
-    {
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException {
         reader = new XLSX_horisontal_Reader_for_Big_Documents(path.toString());
         HashMap<String, Entry<Integer, String>> hae = new HashMap();
         List<String> headers = reader.getParameters();
         InputObject inputObject = null;
-        if (reader.hasNext())
-        {
+        if (reader.hasNext()) {
             inputObject = reader.getNext();
         }
 
-        for (int i = 0; i < headers.size(); i++)
-        {
+        for (int i = 0; i < headers.size(); i++) {
             String str = "";
-            if (inputObject != null)
-            {
+            if (inputObject != null) {
                 InputField currentCell = inputObject.getField(i);
-                if (currentCell != null)
-                {
-                    switch (currentCell.getType())
-                    {
+                if (currentCell != null) {
+                    switch (currentCell.getType()) {
                         case STRING:
                             str = currentCell.getStringValue();
                             break;
@@ -111,9 +102,7 @@ public class DALManager implements DALFacade
                     }
                 }
                 hae.put(headers.get(i), new SimpleImmutableEntry<>(i, str));
-            }
-            else
-            {
+            } else {
                 hae.put(headers.get(i), new SimpleImmutableEntry<>(i, str));
             }
         }
@@ -121,33 +110,47 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public User userLogin(String user, String password) throws DALException
-    {
+    public User userLogin(String user, String password) throws DALException {
         currentUser = userDAO.login(user, password);
         return currentUser;
     }
 
     @Override
-    public User getCurrentUser()
-    {
+    public User getCurrentUser() {
         return currentUser;
     }
 
     @Override
-    public List<Log> getAllLogs() throws DALException
-    {
+    public List<Log> getAllLogs() throws DALException {
         return logDAO.getAllLogs();
     }
 
     @Override
-    public Log addLog(LogType type, String message, User creator) throws DALException
-    {
+    public Log addLog(LogType type, String message, User creator) throws DALException {
         return logDAO.addLog(type, message, creator);
     }
 
     @Override
-    public int getNewestLog() throws DALException
-    {
+    public int getNewestLog() throws DALException {
         return changeDAO.getNewestLog();
+    }
+
+    @Override
+    public void updateDefaultDirectory(String[] directory) throws DALException, IOException {
+        propWriter.updateDefaultDirectory(directory);
+    }
+
+    @Override
+    public void addDefaultDirectories(String inputValue, String outputValue) {
+        this.defaultInputDir = inputValue;
+        this.defaultOutputDir = outputValue;
+    }
+    
+    @Override
+    public String[] getDefaultDirectories() {
+        String[] directories = new String[2];
+        directories[0] = defaultInputDir;
+        directories[1] = defaultOutputDir;
+        return directories;
     }
 }

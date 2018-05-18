@@ -6,9 +6,14 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
+import java.util.Properties;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +21,7 @@ import shoreline_exam_2018.bll.ConversionJob;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -139,15 +145,15 @@ public class ConvertModel {
         return null;
     }
 
-
     /**
      * Start a conversion with the given input and output files
+     *
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
     public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs) {
         ConversionJob startConversion = null;
-        
+
         if (selectedFile != null && outputFile != null && currentProfile != null) {
             String name;
             String pattern = Pattern.quote(System.getProperty("file.separator"));
@@ -161,16 +167,21 @@ public class ConvertModel {
                 LoggingHelper.logException(ex);
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
-            
+
             selectedFile = null;
             outputFile = null;
             return startConversion;
-        }
-        else{
+        } else {
             AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
             return null;
         }
-        
+
+    }
+
+    public void loadProperties(TextField inputField, TextField outputField) {
+        String[] directories = bll.getDefaultDirectories();
+        inputField.setText(directories[0]);
+        outputField.setText(directories[1]);
     }
 }
 

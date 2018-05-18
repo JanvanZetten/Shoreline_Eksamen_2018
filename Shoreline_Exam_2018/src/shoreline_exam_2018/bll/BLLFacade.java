@@ -107,4 +107,10 @@ public interface BLLFacade
     public void createChangeListener(AutoUpdater aThis);
 
     public int getNewestLog() throws BLLException;
+
+    public void updateDefaultDirectory(String[] directory) throws BLLException;
+
+    public void addDefaultDirectories(String inputValue, String outputValue);
+
+    public String[] getDefaultDirectories();
 }

@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.security.MessageDigest;
@@ -12,9 +13,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
@@ -209,5 +207,26 @@ public class BLLManager implements BLLFacade
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
+    }
+
+    @Override
+    public void updateDefaultDirectory(String[] directory) throws BLLException {
+        try {
+            dal.updateDefaultDirectory(directory);
+        } catch (DALException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        } catch (IOException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
+    public void addDefaultDirectories(String inputValue, String outputValue) {
+        dal.addDefaultDirectories(inputValue, outputValue);
+    }
+
+    @Override
+    public String[] getDefaultDirectories() {
+        return dal.getDefaultDirectories();
     }
 }

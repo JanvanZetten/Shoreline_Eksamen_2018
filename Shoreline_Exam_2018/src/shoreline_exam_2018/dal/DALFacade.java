@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.dal;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -40,4 +41,10 @@ public interface DALFacade
     public Log addLog(LogType type, String message, User creator) throws DALException;
 
     public int getNewestLog() throws DALException;
+
+    public void updateDefaultDirectory(String[] directory) throws DALException, IOException;
+
+    public void addDefaultDirectories(String inputValue, String outputValue);
+    
+    public String[] getDefaultDirectories();
 }
