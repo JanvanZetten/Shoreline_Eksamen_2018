@@ -790,11 +790,16 @@ public class ProfileGrid extends GridPane
         boolean hasRemoved = false;
         for (int j = 0; j < this.getChildren().size(); j *= 1)
         {
+            int structureIndex = i;
+            if (IS_MASTER)
+            {
+                structureIndex = i - 1;
+            }
             if (GridPane.getRowIndex(this.getChildren().get(j)) == i)
             {
-                if (!hasRemoved && structure.size() > i - 1)
+                if (!hasRemoved && structure.size() > structureIndex)
                 {
-                    structure.remove(i - 1);
+                    structure.remove(structureIndex);
                     hasRemoved = true;
                 }
                 if (nodeIndexMap.containsKey(this.getChildren().get(j)))
@@ -831,10 +836,15 @@ public class ProfileGrid extends GridPane
         boolean hasRemoved = false;
         for (int j = 0; j < this.getChildren().size(); j *= 1)
         {
-            Node node = this.getChildren().get(j);
-            if (GridPane.getRowIndex(node) == i && !hasRemoved && structure.size() > i - 1)
+            int structureIndex = i;
+            if (IS_MASTER)
             {
-                structure.remove(i - 1);
+                structureIndex = i - 1;
+            }
+            Node node = this.getChildren().get(j);
+            if (GridPane.getRowIndex(node) == i && !hasRemoved && structure.size() > structureIndex)
+            {
+                structure.remove(structureIndex);
                 hasRemoved = true;
             }
             if (GridPane.getRowIndex(node) == i || GridPane.getRowIndex(node) == i + 1)
