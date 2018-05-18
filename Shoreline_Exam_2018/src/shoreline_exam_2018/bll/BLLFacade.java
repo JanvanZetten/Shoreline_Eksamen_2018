@@ -139,7 +139,7 @@ public interface BLLFacade
      * @param directory  = [Type of directory, file path]
      * @throws BLLException 
      */
-    public void updateDefaultDirectory(String[] directory) throws BLLException;
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException;
 
     /**
      * Adds default directories from the properties on start-up so that they

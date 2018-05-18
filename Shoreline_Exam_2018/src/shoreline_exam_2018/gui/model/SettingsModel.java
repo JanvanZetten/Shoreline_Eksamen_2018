@@ -22,9 +22,16 @@ import shoreline_exam_2018.bll.BLLManager;
 public class SettingsModel {
     
     private BLLFacade bll;
+    private TextField txtfieldInputDir;
+    private TextField txtfieldOutputDir;
     
     public SettingsModel() {
         bll = BLLManager.getInstance();
+    }
+    
+    public void setTextFields(TextField txtfieldInputDir, TextField txtfieldOutputDir) {
+        this.txtfieldInputDir = txtfieldInputDir;
+        this.txtfieldOutputDir = txtfieldOutputDir;
     }
 
     public void newDefaultDir(String dirType, TextField txtfieldDir) {
@@ -44,17 +51,17 @@ public class SettingsModel {
             try {
                 directory[1] = selectedFile.toString();
                 txtfieldDir.setText(directory[1]);
-                bll.updateDefaultDirectory(directory);
+                bll.updateDefaultDirectory(directory, txtfieldInputDir.getText(), txtfieldOutputDir.getText());
             } catch (BLLException ex) {
                 AlertFactory.showError("The config could not be updated", "Error: " + ex.getMessage());
             }
         }
     }
 
-    public void setSettingsDefaultDirectories(TextField txtfieldInputDir, TextField txtfieldOutputDir) {
+    public void setSettingsDefaultDirectories() {
         String[] string = bll.getDefaultDirectories();
-        txtfieldInputDir.setText(string[0]);
-        txtfieldOutputDir.setText(string[1]);
+        txtfieldInputDir.setText(string[1]);
+        txtfieldOutputDir.setText(string[0]);
     }
     
     

@@ -136,8 +136,10 @@ public class DALManager implements DALFacade {
     }
 
     @Override
-    public void updateDefaultDirectory(String[] directory) throws DALException, IOException {
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws DALException, IOException {
         propWriter.updateDefaultDirectory(directory);
+        this.defaultInputDir = input;
+        this.defaultOutputDir = output;
     }
 
     @Override
@@ -149,8 +151,8 @@ public class DALManager implements DALFacade {
     @Override
     public String[] getDefaultDirectories() {
         String[] directories = new String[2];
-        directories[0] = defaultInputDir;
-        directories[1] = defaultOutputDir;
+        directories[1] = defaultInputDir;
+        directories[0] = defaultOutputDir;
         return directories;
     }
 }

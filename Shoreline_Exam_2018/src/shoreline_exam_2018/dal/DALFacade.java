@@ -42,7 +42,7 @@ public interface DALFacade
 
     public int getNewestLog() throws DALException;
 
-    public void updateDefaultDirectory(String[] directory) throws DALException, IOException;
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws DALException, IOException;
 
     public void addDefaultDirectories(String inputValue, String outputValue);
     

@@ -210,9 +210,9 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public void updateDefaultDirectory(String[] directory) throws BLLException {
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException {
         try {
-            dal.updateDefaultDirectory(directory);
+            dal.updateDefaultDirectory(directory, input, output);
         } catch (DALException ex) {
             throw new BLLException(ex.getMessage(), ex.getCause());
         } catch (IOException ex) {
