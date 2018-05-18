@@ -26,24 +26,6 @@ public class MainModel {
     private ConvertModel cm;
 
     /**
-     * Retrieves the properties file and reads it on start-up.
-     */
-    public void getProperties() {
-        File f = new File("test.properties");
-        if (f.exists() && !f.isDirectory()) {
-            PropertiesReader propRead = new PropertiesReader();
-        } else {
-            try {
-                File file = new File("test.properties");
-                FileOutputStream fileOut = new FileOutputStream(file);
-                fileOut.close();
-            } catch (IOException ex) {
-                AlertFactory.showError("Could not read properties", ex.getMessage());
-            }
-        }
-    }
-
-    /**
      * Sets the tabs in all the tabs of the MainView.
      *
      * @param paneConvert  = The convertion view.

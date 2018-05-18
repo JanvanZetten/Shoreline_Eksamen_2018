@@ -63,18 +63,20 @@ public class ConvertModel {
      * Opens a file chooser and sets a File object to be the selected file.
      */
     public String chooseFile() {
-        
+
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Supported Files", "*.xlsx", "*.csv");
         FileChooser.ExtensionFilter xlsxfilter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
         FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV Files", "*.csv");
         FileChooser fc = new FileChooser();
 
         fc.getExtensionFilters().addAll(filter, xlsxfilter, csvFilter);
+
         String[] directory = bll.getDefaultDirectories();
         String currentDir = directory[1];
 
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
+        
         fc.setTitle("Load a file");
 
         selectedFile = fc.showOpenDialog(null);
@@ -120,15 +122,15 @@ public class ConvertModel {
         DirectoryChooser direcChosser = new DirectoryChooser();
 
         direcChosser.setTitle("Chosse output directory");
-        
+
         String[] directory = bll.getDefaultDirectories();
         String currentDir = directory[0];
-        
+
         File dir = new File(currentDir);
         direcChosser.setInitialDirectory(dir);
-        
+
         File selectedDirectory = direcChosser.showDialog(new Stage());
-        
+
         TextInputDialog namedialog = new TextInputDialog();
         namedialog.setTitle("Outputfile name");
         namedialog.setHeaderText("Please write the wanted name for the output file:");
