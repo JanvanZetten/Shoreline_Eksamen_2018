@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll;
 import java.nio.file.Path;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.Utilities.FileUtils;
 
 /**
  *
@@ -32,21 +33,16 @@ public class ConversionManager
         String inputExtension;
         String outputExtension;
 
-        String inputString = inputPath.toString();
-        String outptuString = outputPath.toString();
-
-        String[] inputSplit = inputString.split("\\.");
-        String[] outputSplit = outptuString.split("\\.");
-
-        inputExtension = inputSplit[inputSplit.length - 1];
-        outputExtension = outputSplit[outputSplit.length - 1];
+        inputExtension = FileUtils.getFiletype(inputPath);
+        outputExtension = FileUtils.getFiletype(outputPath);
 
         ConversionThread cThread = null;
 
-        if (inputExtension.equalsIgnoreCase("XLSX") && outputExtension.equalsIgnoreCase("json"))
+        if ((inputExtension.equalsIgnoreCase("XLSX") || inputExtension.equalsIgnoreCase("CSV")) && outputExtension.equalsIgnoreCase("json"))
         {
             cThread = new ConversionThread(taskName, inputPath, outputPath, selectedProfile);
         }
+        
 
         if (cThread != null)
         {
