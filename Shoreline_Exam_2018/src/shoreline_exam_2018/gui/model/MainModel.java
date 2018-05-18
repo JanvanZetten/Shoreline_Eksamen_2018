@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
@@ -17,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
-import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.gui.controller.ConvertController;
 import shoreline_exam_2018.gui.controller.ProfilesController;
@@ -30,8 +24,10 @@ public class MainModel {
 
     private Tab tabConvert;
     private ConvertModel cm;
-    private User currentUser;
 
+    /**
+     * Retrieves the properties file and reads it on start-up.
+     */
     public void getProperties() {
         File f = new File("test.properties");
         if (f.exists() && !f.isDirectory()) {
@@ -50,9 +46,9 @@ public class MainModel {
     /**
      * Sets the tabs in all the tabs of the MainView.
      *
-     * @param paneConvert = The convertion view.
+     * @param paneConvert  = The convertion view.
      * @param paneProfiles = The profiles view.
-     * @param paneLog = The log view.
+     * @param paneLog      = The log view.
      * @param paneSettings = The settings view.
      */
     public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings, Tab tabConvert) {
@@ -68,7 +64,7 @@ public class MainModel {
      * located in. Also sets a node of the view into the tab pane.
      *
      * @param PANE_NAME = Name of the tab.
-     * @param PANE = Name of the pane.
+     * @param PANE      = Name of the pane.
      */
     private void setPane(String PANE_NAME, AnchorPane PANE) {
         try {
@@ -112,9 +108,5 @@ public class MainModel {
      */
     public void setTabConvert(Tab tabConvert) {
         this.tabConvert = tabConvert;
-    }
-
-    public void setCurrentUser(User currentUser) {
-        this.currentUser = currentUser;
     }
 }

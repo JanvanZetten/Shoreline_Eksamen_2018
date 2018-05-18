@@ -34,6 +34,7 @@ public class LogController implements Initializable {
          model.setListItemString(listviewLog);
          listviewLog.setItems(model.getLogItems());
          
+         
          Platform.runLater(new Runnable()
          {
             @Override

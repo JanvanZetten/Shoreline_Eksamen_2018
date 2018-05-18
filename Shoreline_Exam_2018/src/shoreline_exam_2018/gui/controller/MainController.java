@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
@@ -15,7 +10,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import shoreline_exam_2018.be.User;
 
 import shoreline_exam_2018.gui.model.MainModel;
 
@@ -55,17 +49,16 @@ public class MainController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new MainModel();
+        // Gets and reads properties.
         model.getProperties();
+        // Sets up the tabs so they anchor correctly and get initialized.
         Platform.runLater(() ->
         {
             model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings, tabConvert);
         });
+        // Sets the images in the tabs for Log and Settings.
         tabLog.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/log.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
         tabSettings.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/settings.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
-    }
-
-    public void setCurrentUser(User currentUser) {
-        model.setCurrentUser(currentUser);
     }
 
 }

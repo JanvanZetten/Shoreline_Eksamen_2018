@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import shoreline_exam_2018.be.Log;
@@ -63,7 +64,7 @@ public class LogDAO
 
                 logs.add(log);
             }
-
+            Collections.reverse(logs);
             return logs;
         }
         catch (SQLException ex)
