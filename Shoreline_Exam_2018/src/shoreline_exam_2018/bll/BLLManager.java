@@ -21,6 +21,7 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.bll.Utilities.FileUtils;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.DALFacade;
 import shoreline_exam_2018.dal.DALManager;
@@ -114,7 +115,7 @@ public class BLLManager implements BLLFacade
     {
         try
         {
-            return dal.getHeadersAndExamplesFromFile(path);
+            return dal.getHeadersAndExamplesFromFile(path, FileUtils.getFiletype(path));
         }
         catch (DALException ex)
         {

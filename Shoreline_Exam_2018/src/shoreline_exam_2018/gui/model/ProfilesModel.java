@@ -31,6 +31,7 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.bll.BLLException;
+import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.bll.Utilities.StructEntityUtils;
@@ -43,7 +44,7 @@ public class ProfilesModel
 {
     private static final String STYLESHEET = "shoreline_exam_2018/gui/view/css/style.css"; // Root CSS
 
-    private BLLManager bll; // BLL Manager to contact database.
+    private BLLFacade bll; // BLL Manager to contact database.
     private GridPane gridDrag; // Grid Pane which contains column headers from input file.
     private ScrollPane scrollHeader; // ScrollPane for gridDrag.
     private ScrollPane scrollMain; // ScrollPane for ProfileGrid.
@@ -258,10 +259,12 @@ public class ProfilesModel
      */
     private Path chooseFile()
     {
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Supported Files", "*.xlsx", "*.csv");
+        FileChooser.ExtensionFilter xlsxfilter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV Files", "*.csv");
         FileChooser fc = new FileChooser();
 
-        fc.getExtensionFilters().add(filter);
+        fc.getExtensionFilters().addAll(filter, xlsxfilter, csvFilter);
         String currentDir = System.getProperty("user.dir") + File.separator;
 
         File dir = new File(currentDir);

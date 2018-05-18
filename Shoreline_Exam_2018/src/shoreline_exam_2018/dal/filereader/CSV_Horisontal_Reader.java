@@ -5,7 +5,9 @@
  */
 package shoreline_exam_2018.dal.filereader;
 
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,30 +33,26 @@ public class CSV_Horisontal_Reader implements Reader {
     Iterator<String[]> iterator;
     String fileName;
     private static final long EXPIRATION_TIME = 10000; //in milliseconds
+    private static final char SEPERATOR = ';';
     private long timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
     private boolean open = false;
 
     
     public CSV_Horisontal_Reader(String fileName) throws DALException {
-        try {
-            mainReader = new CSVReader(new FileReader(new File(fileName)));
-            iterator = mainReader.iterator();
-            iterator.next();// first line should be header
-            this.fileName = fileName;
-        } catch (FileNotFoundException ex) {
-            throw new DALException(ex.getMessage(), ex.getCause());
-        }
-
+        this.fileName = fileName;
+        mainReader = openStream();
+        iterator = mainReader.iterator();
+        iterator.next();
     }
 
     @Override
     public List<String> getParameters() throws DALException {
         try {
-            CSVReader csvReader = new CSVReader(new FileReader(new File(fileName)));
+            CSVReader csvReader = openStream();
 
-            String[] readNext = csvReader.readNext();
+            String[] firstRow = csvReader.readNext();
 
-            return Arrays.asList(readNext);
+            return Arrays.asList(firstRow);
 
         } catch (FileNotFoundException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
@@ -91,7 +89,7 @@ public class CSV_Horisontal_Reader implements Reader {
         }
         
         String[] row = iterator.next();
-
+        
         return InputObjectConverter.StringArrayToInputObject(row);
     }
 
@@ -130,7 +128,9 @@ public class CSV_Horisontal_Reader implements Reader {
 
     private CSVReader openStream() throws DALException {
         try {
-            return new CSVReader(new FileReader(new File(fileName)));
+            return new CSVReaderBuilder(new FileReader(new File(fileName)))
+                    .withCSVParser(new CSVParserBuilder().withSeparator(SEPERATOR).build())
+                    .build();
         } catch (FileNotFoundException ex) {
            throw new DALException(ex.getMessage(), ex.getCause());
         }

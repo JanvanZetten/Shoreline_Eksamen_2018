@@ -10,8 +10,6 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.InputField;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.Log;
@@ -19,11 +17,14 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.bll.BLLException;
+import shoreline_exam_2018.bll.Utilities.FileUtils;
 import shoreline_exam_2018.dal.database.DBChangeDAO;
 import shoreline_exam_2018.dal.database.LogDAO;
 import shoreline_exam_2018.dal.database.ProfileDAO;
 import shoreline_exam_2018.dal.database.StructureDAO;
 import shoreline_exam_2018.dal.database.UserDAO;
+import shoreline_exam_2018.dal.filereader.CSV_Horisontal_Reader;
 import shoreline_exam_2018.dal.filereader.Reader;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader_for_Big_Documents;
 
@@ -77,9 +78,15 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path, String filetype) throws DALException
     {
-        reader = new XLSX_horisontal_Reader_for_Big_Documents(path.toString());
+        if (filetype.equalsIgnoreCase("xlsx")) {
+                reader = new XLSX_horisontal_Reader_for_Big_Documents(path.toString());
+            } else if (filetype.equalsIgnoreCase("csv")) {
+                reader = new CSV_Horisontal_Reader(path.toString());
+            }else{
+                throw new DALException("The file type is not supported");
+            }
         HashMap<String, Entry<Integer, String>> hae = new HashMap();
         List<String> headers = reader.getParameters();
         InputObject inputObject = null;

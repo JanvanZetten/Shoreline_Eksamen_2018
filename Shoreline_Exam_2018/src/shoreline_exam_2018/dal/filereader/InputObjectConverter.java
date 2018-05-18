@@ -114,7 +114,7 @@ public class InputObjectConverter {
 
             fields.add(input);
         }
-
+ 
         return new InputObject(fields);
     }
 

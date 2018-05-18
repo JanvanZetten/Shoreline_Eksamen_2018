@@ -29,7 +29,7 @@ public interface DALFacade
 
     public List<StructEntityObject> getAllStructures() throws DALException;
 
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws DALException;
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path, String filetype) throws DALException;
 
     public User userLogin(String user, String password) throws DALException;
 
