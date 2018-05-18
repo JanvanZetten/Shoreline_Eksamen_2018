@@ -8,6 +8,7 @@ package shoreline_exam_2018.bll;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -124,7 +125,10 @@ public class BLLManager implements BLLFacade
     @Override
     public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLException
     {
-        return cMan.newConversion(taskName, inputFile, outputFile, profile, listJobs);
+        
+        Path outputfileChecked = checkForExisting(outputFile);
+        
+        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs);
     }
 
     @Override
@@ -230,4 +234,46 @@ public class BLLManager implements BLLFacade
     public String[] getDefaultDirectories() {
         return dal.getDefaultDirectories();
     }
+
+    /**
+     * Checks for existing and adds number to it to get a uniqe filename
+     * @param outputFile
+     * @return 
+     */
+    private Path checkForExisting(Path outputFile) {
+        int number = 1;
+        if (dal.doesFileExist(outputFile)){
+            while(dal.doesFileExist(addNumberToPath(outputFile, number))){
+                number++;   
+            }
+            return addNumberToPath(outputFile, number);
+            
+        }else{
+            return outputFile;
+        }
+    }
+
+    /**
+     * adds the given number to the filename of the path
+     * @param outputFile
+     * @param number
+     * @return 
+     */
+    private Path addNumberToPath(Path outputFile, int number) {
+        String asString = outputFile.toString();
+        String result;
+        
+        String[] split = asString.split("\\.");
+        
+        split[split.length-2] = split[split.length-2] + number;
+        
+        result = split[0];
+        
+        for (int i = 1; i < split.length; i++) {
+            result = result + "." + split[i];
+        }
+        
+        return Paths.get(result);
+    }
+
 }
