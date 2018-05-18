@@ -25,8 +25,12 @@ public class StringRenamer
         if (knownString.containsKey(str))
         {
             int index = knownString.get(str);
-            String newStr = str + index;
-            knownString.replace(str, index + 1);
+            String newStr = str;
+            while (knownString.containsKey(newStr))
+            {
+                newStr = str + index;
+                knownString.replace(str, index + 1);
+            }
             return newStr;
         }
         else
