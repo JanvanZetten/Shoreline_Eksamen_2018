@@ -55,6 +55,7 @@ public class MainController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new MainModel();
+        model.getProperties();
         Platform.runLater(() ->
         {
             model.setupTabs(paneConvert, paneProfiles, paneLog, paneSettings, tabConvert);

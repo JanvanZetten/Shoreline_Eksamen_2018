@@ -5,14 +5,13 @@
  */
 package shoreline_exam_2018.gui.controller;
 
-import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.stage.DirectoryChooser;
+import shoreline_exam_2018.gui.model.SettingsModel;
 
 /**
  * FXML Controller class
@@ -25,49 +24,27 @@ public class SettingsController implements Initializable {
     private TextField txtfieldInputDir;
     @FXML
     private TextField txtfieldOutputDir;
+    
+    private SettingsModel model;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        model = new SettingsModel();
+        model.setTextFields(txtfieldInputDir, txtfieldOutputDir);
+        model.setSettingsDefaultDirectories();
     }
 
     @FXML
-    private String handleInputDir(ActionEvent event) {
-        DirectoryChooser dc = new DirectoryChooser();
-
-        String currentDir = System.getProperty("user.dir") + File.separator;
-
-        File dir = new File(currentDir);
-        dc.setInitialDirectory(dir);
-        dc.setTitle("Load a file");
-        
-        File selectedFile = dc.showDialog(null);
-
-        if (selectedFile != null) {
-            return selectedFile.toString();
-        }
-        return "";
+    private void handleInputDir(ActionEvent event) {
+        model.newDefaultDir("inputDir", txtfieldInputDir);
     }
 
     @FXML
-    private String handleOutputDir(ActionEvent event) {
-        DirectoryChooser dc = new DirectoryChooser();
-
-        String currentDir = System.getProperty("user.dir") + File.separator;
-
-        File dir = new File(currentDir);
-        dc.setInitialDirectory(dir);
-        dc.setTitle("Load a file");
-        
-        File selectedFile = dc.showDialog(null);
-
-        if (selectedFile != null) {
-            return selectedFile.toString();
-        }
-        return "";
+    private void handleOutputDir(ActionEvent event) {
+        model.newDefaultDir("outputDir", txtfieldOutputDir);
     }
 
 }

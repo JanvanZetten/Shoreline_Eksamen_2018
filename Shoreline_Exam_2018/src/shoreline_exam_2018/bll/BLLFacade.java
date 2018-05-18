@@ -83,7 +83,7 @@ public interface BLLFacade
 
     /**
      * Attempts to log the user in. If it fails, it throws back an exception.
-     * @param username =
+     * @param username 
      * @param password
      * @return
      * @throws BLLException
@@ -98,13 +98,60 @@ public interface BLLFacade
      */
     public String encrypt(String base) throws BLLException;
 
+    /**
+     * Gets a list of logs from the database
+     * @return
+     * @throws BLLException 
+     */
     public List<Log> getAllLogs() throws BLLException;
 
+    /**
+     * Adds a new log to the database.
+     * @param type     = The type of the log
+     * @param message  = The message of the log
+     * @param creator  = The user who caused the log
+     * @return
+     * @throws BLLException 
+     */
     public Log addLog(LogType type, String message, User creator) throws BLLException;
 
+    /**
+     * Gets the current user of the program
+     * @return 
+     */
     public User getcurrentUser();
 
+    /**
+     * Creates a listener for the log that updates the log list automatically.
+     * @param aThis 
+     */
     public void createChangeListener(AutoUpdater aThis);
 
+    /**
+     * Gets the newest log in the database to update the log list.
+     * @return
+     * @throws BLLException 
+     */
     public int getNewestLog() throws BLLException;
+
+    /**
+     * Updates the default directory of the chose type (input and output).
+     * @param directory  = [Type of directory, file path]
+     * @throws BLLException 
+     */
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException;
+
+    /**
+     * Adds default directories from the properties on start-up so that they
+     * can be gotten later.
+     * @param inputValue   = Path of input
+     * @param outputValue  = Path of output
+     */
+    public void addDefaultDirectories(String inputValue, String outputValue);
+
+    /**
+     * Gets the default directories from the DAL layer.
+     * @return [0 = output directory, 1 = input directory]
+     */
+    public String[] getDefaultDirectories();
 }

@@ -70,7 +70,8 @@ public class ConvertModel {
         FileChooser fc = new FileChooser();
 
         fc.getExtensionFilters().addAll(filter, xlsxfilter, csvFilter);
-        String currentDir = System.getProperty("user.dir") + File.separator;
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[1];
 
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
@@ -119,9 +120,15 @@ public class ConvertModel {
         DirectoryChooser direcChosser = new DirectoryChooser();
 
         direcChosser.setTitle("Chosse output directory");
-
+        
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[0];
+        
+        File dir = new File(currentDir);
+        direcChosser.setInitialDirectory(dir);
+        
         File selectedDirectory = direcChosser.showDialog(new Stage());
-
+        
         TextInputDialog namedialog = new TextInputDialog();
         namedialog.setTitle("Outputfile name");
         namedialog.setHeaderText("Please write the wanted name for the output file:");
@@ -142,15 +149,15 @@ public class ConvertModel {
         return null;
     }
 
-
     /**
      * Start a conversion with the given input and output files
+     *
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
     public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs) {
         ConversionJob startConversion = null;
-        
+
         if (selectedFile != null && outputFile != null && currentProfile != null) {
             String name;
             String pattern = Pattern.quote(System.getProperty("file.separator"));
@@ -164,16 +171,15 @@ public class ConvertModel {
                 LoggingHelper.logException(ex);
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
-            
+
             selectedFile = null;
             outputFile = null;
             return startConversion;
-        }
-        else{
+        } else {
             AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
             return null;
         }
-        
+
     }
 }
 
