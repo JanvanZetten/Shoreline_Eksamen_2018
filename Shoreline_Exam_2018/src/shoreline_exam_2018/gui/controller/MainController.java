@@ -49,8 +49,6 @@ public class MainController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         model = new MainModel();
-        // Gets and reads properties.
-        model.getProperties();
         // Sets up the tabs so they anchor correctly and get initialized.
         Platform.runLater(() ->
         {

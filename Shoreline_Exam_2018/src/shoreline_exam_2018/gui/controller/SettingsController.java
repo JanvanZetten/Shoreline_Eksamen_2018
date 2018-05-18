@@ -35,6 +35,11 @@ public class SettingsController implements Initializable {
         model = new SettingsModel();
         model.setTextFields(txtfieldInputDir, txtfieldOutputDir);
         model.setSettingsDefaultDirectories();
+        // Gets and reads properties.
+        model.getProperties();
+        
+        txtfieldInputDir.setEditable(false);
+        txtfieldOutputDir.setEditable(false);
     }
 
     @FXML

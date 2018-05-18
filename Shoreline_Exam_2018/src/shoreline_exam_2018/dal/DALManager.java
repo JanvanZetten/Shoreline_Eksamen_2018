@@ -191,6 +191,7 @@ public class DALManager implements DALFacade
         String[] directories = new String[2];
         directories[1] = defaultInputDir;
         directories[0] = defaultOutputDir;
+        System.out.println(directories[1]);
         return directories;
     }
 
