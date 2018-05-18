@@ -63,10 +63,13 @@ public class ConvertModel {
      * Opens a file chooser and sets a File object to be the selected file.
      */
     public String chooseFile() {
-        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
+        
+        FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Supported Files", "*.xlsx", "*.csv");
+        FileChooser.ExtensionFilter xlsxfilter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
+        FileChooser.ExtensionFilter csvFilter = new FileChooser.ExtensionFilter("CSV Files", "*.csv");
         FileChooser fc = new FileChooser();
 
-        fc.getExtensionFilters().add(filter);
+        fc.getExtensionFilters().addAll(filter, xlsxfilter, csvFilter);
         String currentDir = System.getProperty("user.dir") + File.separator;
 
         File dir = new File(currentDir);
