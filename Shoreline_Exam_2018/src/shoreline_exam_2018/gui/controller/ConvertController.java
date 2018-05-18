@@ -47,7 +47,6 @@ public class ConvertController implements Initializable
         model.loadProfilesInCombo(profileCombobox);
         inputField.setEditable(false);
         outputField.setEditable(false);
-        model.loadProperties(inputField, outputField);
     }
 
     /**

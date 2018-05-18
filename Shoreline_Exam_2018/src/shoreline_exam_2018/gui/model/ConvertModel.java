@@ -6,14 +6,9 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
-import java.util.Properties;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -76,7 +71,8 @@ public class ConvertModel {
         FileChooser fc = new FileChooser();
 
         fc.getExtensionFilters().addAll(filter, xlsxfilter, csvFilter);
-        String currentDir = System.getProperty("user.dir") + File.separator;
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[1];
 
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
@@ -125,9 +121,15 @@ public class ConvertModel {
         DirectoryChooser direcChosser = new DirectoryChooser();
 
         direcChosser.setTitle("Chosse output directory");
-
+        
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[0];
+        
+        File dir = new File(currentDir);
+        direcChosser.setInitialDirectory(dir);
+        
         File selectedDirectory = direcChosser.showDialog(new Stage());
-
+        
         TextInputDialog namedialog = new TextInputDialog();
         namedialog.setTitle("Outputfile name");
         namedialog.setHeaderText("Please write the wanted name for the output file:");
@@ -179,12 +181,6 @@ public class ConvertModel {
             return null;
         }
 
-    }
-
-    public void loadProperties(TextField inputField, TextField outputField) {
-        String[] directories = bll.getDefaultDirectories();
-        inputField.setText(directories[0]);
-        outputField.setText(directories[1]);
     }
 }
 

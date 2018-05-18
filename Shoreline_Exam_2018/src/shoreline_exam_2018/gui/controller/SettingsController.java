@@ -35,16 +35,17 @@ public class SettingsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new SettingsModel();
+        model.setSettingsDefaultDirectories(txtfieldInputDir, txtfieldOutputDir);
     }
 
     @FXML
     private void handleInputDir(ActionEvent event) {
-        model.newDefaultDir("inputDir");
+        model.newDefaultDir("inputDir", txtfieldInputDir);
     }
 
     @FXML
     private void handleOutputDir(ActionEvent event) {
-        model.newDefaultDir("outputDir");
+        model.newDefaultDir("outputDir", txtfieldOutputDir);
     }
 
 }
