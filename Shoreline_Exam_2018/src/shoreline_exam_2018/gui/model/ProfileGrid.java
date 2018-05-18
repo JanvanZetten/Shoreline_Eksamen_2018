@@ -307,13 +307,16 @@ public class ProfileGrid extends GridPane
         // On drag from this element. The text is copied.
         fromHeader.setOnDragDetected(e ->
         {
-            if (headersIndexAndExamples.get(fromHeader.getText()) != null)
+            if (headersIndexAndExamples != null)
             {
-                Dragboard db = fromHeader.startDragAndDrop(TransferMode.COPY);
-                db.setDragView(getDragAndDropScene(new TextField(fromHeader.getText())).snapshot(null), e.getX(), e.getY());
-                ClipboardContent cc = new ClipboardContent();
-                cc.putString(fromHeader.getText());
-                db.setContent(cc);
+                if (headersIndexAndExamples.containsKey(fromHeader.getText()))
+                {
+                    Dragboard db = fromHeader.startDragAndDrop(TransferMode.COPY);
+                    db.setDragView(getDragAndDropScene(new TextField(fromHeader.getText())).snapshot(null), e.getX(), e.getY());
+                    ClipboardContent cc = new ClipboardContent();
+                    cc.putString(fromHeader.getText());
+                    db.setContent(cc);
+                }
             }
         });
 
@@ -329,10 +332,13 @@ public class ProfileGrid extends GridPane
             Dragboard db = e.getDragboard();
             if (db.hasString())
             {
-                if (headersIndexAndExamples.get(db.getString()) != null)
+                if (headersIndexAndExamples != null)
                 {
-                    fromHeader.setText(db.getString());
-                    example.setText(headersIndexAndExamples.get(db.getString()).getValue());
+                    if (headersIndexAndExamples.containsKey(db.getString()))
+                    {
+                        fromHeader.setText(db.getString());
+                        example.setText(headersIndexAndExamples.get(db.getString()).getValue());
+                    }
                 }
                 e.setDropCompleted(true);
             }
