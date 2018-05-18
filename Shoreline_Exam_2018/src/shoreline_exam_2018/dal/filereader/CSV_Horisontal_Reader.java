@@ -126,6 +126,12 @@ public class CSV_Horisontal_Reader implements Reader {
 
     }
 
+    
+    /**
+     * Opens a Stream and returns a CSVReader with the stream
+     * @return
+     * @throws DALException 
+     */
     private CSVReader openStream() throws DALException {
         try {
             return new CSVReaderBuilder(new FileReader(new File(fileName)))
@@ -136,6 +142,10 @@ public class CSV_Horisontal_Reader implements Reader {
         }
     }
 
+    
+    /**
+     * Make a task which checkes for timeout and closes the stream if it does
+     */
     private void makeTimeout() {
         Thread thread;
         thread = new Thread(new Runnable() {
@@ -159,6 +169,10 @@ public class CSV_Horisontal_Reader implements Reader {
         thread.start();
     }
 
+    /**
+     * closes the file stream
+     * @throws DALException 
+     */
     private void closeMainStream() throws DALException {
         try {
             mainReader.close();
