@@ -197,7 +197,10 @@ public class ConvertModel {
         
         File selectedDirectory = direcChosser.showDialog(new Stage());
         
-        return selectedDirectory.getAbsolutePath();
+        if (selectedDirectory != null){
+            return selectedDirectory.getAbsolutePath();
+        }
+        return null;
     }
 }
 
