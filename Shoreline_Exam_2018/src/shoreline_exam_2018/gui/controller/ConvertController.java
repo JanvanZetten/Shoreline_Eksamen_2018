@@ -22,11 +22,10 @@ import shoreline_exam_2018.bll.ConversionJob;
  *
  * @author alexl
  */
-public class ConvertController implements Initializable
-{
+public class ConvertController implements Initializable {
 
     private ConvertModel model;
-    
+
     @FXML
     private ComboBox<Profile> profileCombobox;
     @FXML
@@ -40,8 +39,7 @@ public class ConvertController implements Initializable
      * Initializes the controller class.
      */
     @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
+    public void initialize(URL url, ResourceBundle rb) {
         model = new ConvertModel();
         model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
@@ -53,17 +51,15 @@ public class ConvertController implements Initializable
      * Loads a file from a File Chooser.
      */
     @FXML
-    private void handleLoadButton(ActionEvent event)
-    {
+    private void handleLoadButton(ActionEvent event) {
         inputField.setText(model.chooseFile());
     }
-    
+
     /**
      * Sets a destination folder and file name.
      */
     @FXML
-    private void handleOutputButton(ActionEvent event)
-    {
+    private void handleOutputButton(ActionEvent event) {
         outputField.setText(model.chooseDestination());
     }
 
@@ -71,21 +67,27 @@ public class ConvertController implements Initializable
      * Starts conversion and resets fields if the job is created.
      */
     @FXML
-    private void handleTaskButton(ActionEvent event)
-    {
+    private void handleTaskButton(ActionEvent event) {
 
-        ConversionJob StartConversion = model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
-        if (StartConversion != null){
+        ConversionJob StartConversion = model.StartConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
+        if (StartConversion != null) {
             listJobs.getItems().add(StartConversion);
             inputField.setText("");
             outputField.setText("");
         }
-        
+
     }
 
-    public ConvertModel getModel()
-    {
+    public ConvertModel getModel() {
         return model;
+    }
+
+    @FXML
+    private void handleLoadDirectoryButton(ActionEvent event) {
+        String directory = model.chooseDirectory();
+        if (directory != null) {
+            inputField.setText(directory);
+        }
     }
 
 }

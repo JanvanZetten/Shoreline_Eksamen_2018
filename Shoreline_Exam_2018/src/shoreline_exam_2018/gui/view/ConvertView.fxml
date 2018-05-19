@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.shape.Line?>
 
-<AnchorPane id="AnchorPane" prefHeight="544.0" prefWidth="956.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ConvertController">
+<AnchorPane id="AnchorPane" prefHeight="544.0" prefWidth="956.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.111" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ConvertController">
     <children>
         <GridPane prefHeight="199.0" prefWidth="956.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <columnConstraints>
@@ -75,6 +75,7 @@
                                 <Insets bottom="1.0" />
                             </GridPane.margin>
                         </Button>
+                  <Button maxHeight="29.0" minHeight="29.0" mnemonicParsing="false" onAction="#handleLoadDirectoryButton" prefHeight="29.0" prefWidth="122.0" text="Browse Directory" GridPane.halignment="RIGHT" GridPane.valignment="BOTTOM" />
                     </children>
                 </GridPane>
                 <GridPane GridPane.columnIndex="3">

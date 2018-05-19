@@ -157,9 +157,9 @@ public class ConvertModel {
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
-    public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs) {
+    public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs, String inputPath) {
         ConversionJob startConversion = null;
-
+        selectedFile = new File(inputPath);
         if (selectedFile != null && outputFile != null && currentProfile != null) {
             String name;
             String pattern = Pattern.quote(System.getProperty("file.separator"));
@@ -182,6 +182,22 @@ public class ConvertModel {
             return null;
         }
 
+    }
+
+    public String chooseDirectory() {
+        DirectoryChooser direcChosser = new DirectoryChooser();
+        
+        direcChosser.setTitle("Chosse input directory");
+        
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[1];
+        
+        File dir = new File(currentDir);
+        direcChosser.setInitialDirectory(dir);
+        
+        File selectedDirectory = direcChosser.showDialog(new Stage());
+        
+        return selectedDirectory.getAbsolutePath();
     }
 }
 
