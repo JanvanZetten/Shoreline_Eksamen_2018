@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,17 +26,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -45,7 +40,6 @@ import shoreline_exam_2018.be.output.rule.DefaultDateRule;
 import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
 import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
 import shoreline_exam_2018.be.output.rule.DefaultStringRule;
-import shoreline_exam_2018.be.output.rule.Rule;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
@@ -889,6 +883,10 @@ public class ProfileGrid extends GridPane
         }
     }
 
+    /**
+     * Creates Rule View.
+     * @return
+     */
     public GridPane createRuleView()
     {
         GridPane ruleView = new GridPane();
@@ -902,32 +900,16 @@ public class ProfileGrid extends GridPane
             Label lbl3 = new Label("To");
             Label lbl4 = new Label("Rule Type");
             Label lbl5 = new Label("Rule Value");
-            lbl1.setMinWidth(DEFAULT_LABEL_SIZE);
-            lbl1.setPrefWidth(DEFAULT_LABEL_SIZE);
-            lbl1.setMaxWidth(DEFAULT_LABEL_SIZE);
-            lbl2.setMinWidth(DEFAULT_LABEL_SIZE);
-            lbl2.setPrefWidth(DEFAULT_LABEL_SIZE);
-            lbl2.setMaxWidth(DEFAULT_LABEL_SIZE);
-            lbl3.setMinWidth(DEFAULT_LABEL_SIZE);
-            lbl3.setPrefWidth(DEFAULT_LABEL_SIZE);
-            lbl3.setMaxWidth(DEFAULT_LABEL_SIZE);
-            lbl4.setMinWidth(DEFAULT_LABEL_SIZE);
-            lbl4.setPrefWidth(DEFAULT_LABEL_SIZE);
-            lbl4.setMaxWidth(DEFAULT_LABEL_SIZE);
-            lbl5.setMinWidth(DEFAULT_LABEL_SIZE);
-            lbl5.setPrefWidth(DEFAULT_LABEL_SIZE);
-            lbl5.setMaxWidth(DEFAULT_LABEL_SIZE);
 
-            GridPane.setConstraints(lbl1, 0, 0);
-            GridPane.setConstraints(lbl2, 1, 0);
-            GridPane.setConstraints(lbl3, 2, 0);
-            GridPane.setConstraints(lbl4, 3, 0);
-            GridPane.setConstraints(lbl5, 4, 0);
+            GridPane.setConstraints(lbl1, 1, 0);
+            GridPane.setConstraints(lbl2, 2, 0);
+            GridPane.setConstraints(lbl3, 3, 0);
+            GridPane.setConstraints(lbl4, 4, 0);
+            GridPane.setConstraints(lbl5, 5, 0);
 
             ruleView.getChildren().addAll(lbl1, lbl2, lbl3, lbl4, lbl5);
         }
 
-        ruleView.setGridLinesVisible(true);
         int index = 0;
         for (int i = 0; i < structure.size(); i++)
         {
@@ -945,13 +927,15 @@ public class ProfileGrid extends GridPane
                     ComboBox<String> cmbDefaultRule = new ComboBox<>();
                     DatePicker defaultDate = new DatePicker();
                     TextField defaultString = new TextField();
+                    Rectangle colourBox = getRectangle(DEFAULT_RECTANGLE_WIDTH, defaultString.heightProperty());
 
-                    GridPane.setConstraints(lblHeader, 0, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(lblExample, 1, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(lblTo, 2, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(cmbDefaultRule, 3, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(defaultDate, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(defaultString, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(colourBox, 0, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(lblHeader, 1, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(lblExample, 2, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(lblTo, 3, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(cmbDefaultRule, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(defaultDate, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(defaultString, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
 
                     // Set size.
                     lblHeader.setMinWidth(DEFAULT_LABEL_SIZE);
@@ -1119,7 +1103,7 @@ public class ProfileGrid extends GridPane
                     cmbDefaultRule.setItems(rules);
                     cmbDefaultRule.getSelectionModel().selectFirst();
 
-                    ruleView.getChildren().addAll(lblHeader, lblExample, lblTo, cmbDefaultRule, defaultDate, defaultString);
+                    ruleView.getChildren().addAll(colourBox, lblHeader, lblExample, lblTo, cmbDefaultRule, defaultDate, defaultString);
 
                     index++;
                 }
@@ -1131,7 +1115,7 @@ public class ProfileGrid extends GridPane
 
                         // Set margin for first element.
                         GridPane.setMargin(node, new Insets(0.0, 0.0, 0.0, IS_MASTER ? DEFAULT_INDENT : INDENT));
-                        GridPane.setConstraints(node, 0, IS_MASTER ? index + 1 : index, 5, 1);
+                        GridPane.setConstraints(node, 0, IS_MASTER ? index + 1 : index, 6, 1);
 
                         ruleView.getChildren().add(node);
 
