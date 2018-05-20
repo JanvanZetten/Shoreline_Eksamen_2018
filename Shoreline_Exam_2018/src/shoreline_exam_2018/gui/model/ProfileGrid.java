@@ -5,11 +5,14 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.time.ZoneId;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Observable;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -24,6 +27,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
@@ -36,6 +41,11 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import shoreline_exam_2018.be.output.rule.DefaultDateRule;
+import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
+import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
+import shoreline_exam_2018.be.output.rule.DefaultStringRule;
+import shoreline_exam_2018.be.output.rule.Rule;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
@@ -67,10 +77,11 @@ public class ProfileGrid extends GridPane
     private final Paint[] COLOURS = new Paint[]
     {
         Color.web("737F8C"), Color.web("4986A8"), Color.web("2C546D"), Color.web("4D4D4D")
-    }; //
+    }; // Group/Collection colours.
 
     private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
-    private HashMap<Integer, ProfileGrid> collectionMap; // Mapping row index to a ProfileGrid.
+    private HashMap<Integer, String> headersIndexToName; // Mapping column headers from input file to their example.
+    private HashMap<Integer, ProfileGrid> collectionMap; // Mapping structure index to a ProfileGrid.
     private HashMap<Node, Integer> nodeIndexMap; // Mapping Nodes to structure index.
     private List<StructEntityInterface> structure; // The structure of made from grid elements.
     private ChangeListener masterListener; // Master ChangeListener to notify changes to collections owning this ProfileGrid.
@@ -94,14 +105,7 @@ public class ProfileGrid extends GridPane
         super();
         IS_MASTER = isMaster;
         this.INDENT = indent;
-        if (IS_MASTER)
-        {
-            setupGridPane(5.0);
-        }
-        else
-        {
-            setupGridPane(-0.1);
-        }
+        setupGridPane(this, IS_MASTER ? 5.0 : -0.1);
         clear();
     }
 
@@ -121,37 +125,18 @@ public class ProfileGrid extends GridPane
      * Setup grid.
      * @return
      */
-    private void setupGridPane(double padding)
+    private void setupGridPane(GridPane gridPane, double padding)
     {
         // Clear constraints and settings.
-        this.getChildren().clear();
-        this.getRowConstraints().clear();
-        this.getColumnConstraints().clear();
+        gridPane.getChildren().clear();
+        gridPane.getRowConstraints().clear();
+        gridPane.getColumnConstraints().clear();
 
         // Set gap between grid elements and padding around grid.
-        this.setHgap(DEFAULT_GAP);
-        this.setVgap(DEFAULT_GAP);
-        this.setPadding(new Insets(padding, padding, padding, padding));
-
-        // Set constraints so that the whole view is used.
-        ColumnConstraints c1 = new ColumnConstraints();
-        c1.setMinWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
-        c1.setPrefWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
-        c1.setMaxWidth(DEFAULT_TEXTFIELD_SIZE + DEFAULT_RECTANGLE_WIDTH + INDENT);
-        ColumnConstraints c2 = new ColumnConstraints();
-        c2.setMinWidth(DEFAULT_LABEL_SIZE);
-        c2.setPrefWidth(DEFAULT_LABEL_SIZE);
-        c2.setMaxWidth(DEFAULT_LABEL_SIZE);
-        ColumnConstraints c3 = new ColumnConstraints();
-        c3.setMinWidth(DEFAULT_COMBOBOX_SIZE);
-        c3.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
-        c3.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
-        ColumnConstraints c4 = new ColumnConstraints();
-        c4.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
-        c4.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
-        c4.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
-        this.getColumnConstraints().addAll(c1, c2, c3, c4);
-        this.setGridLinesVisible(false);
+        gridPane.setHgap(DEFAULT_GAP);
+        gridPane.setVgap(DEFAULT_GAP);
+        gridPane.setPadding(new Insets(padding, padding, padding, padding));
+        gridPane.setGridLinesVisible(false);
     }
 
     /**
@@ -634,6 +619,11 @@ public class ProfileGrid extends GridPane
         return cl;
     }
 
+    private HashMap<Integer, ProfileGrid> getCollectionMap()
+    {
+        return collectionMap;
+    }
+
     /**
      * Updates structure list for collection datatypes to fit changed
      * information.
@@ -656,10 +646,10 @@ public class ProfileGrid extends GridPane
                         switch (cmb.getValue())
                         {
                             case ARRAY:
-                                structure.set(getNodeIndex().get(cmb), new StructEntityArray(tf.getText(), collectionMap.get(getNodeIndex().get(cmb)).getStructure()));
+                                structure.set(getNodeIndex().get(cmb), new StructEntityArray(tf.getText(), getCollectionMap().get(getNodeIndex().get(cmb)).getStructure()));
                                 return;
                             case OBJECT:
-                                structure.set(getNodeIndex().get(cmb), new StructEntityObject(tf.getText(), collectionMap.get(getNodeIndex().get(cmb)).getStructure()));
+                                structure.set(getNodeIndex().get(cmb), new StructEntityObject(tf.getText(), getCollectionMap().get(getNodeIndex().get(cmb)).getStructure()));
                                 return;
                             default:
                                 break;
@@ -680,6 +670,16 @@ public class ProfileGrid extends GridPane
     {
         clear();
         this.headersIndexAndExamples = headersIndexAndExamples;
+        if (headersIndexAndExamples != null)
+        {
+            if (!headersIndexAndExamples.isEmpty())
+            {
+                for (String string : headersIndexAndExamples.keySet())
+                {
+                    headersIndexToName.put(headersIndexAndExamples.get(string).getKey(), string);
+                }
+            }
+        }
     }
 
     /**
@@ -690,6 +690,7 @@ public class ProfileGrid extends GridPane
         structure = new ArrayList<>();
         collectionMap = new HashMap();
         nodeIndexMap = new HashMap();
+        headersIndexToName = new HashMap();
         this.getChildren().clear();
         this.getColumnConstraints().clear();
         this.getRowConstraints().clear();
@@ -819,18 +820,7 @@ public class ProfileGrid extends GridPane
                 j++;
             }
         }
-        for (int j = 0; j < this.getChildren().size(); j++)
-        {
-            int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
-            if (rowIndex > i)
-            {
-                if (nodeIndexMap.containsKey(this.getChildren().get(j)))
-                {
-                    nodeIndexMap.replace(this.getChildren().get(j), (nodeIndexMap.get(this.getChildren().get(j)) - 1));
-                }
-                GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 1);
-            }
-        }
+        shiftStructure(i, -1);
     }
 
     /**
@@ -842,15 +832,17 @@ public class ProfileGrid extends GridPane
         boolean hasRemoved = false;
         for (int j = 0; j < this.getChildren().size(); j *= 1)
         {
-            int structureIndex = i;
-            if (IS_MASTER)
-            {
-                structureIndex = i - 1;
-            }
+            int structureIndex = IS_MASTER ? i - 1 : i;
+
             Node node = this.getChildren().get(j);
             if (GridPane.getRowIndex(node) == i && !hasRemoved && structure.size() > structureIndex)
             {
                 structure.remove(structureIndex);
+
+                if (collectionMap.containsKey(structureIndex))
+                {
+                    collectionMap.remove(collectionMap.get(structureIndex));
+                }
                 hasRemoved = true;
             }
             if (GridPane.getRowIndex(node) == i || GridPane.getRowIndex(node) == i + 1)
@@ -866,17 +858,289 @@ public class ProfileGrid extends GridPane
                 j++;
             }
         }
+        shiftStructure(i, -2);
+    }
+
+    /**
+     *
+     * @param fromIndex
+     * @param shiftIdentifier
+     */
+    private void shiftStructure(int fromIndex, int shiftIdentifier)
+    {
         for (int j = 0; j < this.getChildren().size(); j++)
         {
             int rowIndex = GridPane.getRowIndex(this.getChildren().get(j));
-            if (rowIndex > i)
+            if (rowIndex > fromIndex)
             {
                 if (nodeIndexMap.containsKey(this.getChildren().get(j)))
                 {
-                    nodeIndexMap.replace(this.getChildren().get(j), (nodeIndexMap.get(this.getChildren().get(j)) - 2));
+                    nodeIndexMap.replace(this.getChildren().get(j), (nodeIndexMap.get(this.getChildren().get(j)) + shiftIdentifier));
                 }
-                GridPane.setRowIndex(this.getChildren().get(j), rowIndex - 2);
+
+                int structureIndex = IS_MASTER ? rowIndex - 1 : rowIndex;
+                if (collectionMap.containsKey(structureIndex))
+                {
+                    ProfileGrid removed = collectionMap.remove(structureIndex);
+                    collectionMap.put(structureIndex + shiftIdentifier, removed);
+                }
+                GridPane.setRowIndex(this.getChildren().get(j), rowIndex + shiftIdentifier);
             }
         }
+    }
+
+    public GridPane createRuleView()
+    {
+        GridPane ruleView = new GridPane();
+        setupGridPane(ruleView, IS_MASTER ? 5.0 : -0.1);
+
+        if (IS_MASTER)
+        {
+            // Header
+            Label lbl1 = new Label("From Header");
+            Label lbl2 = new Label("Example");
+            Label lbl3 = new Label("To");
+            Label lbl4 = new Label("Rule Type");
+            Label lbl5 = new Label("Rule Value");
+            lbl1.setMinWidth(DEFAULT_LABEL_SIZE);
+            lbl1.setPrefWidth(DEFAULT_LABEL_SIZE);
+            lbl1.setMaxWidth(DEFAULT_LABEL_SIZE);
+            lbl2.setMinWidth(DEFAULT_LABEL_SIZE);
+            lbl2.setPrefWidth(DEFAULT_LABEL_SIZE);
+            lbl2.setMaxWidth(DEFAULT_LABEL_SIZE);
+            lbl3.setMinWidth(DEFAULT_LABEL_SIZE);
+            lbl3.setPrefWidth(DEFAULT_LABEL_SIZE);
+            lbl3.setMaxWidth(DEFAULT_LABEL_SIZE);
+            lbl4.setMinWidth(DEFAULT_LABEL_SIZE);
+            lbl4.setPrefWidth(DEFAULT_LABEL_SIZE);
+            lbl4.setMaxWidth(DEFAULT_LABEL_SIZE);
+            lbl5.setMinWidth(DEFAULT_LABEL_SIZE);
+            lbl5.setPrefWidth(DEFAULT_LABEL_SIZE);
+            lbl5.setMaxWidth(DEFAULT_LABEL_SIZE);
+
+            GridPane.setConstraints(lbl1, 0, 0);
+            GridPane.setConstraints(lbl2, 1, 0);
+            GridPane.setConstraints(lbl3, 2, 0);
+            GridPane.setConstraints(lbl4, 3, 0);
+            GridPane.setConstraints(lbl5, 4, 0);
+
+            ruleView.getChildren().addAll(lbl1, lbl2, lbl3, lbl4, lbl5);
+        }
+
+        ruleView.setGridLinesVisible(true);
+        int index = 0;
+        for (int i = 0; i < structure.size(); i++)
+        {
+            if (structure.get(i) != null)
+            {
+                if (structure.get(i) instanceof SimpleEntity)
+                {
+                    final int entityIndex = index;
+
+                    SimpleEntity se = (SimpleEntity) structure.get(i);
+                    String headerName = headersIndexToName.get(se.getInputIndex());
+                    Label lblHeader = new Label(headerName);
+                    Label lblExample = new Label(headersIndexAndExamples.get(headerName).getValue());
+                    Label lblTo = new Label(se.getColumnName());
+                    ComboBox<String> cmbDefaultRule = new ComboBox<>();
+                    DatePicker defaultDate = new DatePicker();
+                    TextField defaultString = new TextField();
+
+                    GridPane.setConstraints(lblHeader, 0, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(lblExample, 1, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(lblTo, 2, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(cmbDefaultRule, 3, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(defaultDate, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(defaultString, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
+
+                    // Set size.
+                    lblHeader.setMinWidth(DEFAULT_LABEL_SIZE);
+                    lblHeader.setPrefWidth(DEFAULT_LABEL_SIZE);
+                    lblHeader.setMaxWidth(DEFAULT_LABEL_SIZE);
+                    lblExample.setMinWidth(DEFAULT_LABEL_SIZE);
+                    lblExample.setPrefWidth(DEFAULT_LABEL_SIZE);
+                    lblExample.setMaxWidth(DEFAULT_LABEL_SIZE);
+                    lblTo.setMinWidth(DEFAULT_LABEL_SIZE);
+                    lblTo.setPrefWidth(DEFAULT_LABEL_SIZE);
+                    lblTo.setMaxWidth(DEFAULT_LABEL_SIZE);
+                    cmbDefaultRule.setMinWidth(DEFAULT_COMBOBOX_SIZE);
+                    cmbDefaultRule.setPrefWidth(DEFAULT_COMBOBOX_SIZE);
+                    cmbDefaultRule.setMaxWidth(DEFAULT_COMBOBOX_SIZE);
+                    defaultDate.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+                    defaultDate.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+                    defaultDate.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+                    defaultString.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+                    defaultString.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+                    defaultString.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+
+                    defaultDate.setVisible(false);
+                    defaultString.setVisible(false);
+
+                    switch (se.getSST())
+                    {
+                        case INTEGER:
+                            if (defaultString.getText().isEmpty())
+                            {
+                                defaultString.setText("0");
+                            }
+                            break;
+                        case DOUBLE:
+                            if (defaultString.getText().isEmpty())
+                            {
+                                defaultString.setText("0.0");
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+
+                    defaultDate.valueProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        if (newValue != null)
+                        {
+                            se.setDefaultValue(new DefaultDateRule(Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()), entityIndex));
+                        }
+                    });
+
+                    defaultString.focusedProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        if (!newValue)
+                        {
+                            switch (se.getSST())
+                            {
+                                case INTEGER:
+                                    if (defaultString.getText().isEmpty())
+                                    {
+                                        defaultString.setText("0");
+                                    }
+                                    break;
+                                case DOUBLE:
+                                    if (defaultString.getText().isEmpty())
+                                    {
+                                        defaultString.setText("0.0");
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+
+                    defaultString.textProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        if (newValue != null)
+                        {
+                            switch (se.getSST())
+                            {
+                                case STRING:
+                                    se.setDefaultValue(new DefaultStringRule(newValue, entityIndex));
+                                    break;
+                                case INTEGER:
+                                    if (newValue.isEmpty())
+                                    {
+                                        break;
+                                    }
+                                    try
+                                    {
+                                        int integer = Integer.parseInt(newValue);
+                                        se.setDefaultValue(new DefaultIntegerRule(integer, entityIndex));
+                                    }
+                                    catch (NumberFormatException ex)
+                                    {
+                                        try
+                                        {
+                                            int integer = Integer.parseInt(oldValue);
+                                            defaultString.setText(String.valueOf(integer));
+                                        }
+                                        catch (NumberFormatException ex1)
+                                        {
+                                            defaultString.setText("");
+                                        }
+                                    }
+                                    break;
+                                case DOUBLE:
+                                    if (newValue.isEmpty())
+                                    {
+                                        break;
+                                    }
+                                    try
+                                    {
+                                        Double dbl = Double.parseDouble(newValue);
+                                        se.setDefaultValue(new DefaultDoubleRule(dbl, entityIndex));
+                                    }
+                                    catch (NumberFormatException ex)
+                                    {
+                                        try
+                                        {
+                                            Double dbl = Double.parseDouble(oldValue);
+                                            defaultString.setText(String.valueOf(dbl));
+                                        }
+                                        catch (NumberFormatException ex1)
+                                        {
+                                            defaultString.setText("");
+                                        }
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+
+                    cmbDefaultRule.valueProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        switch (newValue)
+                        {
+                            case "Default":
+                                switch (se.getSST())
+                                {
+                                    case DATE:
+                                        defaultDate.setVisible(true);
+                                        defaultString.setVisible(false);
+                                        defaultDate.setValue(defaultDate.getValue());
+                                        break;
+                                    default:
+                                        defaultDate.setVisible(false);
+                                        defaultString.setVisible(true);
+                                        defaultString.setText(defaultString.getText());
+                                        break;
+                                }
+                                break;
+                            default:
+                                se.setDefaultValue(null);
+                                defaultDate.setVisible(false);
+                                defaultString.setVisible(false);
+                                break;
+                        }
+                    });
+
+                    ObservableList<String> rules = FXCollections.observableArrayList();
+                    rules.addAll("No Rule", "Default");
+                    cmbDefaultRule.setItems(rules);
+                    cmbDefaultRule.getSelectionModel().selectFirst();
+
+                    ruleView.getChildren().addAll(lblHeader, lblExample, lblTo, cmbDefaultRule, defaultDate, defaultString);
+
+                    index++;
+                }
+                else if (structure.get(i) instanceof CollectionEntity)
+                {
+                    if (collectionMap.containsKey(i))
+                    {
+                        Node node = collectionMap.get(i).createRuleView();
+
+                        // Set margin for first element.
+                        GridPane.setMargin(node, new Insets(0.0, 0.0, 0.0, IS_MASTER ? DEFAULT_INDENT : INDENT));
+                        GridPane.setConstraints(node, 0, IS_MASTER ? index + 1 : index, 5, 1);
+
+                        ruleView.getChildren().add(node);
+
+                        index++;
+                    }
+                }
+            }
+
+        }
+        return ruleView;
     }
 }

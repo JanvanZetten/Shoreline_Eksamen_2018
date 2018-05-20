@@ -11,8 +11,15 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.rule.DefaultDateRule;
+import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
+import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
+import shoreline_exam_2018.be.output.rule.DefaultStringRule;
+import shoreline_exam_2018.be.output.rule.Rule;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
@@ -111,13 +118,79 @@ public class ProfileDAO
             con = dbcp.checkOut();
             String sql = "INSERT INTO ProfileStructureSimple VALUES(?, ?, ?, ?);";
 
-            PreparedStatement statement = con.prepareStatement(sql);
+            PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, profileId);
             statement.setString(2, se.getColumnName());
             statement.setInt(3, se.getInputIndex());
             statement.setString(4, se.getSST().name());
 
             statement.executeUpdate();
+
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            int id = rs.getInt(1);
+
+            // Insert rules.
+            Rule rule = se.getDefaultValue();
+            if (rule != null)
+            {
+                if (rule instanceof DefaultIntegerRule)
+                {
+                    DefaultIntegerRule dir = (DefaultIntegerRule) rule;
+                    con = dbcp.checkOut();
+                    sql = "INSERT INTO RuleDefaultInteger VALUES(?, ?, ?);";
+
+                    statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    statement.setInt(1, profileId);
+                    statement.setInt(2, id);
+                    Integer defaultInt = dir.applyRuleOn(null);
+                    statement.setInt(3, defaultInt == null ? 0 : defaultInt);
+
+                    statement.executeUpdate();
+                }
+                else if (rule instanceof DefaultDoubleRule)
+                {
+                    DefaultDoubleRule ddr = (DefaultDoubleRule) rule;
+                    con = dbcp.checkOut();
+                    sql = "INSERT INTO RuleDefaultDouble VALUES(?, ?, ?);";
+
+                    statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    statement.setInt(1, profileId);
+                    statement.setInt(2, id);
+                    Double defaultDbl = ddr.applyRuleOn(null);
+                    statement.setDouble(3, defaultDbl == null ? 0.0 : defaultDbl);
+
+                    statement.executeUpdate();
+                }
+                else if (rule instanceof DefaultStringRule)
+                {
+                    DefaultStringRule dsr = (DefaultStringRule) rule;
+                    con = dbcp.checkOut();
+                    sql = "INSERT INTO RuleDefaultString VALUES(?, ?, ?);";
+
+                    statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    statement.setInt(1, profileId);
+                    statement.setInt(2, id);
+                    String defaultStr = dsr.applyRuleOn(null);
+                    statement.setString(3, defaultStr == null ? "" : defaultStr);
+
+                    statement.executeUpdate();
+                }
+                else if (rule instanceof DefaultDateRule)
+                {
+                    DefaultDateRule ddr = (DefaultDateRule) rule;
+                    con = dbcp.checkOut();
+                    sql = "INSERT INTO RuleDefaultDate VALUES(?, ?, ?);";
+
+                    statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    statement.setInt(1, profileId);
+                    statement.setInt(2, id);
+                    Date defaultDat = ddr.applyRuleOn(null);
+                    statement.setTimestamp(3, new java.sql.Timestamp(defaultDat == null ? 0 : defaultDat.getTime()));
+
+                    statement.executeUpdate();
+                }
+            }
         }
         finally
         {
@@ -273,10 +346,11 @@ public class ProfileDAO
      * @return
      * @throws SQLException
      */
-    private List<StructEntityInterface> getStructure(int profileId) throws SQLException
+    private List<StructEntityInterface> getStructure(int profileId) throws SQLException, DALException
     {
         List<StructEntityInterface> lst = new ArrayList<>();
         Connection con = null;
+        HashMap<Integer, Rule> rules = getAllDefaultRules(profileId);
 
         try
         {
@@ -305,25 +379,31 @@ public class ProfileDAO
 
             while (rs.next())
             {
+                id = rs.getInt("id");
                 sst = rs.getString("sst");
                 columnName = rs.getString("columnName");
                 inputIndex = rs.getInt("inputIndex");
 
+                SimpleEntity se = null;
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
                 {
-                    simples.add(new StructEntityDate(columnName, inputIndex));
+                    simples.add(se = new StructEntityDate(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.DOUBLE.name()))
                 {
-                    simples.add(new StructEntityDouble(columnName, inputIndex));
+                    simples.add(se = new StructEntityDouble(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.INTEGER.name()))
                 {
-                    simples.add(new StructEntityInteger(columnName, inputIndex));
+                    simples.add(se = new StructEntityInteger(columnName, inputIndex));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.STRING.name()))
                 {
-                    simples.add(new StructEntityString(columnName, inputIndex));
+                    simples.add(se = new StructEntityString(columnName, inputIndex));
+                }
+                if (rules.containsKey(id) && se != null)
+                {
+                    se.setDefaultValue(rules.get(id));
                 }
             }
 
@@ -372,5 +452,128 @@ public class ProfileDAO
         {
             dbcp.checkIn(con);
         }
+    }
+
+    /**
+     * Get all rules for profile.
+     * @param profileId
+     * @return
+     * @throws DALException
+     */
+    private HashMap<Integer, Rule> getAllDefaultRules(int profileId) throws DALException
+    {
+        HashMap<Integer, Rule> inputRuleMap = new HashMap<>();
+        Connection con = null;
+
+        try
+        {
+            con = dbcp.checkOut();
+
+            //Default Integer
+            String sql = "SELECT * FROM RuleDefaultInteger WHERE profileId = ?";
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, profileId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next())
+            {
+                int inputIndex = rs.getInt("inputIndex");
+                int defaultValue = rs.getInt("defaultValue");
+                DefaultIntegerRule rule = new DefaultIntegerRule(defaultValue, inputIndex);
+
+                if (inputRuleMap.containsKey(inputIndex))
+                {
+                    inputRuleMap.replace(inputIndex, rule);
+                }
+                else
+                {
+                    inputRuleMap.put(inputIndex, rule);
+                }
+            }
+
+            //Default Double
+            sql = "SELECT * FROM RuleDefaultDouble WHERE profileId = ?";
+
+            statement = con.prepareStatement(sql);
+            statement.setInt(1, profileId);
+
+            rs = statement.executeQuery();
+
+            while (rs.next())
+            {
+                int inputIndex = rs.getInt("inputIndex");
+                Double defaultValue = rs.getDouble("defaultValue");
+                DefaultDoubleRule rule = new DefaultDoubleRule(defaultValue, inputIndex);
+
+                if (inputRuleMap.containsKey(inputIndex))
+                {
+                    inputRuleMap.replace(inputIndex, rule);
+                }
+                else
+                {
+                    inputRuleMap.put(inputIndex, rule);
+                }
+            }
+
+            //Default String
+            sql = "SELECT * FROM RuleDefaultString WHERE profileId = ?";
+
+            statement = con.prepareStatement(sql);
+            statement.setInt(1, profileId);
+
+            rs = statement.executeQuery();
+
+            while (rs.next())
+            {
+                int inputIndex = rs.getInt("inputIndex");
+                String defaultValue = rs.getString("defaultValue");
+                DefaultStringRule rule = new DefaultStringRule(defaultValue, inputIndex);
+
+                if (inputRuleMap.containsKey(inputIndex))
+                {
+                    inputRuleMap.replace(inputIndex, rule);
+                }
+                else
+                {
+                    inputRuleMap.put(inputIndex, rule);
+                }
+            }
+
+            //Default Date
+            sql = "SELECT * FROM RuleDefaultDate WHERE profileId = ?";
+
+            statement = con.prepareStatement(sql);
+            statement.setInt(1, profileId);
+
+            rs = statement.executeQuery();
+
+            while (rs.next())
+            {
+                int inputIndex = rs.getInt("inputIndex");
+                Date defaultValue = rs.getDate("defaultValue");
+                DefaultDateRule rule = new DefaultDateRule(defaultValue, inputIndex);
+
+                if (inputRuleMap.containsKey(inputIndex))
+                {
+                    inputRuleMap.replace(inputIndex, rule);
+                }
+                else
+                {
+                    inputRuleMap.put(inputIndex, rule);
+                }
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new DALException(ex.getMessage(), ex.getCause());
+        }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
+
+        return inputRuleMap;
     }
 }

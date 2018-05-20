@@ -11,19 +11,19 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.property.StringProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.LogType;
@@ -45,26 +45,43 @@ public class ProfilesModel
     private static final String STYLESHEET = "shoreline_exam_2018/gui/view/css/style.css"; // Root CSS
 
     private BLLFacade bll; // BLL Manager to contact database.
-    private GridPane gridDrag; // Grid Pane which contains column headers from input file.
+    private TextField txtFieldProfileName; // Profile Name TextField.
+    private TextField txtfieldSourcefile; // SourceFile TextField.
+    private Button btnSource; // Source Button.
+    private AnchorPane innerAnchor; // AnchorPane showing SplitPane.
+    private SplitPane splitPane; // SplitPane with ScrollHeader and ScrollMain.
     private ScrollPane scrollHeader; // ScrollPane for gridDrag.
+    private GridPane gridDrag; // Grid Pane which contains column headers from input file.
     private ScrollPane scrollMain; // ScrollPane for ProfileGrid.
+    private Button btnBack; // Back Button.
+    private Button btnSave; // Save Button.
     private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers to their index and example.
     private int headerRowCount; // gridDrag row count.
-    private StringProperty tp; // Profile Name StringProperty.
-    private TextField txtfieldSourcefile; // SourceFile TextField.
     private ConvertModel cm; // Convert Model to add Profile to ComboBox.
     private Tab tabConvert; // Tab for convert view for switching tab on success.
     private ProfileGrid pg; // The Master Grid.
+    private boolean isNext;
 
     /**
      * Takes Profile Edit GridPane as parameter. Uses BLLManager.
      */
-    public ProfilesModel(GridPane gridDrag, ScrollPane scrollHeader, ScrollPane scrollMain, TextField source, TextField tf)
+    public ProfilesModel(TextField txtFieldProfileName, TextField txtfieldSourcefile, Button btnSource, AnchorPane innerAnchor, SplitPane splitPane, ScrollPane scrollHeader, GridPane gridDrag, ScrollPane scrollMain, Button btnBack, Button btnSave)
     {
         this.bll = BLLManager.getInstance();
-        this.gridDrag = gridDrag;
+
+        this.txtFieldProfileName = txtFieldProfileName;
+        this.txtfieldSourcefile = txtfieldSourcefile;
+        this.btnSource = btnSource;
+        this.innerAnchor = innerAnchor;
+        this.splitPane = splitPane;
         this.scrollHeader = scrollHeader;
+        this.gridDrag = gridDrag;
         this.scrollMain = scrollMain;
+        this.btnBack = btnBack;
+        this.btnBack.setVisible(false);
+        this.btnSave = btnSave;
+        this.btnSave.setText("Next");
+
         this.pg = new ProfileGrid(true);
 
         // Makes ScrollPaneHeader accept drag and drop copying.
@@ -75,8 +92,7 @@ public class ProfilesModel
         // So that the element dragged to a row can be dragged back and destroyed.
         this.scrollHeader.setOnDragDropped(destroyHeader());
 
-        this.txtfieldSourcefile = source;
-        tp = tf.textProperty();
+        this.isNext = false;
         clearData();
     }
 
@@ -169,6 +185,66 @@ public class ProfilesModel
         }
     }
 
+    public void handleBack()
+    {
+        isNext = false;
+        splitPane.setVisible(true);
+        btnSource.setVisible(true);
+        btnBack.setVisible(false);
+        btnSave.setText("Next");
+        innerAnchor.getChildren().clear();
+        innerAnchor.getChildren().add(splitPane);
+    }
+
+    public void handleSaveStructure()
+    {
+        // Gets structure from Master Grid.
+        List<StructEntityInterface> result = pg.getStructure();
+
+        // Checks if empty.
+        if (result == null || result.isEmpty())
+        {
+            AlertFactory.showInformation("No Structure", "There was not found any structure.");
+            return;
+        }
+
+        // Checks if any entity is null/not filled out.
+        if (StructEntityUtils.isAnyEntryNull(result))
+        {
+            AlertFactory.showInformation("Empty Collection", "Some of the collection in output structure is empty.");
+            return;
+        }
+
+        // If name is not null nor empty.
+        if (!txtFieldProfileName.getText().isEmpty() && txtFieldProfileName.getText() != null)
+        {
+            String profileName = txtFieldProfileName.getText();
+            // Create Object with ProfileName and Structure.
+            StructEntityObject seo = new StructEntityObject(profileName, result);
+            /*
+            try
+            {
+                // Add Structure to database.
+                StructEntityObject structure = bll.addStructure(profileName, seo, bll.getcurrentUser().getId());
+
+                bll.addLog(LogType.PROFILE, "Structure " + profileName + " was successfully added to the system.", bll.getcurrentUser());
+                AlertFactory.showInformation("Success", "Structure has successfully been added to the system.");
+
+                clearView();
+            }
+            catch (BLLException ex)
+            {
+                LoggingHelper.logException(ex);
+                AlertFactory.showError("Data error", "An error happened trying to save the structure.\nERROR: " + ex.getMessage());
+            }
+             */
+        }
+        else
+        {
+            AlertFactory.showInformation("Name missing", "The structure has to be named.");
+        }
+    }
+
     /**
      * Handles saves.
      */
@@ -192,37 +268,56 @@ public class ProfilesModel
         }
 
         // If name is not null nor empty.
-        if (tp.isNotEmpty().get() && tp.isNotNull().get())
+        if (!txtFieldProfileName.getText().isEmpty() && txtFieldProfileName.getText() != null)
         {
-            // Create Object with ProfileName and Structure.
-            StructEntityObject seo = new StructEntityObject(tp.get(), result);
-
-            try
+            if (!isNext)
             {
-                // Add Profile to database.
-                Profile profile = bll.addProfile(tp.get(), seo, 0);
-
-                // If Convert Model is set. Add it to the ComboBox.
-                if (cm != null)
-                {
-                    cm.addProfile(profile);
-                }
-
-                bll.addLog(LogType.PROFILE, "Profile " + tp.get() + " was successfully added to the system.", bll.getcurrentUser());
-                AlertFactory.showInformation("Success", "Profile has successfully been added to the system.");
-
-                clearView();
-
-                // If the Tab to Convert is set. Changes to the tab.
-                if (tabConvert != null)
-                {
-                    tabConvert.getTabPane().getSelectionModel().select(tabConvert);
-                }
+                isNext = true;
+                splitPane.setVisible(false);
+                btnSource.setVisible(false);
+                btnBack.setVisible(true);
+                btnSave.setText("Save");
+                ScrollPane sp = new ScrollPane();
+                AnchorPane.setTopAnchor(sp, 0.0);
+                AnchorPane.setRightAnchor(sp, 0.0);
+                AnchorPane.setBottomAnchor(sp, 0.0);
+                AnchorPane.setLeftAnchor(sp, 0.0);
+                sp.setContent(pg.createRuleView());
+                innerAnchor.getChildren().add(sp);
             }
-            catch (BLLException ex)
+            else
             {
-                LoggingHelper.logException(ex);
-                AlertFactory.showError("Data error", "An error happened trying to save the profile.\nERROR: " + ex.getMessage());
+                String profileName = txtFieldProfileName.getText();
+                // Create Object with ProfileName and Structure.
+                StructEntityObject seo = new StructEntityObject(profileName, result);
+
+                try
+                {
+                    // Add Profile to database.
+                    Profile profile = bll.addProfile(profileName, seo, 0);
+
+                    // If Convert Model is set. Add it to the ComboBox.
+                    if (cm != null)
+                    {
+                        cm.addProfile(profile);
+                    }
+
+                    bll.addLog(LogType.PROFILE, "Profile " + profileName + " was successfully added to the system.", bll.getcurrentUser());
+                    AlertFactory.showInformation("Success", "Profile has successfully been added to the system.");
+
+                    clearView();
+
+                    // If the Tab to Convert is set. Changes to the tab.
+                    if (tabConvert != null)
+                    {
+                        tabConvert.getTabPane().getSelectionModel().select(tabConvert);
+                    }
+                }
+                catch (BLLException ex)
+                {
+                    LoggingHelper.logException(ex);
+                    AlertFactory.showError("Data error", "An error happened trying to save the profile.\nERROR: " + ex.getMessage());
+                }
             }
         }
         else
@@ -250,7 +345,7 @@ public class ProfilesModel
     {
         clearData();
         txtfieldSourcefile.setText("");
-        tp.set("");
+        txtFieldProfileName.setText("");
         gridDrag.getChildren().clear();
     }
 
@@ -289,53 +384,6 @@ public class ProfilesModel
     {
         this.tabConvert = tabConvert;
         this.cm = cm;
-    }
-
-    public void handleSaveStructure()
-    {
-        // Gets structure from Master Grid.
-        List<StructEntityInterface> result = pg.getStructure();
-
-        // Checks if empty.
-        if (result == null || result.isEmpty())
-        {
-            AlertFactory.showInformation("No Structure", "There was not found any structure.");
-            return;
-        }
-
-        // Checks if any entity is null/not filled out.
-        if (StructEntityUtils.isAnyEntryNull(result))
-        {
-            AlertFactory.showInformation("Empty Collection", "Some of the collection in output structure is empty.");
-            return;
-        }
-
-        // If name is not null nor empty.
-        if (tp.isNotEmpty().get() && tp.isNotNull().get())
-        {
-            // Create Object with ProfileName and Structure.
-            StructEntityObject seo = new StructEntityObject(tp.get(), result);
-
-            try
-            {
-                // Add Structure to database.
-                StructEntityObject structure = bll.addStructure(tp.get(), seo, bll.getcurrentUser().getId());
-
-                bll.addLog(LogType.PROFILE, "Structure " + tp.get() + " was successfully added to the system.", bll.getcurrentUser());
-                AlertFactory.showInformation("Success", "Structure has successfully been added to the system.");
-
-                clearView();
-            }
-            catch (BLLException ex)
-            {
-                LoggingHelper.logException(ex);
-                AlertFactory.showError("Data error", "An error happened trying to save the structure.\nERROR: " + ex.getMessage());
-            }
-        }
-        else
-        {
-            AlertFactory.showInformation("Name missing", "The structure has to be named.");
-        }
     }
 
     /**

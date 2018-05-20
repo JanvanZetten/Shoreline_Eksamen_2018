@@ -11,9 +11,12 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.gui.model.ProfilesModel;
@@ -26,15 +29,25 @@ import shoreline_exam_2018.gui.model.ProfilesModel;
 public class ProfilesController implements Initializable
 {
     @FXML
-    private TextField txtfieldSourcefile;
-    @FXML
     private TextField txtFieldProfileName;
     @FXML
-    private GridPane gridDrag;
+    private TextField txtfieldSourcefile;
+    @FXML
+    private Button btnSource;
+    @FXML
+    private AnchorPane innerAnchor;
+    @FXML
+    private SplitPane splitPane;
     @FXML
     private ScrollPane scrollHeader;
     @FXML
+    private GridPane gridDrag;
+    @FXML
     private ScrollPane scrollMain;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnBack;
 
     /**
      * Initializes the controller class.
@@ -44,7 +57,7 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(gridDrag, scrollHeader, scrollMain, txtfieldSourcefile, txtFieldProfileName);
+            pm = new ProfilesModel(txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, scrollHeader, gridDrag, scrollMain, btnBack, btnSave);
         });
     }
 
@@ -58,6 +71,18 @@ public class ProfilesController implements Initializable
     private void handleSource(ActionEvent event)
     {
         pm.handleSource();
+    }
+
+    @FXML
+    private void handleBack(ActionEvent event)
+    {
+        pm.handleBack();
+    }
+
+    @FXML
+    private void handleSaveStructure(ActionEvent event)
+    {
+        pm.handleSaveStructure();
     }
 
     /**
@@ -78,11 +103,5 @@ public class ProfilesController implements Initializable
     public void addSharedInfo(ConvertModel cm, Tab tabConvert)
     {
         pm.addSharedInfo(cm, tabConvert);
-    }
-
-    @FXML
-    private void handleSaveStructure(ActionEvent event)
-    {
-        pm.handleSaveStructure();
     }
 }

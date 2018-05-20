@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.be.output.structure;
 
+import shoreline_exam_2018.be.output.rule.Rule;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 
 /**
@@ -16,6 +17,7 @@ public abstract class SimpleEntity implements StructEntityInterface
     protected String columnName;
     protected int inputIndex;
     protected SimpleStructType sst;
+    protected Rule defaultValue;
 
     @Override
     public String getColumnName()
@@ -45,5 +47,15 @@ public abstract class SimpleEntity implements StructEntityInterface
     public String toString()
     {
         return inputIndex + "@" + columnName + ":" + sst.name();
+    }
+
+    public Rule getDefaultValue()
+    {
+        return defaultValue;
+    }
+
+    public void setDefaultValue(Rule defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 }
