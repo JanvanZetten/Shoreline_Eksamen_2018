@@ -12,28 +12,31 @@ import java.util.Date;
  * @author janvanzetten
  */
 public class InputField {
+
     String stringField;
     Date dateField;
-    double numericfield;
+    Double numericfield;
     InputFieldType type;
 
     /**
      * Field with no initial value
-     * @param type 
+     *
+     * @param type
      */
     public InputField(InputFieldType type) {
         this.type = type;
     }
-    
+
     /**
      * Field with initial value
-     * @param type the fieleds type as enum 
+     *
+     * @param type the fieleds type as enum
      * @param value the initial value
      */
     public InputField(InputFieldType type, Object value) {
         this.type = type;
-        
-        switch(type){
+
+        switch (type) {
             case STRING:
                 stringField = (String) value;
                 break;
@@ -47,14 +50,14 @@ public class InputField {
                 break;
         }
     }
-    
-    
+
     /**
      * Gets the value as object
-     * @return 
+     *
+     * @return
      */
-    public Object getValue(){
-        switch(type){
+    public Object getValue() {
+        switch (type) {
             case STRING:
                 return stringField;
             case DATE:
@@ -65,45 +68,54 @@ public class InputField {
                 return null;
         }
     }
-    
-    
+
     /**
      * Gets the string value. Should only be used if type is STRING
+     *
      * @return the string or empty string if type is empty
      */
-    public String getStringValue(){
-        if (type == InputFieldType.EMPTY){
+    public String getStringValue() {
+        if (type == InputFieldType.EMPTY) {
             return "";
         }
         return stringField;
     }
-    
+
     /**
      * Gets the date value. Should only be used if type is DATE
+     *
      * @return the date or null when type is empty
      */
-    public Date getDateValue(){
-        if (type == InputFieldType.EMPTY){
+    public Date getDateValue() {
+        if (type == InputFieldType.EMPTY) {
             return null;
         }
         return dateField;
     }
-    
+
     /**
      * Gets the double value. Should only be used if type is NUMERIC
-     * @return 
+     *
+     * @return
      */
-    public double getDoubleValue(){
-        return numericfield;
+    public Double getDoubleValue() {
+        if (type == InputFieldType.NUMERIC) {
+            return numericfield;
+        }
+        return null;
     }
-    
+
     /**
      * Gets the int value. Should only be used if type is NUMERIC
-     * @return 
+     *
+     * @return
      */
-    public int getIntValue(){
-        Double asdouble = numericfield;
-        return asdouble.intValue();
+    public Integer getIntValue() {
+        if (type == InputFieldType.NUMERIC) {
+            Double asdouble = numericfield;
+            return asdouble.intValue();
+        }
+        return null;
     }
 
     public void setStringField(String stringField) {
@@ -117,17 +129,9 @@ public class InputField {
     public void setNumericfield(double numericfield) {
         this.numericfield = numericfield;
     }
-    
-    public InputFieldType getType(){
+
+    public InputFieldType getType() {
         return type;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 }

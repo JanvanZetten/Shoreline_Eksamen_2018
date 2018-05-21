@@ -56,7 +56,7 @@ public class RowToOutputPairMapper
             {
                 if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null 
                         && (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.DATE
-                        || inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
+                        || inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY) )
                 {
                     if (((StructEntityDate) structEntry).getDefaultValue() != null){
                     output.add(new JsonPairDate(structEntry.getColumnName(), (Date) ((StructEntityDate) structEntry).getDefaultValue()

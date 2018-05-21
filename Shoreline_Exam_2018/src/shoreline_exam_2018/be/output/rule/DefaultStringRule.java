@@ -24,7 +24,7 @@ public class DefaultStringRule extends Rule<String>
     {
         if (item != null)
         {
-            if (item.isEmpty())
+            if (!item.isEmpty())
             {
                 return item;
             }
