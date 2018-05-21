@@ -6,8 +6,8 @@
 package shoreline_exam_2018.bll.converters;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import org.apache.poi.ss.usermodel.Row;
 import shoreline_exam_2018.be.InputFieldType;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.output.OutputPair;
@@ -54,40 +54,63 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityDate)
             {
-                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null )
+                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null 
+                        && (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.DATE
+                        || inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-                    output.add(new JsonPairDate(structEntry.getColumnName(),
-                            inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getDateValue()));
+                    if (((StructEntityDate) structEntry).getDefaultValue() != null){
+                    output.add(new JsonPairDate(structEntry.getColumnName(), (Date) ((StructEntityDate) structEntry).getDefaultValue()
+                            .applyRuleOn(inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getDateValue())));
+                    }else{
+                        output.add(new JsonPairDate(structEntry.getColumnName(), inputObject.getField((
+                                (StructEntityDate) structEntry).getInputIndex()).getDateValue()));
+                    }
                 }
                 else
                 {
-                    throw new BLLException("The field is missing, check profile");
+                    throw new BLLException("The field is missing or has wrong data type, check profile");
                 }
 
             }
             else if (structEntry instanceof StructEntityDouble)
             {
-                if (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()) != null)
+
+                if (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()) != null 
+                        && (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getType() == InputFieldType.NUMERIC
+                        || inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-                    output.add(new JsonPairDouble(structEntry.getColumnName(),
-                            inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue()));
+                    if (((StructEntityDouble) structEntry).getDefaultValue() != null){
+                    output.add(new JsonPairDouble(structEntry.getColumnName(), (Double) ((StructEntityDouble) structEntry).getDefaultValue()
+                            .applyRuleOn(inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue())));
+                    }
+                    else {
+                        output.add(new JsonPairDouble(structEntry.getColumnName(), inputObject.getField(
+                                ((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue()));
+                    }
                 }
                 else
                 {
-                    throw new BLLException("The field is missing, check profile");
+                    throw new BLLException("The field is missing or has wrong data type, check profile");
                 }
             }
             else if (structEntry instanceof StructEntityInteger)
             {
-                if (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()) != null 
+                        && (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getType() == InputFieldType.NUMERIC 
+                        || inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-
-                    output.add(new JsonPairInteger(structEntry.getColumnName(), 
-                            inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getIntValue()));
+                    if (((StructEntityInteger) structEntry).getDefaultValue() != null){
+                    output.add(new JsonPairInteger(structEntry.getColumnName(), (Integer) ((StructEntityInteger) structEntry).getDefaultValue()
+                            .applyRuleOn(inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getIntValue())));
+                    }
+                    else{
+                        output.add(new JsonPairInteger(structEntry.getColumnName(),inputObject.getField(
+                                ((StructEntityInteger) structEntry).getInputIndex()).getIntValue()));
+                    }
                 }
                 else
                 {
-                    throw new BLLException("The field is missing, check profile");
+                    throw new BLLException("The field is missing or has wrong data type, check profile");
                 }
             }
             else if (structEntry instanceof StructEntityObject)
@@ -98,14 +121,23 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityString)
             {
-                if (inputObject.getField(((StructEntityString) structEntry).getInputIndex()) != null)
+                if (inputObject.getField(((StructEntityString) structEntry).getInputIndex()) != null && 
+                        (inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType() == InputFieldType.STRING || 
+                        inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-                    output.add(new JsonPairString(structEntry.getColumnName(),
-                            inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getStringValue()));
+                    if (((StructEntityString) structEntry).getDefaultValue() != null){
+                    output.add(new JsonPairString(structEntry.getColumnName(), (String) ((StructEntityString) structEntry).getDefaultValue()
+                            .applyRuleOn(inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getStringValue())));
+                    }
+                    else {
+                        output.add(new JsonPairString(structEntry.getColumnName(), inputObject.getField(
+                                ((StructEntityString) structEntry).getInputIndex()).getStringValue()));
+                    }
                 }
                 else
                 {
-                    throw new BLLException("The field is missing, check profile");
+                    System.out.println("String: " + inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType());
+                    throw new BLLException("The field is missing or has wrong data type, check profile");
                 }
             }
             else
