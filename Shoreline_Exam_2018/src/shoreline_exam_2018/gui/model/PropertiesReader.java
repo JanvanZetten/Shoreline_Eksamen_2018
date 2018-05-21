@@ -55,6 +55,7 @@ public class PropertiesReader {
     }
 
     private void setDefaultDirectories() {
-        bll.addDefaultDirectories(valueList.get(0), valueList.get(1));
+        bll.addDefaultOutput(valueList.get(0));
+        bll.addDefaultInput(valueList.get(1));
     }
 }

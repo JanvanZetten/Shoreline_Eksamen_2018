@@ -87,8 +87,8 @@ public class SettingsModel {
             fileOut = new FileOutputStream(file);
             Properties props = new Properties();
 
-            createStandardInputDir(props);
             createStandardOutputDir(props);
+            createStandardInputDir(props);
 
             props.store(fileOut, null);
             fileOut.close();
@@ -105,7 +105,7 @@ public class SettingsModel {
         directory[1] = System.getProperty("user.dir") + File.separator;
         directory[1] = directory[1].substring(0, directory[1].length() - 1);
         props.setProperty(directory[0], directory[1]);
-        bll.addDefaultDirectories(directory[0], directory[1]);
+        bll.addDefaultOutput(directory[1]);
     }
 
     private void createStandardInputDir(Properties props) {
@@ -114,7 +114,7 @@ public class SettingsModel {
         directory[1] = System.getProperty("user.dir") + File.separator;
         directory[1] = directory[1].substring(0, directory[1].length() - 1);
         props.setProperty(directory[0], directory[1]);
-        bll.addDefaultDirectories(directory[0], directory[1]);
+        bll.addDefaultInput(directory[1]);
     }
 
 }

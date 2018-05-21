@@ -9,7 +9,6 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
@@ -142,12 +141,18 @@ public interface BLLFacade
     public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException;
 
     /**
-     * Adds default directories from the properties on start-up so that they
+     * Adds default output from the properties on start-up so that it
      * can be gotten later.
-     * @param inputValue   = Path of input
      * @param outputValue  = Path of output
      */
-    public void addDefaultDirectories(String inputValue, String outputValue);
+    public void addDefaultOutput(String outputValue);
+    
+    /**
+     * Adds default input from the properties on start-up so that it
+     * can be gotten later.
+     * @param inputValue  = Path of output
+     */
+    public void addDefaultInput(String inputValue);
 
     /**
      * Gets the default directories from the DAL layer.

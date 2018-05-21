@@ -1,7 +1,5 @@
 package shoreline_exam_2018.gui.model;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;

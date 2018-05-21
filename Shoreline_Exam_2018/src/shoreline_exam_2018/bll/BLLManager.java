@@ -184,8 +184,13 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public void addDefaultDirectories(String inputValue, String outputValue) {
-        dal.addDefaultDirectories(inputValue, outputValue);
+    public void addDefaultOutput(String outputValue) {
+        dal.addDefaultOutput(outputValue);
+    }
+    
+    @Override
+    public void addDefaultInput(String inputValue) {
+        dal.addDefaultInput(inputValue);
     }
 
     @Override
@@ -194,7 +199,7 @@ public class BLLManager implements BLLFacade {
     }
 
     /**
-     * Checks for existing and adds number to it to get a uniqe filename
+     * Checks for existing and adds number to it to get a unique filename
      *
      * @param outputFile
      * @return

@@ -114,11 +114,17 @@ public interface DALFacade
     public void updateDefaultDirectory(String[] directory, String input, String output) throws DALException, IOException;
 
     /**
-     * Sets default directories so they can be gotten and updated.
-     * @param inputValue
+     * Sets default output so it can be gotten and updated.
      * @param outputValue 
      */
-    public void addDefaultDirectories(String inputValue, String outputValue);
+    public void addDefaultOutput(String outputValue);
+    
+     /**
+     * Sets default input so it can be gotten and updated.
+     * @param inputValue 
+     */
+    public void addDefaultInput(String inputValue);
+  
     
     /**
      * Gets the default directories of the desktop.
@@ -128,7 +134,7 @@ public interface DALFacade
 
     
     /**
-     * cheks if the file already exists
+     * Checks if the file already exists
      * @param file
      * @return 
      */

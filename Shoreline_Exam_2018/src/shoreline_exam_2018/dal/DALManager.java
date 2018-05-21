@@ -19,8 +19,6 @@ import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
-import shoreline_exam_2018.bll.BLLException;
-import shoreline_exam_2018.bll.Utilities.FileUtils;
 import shoreline_exam_2018.dal.database.DBChangeDAO;
 import shoreline_exam_2018.dal.database.LogDAO;
 import shoreline_exam_2018.dal.database.ProfileDAO;
@@ -179,10 +177,15 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public void addDefaultDirectories(String inputValue, String outputValue)
+    public void addDefaultOutput(String outputValue)
+    {
+        this.defaultOutputDir = outputValue;
+    }
+    
+    @Override
+    public void addDefaultInput(String inputValue)
     {
         this.defaultInputDir = inputValue;
-        this.defaultOutputDir = outputValue;
     }
 
     @Override
