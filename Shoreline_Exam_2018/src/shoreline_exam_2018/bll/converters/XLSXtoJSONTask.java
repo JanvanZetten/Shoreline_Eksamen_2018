@@ -18,7 +18,7 @@ import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
 import shoreline_exam_2018.bll.BLLException;
-import shoreline_exam_2018.bll.ConversionJob;
+import shoreline_exam_2018.bll.ConversionJobSingle;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.filereader.XLSX_horisontal_Reader;
 import shoreline_exam_2018.dal.output.json.JsonWriter;
@@ -37,7 +37,7 @@ public class XLSXtoJSONTask extends Task {
     private MutableBoolean isOperating;
     private Reader reader;
     private RowToOutputPairMapper mapper;
-    private ConversionJob job;
+    private ConversionJobSingle job;
     private BooleanProperty isDone;
 
     public XLSXtoJSONTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) {

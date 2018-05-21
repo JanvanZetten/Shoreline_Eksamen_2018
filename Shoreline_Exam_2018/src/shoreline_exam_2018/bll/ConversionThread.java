@@ -32,7 +32,7 @@ public class ConversionThread
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
     private BooleanProperty isDone;
-    private ConversionJob job = null;
+    private ConversionJobSingle job = null;
     private BLLFacade bll;
 
     /**
@@ -163,7 +163,7 @@ public class ConversionThread
         return isOperating.getValue();
     }
 
-    void giveJob(ConversionJob cJob)
+    void giveJob(ConversionJobSingle cJob)
     {
         job = cJob;
     }

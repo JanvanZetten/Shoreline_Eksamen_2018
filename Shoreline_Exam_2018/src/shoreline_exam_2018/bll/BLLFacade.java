@@ -6,6 +6,7 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -31,11 +32,11 @@ public interface BLLFacade
      * @param inputFile = The input file that is being converted.
      * @param outputFile = The output file that is being converted to.
      * @param profile = The profile that is used for the conversion.
-     * @return = A converison job.
+     * @return = A conversion job.
      * @throws BLLException
      */
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLException;
-
+    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs) throws BLLException;
+    
     /**
      * Adds a profile to the database.
      * @param name = Name of the profile.
@@ -159,4 +160,6 @@ public interface BLLFacade
      * @return [0 = output directory, 1 = input directory]
      */
     public String[] getDefaultDirectories();
+
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) throws BLLException;
 }

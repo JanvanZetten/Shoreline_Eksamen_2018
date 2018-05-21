@@ -29,16 +29,14 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public class ConversionJob extends HBox
+public class ConversionJobSingle extends HBox implements ConversionJobs
 {
 
     private Label lblConversionName;
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
-    private ListView<ConversionJob> listJobs;
-    private BLLManager bll;
-    private Path outputPath;
+    private ListView<ConversionJobs> listJobs;
 
     private int BUTTON_SIZE = 36;
 
@@ -49,16 +47,14 @@ public class ConversionJob extends HBox
      * @param conversionName
      * @param cThread
      */
-    public ConversionJob(
+    public ConversionJobSingle(
             String conversionName,
             ConversionThread cThread,
             Path outputPath,
             Profile selectedProfile,
-            ListView<ConversionJob> listJobs)
+            ListView<ConversionJobs> listJobs)
     {
         super();
-
-        bll = BLLManager.getInstance();
 
         this.listJobs = listJobs;
 
@@ -68,7 +64,6 @@ public class ConversionJob extends HBox
         btnPause = new Button();
         btnCancel = new Button();
         GridPane grid = new GridPane();
-        this.outputPath = outputPath;
 
         this.setStyle("-fx-background-color: #737f8c;"
                 + "-fx-background-radius: 10;");
@@ -147,7 +142,7 @@ public class ConversionJob extends HBox
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJob> listJobs, Profile selectedProfile)
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJobs> listJobs, Profile selectedProfile)
     {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
@@ -169,7 +164,7 @@ public class ConversionJob extends HBox
                 {
                     cThread.cancelTask();
                     cThread.resumeTask();
-                    listJobs.getItems().remove(ConversionJob.this);
+                    listJobs.getItems().remove(ConversionJobSingle.this);
                 }
             }
         });
@@ -216,10 +211,10 @@ public class ConversionJob extends HBox
     }
 
     /**
-     * Removes itself from the list given in the constructer.
+     * Removes itself from the list given in the constructor.
      */
     void removeFromList()
     {
-        listJobs.getItems().remove(ConversionJob.this);
+        listJobs.getItems().remove(ConversionJobSingle.this);
     }
 }

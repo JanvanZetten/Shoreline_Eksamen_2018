@@ -6,17 +6,19 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shoreline_exam_2018.bll.ConversionJob;
+import shoreline_exam_2018.bll.ConversionJobSingle;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextInputDialog;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -24,6 +26,8 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.ConversionJobMulti;
+import shoreline_exam_2018.bll.ConversionJobs;
 import shoreline_exam_2018.bll.LoggingHelper;
 
 /**
@@ -36,8 +40,8 @@ public class ConvertModel {
 
     ObservableList<Profile> profiles;
 
-    private List<ConversionJob> tblTasks;
-    private ObservableList<ConversionJob> olTasks;
+    private List<ConversionJobSingle> tblTasks;
+    private ObservableList<ConversionJobSingle> olTasks;
 
     private File selectedFile = null;
     private File outputFile = null;
@@ -76,7 +80,7 @@ public class ConvertModel {
 
         File dir = new File(currentDir);
         fc.setInitialDirectory(dir);
-        
+
         fc.setTitle("Load a file");
 
         selectedFile = fc.showOpenDialog(null);
@@ -85,6 +89,32 @@ public class ConvertModel {
 
             return selectedFile.toString();
         }
+        return "";
+    }
+
+    /**
+     * Chooses a destination for the outputfile
+     *
+     * @return a string with the path
+     */
+    public String chooseDestination() {
+        DirectoryChooser dc = new DirectoryChooser();
+
+        dc.setTitle("Chosse output directory");
+
+        String[] directory = bll.getDefaultDirectories();
+        String currentDir = directory[0];
+
+        File dir = new File(currentDir);
+        dc.setInitialDirectory(dir);
+
+        outputFile = dc.showDialog(null);
+
+        if (outputFile != null) {
+            System.out.println(outputFile.toString() + File.separator);
+            return outputFile.toString();
+        }
+
         return "";
     }
 
@@ -114,51 +144,13 @@ public class ConvertModel {
     }
 
     /**
-     * Chooses a destination for the outputfile
-     *
-     * @return a string with the path
-     */
-    public String chooseDestination() {
-        DirectoryChooser direcChosser = new DirectoryChooser();
-
-        direcChosser.setTitle("Chosse output directory");
-
-        String[] directory = bll.getDefaultDirectories();
-        String currentDir = directory[0];
-
-        File dir = new File(currentDir);
-        direcChosser.setInitialDirectory(dir);
-
-        File selectedDirectory = direcChosser.showDialog(new Stage());
-
-        TextInputDialog namedialog = new TextInputDialog();
-        namedialog.setTitle("Outputfile name");
-        namedialog.setHeaderText("Please write the wanted name for the output file:");
-
-        String fileName;
-
-        Optional<String> result = namedialog.showAndWait();
-        if (result.isPresent()) {
-            fileName = result.get();
-            if (!fileName.trim().isEmpty()) {
-
-                String filePath = selectedDirectory.getAbsolutePath() + File.separator + fileName + ".json";
-
-                outputFile = new File(filePath);
-                return filePath;
-            }
-        }
-        return null;
-    }
-
-    /**
      * Start a conversion with the given input and output files
      *
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
-    public ConversionJob StartConversion(Profile currentProfile, ListView<ConversionJob> listJobs, String inputPath) {
-        ConversionJob startConversion = null;
+    public ConversionJobSingle StartSingleConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath) {
+        ConversionJobSingle startConversion = null;
         selectedFile = new File(inputPath);
         if (selectedFile != null && outputFile != null && currentProfile != null) {
             String name;
@@ -168,43 +160,115 @@ public class ConvertModel {
             name = split[split.length - 1];
 
             try {
-                startConversion = bll.startConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
+                String output = outputFile.toPath() + File.separator + selectedFile.getName() + ".json";
+                File outputFile = new File(output);
+                System.out.println(outputFile.toString());
+                startConversion = bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
             } catch (BLLException ex) {
                 LoggingHelper.logException(ex);
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
             }
 
             selectedFile = null;
-            outputFile = null;
             return startConversion;
         } else {
             AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
             return null;
         }
+    }
 
+    public ConversionJobMulti StartMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath) {
+        ConversionJobMulti startConversion = null;
+        List<ConversionJobSingle> listConversions = new ArrayList<ConversionJobSingle>();
+        selectedFile = new File(inputPath);
+        if (selectedFile != null && outputFile != null && currentProfile != null) {
+            String name;
+            String pattern = Pattern.quote(System.getProperty("file.separator"));
+            String[] split = selectedFile.getAbsolutePath().split(pattern);
+
+            name = split[split.length - 1];
+            File[] directory = selectedFile.listFiles();
+
+            for (File file : directory) {
+                
+                String extension = "";
+                
+                int i = file.toString().lastIndexOf('.');
+                
+                extension = file.toString().substring(i + 1);
+                extension.trim();
+                System.out.println(extension);
+
+                if (extension.equals("xlsx") || extension.equals("csv")) {
+                    try {
+                        String output = outputFile.toPath() + File.separator + selectedFile.getName() + ".json";
+                        File outputFile = new File(output);
+                        listConversions.add(bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs));
+                        System.out.println("1");
+                    } catch (BLLException ex) {
+                        LoggingHelper.logException(ex);
+                        AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
+                    }
+                }
+            }
+
+            try {
+                startConversion = bll.startMultiConversion(currentProfile, listJobs, (ArrayList<ConversionJobSingle>) listConversions);
+            } catch (BLLException ex) {
+                LoggingHelper.logException(ex);
+                AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
+            }
+
+            selectedFile = null;
+            return startConversion;
+        } else {
+            AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
+            return null;
+        }
+    }
+
+    public static String removeExtension(String s) {
+        String separator = System.getProperty("file.separator");
+        String filename;
+
+        // Remove the path upto the filename.
+        int lastSeparatorIndex = s.lastIndexOf(separator);
+        if (lastSeparatorIndex == -1) {
+            filename = s;
+        } else {
+            filename = s.substring(lastSeparatorIndex + 1);
+        }
+
+        // Remove the extension.
+        int extensionIndex = filename.lastIndexOf(".");
+        if (extensionIndex == -1) {
+            return filename;
+        }
+
+        return filename.substring(0, extensionIndex);
     }
 
     public String chooseDirectory() {
         DirectoryChooser direcChosser = new DirectoryChooser();
-        
+
         direcChosser.setTitle("Chosse input directory");
-        
+
         String[] directory = bll.getDefaultDirectories();
         String currentDir = directory[1];
-        
+
         File dir = new File(currentDir);
         direcChosser.setInitialDirectory(dir);
-        
+
         File selectedDirectory = direcChosser.showDialog(new Stage());
-        
-        if (selectedDirectory != null){
+
+        if (selectedDirectory != null) {
             return selectedDirectory.getAbsolutePath();
         }
         return null;
     }
 }
 
-//Class for showing the right name in the comboboxs list and button
+//Class for showing the right name in the comboboxes list and button
 class profileListCell extends ListCell<Profile> {
 
     @Override

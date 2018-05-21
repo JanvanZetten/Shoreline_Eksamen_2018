@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -100,11 +101,15 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public ConversionJob startConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJob> listJobs) throws BLLException {
-
+    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs) throws BLLException {
         Path outputfileChecked = checkForExisting(outputFile);
 
         return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs);
+    }
+    
+    @Override
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) throws BLLException {
+        return cMan.newMultiConversion(currentProfile, listJobs, jobs);
     }
 
     @Override

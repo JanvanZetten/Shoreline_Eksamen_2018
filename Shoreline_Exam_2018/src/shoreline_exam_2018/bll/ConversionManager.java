@@ -6,6 +6,7 @@
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.Utilities.FileUtils;
@@ -27,7 +28,7 @@ public class ConversionManager
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionJob newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJob> listJobs) throws BLLException
+    public ConversionJobSingle newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJobs> listJobs) throws BLLException
     {
 
         String inputExtension;
@@ -47,7 +48,7 @@ public class ConversionManager
         if (cThread != null)
         {
 
-            ConversionJob cJob = new ConversionJob(taskName, cThread, outputPath, selectedProfile, listJobs);
+            ConversionJobSingle cJob = new ConversionJobSingle(taskName, cThread, outputPath, selectedProfile, listJobs);
             cThread.giveJob(cJob);
             return cJob;
         }
@@ -56,5 +57,10 @@ public class ConversionManager
             throw new BLLException("one of the file types might not be supported");
         }
 
+    }
+
+    ConversionJobMulti newMultiConversion(Profile selectedProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) {
+        ConversionJobMulti cMultiJob = new ConversionJobMulti(selectedProfile, listJobs, jobs);
+        return cMultiJob;
     }
 }

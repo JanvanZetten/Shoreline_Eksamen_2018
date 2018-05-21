@@ -26,7 +26,7 @@ public class MainModel {
     /**
      * Sets the tabs in all the tabs of the MainView.
      *
-     * @param paneConvert  = The convertion view.
+     * @param paneConvert  = The conversion view.
      * @param paneProfiles = The profiles view.
      * @param paneLog      = The log view.
      * @param paneSettings = The settings view.
@@ -40,7 +40,7 @@ public class MainModel {
     }
 
     /**
-     * Rescales the views to have the same anchors as the tab panes they are
+     * Re-scales the views to have the same anchors as the tab panes they are
      * located in. Also sets a node of the view into the tab pane.
      *
      * @param PANE_NAME = Name of the tab.
@@ -71,6 +71,7 @@ public class MainModel {
             AnchorPane.setRightAnchor(node, 0.0);
             AnchorPane.setLeftAnchor(node, 0.0);
             AnchorPane.setBottomAnchor(node, 0.0);
+            
             PANE.getChildren().setAll(node);
         } catch (MalformedURLException ex) {
             LoggingHelper.logException(ex);
