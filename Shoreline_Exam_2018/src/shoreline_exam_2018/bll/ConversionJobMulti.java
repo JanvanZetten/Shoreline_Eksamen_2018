@@ -33,7 +33,6 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         this.listJobs = listView;
         this.selectedProfile = selectedProfile;
         this.jobs = jobs;
-        Button button = new Button();
         
         pane.setBottomAnchor(listJobs, 0.0);
         pane.setTopAnchor(listJobs, 0.0);
@@ -44,7 +43,6 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         listJobs.setStyle("-fx-padding: 0px;");
         
         this.setContent(pane);
-        this.getChildren().add(button);
     }
     
     public void setupPane(ArrayList<ConversionJobSingle> jobs) {
