@@ -38,7 +38,7 @@ public class ConvertModel
     private ObservableList<ConversionJobSingle> olTasks;
 
     private File selectedFile = null;
-    private File outputFile;
+    private File outputFile = null;
 
     public ConvertModel()
     {
@@ -275,16 +275,6 @@ public class ConvertModel
             AlertFactory.showError("Could not listen on directory", ex.getMessage());
         }
 
-    }
-
-    /**
-     * Sets the default directory on start up.
-     * @param outputField
-     */
-    public void setDefaultOutputDir(TextField outputField)
-    {
-        outputField.setText(bll.getDefaultDirectories()[0]);
-        outputFile = new File(outputField.getText());
     }
 }
 
