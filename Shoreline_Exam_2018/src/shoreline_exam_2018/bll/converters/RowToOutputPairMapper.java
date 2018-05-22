@@ -57,10 +57,7 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityDate)
             {
-                System.out.println("hej");
                 StructEntityDate se = (StructEntityDate) structEntry;
-                System.out.println(se.getDfr());
-                System.out.println(se.getDfr().getDateFormat());
                 InputField inputField = inputObject.getField(se.getInputIndex());
                 if (inputField != null
                         && (inputField.getType() == InputFieldType.DATE
@@ -178,7 +175,6 @@ public class RowToOutputPairMapper
                 }
                 else
                 {
-                    System.out.println("String: " + inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType());
                     throw new BLLException("The field is missing or has wrong data type, check profile");
                 }
             }
