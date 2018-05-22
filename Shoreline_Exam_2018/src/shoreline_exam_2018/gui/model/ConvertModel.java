@@ -37,7 +37,7 @@ public class ConvertModel {
     private ObservableList<ConversionJobSingle> olTasks;
 
     private File selectedFile = null;
-    private File outputFile = null;
+    private File outputFile;
 
     public ConvertModel() {
         bll = BLLManager.getInstance();
@@ -248,6 +248,7 @@ public class ConvertModel {
      */
     public void setDefaultOutputDir(TextField outputField) {
         outputField.setText(bll.getDefaultDirectories()[0]);
+        outputFile = new File(outputField.getText());
     }
 }
 
