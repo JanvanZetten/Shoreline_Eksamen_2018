@@ -93,6 +93,22 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
     }
     
     /**
+     * Add job to the coversionjobs
+     * @param conversion 
+     */
+    public void addJob(ConversionJobSingle conversion){
+        jobs.add(conversion);
+        
+        this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
+        
+        paneSize = paneSize + JOB_SIZE;
+        
+        pane.setPrefHeight(paneSize);
+        
+        multiList.getItems().add(conversion);
+    }
+    
+    /**
      * Is called whenever a job has finished inside this object. Resizes the
      * AnchorPane dynamically as jobs are deleted from the list.
      * @param job 
