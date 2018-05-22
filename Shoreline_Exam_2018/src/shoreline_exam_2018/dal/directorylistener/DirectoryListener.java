@@ -115,6 +115,7 @@ public class DirectoryListener
             onError.run();
         });
 
+        thread.setDaemon(true);
         thread.start();
     }
 
