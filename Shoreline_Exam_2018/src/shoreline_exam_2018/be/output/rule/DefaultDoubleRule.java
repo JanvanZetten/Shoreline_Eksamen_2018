@@ -12,20 +12,28 @@ package shoreline_exam_2018.be.output.rule;
 public class DefaultDoubleRule extends Rule<Double>
 {
     private Double defaultValue;
+    private boolean isForced;
 
-    public DefaultDoubleRule(Double defaultValue, int columnIndex)
+    public DefaultDoubleRule(Double defaultValue, int columnIndex, boolean isForced)
     {
         super(columnIndex);
         this.defaultValue = defaultValue;
+        this.isForced = isForced;
     }
 
     @Override
     public Double applyRuleOn(Double item)
     {
-        if (item != null)
+        if (isForced || item == null)
         {
-            return item;
+            return defaultValue;
         }
-        return defaultValue;
+
+        return item;
+    }
+
+    public boolean isForced()
+    {
+        return isForced;
     }
 }

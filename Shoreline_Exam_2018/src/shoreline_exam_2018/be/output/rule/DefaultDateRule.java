@@ -14,20 +14,28 @@ import java.util.Date;
 public class DefaultDateRule extends Rule<Date>
 {
     private Date defaultValue;
+    private boolean isForced;
 
-    public DefaultDateRule(Date defaultValue, int columnIndex)
+    public DefaultDateRule(Date defaultValue, int columnIndex, boolean isForced)
     {
         super(columnIndex);
         this.defaultValue = defaultValue;
+        this.isForced = isForced;
     }
 
     @Override
     public Date applyRuleOn(Date item)
     {
-        if (item != null)
+        if (isForced || item == null)
         {
-            return item;
+            return defaultValue;
         }
-        return defaultValue;
+
+        return item;
+    }
+
+    public boolean isForced()
+    {
+        return isForced;
     }
 }

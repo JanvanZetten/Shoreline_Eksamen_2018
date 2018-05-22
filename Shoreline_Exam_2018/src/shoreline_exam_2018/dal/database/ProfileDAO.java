@@ -138,13 +138,14 @@ public class ProfileDAO
                 {
                     DefaultIntegerRule dir = (DefaultIntegerRule) rule;
                     con = dbcp.checkOut();
-                    sql = "INSERT INTO RuleDefaultInteger VALUES(?, ?, ?);";
+                    sql = "INSERT INTO RuleDefaultInteger VALUES(?, ?, ?, ?);";
 
                     statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     statement.setInt(1, profileId);
                     statement.setInt(2, id);
                     Integer defaultInt = dir.applyRuleOn(null);
                     statement.setInt(3, defaultInt == null ? 0 : defaultInt);
+                    statement.setBoolean(4, dir.isForced());
 
                     statement.executeUpdate();
                 }
@@ -152,13 +153,14 @@ public class ProfileDAO
                 {
                     DefaultDoubleRule ddr = (DefaultDoubleRule) rule;
                     con = dbcp.checkOut();
-                    sql = "INSERT INTO RuleDefaultDouble VALUES(?, ?, ?);";
+                    sql = "INSERT INTO RuleDefaultDouble VALUES(?, ?, ?, ?);";
 
                     statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     statement.setInt(1, profileId);
                     statement.setInt(2, id);
                     Double defaultDbl = ddr.applyRuleOn(null);
                     statement.setDouble(3, defaultDbl == null ? 0.0 : defaultDbl);
+                    statement.setBoolean(4, ddr.isForced());
 
                     statement.executeUpdate();
                 }
@@ -166,13 +168,14 @@ public class ProfileDAO
                 {
                     DefaultStringRule dsr = (DefaultStringRule) rule;
                     con = dbcp.checkOut();
-                    sql = "INSERT INTO RuleDefaultString VALUES(?, ?, ?);";
+                    sql = "INSERT INTO RuleDefaultString VALUES(?, ?, ?, ?);";
 
                     statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     statement.setInt(1, profileId);
                     statement.setInt(2, id);
                     String defaultStr = dsr.applyRuleOn(null);
                     statement.setString(3, defaultStr == null ? "" : defaultStr);
+                    statement.setBoolean(4, dsr.isForced());
 
                     statement.executeUpdate();
                 }
@@ -180,13 +183,14 @@ public class ProfileDAO
                 {
                     DefaultDateRule ddr = (DefaultDateRule) rule;
                     con = dbcp.checkOut();
-                    sql = "INSERT INTO RuleDefaultDate VALUES(?, ?, ?);";
+                    sql = "INSERT INTO RuleDefaultDate VALUES(?, ?, ?, ?);";
 
                     statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                     statement.setInt(1, profileId);
                     statement.setInt(2, id);
                     Date defaultDat = ddr.applyRuleOn(null);
                     statement.setTimestamp(3, new java.sql.Timestamp(defaultDat == null ? 0 : defaultDat.getTime()));
+                    statement.setBoolean(4, ddr.isForced());
 
                     statement.executeUpdate();
                 }
@@ -481,7 +485,8 @@ public class ProfileDAO
             {
                 int inputIndex = rs.getInt("inputIndex");
                 int defaultValue = rs.getInt("defaultValue");
-                DefaultIntegerRule rule = new DefaultIntegerRule(defaultValue, inputIndex);
+                boolean isForced = rs.getBoolean("isForced");
+                DefaultIntegerRule rule = new DefaultIntegerRule(defaultValue, inputIndex, isForced);
 
                 if (inputRuleMap.containsKey(inputIndex))
                 {
@@ -505,7 +510,8 @@ public class ProfileDAO
             {
                 int inputIndex = rs.getInt("inputIndex");
                 Double defaultValue = rs.getDouble("defaultValue");
-                DefaultDoubleRule rule = new DefaultDoubleRule(defaultValue, inputIndex);
+                boolean isForced = rs.getBoolean("isForced");
+                DefaultDoubleRule rule = new DefaultDoubleRule(defaultValue, inputIndex, isForced);
 
                 if (inputRuleMap.containsKey(inputIndex))
                 {
@@ -529,7 +535,8 @@ public class ProfileDAO
             {
                 int inputIndex = rs.getInt("inputIndex");
                 String defaultValue = rs.getString("defaultValue");
-                DefaultStringRule rule = new DefaultStringRule(defaultValue, inputIndex);
+                boolean isForced = rs.getBoolean("isForced");
+                DefaultStringRule rule = new DefaultStringRule(defaultValue, inputIndex, isForced);
 
                 if (inputRuleMap.containsKey(inputIndex))
                 {
@@ -553,7 +560,8 @@ public class ProfileDAO
             {
                 int inputIndex = rs.getInt("inputIndex");
                 Date defaultValue = rs.getDate("defaultValue");
-                DefaultDateRule rule = new DefaultDateRule(defaultValue, inputIndex);
+                boolean isForced = rs.getBoolean("isForced");
+                DefaultDateRule rule = new DefaultDateRule(defaultValue, inputIndex, isForced);
 
                 if (inputRuleMap.containsKey(inputIndex))
                 {
