@@ -261,6 +261,7 @@ public class BLLManager implements BLLFacade {
                 @Override
                 public void run() {
                     System.out.println("works so far...:" + path.toString());
+                    System.out.println(inputPath.toString());
                     try {
                         MultiConversion.addJob(startSingleConversion(name, path, outputPath, MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
                     } catch (BLLException ex) {
