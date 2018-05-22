@@ -70,15 +70,21 @@ public class InputField {
     }
 
     /**
-     * Gets the string value. Should only be used if type is STRING
+     * Gets the string value. Should only be used if type is String or Numeric
      *
      * @return the string or empty string if type is empty
      */
     public String getStringValue() {
-        if (type == InputFieldType.EMPTY) {
-            return "";
+        switch (type) {
+            case STRING:
+                return stringField;
+            case NUMERIC:
+                return numericfield.toString();
+            case EMPTY:
+                return "";
+            default:
+                return null;
         }
-        return stringField;
     }
 
     /**
