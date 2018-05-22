@@ -30,12 +30,6 @@ public class SettingsModel {
      * exist, it will create the properties as default.
      */
     public void getProperties() {
-        File f = new File("test.properties");
-        if (f.exists() && !f.isDirectory()) {
-            PropertiesReader propRead = new PropertiesReader();
-        } else {
-            createNewProperties();
-        }
         txtfieldInputDir.setText(bll.getDefaultDirectories()[1]);
         txtfieldOutputDir.setText(bll.getDefaultDirectories()[0]);
     }
@@ -79,55 +73,4 @@ public class SettingsModel {
             }
         }
     }
-
-    /**
-     * Creates a new property file if one doesn't exist already, and sets
-     * the default values for all the properties. If new properties are added
-     * by the developer, this function needs to be expanded to support them.
-     */
-    private void createNewProperties() {
-        FileOutputStream fileOut = null;
-        try {
-            File file = new File("test.properties");
-            fileOut = new FileOutputStream(file);
-            Properties props = new Properties();
-
-            createStandardOutputDir(props);
-            createStandardInputDir(props);
-
-            props.store(fileOut, null);
-            fileOut.close();
-        } catch (FileNotFoundException ex) {
-            AlertFactory.showError("Could not read properties", "The directory could not be found: " + ex.getMessage());
-        } catch (IOException ex) {
-            AlertFactory.showError("Could not read properties", ex.getMessage());
-        }
-    }
-
-    /**
-     * Creates the default output directory when a new properties file is made.
-     * @param props 
-     */
-    private void createStandardOutputDir(Properties props) {
-        String[] directory = new String[2];
-        directory[0] = "outputDir";
-        directory[1] = System.getProperty("user.dir") + File.separator;
-        directory[1] = directory[1].substring(0, directory[1].length() - 1);
-        props.setProperty(directory[0], directory[1]);
-        bll.addDefaultOutput(directory[1]);
-    }
-
-    /**
-     * Creates the default input directory when a new properties file is made.
-     * @param props 
-     */
-    private void createStandardInputDir(Properties props) {
-        String[] directory = new String[2];
-        directory[0] = "inputDir";
-        directory[1] = System.getProperty("user.dir") + File.separator;
-        directory[1] = directory[1].substring(0, directory[1].length() - 1);
-        props.setProperty(directory[0], directory[1]);
-        bll.addDefaultInput(directory[1]);
-    }
-
 }
