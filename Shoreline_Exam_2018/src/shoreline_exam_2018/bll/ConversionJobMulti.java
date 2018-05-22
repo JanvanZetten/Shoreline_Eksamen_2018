@@ -31,6 +31,12 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         pane.setLeftAnchor(listJobs, 0.0);
         pane.getChildren().add(listJobs);
         
+        listJobs.setStyle("-fx-padding: 0px;");
+        
+        pane.setMinHeight(0);
+        pane.setPrefHeight(paneSize(jobs));
+        
+        
         this.setStyle("-fx-background-color: #737f8c;"
                 + "-fx-background-radius: 10;");
         
@@ -38,13 +44,21 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
         this.setPressed(true);
-        this.getChildren().add(pane);
+        this.setContent(pane);
     }
 
     private void setupJobs(ArrayList<ConversionJobSingle> jobs) {
         for (ConversionJobSingle job : jobs) {
             listJobs.getItems().add(job);
         }
+    }
+
+    private int paneSize(ArrayList<ConversionJobSingle> jobs) {
+        int paneSize = 0;
+        for (ConversionJobSingle job : jobs) {
+            paneSize = paneSize + 73;
+        }
+        return paneSize;
     }
     
     

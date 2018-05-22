@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import shoreline_exam_2018.bll.BLLException;

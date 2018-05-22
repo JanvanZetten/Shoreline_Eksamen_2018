@@ -6,12 +6,8 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -201,9 +197,9 @@ public class ConvertModel {
 
                 if (extension.equals("xlsx") || extension.equals("csv")) {
                     try {
-                        String output = outputFile.toPath() + File.separator + selectedFile.getName() + ".json";
+                        String output = outputFile.toPath() + File.separator + file.getName() + ".json";
                         File outputFile = new File(output);
-                        listConversions.add(bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs));
+                        listConversions.add(bll.startSingleConversion(name, file.toPath(), outputFile.toPath(), currentProfile, listJobs));
                         System.out.println("1");
                     } catch (BLLException ex) {
                         LoggingHelper.logException(ex);
@@ -225,27 +221,6 @@ public class ConvertModel {
             AlertFactory.showError("Missing fields", "Please select a profile and an input and output file.");
             return null;
         }
-    }
-
-    public static String removeExtension(String s) {
-        String separator = System.getProperty("file.separator");
-        String filename;
-
-        // Remove the path upto the filename.
-        int lastSeparatorIndex = s.lastIndexOf(separator);
-        if (lastSeparatorIndex == -1) {
-            filename = s;
-        } else {
-            filename = s.substring(lastSeparatorIndex + 1);
-        }
-
-        // Remove the extension.
-        int extensionIndex = filename.lastIndexOf(".");
-        if (extensionIndex == -1) {
-            return filename;
-        }
-
-        return filename.substring(0, extensionIndex);
     }
 
     public String chooseDirectory() {
