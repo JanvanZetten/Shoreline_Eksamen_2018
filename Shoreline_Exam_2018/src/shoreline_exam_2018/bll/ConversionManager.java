@@ -28,7 +28,7 @@ public class ConversionManager
      * @param selectedProfile = The selected profile for the conversion
      * @return = Returns the Task so that it can be set in the view.
      */
-    public ConversionJobSingle newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJobs> listJobs) throws BLLException
+    public ConversionJobSingle newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException
     {
 
         String inputExtension;
@@ -47,8 +47,7 @@ public class ConversionManager
 
         if (cThread != null)
         {
-
-            ConversionJobSingle cJob = new ConversionJobSingle(taskName, cThread, outputPath, selectedProfile, listJobs);
+            ConversionJobSingle cJob = new ConversionJobSingle(taskName, cThread, outputPath, selectedProfile, listJobs, cMultiJob);
             cThread.giveJob(cJob);
             return cJob;
         }
@@ -58,9 +57,11 @@ public class ConversionManager
         }
 
     }
+    
+    
 
-    ConversionJobMulti newMultiConversion(Profile selectedProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) {
-        ConversionJobMulti cMultiJob = new ConversionJobMulti(selectedProfile, listJobs, jobs);
+    ConversionJobMulti newMultiConversion(Profile selectedProfile, ListView<ConversionJobs> listJobs) {
+        ConversionJobMulti cMultiJob = new ConversionJobMulti(selectedProfile, listJobs);
         return cMultiJob;
     }
 }

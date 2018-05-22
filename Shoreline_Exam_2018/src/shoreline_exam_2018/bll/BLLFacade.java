@@ -35,7 +35,7 @@ public interface BLLFacade
      * @return = A conversion job.
      * @throws BLLException
      */
-    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs) throws BLLException;
+    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException;
     
     /**
      * Adds a profile to the database.
@@ -161,5 +161,5 @@ public interface BLLFacade
      */
     public String[] getDefaultDirectories();
 
-    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) throws BLLException;
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs) throws BLLException;
 }

@@ -6,7 +6,8 @@
 package shoreline_exam_2018.bll;
 
 import java.util.ArrayList;
-import javafx.scene.Node;
+import java.util.List;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
@@ -18,12 +19,21 @@ import shoreline_exam_2018.be.Profile;
  */
 public class ConversionJobMulti extends TitledPane implements ConversionJobs {
     
-    private ListView<ConversionJobs> listJobs = new ListView<ConversionJobs>();
+    private AnchorPane pane = new AnchorPane();
+    private ListView<ConversionJobs> listJobs;
+    private double paneSize = 44;
+    private Profile selectedProfile;
+    private ArrayList<ConversionJobSingle> jobs;
+    
+    private int JOB_SIZE = 56;
 
-    public ConversionJobMulti(Profile selectedProfile, Node content, ArrayList<ConversionJobSingle> jobs) {
+    public ConversionJobMulti(Profile selectedProfile, ListView<ConversionJobs> listView) {
         super();
         
-        AnchorPane pane = new AnchorPane();
+        this.listJobs = listView;
+        this.selectedProfile = selectedProfile;
+        this.jobs = jobs;
+        Button button = new Button();
         
         pane.setBottomAnchor(listJobs, 0.0);
         pane.setTopAnchor(listJobs, 0.0);
@@ -33,14 +43,20 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         
         listJobs.setStyle("-fx-padding: 0px;");
         
+        this.setContent(pane);
+        this.getChildren().add(button);
+    }
+    
+    public void setupPane(ArrayList<ConversionJobSingle> jobs) {
+        this.jobs = jobs;
+        
         pane.setMinHeight(0);
         pane.setPrefHeight(paneSize(jobs));
-        
+       
         setupJobs(jobs);
         
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
         this.setPressed(true);
-        this.setContent(pane);
     }
 
     private void setupJobs(ArrayList<ConversionJobSingle> jobs) {
@@ -49,14 +65,23 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         }
     }
 
-    private int paneSize(ArrayList<ConversionJobSingle> jobs) {
-        int paneSize = 0;
+    private double paneSize(ArrayList<ConversionJobSingle> jobs) {
         for (ConversionJobSingle job : jobs) {
-            paneSize = paneSize + 73;
+            paneSize = paneSize + JOB_SIZE;
         }
         return paneSize;
     }
+
+    public ListView<ConversionJobs> getListJobs() {
+        return listJobs;
+    }
     
-    
-    
+    public void notifyDeletedJob(ConversionJobSingle job) {
+        jobs.remove(job);
+        this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
+        
+        paneSize = paneSize - JOB_SIZE;
+        
+        pane.setPrefHeight(paneSize);
+    }
 }

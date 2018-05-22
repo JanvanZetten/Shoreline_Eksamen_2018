@@ -101,15 +101,15 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs) throws BLLException {
+    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException {
         Path outputfileChecked = checkForExisting(outputFile);
 
-        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs);
+        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
     }
     
     @Override
-    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) throws BLLException {
-        return cMan.newMultiConversion(currentProfile, listJobs, jobs);
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs) throws BLLException {
+        return cMan.newMultiConversion(currentProfile, listJobs);
     }
 
     @Override

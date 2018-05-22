@@ -29,14 +29,14 @@ import shoreline_exam_2018.be.Profile;
  *
  * @author alexl
  */
-public class ConversionJobSingle extends HBox implements ConversionJobs
-{
+public class ConversionJobSingle extends HBox implements ConversionJobs {
 
     private Label lblConversionName;
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
     private ListView<ConversionJobs> listJobs;
+    private ConversionJobMulti multi;
 
     private int BUTTON_SIZE = 36;
 
@@ -52,8 +52,8 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
             ConversionThread cThread,
             Path outputPath,
             Profile selectedProfile,
-            ListView<ConversionJobs> listJobs)
-    {
+            ListView<ConversionJobs> listJobs,
+            ConversionJobMulti multi) {
         super();
 
         this.listJobs = listJobs;
@@ -75,6 +75,8 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
         setGridInfo(grid);
 
         this.getChildren().addAll(grid);
+
+        this.multi = multi;
     }
 
     /**
@@ -82,8 +84,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
      *
      * @param conversionName
      */
-    private void setLabelInfo(String conversionName)
-    {
+    private void setLabelInfo(String conversionName) {
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
         lblConversionName.setStyle("-fx-font-size: 20px");
@@ -95,8 +96,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
      *
      * @param cThread
      */
-    private void setProgressBarInfo(ConversionThread cThread)
-    {
+    private void setProgressBarInfo(ConversionThread cThread) {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
@@ -109,8 +109,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
      *
      * @param cThread
      */
-    private void setPauseButtonInfo(ConversionThread cThread)
-    {
+    private void setPauseButtonInfo(ConversionThread cThread) {
         btnPause.setStyle("-fx-background-color: transparent;");
         Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
@@ -119,18 +118,13 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
         Image imageResume = new Image("shoreline_exam_2018/resources/resume.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewResume = new ImageView(imageResume);
 
-        btnPause.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btnPause.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
-                if (cThread.isOperating() == true)
-                {
+            public void handle(ActionEvent event) {
+                if (cThread.isOperating() == true) {
                     cThread.pauseTask();
                     btnPause.setGraphic(imageViewResume);
-                }
-                else if (cThread.isOperating() == false)
-                {
+                } else if (cThread.isOperating() == false) {
                     cThread.resumeTask();
                     btnPause.setGraphic(imageViewPause);
                 }
@@ -143,29 +137,24 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJobs> listJobs, Profile selectedProfile)
-    {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJobs> listJobs, Profile selectedProfile) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
         btnCancel.setGraphic(imageView);
 
-        btnCancel.setOnAction(new EventHandler<ActionEvent>()
-        {
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event)
-            {
+            public void handle(ActionEvent event) {
                 Alert alert = new Alert(AlertType.CONFIRMATION);
                 alert.setTitle("Cancel confirmation");
                 alert.setHeaderText("Cancelling conversion");
                 alert.setContentText("Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
 
                 Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK)
-                {
+                if (result.get() == ButtonType.OK) {
                     cThread.cancelTask();
                     cThread.resumeTask();
-                    listJobs.getItems().remove(ConversionJobSingle.this);
                 }
             }
         });
@@ -177,8 +166,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
      *
      * @param grid
      */
-    private void setGridInfo(GridPane grid)
-    {
+    private void setGridInfo(GridPane grid) {
         this.setHgrow(grid, Priority.ALWAYS);
 
         Region filler1 = new Region();
@@ -214,8 +202,10 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
     /**
      * Removes itself from the list given in the constructor.
      */
-    void removeFromList()
-    {
+    void removeFromList() {
+        if (multi != null) {
+            multi.notifyDeletedJob(this);
+        }
         listJobs.getItems().remove(ConversionJobSingle.this);
     }
 }
