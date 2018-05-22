@@ -12,20 +12,28 @@ package shoreline_exam_2018.be.output.rule;
 public class DefaultIntegerRule extends Rule<Integer>
 {
     private Integer defaultValue;
+    private boolean isForced;
 
-    public DefaultIntegerRule(Integer defaultValue, int columnIndex)
+    public DefaultIntegerRule(Integer defaultValue, int columnIndex, boolean isForced)
     {
         super(columnIndex);
         this.defaultValue = defaultValue;
+        this.isForced = isForced;
     }
 
     @Override
     public Integer applyRuleOn(Integer item)
     {
-        if (item != null)
+        if (isForced || item == null)
         {
-            return item;
+            return defaultValue;
         }
-        return defaultValue;
+
+        return item;
+    }
+
+    public boolean isForced()
+    {
+        return isForced;
     }
 }

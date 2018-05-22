@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -25,6 +27,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -66,6 +69,7 @@ public class ProfileGrid extends GridPane
     private final double DEFAULT_COMBOBOX_SIZE = 120.0;
     private final double DEFAULT_LABEL_SIZE = 160.0;
     private final double DEFAULT_TEXTFIELD_SIZE = 160.0;
+    private final double DEFAULT_CHECKBOX_SIZE = 30.0;
     private final double DEFAULT_RECTANGLE_WIDTH = 4.0;
     private final double INDENT; // Indent for collections.
     private final Paint[] COLOURS = new Paint[]
@@ -927,6 +931,8 @@ public class ProfileGrid extends GridPane
                     ComboBox<String> cmbDefaultRule = new ComboBox<>();
                     DatePicker defaultDate = new DatePicker();
                     TextField defaultString = new TextField();
+                    Label lblForced = new Label("Force:");
+                    CheckBox cbForced = new CheckBox();
                     Rectangle colourBox = getRectangle(DEFAULT_RECTANGLE_WIDTH, defaultString.heightProperty());
 
                     GridPane.setConstraints(colourBox, 0, IS_MASTER ? entityIndex + 1 : entityIndex);
@@ -934,8 +940,14 @@ public class ProfileGrid extends GridPane
                     GridPane.setConstraints(lblExample, 2, IS_MASTER ? entityIndex + 1 : entityIndex);
                     GridPane.setConstraints(lblTo, 3, IS_MASTER ? entityIndex + 1 : entityIndex);
                     GridPane.setConstraints(cmbDefaultRule, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(defaultDate, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane.setConstraints(defaultString, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane gp = new GridPane();
+                    setupGridPane(gp, -0.1);
+                    GridPane.setConstraints(lblForced, 0, 0);
+                    GridPane.setConstraints(cbForced, 1, 0);
+                    GridPane.setConstraints(defaultDate, 2, 0);
+                    GridPane.setConstraints(defaultString, 2, 0);
+                    gp.getChildren().addAll(defaultDate, defaultString, lblForced, cbForced);
+                    GridPane.setConstraints(gp, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
 
                     // Set size.
                     lblHeader.setMinWidth(DEFAULT_LABEL_SIZE);
@@ -956,33 +968,25 @@ public class ProfileGrid extends GridPane
                     defaultString.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
                     defaultString.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
                     defaultString.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
+                    cbForced.setMinWidth(DEFAULT_CHECKBOX_SIZE);
+                    cbForced.setPrefWidth(DEFAULT_CHECKBOX_SIZE);
+                    cbForced.setMaxWidth(DEFAULT_CHECKBOX_SIZE);
 
                     defaultDate.setVisible(false);
                     defaultString.setVisible(false);
-
-                    switch (se.getSST())
-                    {
-                        case INTEGER:
-                            if (defaultString.getText().isEmpty())
-                            {
-                                defaultString.setText("0");
-                            }
-                            break;
-                        case DOUBLE:
-                            if (defaultString.getText().isEmpty())
-                            {
-                                defaultString.setText("0.0");
-                            }
-                            break;
-                        default:
-                            break;
-                    }
+                    lblForced.setVisible(false);
+                    cbForced.setVisible(false);
+                    gp.setVisible(false);
 
                     defaultDate.valueProperty().addListener((observable, oldValue, newValue) ->
                     {
                         if (newValue != null)
                         {
-                            se.setDefaultValue(new DefaultDateRule(Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()), entityIndex));
+                            se.setDefaultValue(new DefaultDateRule(Date.from(newValue.atStartOfDay(ZoneId.systemDefault()).toInstant()), entityIndex, cbForced.isSelected()));
+                        }
+                        else
+                        {
+                            se.setDefaultValue(null);
                         }
                     });
 
@@ -993,13 +997,27 @@ public class ProfileGrid extends GridPane
                             switch (se.getSST())
                             {
                                 case INTEGER:
-                                    if (defaultString.getText().isEmpty())
+                                    if (defaultString.getText() != null)
+                                    {
+                                        if (defaultString.getText().isEmpty())
+                                        {
+                                            defaultString.setText("0");
+                                        }
+                                    }
+                                    else
                                     {
                                         defaultString.setText("0");
                                     }
                                     break;
                                 case DOUBLE:
-                                    if (defaultString.getText().isEmpty())
+                                    if (defaultString.getText() != null)
+                                    {
+                                        if (defaultString.getText().isEmpty())
+                                        {
+                                            defaultString.setText("0.0");
+                                        }
+                                    }
+                                    else
                                     {
                                         defaultString.setText("0.0");
                                     }
@@ -1017,7 +1035,7 @@ public class ProfileGrid extends GridPane
                             switch (se.getSST())
                             {
                                 case STRING:
-                                    se.setDefaultValue(new DefaultStringRule(newValue, entityIndex));
+                                    se.setDefaultValue(new DefaultStringRule(newValue, entityIndex, cbForced.isSelected()));
                                     break;
                                 case INTEGER:
                                     if (newValue.isEmpty())
@@ -1027,10 +1045,16 @@ public class ProfileGrid extends GridPane
                                     try
                                     {
                                         int integer = Integer.parseInt(newValue);
-                                        se.setDefaultValue(new DefaultIntegerRule(integer, entityIndex));
+                                        System.out.println(oldValue + " " + newValue + " " + integer);
+                                        se.setDefaultValue(new DefaultIntegerRule(integer, entityIndex, cbForced.isSelected()));
                                     }
                                     catch (NumberFormatException ex)
                                     {
+                                        if (oldValue == null)
+                                        {
+                                            defaultString.setText("");
+                                            break;
+                                        }
                                         try
                                         {
                                             int integer = Integer.parseInt(oldValue);
@@ -1050,10 +1074,15 @@ public class ProfileGrid extends GridPane
                                     try
                                     {
                                         Double dbl = Double.parseDouble(newValue);
-                                        se.setDefaultValue(new DefaultDoubleRule(dbl, entityIndex));
+                                        se.setDefaultValue(new DefaultDoubleRule(dbl, entityIndex, cbForced.isSelected()));
                                     }
                                     catch (NumberFormatException ex)
                                     {
+                                        if (oldValue == null)
+                                        {
+                                            defaultString.setText("");
+                                            break;
+                                        }
                                         try
                                         {
                                             Double dbl = Double.parseDouble(oldValue);
@@ -1069,6 +1098,20 @@ public class ProfileGrid extends GridPane
                                     break;
                             }
                         }
+                        else
+                        {
+                            se.setDefaultValue(null);
+                        }
+                    });
+
+                    cbForced.selectedProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        LocalDate ld = defaultDate.getValue();
+                        defaultDate.setValue(null);
+                        defaultDate.setValue(ld);
+                        String str = defaultString.getText();
+                        defaultString.setText(null);
+                        defaultString.setText(str);
                     });
 
                     cmbDefaultRule.valueProperty().addListener((observable, oldValue, newValue) ->
@@ -1081,12 +1124,40 @@ public class ProfileGrid extends GridPane
                                     case DATE:
                                         defaultDate.setVisible(true);
                                         defaultString.setVisible(false);
-                                        defaultDate.setValue(defaultDate.getValue());
+                                        lblForced.setVisible(true);
+                                        cbForced.setVisible(true);
+                                        gp.setVisible(true);
+                                        LocalDate ld = defaultDate.getValue();
+                                        defaultDate.setValue(null);
+                                        defaultDate.setValue(ld);
                                         break;
                                     default:
                                         defaultDate.setVisible(false);
                                         defaultString.setVisible(true);
-                                        defaultString.setText(defaultString.getText());
+                                        lblForced.setVisible(true);
+                                        cbForced.setVisible(true);
+                                        gp.setVisible(true);
+                                        String str = defaultString.getText();
+                                        defaultString.setText(null);
+
+                                        if (str == null)
+                                        {
+                                            switch (se.getSST())
+                                            {
+                                                case INTEGER:
+                                                    defaultString.setText("0");
+                                                    break;
+                                                case DOUBLE:
+                                                    defaultString.setText("0.0");
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            defaultString.setText(str);
+                                        }
                                         break;
                                 }
                                 break;
@@ -1094,6 +1165,11 @@ public class ProfileGrid extends GridPane
                                 se.setDefaultValue(null);
                                 defaultDate.setVisible(false);
                                 defaultString.setVisible(false);
+                                lblForced.setVisible(false);
+                                cbForced.setVisible(false);
+                                gp.setVisible(false);
+                                defaultDate.setValue(null);
+                                defaultString.setText(null);
                                 break;
                         }
                     });
@@ -1103,7 +1179,7 @@ public class ProfileGrid extends GridPane
                     cmbDefaultRule.setItems(rules);
                     cmbDefaultRule.getSelectionModel().selectFirst();
 
-                    ruleView.getChildren().addAll(colourBox, lblHeader, lblExample, lblTo, cmbDefaultRule, defaultDate, defaultString);
+                    ruleView.getChildren().addAll(colourBox, lblHeader, lblExample, lblTo, cmbDefaultRule, gp);
 
                     index++;
                 }

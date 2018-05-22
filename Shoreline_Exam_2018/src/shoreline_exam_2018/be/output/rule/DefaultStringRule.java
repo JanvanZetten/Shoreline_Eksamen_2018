@@ -12,23 +12,31 @@ package shoreline_exam_2018.be.output.rule;
 public class DefaultStringRule extends Rule<String>
 {
     private String defaultValue;
+    private boolean isForced;
 
-    public DefaultStringRule(String defaultValue, int columnIndex)
+    public DefaultStringRule(String defaultValue, int columnIndex, boolean isForced)
     {
         super(columnIndex);
         this.defaultValue = defaultValue;
+        this.isForced = isForced;
     }
 
     @Override
     public String applyRuleOn(String item)
     {
-        if (item != null)
+        if (isForced || item == null)
         {
-            if (!item.isEmpty())
-            {
-                return item;
-            }
+            return defaultValue;
+        }
+        if (!item.isEmpty())
+        {
+            return item;
         }
         return defaultValue;
+    }
+
+    public boolean isForced()
+    {
+        return isForced;
     }
 }
