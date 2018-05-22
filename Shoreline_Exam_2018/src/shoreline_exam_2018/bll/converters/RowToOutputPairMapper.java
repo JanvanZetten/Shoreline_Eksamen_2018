@@ -8,10 +8,13 @@ package shoreline_exam_2018.bll.converters;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import shoreline_exam_2018.be.InputField;
 import shoreline_exam_2018.be.InputFieldType;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.*;
+import shoreline_exam_2018.be.output.rule.DateFormatRule;
+import shoreline_exam_2018.be.output.rule.DefaultStringRule;
 import shoreline_exam_2018.be.output.structure.*;
 import shoreline_exam_2018.be.output.structure.entry.*;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
@@ -25,8 +28,8 @@ public class RowToOutputPairMapper
 {
 
     /**
-     * get a List of outputpairs with the data from the inputObject and the structure
- and fields from the structObject
+     * get a List of outputpairs with the data from the inputObject and the
+     * structure and fields from the structObject
      *
      * @param structObject the object describing which data should convert to
      * what
@@ -54,16 +57,33 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityDate)
             {
-                if (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()) != null 
-                        && (inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.DATE
-                        || inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY) )
+                System.out.println("hej");
+                StructEntityDate se = (StructEntityDate) structEntry;
+                System.out.println(se.getDfr());
+                System.out.println(se.getDfr().getDateFormat());
+                InputField inputField = inputObject.getField(se.getInputIndex());
+                if (inputField != null
+                        && (inputField.getType() == InputFieldType.DATE
+                        || inputField.getType() == InputFieldType.STRING || inputField.getType() == InputFieldType.EMPTY))
                 {
-                    if (((StructEntityDate) structEntry).getDefaultValue() != null){
-                    output.add(new JsonPairDate(structEntry.getColumnName(), (Date) ((StructEntityDate) structEntry).getDefaultValue()
-                            .applyRuleOn(inputObject.getField(((StructEntityDate) structEntry).getInputIndex()).getDateValue())));
-                    }else{
-                        output.add(new JsonPairDate(structEntry.getColumnName(), inputObject.getField((
-                                (StructEntityDate) structEntry).getInputIndex()).getDateValue()));
+                    Date date = null;
+                    if (inputField.getType() == InputFieldType.STRING)
+                    {
+                        DateFormatRule dateFormat = se.getDfr();
+                        date = dateFormat.applyRuleOn(inputField.getStringValue());
+                    }
+                    else
+                    {
+                        date = inputField.getDateValue();
+                    }
+
+                    if (se.getDefaultValue() != null)
+                    {
+                        output.add(new JsonPairDate(se.getColumnName(), date));
+                    }
+                    else
+                    {
+                        output.add(new JsonPairDate(se.getColumnName(), date));
                     }
                 }
                 else
@@ -75,15 +95,17 @@ public class RowToOutputPairMapper
             else if (structEntry instanceof StructEntityDouble)
             {
 
-                if (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()) != null 
+                if (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()) != null
                         && (inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getType() == InputFieldType.NUMERIC
                         || inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-                    if (((StructEntityDouble) structEntry).getDefaultValue() != null){
-                    output.add(new JsonPairDouble(structEntry.getColumnName(), (Double) ((StructEntityDouble) structEntry).getDefaultValue()
-                            .applyRuleOn(inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue())));
+                    if (((StructEntityDouble) structEntry).getDefaultValue() != null)
+                    {
+                        output.add(new JsonPairDouble(structEntry.getColumnName(), (Double) ((StructEntityDouble) structEntry).getDefaultValue()
+                                .applyRuleOn(inputObject.getField(((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue())));
                     }
-                    else {
+                    else
+                    {
                         output.add(new JsonPairDouble(structEntry.getColumnName(), inputObject.getField(
                                 ((StructEntityDouble) structEntry).getInputIndex()).getDoubleValue()));
                     }
@@ -95,16 +117,18 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityInteger)
             {
-                if (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()) != null 
-                        && (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getType() == InputFieldType.NUMERIC 
+                if (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()) != null
+                        && (inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getType() == InputFieldType.NUMERIC
                         || inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
                 {
-                    if (((StructEntityInteger) structEntry).getDefaultValue() != null){
-                    output.add(new JsonPairInteger(structEntry.getColumnName(), (Integer) ((StructEntityInteger) structEntry).getDefaultValue()
-                            .applyRuleOn(inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getIntValue())));
+                    if (((StructEntityInteger) structEntry).getDefaultValue() != null)
+                    {
+                        output.add(new JsonPairInteger(structEntry.getColumnName(), (Integer) ((StructEntityInteger) structEntry).getDefaultValue()
+                                .applyRuleOn(inputObject.getField(((StructEntityInteger) structEntry).getInputIndex()).getIntValue())));
                     }
-                    else{
-                        output.add(new JsonPairInteger(structEntry.getColumnName(),inputObject.getField(
+                    else
+                    {
+                        output.add(new JsonPairInteger(structEntry.getColumnName(), inputObject.getField(
                                 ((StructEntityInteger) structEntry).getInputIndex()).getIntValue()));
                     }
                 }
@@ -121,17 +145,35 @@ public class RowToOutputPairMapper
             }
             else if (structEntry instanceof StructEntityString)
             {
-                if (inputObject.getField(((StructEntityString) structEntry).getInputIndex()) != null && 
-                        (inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType() == InputFieldType.STRING || 
-                        inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getType() == InputFieldType.EMPTY))
+                StructEntityString se = (StructEntityString) structEntry;
+                InputField inputField = inputObject.getField(se.getInputIndex());
+
+                if (inputField != null
+                        && (inputField.getType() == InputFieldType.STRING
+                        || inputField.getType() == InputFieldType.NUMERIC
+                        || inputField.getType() == InputFieldType.EMPTY))
                 {
-                    if (((StructEntityString) structEntry).getDefaultValue() != null){
-                    output.add(new JsonPairString(structEntry.getColumnName(), (String) ((StructEntityString) structEntry).getDefaultValue()
-                            .applyRuleOn(inputObject.getField(((StructEntityString) structEntry).getInputIndex()).getStringValue())));
+                    String fieldValue = null;
+                    if (inputField.getType() == InputFieldType.NUMERIC)
+                    {
+                        fieldValue = String.valueOf(inputField.getDoubleValue());
+                        if (fieldValue == null)
+                        {
+                            fieldValue = String.valueOf(inputField.getIntValue());
+                        }
                     }
-                    else {
-                        output.add(new JsonPairString(structEntry.getColumnName(), inputObject.getField(
-                                ((StructEntityString) structEntry).getInputIndex()).getStringValue()));
+                    else
+                    {
+                        fieldValue = inputField.getStringValue();
+                    }
+                    if (se.getDefaultValue() != null)
+                    {
+                        DefaultStringRule dsr = (DefaultStringRule) se.getDefaultValue();
+                        output.add(new JsonPairString(se.getColumnName(), dsr.applyRuleOn(fieldValue)));
+                    }
+                    else
+                    {
+                        output.add(new JsonPairString(structEntry.getColumnName(), fieldValue));
                     }
                 }
                 else

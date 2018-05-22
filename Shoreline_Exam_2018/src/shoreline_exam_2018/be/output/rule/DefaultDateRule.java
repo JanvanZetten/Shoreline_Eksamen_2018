@@ -11,7 +11,7 @@ import java.util.Date;
  *
  * @author Asbamz
  */
-public class DefaultDateRule extends Rule<Date>
+public class DefaultDateRule extends Rule<Date, Date>
 {
     private Date defaultValue;
     private boolean isForced;

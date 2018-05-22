@@ -12,7 +12,7 @@ import java.lang.reflect.ParameterizedType;
  * @author Asbamz
  * @param <T>
  */
-public abstract class Rule<T>
+public abstract class Rule<T, U>
 {
     protected int columnIndex;
 
@@ -30,7 +30,7 @@ public abstract class Rule<T>
      * @param item
      * @return
      */
-    public abstract T applyRuleOn(T item);
+    public abstract T applyRuleOn(U item);
 
     /**
      * Get index of the column the rules fits to.

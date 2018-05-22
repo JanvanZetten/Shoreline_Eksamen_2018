@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.rule.DateFormatRule;
 import shoreline_exam_2018.be.output.rule.DefaultDateRule;
 import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
 import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
@@ -130,7 +131,7 @@ public class ProfileDAO
             rs.next();
             int id = rs.getInt(1);
 
-            // Insert rules.
+            // Insert allDefaultRules.
             Rule rule = se.getDefaultValue();
             if (rule != null)
             {
@@ -194,6 +195,20 @@ public class ProfileDAO
 
                     statement.executeUpdate();
                 }
+            }
+
+            if (se instanceof StructEntityDate)
+            {
+                DateFormatRule dfr = ((StructEntityDate) se).getDfr();
+                con = dbcp.checkOut();
+                sql = "INSERT INTO RuleDateFormat VALUES(?, ?, ?);";
+
+                statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                statement.setInt(1, profileId);
+                statement.setInt(2, id);
+                statement.setString(3, dfr.getDateFormat());
+
+                statement.executeUpdate();
             }
         }
         finally
@@ -354,7 +369,8 @@ public class ProfileDAO
     {
         List<StructEntityInterface> lst = new ArrayList<>();
         Connection con = null;
-        HashMap<Integer, Rule> rules = getAllDefaultRules(profileId);
+        HashMap<Integer, Rule> allDefaultRules = getAllDefaultRules(profileId);
+        HashMap<Integer, DateFormatRule> allDateFormatRules = getAllDateFormatRules(profileId);
 
         try
         {
@@ -391,7 +407,14 @@ public class ProfileDAO
                 SimpleEntity se = null;
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
                 {
-                    simples.add(se = new StructEntityDate(columnName, inputIndex));
+                    if (allDateFormatRules.containsKey(id))
+                    {
+                        simples.add(se = new StructEntityDate(columnName, inputIndex, allDateFormatRules.get(id)));
+                    }
+                    else
+                    {
+                        simples.add(se = new StructEntityDate(columnName, inputIndex));
+                    }
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.DOUBLE.name()))
                 {
@@ -405,9 +428,9 @@ public class ProfileDAO
                 {
                     simples.add(se = new StructEntityString(columnName, inputIndex));
                 }
-                if (rules.containsKey(id) && se != null)
+                if (allDefaultRules.containsKey(id) && se != null)
                 {
-                    se.setDefaultValue(rules.get(id));
+                    se.setDefaultValue(allDefaultRules.get(id));
                 }
             }
 
@@ -459,7 +482,7 @@ public class ProfileDAO
     }
 
     /**
-     * Get all rules for profile.
+     * Get all allDefaultRules for profile.
      * @param profileId
      * @return
      * @throws DALException
@@ -562,6 +585,55 @@ public class ProfileDAO
                 Date defaultValue = rs.getDate("defaultValue");
                 boolean isForced = rs.getBoolean("isForced");
                 DefaultDateRule rule = new DefaultDateRule(defaultValue, inputIndex, isForced);
+
+                if (inputRuleMap.containsKey(inputIndex))
+                {
+                    inputRuleMap.replace(inputIndex, rule);
+                }
+                else
+                {
+                    inputRuleMap.put(inputIndex, rule);
+                }
+            }
+        }
+        catch (SQLException ex)
+        {
+            throw new DALException(ex.getMessage(), ex.getCause());
+        }
+        finally
+        {
+            dbcp.checkIn(con);
+        }
+
+        return inputRuleMap;
+    }
+
+    /**
+     * Get all Date Format Rules.
+     * @param profileId
+     * @return
+     * @throws DALException
+     */
+    private HashMap<Integer, DateFormatRule> getAllDateFormatRules(int profileId) throws DALException
+    {
+        HashMap<Integer, DateFormatRule> inputRuleMap = new HashMap<>();
+        Connection con = null;
+
+        try
+        {
+            con = dbcp.checkOut();
+            String sql = "SELECT * FROM RuleDateFormat WHERE profileId = ?";
+
+            PreparedStatement statement = con.prepareStatement(sql);
+            statement.setInt(1, profileId);
+
+            ResultSet rs = statement.executeQuery();
+
+            while (rs.next())
+            {
+                int inputIndex = rs.getInt("inputIndex");
+                String dateFormat = rs.getString("dateFormat");
+                DateFormatRule rule = new DateFormatRule(dateFormat, inputIndex);
 
                 if (inputRuleMap.containsKey(inputIndex))
                 {

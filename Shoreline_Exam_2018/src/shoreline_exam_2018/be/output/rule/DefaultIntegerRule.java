@@ -9,7 +9,7 @@ package shoreline_exam_2018.be.output.rule;
  *
  * @author Asbamz
  */
-public class DefaultIntegerRule extends Rule<Integer>
+public class DefaultIntegerRule extends Rule<Integer, Integer>
 {
     private Integer defaultValue;
     private boolean isForced;

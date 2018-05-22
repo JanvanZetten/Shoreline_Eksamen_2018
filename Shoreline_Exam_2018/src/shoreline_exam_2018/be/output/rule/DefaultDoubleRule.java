@@ -9,7 +9,7 @@ package shoreline_exam_2018.be.output.rule;
  *
  * @author Asbamz
  */
-public class DefaultDoubleRule extends Rule<Double>
+public class DefaultDoubleRule extends Rule<Double, Double>
 {
     private Double defaultValue;
     private boolean isForced;
