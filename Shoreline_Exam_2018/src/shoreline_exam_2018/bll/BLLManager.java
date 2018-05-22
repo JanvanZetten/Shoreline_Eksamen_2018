@@ -1,5 +1,6 @@
 package shoreline_exam_2018.bll;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
@@ -12,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
@@ -107,7 +109,7 @@ public class BLLManager implements BLLFacade {
 
         return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
     }
-    
+
     @Override
     public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException {
         return cMan.newMultiConversion(currentProfile, list);
@@ -193,7 +195,7 @@ public class BLLManager implements BLLFacade {
     public void addDefaultOutput(String outputValue) {
         dal.addDefaultOutput(outputValue);
     }
-    
+
     @Override
     public void addDefaultInput(String inputValue) {
         dal.addDefaultInput(inputValue);
@@ -249,35 +251,37 @@ public class BLLManager implements BLLFacade {
 
     @Override
     public void addDirectoryListener(ConversionJobMulti MultiConversion, Path inputPath, Path outputPath) throws BLLException {
-        String name;
-            String pattern = Pattern.quote(System.getProperty("file.separator"));
-            String[] split = inputPath.toString().split(pattern);
-
-            name = split[split.length - 1];
-        
-        
         try {
             dirListenerMan.GetDirectoryListener(inputPath, new RunnableWithPath() {
                 @Override
                 public void run() {
-                    System.out.println("works so far...:" + path.toString());
-                    System.out.println(inputPath.toString());
-                    try {
-                        MultiConversion.addJob(startSingleConversion(name, path, outputPath, MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
-                    } catch (BLLException ex) {
-                        Logger.getLogger(BLLManager.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                   
+                    String pattern = Pattern.quote(System.getProperty("file.separator"));
+                    String[] split = path.toString().split(pattern);
+
+                    String name = split[split.length - 1];
+
+                    String output = outputPath + File.separator + name + ".json";
+
+                    Platform.runLater(() -> {
+                        try {
+                            MultiConversion.addJob(startSingleConversion(name, path, Paths.get(output), MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
+                        } catch (BLLException ex) {
+                            Logger.getLogger(BLLManager.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    });
+
                 }
             }, new RunnableWithPath() {
                 @Override
                 public void run() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    System.out.println("Exception in Directory listener");
+                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             }, new RunnableWithPath() {
                 @Override
                 public void run() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                    System.out.println("Closing");
+                    //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             });
         } catch (DALException ex) {

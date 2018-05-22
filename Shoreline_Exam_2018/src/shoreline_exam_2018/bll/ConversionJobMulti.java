@@ -120,9 +120,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         paneSize = paneSize - JOB_SIZE;
         
         pane.setPrefHeight(paneSize);
-        if (multiList.getItems().size() - 1 == 0) {
-            mainList.getItems().remove(this);
-        }
+        
     }
 
     Profile getProfile() {

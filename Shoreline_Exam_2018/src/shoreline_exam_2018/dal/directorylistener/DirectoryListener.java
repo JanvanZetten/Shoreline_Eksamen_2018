@@ -111,6 +111,7 @@ public class DirectoryListener
         // Run on error.
         thread.setUncaughtExceptionHandler((t, e) ->
         {
+            e.printStackTrace();
             onError.run();
         });
 
