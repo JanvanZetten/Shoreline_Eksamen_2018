@@ -36,10 +36,6 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         pane.setMinHeight(0);
         pane.setPrefHeight(paneSize(jobs));
         
-        
-        this.setStyle("-fx-background-color: #737f8c;"
-                + "-fx-background-radius: 10;");
-        
         setupJobs(jobs);
         
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
