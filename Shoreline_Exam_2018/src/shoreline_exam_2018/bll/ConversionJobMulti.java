@@ -32,7 +32,6 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         
         this.listJobs = listView;
         this.selectedProfile = selectedProfile;
-        this.jobs = jobs;
         
         pane.setBottomAnchor(listJobs, 0.0);
         pane.setTopAnchor(listJobs, 0.0);
@@ -72,6 +71,23 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
 
     public ListView<ConversionJobs> getListJobs() {
         return listJobs;
+    }
+    
+    
+    /**
+     * Add job to the coversionjobs
+     * @param conversion 
+     */
+    public void addJob(ConversionJobSingle conversion){
+        jobs.add(conversion);
+        
+        this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
+        
+        paneSize = paneSize + JOB_SIZE;
+        
+        pane.setPrefHeight(paneSize);
+        
+        listJobs.getItems().add(conversion);
     }
     
     public void notifyDeletedJob(ConversionJobSingle job) {
