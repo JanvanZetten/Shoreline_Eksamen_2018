@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
@@ -41,8 +36,6 @@ public class ConvertModel {
 
     private File selectedFile = null;
     private File outputFile = null;
-    private Profile selectedProfile;
-    private String taskName;
 
     public ConvertModel() {
         bll = BLLManager.getInstance();
@@ -159,7 +152,7 @@ public class ConvertModel {
                 String output = outputFile.toPath() + File.separator + selectedFile.getName() + ".json";
                 File outputFile = new File(output);
                 System.out.println(outputFile.toString());
-                startConversion = bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs);
+                startConversion = bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs, null);
             } catch (BLLException ex) {
                 LoggingHelper.logException(ex);
                 AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
@@ -175,12 +168,19 @@ public class ConvertModel {
 
     public ConversionJobMulti StartMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath) {
         ConversionJobMulti startConversion = null;
-        List<ConversionJobSingle> listConversions = new ArrayList<ConversionJobSingle>();
+        ArrayList<ConversionJobSingle> listConversions = new ArrayList<>();
+        ListView<ConversionJobs> list = new ListView<>();
         selectedFile = new File(inputPath);
+        
         if (selectedFile != null && outputFile != null && currentProfile != null) {
-            String pattern = Pattern.quote(System.getProperty("file.separator"));
-
             File[] directory = selectedFile.listFiles();
+            
+            try {
+                startConversion = bll.startMultiConversion(currentProfile, list);
+            } catch (BLLException ex) {
+                LoggingHelper.logException(ex);
+                AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
+            }
 
             for (File file : directory) {
                 
@@ -190,28 +190,19 @@ public class ConvertModel {
                 
                 extension = file.toString().substring(i + 1);
                 extension.trim();
-                System.out.println(extension);
 
                 if (extension.equals("xlsx") || extension.equals("csv")) {
                     try {
                         String output = outputFile.toPath() + File.separator + file.getName() + ".json";
                         File outputFile = new File(output);
-                        listConversions.add(bll.startSingleConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, listJobs));
-                        System.out.println("1");
+                        listConversions.add(bll.startSingleConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, list, startConversion));
                     } catch (BLLException ex) {
                         LoggingHelper.logException(ex);
                         AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
                     }
                 }
             }
-
-            try {
-                startConversion = bll.startMultiConversion(currentProfile, listJobs, (ArrayList<ConversionJobSingle>) listConversions);
-            } catch (BLLException ex) {
-                LoggingHelper.logException(ex);
-                AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
-            }
-
+            startConversion.setupPane(listConversions, listJobs);
             selectedFile = null;
             return startConversion;
         } else {

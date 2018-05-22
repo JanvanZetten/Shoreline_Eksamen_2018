@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.bll;
 
 import java.io.IOException;
@@ -11,7 +6,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -101,15 +95,15 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs) throws BLLException {
+    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException {
         Path outputfileChecked = checkForExisting(outputFile);
 
-        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs);
+        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
     }
     
     @Override
-    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, ArrayList<ConversionJobSingle> jobs) throws BLLException {
-        return cMan.newMultiConversion(currentProfile, listJobs, jobs);
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException {
+        return cMan.newMultiConversion(currentProfile, list);
     }
 
     @Override
