@@ -178,11 +178,8 @@ public class ConvertModel {
         List<ConversionJobSingle> listConversions = new ArrayList<ConversionJobSingle>();
         selectedFile = new File(inputPath);
         if (selectedFile != null && outputFile != null && currentProfile != null) {
-            String name;
             String pattern = Pattern.quote(System.getProperty("file.separator"));
-            String[] split = selectedFile.getAbsolutePath().split(pattern);
 
-            name = split[split.length - 1];
             File[] directory = selectedFile.listFiles();
 
             for (File file : directory) {
@@ -199,7 +196,7 @@ public class ConvertModel {
                     try {
                         String output = outputFile.toPath() + File.separator + file.getName() + ".json";
                         File outputFile = new File(output);
-                        listConversions.add(bll.startSingleConversion(name, file.toPath(), outputFile.toPath(), currentProfile, listJobs));
+                        listConversions.add(bll.startSingleConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, listJobs));
                         System.out.println("1");
                     } catch (BLLException ex) {
                         LoggingHelper.logException(ex);

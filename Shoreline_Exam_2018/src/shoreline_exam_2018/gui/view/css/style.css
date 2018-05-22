@@ -78,6 +78,23 @@ and open the template in the editor.
     -fx-border-color: transparent;
 }
 
+.titled-pane 
+{ 
+    -fx-text-fill: #FFFFFF;
+}
+
+.titled-pane > .title 
+{
+    -fx-background-color: #737f8c, #737f8c, #737f8c;
+    -fx-background-radius: 10 10 10 10, 10 10 10 10, 10 10 10 10;
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; 
+}
+
+.titled-pane:expanded > .title 
+{
+    -fx-background-radius: 10 10 0 0, 10 10 10 10, 10 10 10 10;
+}
+
 /* cusom root */
 /* Set standard font family */
 .root {
