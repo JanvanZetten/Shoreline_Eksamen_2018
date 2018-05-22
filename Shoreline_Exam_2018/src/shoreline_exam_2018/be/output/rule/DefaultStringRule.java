@@ -9,7 +9,7 @@ package shoreline_exam_2018.be.output.rule;
  *
  * @author Asbamz
  */
-public class DefaultStringRule extends Rule<String>
+public class DefaultStringRule extends Rule<String, String>
 {
     private String defaultValue;
     private boolean isForced;

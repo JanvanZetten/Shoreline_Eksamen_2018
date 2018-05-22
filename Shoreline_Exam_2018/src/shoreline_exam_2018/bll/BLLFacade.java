@@ -42,6 +42,7 @@ public interface BLLFacade
      */
     public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException;
     
+    
     /**
      * Adds a profile to the database.
      * @param name = Name of the profile.
@@ -165,4 +166,6 @@ public interface BLLFacade
      * @return [0 = output directory, 1 = input directory]
      */
     public String[] getDefaultDirectories();
+
+    public void addDirectoryListener(ConversionJobMulti StartConversion, Path inputPath, Path outputPath) throws BLLException;
 }

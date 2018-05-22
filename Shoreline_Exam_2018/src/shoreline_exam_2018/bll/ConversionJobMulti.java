@@ -124,4 +124,8 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
             mainList.getItems().remove(this);
         }
     }
+
+    Profile getProfile() {
+        return selectedProfile;
+    }
 }

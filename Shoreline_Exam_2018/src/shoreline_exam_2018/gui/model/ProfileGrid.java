@@ -39,6 +39,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
+import shoreline_exam_2018.be.output.rule.DateFormatRule;
 import shoreline_exam_2018.be.output.rule.DefaultDateRule;
 import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
 import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
@@ -931,6 +932,7 @@ public class ProfileGrid extends GridPane
                     ComboBox<String> cmbDefaultRule = new ComboBox<>();
                     DatePicker defaultDate = new DatePicker();
                     TextField defaultString = new TextField();
+                    TextField dateFormat = new TextField();
                     Label lblForced = new Label("Force:");
                     CheckBox cbForced = new CheckBox();
                     Rectangle colourBox = getRectangle(DEFAULT_RECTANGLE_WIDTH, defaultString.heightProperty());
@@ -940,14 +942,19 @@ public class ProfileGrid extends GridPane
                     GridPane.setConstraints(lblExample, 2, IS_MASTER ? entityIndex + 1 : entityIndex);
                     GridPane.setConstraints(lblTo, 3, IS_MASTER ? entityIndex + 1 : entityIndex);
                     GridPane.setConstraints(cmbDefaultRule, 4, IS_MASTER ? entityIndex + 1 : entityIndex);
-                    GridPane gp = new GridPane();
-                    setupGridPane(gp, -0.1);
+                    GridPane defaultValueRow = new GridPane();
+                    setupGridPane(defaultValueRow, -0.1);
                     GridPane.setConstraints(lblForced, 0, 0);
                     GridPane.setConstraints(cbForced, 1, 0);
                     GridPane.setConstraints(defaultDate, 2, 0);
                     GridPane.setConstraints(defaultString, 2, 0);
-                    gp.getChildren().addAll(defaultDate, defaultString, lblForced, cbForced);
-                    GridPane.setConstraints(gp, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane.setConstraints(dateFormat, 0, 0);
+                    defaultValueRow.getChildren().addAll(defaultDate, defaultString, lblForced, cbForced);
+                    GridPane.setConstraints(defaultValueRow, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    GridPane dateFormatRow = new GridPane();
+                    setupGridPane(dateFormatRow, -0.1);
+                    GridPane.setConstraints(dateFormatRow, 5, IS_MASTER ? entityIndex + 1 : entityIndex);
+                    dateFormatRow.getChildren().addAll(dateFormat);
 
                     // Set size.
                     lblHeader.setMinWidth(DEFAULT_LABEL_SIZE);
@@ -971,12 +978,13 @@ public class ProfileGrid extends GridPane
                     cbForced.setMinWidth(DEFAULT_CHECKBOX_SIZE);
                     cbForced.setPrefWidth(DEFAULT_CHECKBOX_SIZE);
                     cbForced.setMaxWidth(DEFAULT_CHECKBOX_SIZE);
+                    dateFormat.setMinWidth(DEFAULT_TEXTFIELD_SIZE);
+                    dateFormat.setPrefWidth(DEFAULT_TEXTFIELD_SIZE);
+                    dateFormat.setMaxWidth(DEFAULT_TEXTFIELD_SIZE);
 
                     defaultDate.setVisible(false);
                     defaultString.setVisible(false);
-                    lblForced.setVisible(false);
-                    cbForced.setVisible(false);
-                    gp.setVisible(false);
+                    defaultValueRow.setVisible(false);
 
                     defaultDate.valueProperty().addListener((observable, oldValue, newValue) ->
                     {
@@ -1045,7 +1053,6 @@ public class ProfileGrid extends GridPane
                                     try
                                     {
                                         int integer = Integer.parseInt(newValue);
-                                        System.out.println(oldValue + " " + newValue + " " + integer);
                                         se.setDefaultValue(new DefaultIntegerRule(integer, entityIndex, cbForced.isSelected()));
                                     }
                                     catch (NumberFormatException ex)
@@ -1114,6 +1121,20 @@ public class ProfileGrid extends GridPane
                         defaultString.setText(str);
                     });
 
+                    dateFormat.textProperty().addListener((observable, oldValue, newValue) ->
+                    {
+                        StructEntityDate sed = (StructEntityDate) se;
+
+                        if (newValue != null)
+                        {
+                            sed.setDfr(new DateFormatRule(newValue, entityIndex));
+                        }
+                        else
+                        {
+                            sed.setDfr(null);
+                        }
+                    });
+
                     cmbDefaultRule.valueProperty().addListener((observable, oldValue, newValue) ->
                     {
                         switch (newValue)
@@ -1124,9 +1145,8 @@ public class ProfileGrid extends GridPane
                                     case DATE:
                                         defaultDate.setVisible(true);
                                         defaultString.setVisible(false);
-                                        lblForced.setVisible(true);
-                                        cbForced.setVisible(true);
-                                        gp.setVisible(true);
+                                        defaultValueRow.setVisible(true);
+                                        dateFormatRow.setVisible(false);
                                         LocalDate ld = defaultDate.getValue();
                                         defaultDate.setValue(null);
                                         defaultDate.setValue(ld);
@@ -1134,9 +1154,8 @@ public class ProfileGrid extends GridPane
                                     default:
                                         defaultDate.setVisible(false);
                                         defaultString.setVisible(true);
-                                        lblForced.setVisible(true);
-                                        cbForced.setVisible(true);
-                                        gp.setVisible(true);
+                                        defaultValueRow.setVisible(true);
+                                        dateFormatRow.setVisible(false);
                                         String str = defaultString.getText();
                                         defaultString.setText(null);
 
@@ -1161,13 +1180,21 @@ public class ProfileGrid extends GridPane
                                         break;
                                 }
                                 break;
+                            case "DateFormat":
+                                se.setDefaultValue(null);
+                                defaultDate.setVisible(false);
+                                defaultString.setVisible(false);
+                                defaultValueRow.setVisible(false);
+                                dateFormatRow.setVisible(true);
+                                defaultDate.setValue(null);
+                                defaultString.setText(null);
+                                break;
                             default:
                                 se.setDefaultValue(null);
                                 defaultDate.setVisible(false);
                                 defaultString.setVisible(false);
-                                lblForced.setVisible(false);
-                                cbForced.setVisible(false);
-                                gp.setVisible(false);
+                                defaultValueRow.setVisible(false);
+                                dateFormatRow.setVisible(false);
                                 defaultDate.setValue(null);
                                 defaultString.setText(null);
                                 break;
@@ -1176,10 +1203,14 @@ public class ProfileGrid extends GridPane
 
                     ObservableList<String> rules = FXCollections.observableArrayList();
                     rules.addAll("No Rule", "Default");
+                    if (se.getSST() == SimpleStructType.DATE)
+                    {
+                        rules.add("DateFormat");
+                    }
                     cmbDefaultRule.setItems(rules);
                     cmbDefaultRule.getSelectionModel().selectFirst();
 
-                    ruleView.getChildren().addAll(colourBox, lblHeader, lblExample, lblTo, cmbDefaultRule, gp);
+                    ruleView.getChildren().addAll(colourBox, lblHeader, lblExample, lblTo, cmbDefaultRule, defaultValueRow, dateFormatRow);
 
                     index++;
                 }

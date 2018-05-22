@@ -5,11 +5,13 @@
  */
 package shoreline_exam_2018.dal.directorylistener;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardWatchEventKinds;
 import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
 import java.nio.file.WatchEvent;
@@ -84,9 +86,10 @@ public class DirectoryListener
                             Path newPath = ((WatchEvent<Path>) watchEvent).context();
 
                             // Update Runnables with Path.
-                            onFileCreated.setPath(newPath);
-                            onError.setPath(newPath);
-                            onClosed.setPath(newPath);
+                            Path absolute = Paths.get(PATH + File.separator + newPath);
+                            onFileCreated.setPath(absolute);
+                            onError.setPath(absolute);
+                            onClosed.setPath(absolute);
 
                             // Run on file created.
                             onFileCreated.run();

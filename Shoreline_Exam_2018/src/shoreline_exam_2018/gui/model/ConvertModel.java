@@ -1,6 +1,7 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -172,10 +173,10 @@ public class ConvertModel {
         ArrayList<ConversionJobSingle> listConversions = new ArrayList<>();
         ListView<ConversionJobs> list = new ListView<>();
         selectedFile = new File(inputPath);
-        
+
         if (selectedFile != null && outputFile != null && currentProfile != null) {
             File[] directory = selectedFile.listFiles();
-            
+
             try {
                 startConversion = bll.startMultiConversion(currentProfile, list);
             } catch (BLLException ex) {
@@ -184,11 +185,11 @@ public class ConvertModel {
             }
 
             for (File file : directory) {
-                
+
                 String extension = "";
-                
+
                 int i = file.toString().lastIndexOf('.');
-                
+
                 extension = file.toString().substring(i + 1);
                 extension.trim();
 
@@ -231,6 +232,20 @@ public class ConvertModel {
         return null;
     }
 
+    public void addFolderListener(ConversionJobMulti StartConversion, String path) {
+        try {
+            bll.addDirectoryListener(StartConversion, Paths.get(path), outputFile.toPath());
+        } catch (BLLException ex) {
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not listen on directory", ex.getMessage());
+        }
+
+    }
+
+    /**
+     * Sets the default directory on start up.
+     * @param outputField 
+     */
     public void setDefaultOutputDir(TextField outputField) {
         outputField.setText(bll.getDefaultDirectories()[0]);
     }
