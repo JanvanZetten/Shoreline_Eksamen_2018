@@ -165,4 +165,8 @@ public interface BLLFacade
      * @return [0 = output directory, 1 = input directory]
      */
     public String[] getDefaultDirectories();
+
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs) throws BLLException;
+
+    public void addDirectoryListener(ConversionJobMulti StartConversion, Path inputPath, Path outputPath) throws BLLException;
 }

@@ -9,16 +9,21 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.be.runnable.RunnableWithPath;
 import shoreline_exam_2018.bll.Utilities.FileUtils;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.DALFacade;
 import shoreline_exam_2018.dal.DALManager;
+import shoreline_exam_2018.dal.directorylistener.DirectoryListenerManager;
 import shoreline_exam_2018.gui.model.AutoUpdater;
 
 /**
@@ -31,11 +36,13 @@ public class BLLManager implements BLLFacade {
     private DALFacade dal;
     private LogManager logMng;
     private static final BLLManager INSTANCE = new BLLManager();
+    private DirectoryListenerManager dirListenerMan;
 
     private BLLManager() {
         cMan = new ConversionManager();
         dal = new DALManager();
         logMng = new LogManager();
+        dirListenerMan = new DirectoryListenerManager();
     }
 
     /**
@@ -238,6 +245,43 @@ public class BLLManager implements BLLFacade {
         }
 
         return Paths.get(result);
+    }
+
+    @Override
+    public void addDirectoryListener(ConversionJobMulti MultiConversion, Path inputPath, Path outputPath) throws BLLException {
+        String name;
+            String pattern = Pattern.quote(System.getProperty("file.separator"));
+            String[] split = inputPath.toString().split(pattern);
+
+            name = split[split.length - 1];
+        
+        
+        try {
+            dirListenerMan.GetDirectoryListener(inputPath, new RunnableWithPath() {
+                @Override
+                public void run() {
+                    System.out.println("works so far...:" + path.toString());
+                    try {
+                        MultiConversion.addJob(startSingleConversion(name, path, outputPath, MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
+                    } catch (BLLException ex) {
+                        Logger.getLogger(BLLManager.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                   
+                }
+            }, new RunnableWithPath() {
+                @Override
+                public void run() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            }, new RunnableWithPath() {
+                @Override
+                public void run() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+            });
+        } catch (DALException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
     }
 
 }
