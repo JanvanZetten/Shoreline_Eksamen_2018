@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
@@ -41,8 +36,6 @@ public class ConvertModel {
 
     private File selectedFile = null;
     private File outputFile = null;
-    private Profile selectedProfile;
-    private String taskName;
 
     public ConvertModel() {
         bll = BLLManager.getInstance();
@@ -175,12 +168,11 @@ public class ConvertModel {
 
     public ConversionJobMulti StartMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath) {
         ConversionJobMulti startConversion = null;
-        ArrayList<ConversionJobSingle> listConversions = new ArrayList<ConversionJobSingle>();
-        ListView<ConversionJobs> list = new ListView<ConversionJobs>();
+        ArrayList<ConversionJobSingle> listConversions = new ArrayList<>();
+        ListView<ConversionJobs> list = new ListView<>();
         selectedFile = new File(inputPath);
+        
         if (selectedFile != null && outputFile != null && currentProfile != null) {
-            String pattern = Pattern.quote(System.getProperty("file.separator"));
-
             File[] directory = selectedFile.listFiles();
             
             try {
@@ -210,7 +202,7 @@ public class ConvertModel {
                     }
                 }
             }
-            startConversion.setupPane(listConversions);
+            startConversion.setupPane(listConversions, listJobs);
             selectedFile = null;
             return startConversion;
         } else {
