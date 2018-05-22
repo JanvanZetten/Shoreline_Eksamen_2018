@@ -87,6 +87,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
         lblConversionName.setText(conversionName);
         lblConversionName.setId("WHITE");
         lblConversionName.setStyle("-fx-font-size: 20px");
+        lblConversionName.setPrefWidth(300);
     }
 
     /**
@@ -181,8 +182,8 @@ public class ConversionJobSingle extends HBox implements ConversionJobs
         this.setHgrow(grid, Priority.ALWAYS);
 
         Region filler1 = new Region();
-        filler1.setMaxWidth(100);
-        filler1.setMinWidth(100);
+        filler1.setMaxWidth(50);
+        filler1.setMinWidth(50);
 
         Region filler2 = new Region();
         filler2.setMaxWidth(100);
