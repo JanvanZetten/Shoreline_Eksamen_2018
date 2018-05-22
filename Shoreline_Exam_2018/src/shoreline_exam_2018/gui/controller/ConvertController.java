@@ -83,6 +83,7 @@ public class ConvertController implements Initializable {
         else if (input.isDirectory()) {
             ConversionJobMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
             if (StartConversion != null) {
+                model.addFolderListener(StartConversion, inputField.getText());
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");
             }

@@ -6,8 +6,11 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -236,6 +239,15 @@ public class ConvertModel {
             return selectedDirectory.getAbsolutePath();
         }
         return null;
+    }
+
+    public void addFolderListener(ConversionJobMulti StartConversion, String path) {
+        try {
+            bll.addDirectoryListener(StartConversion, Paths.get(path), outputFile.toPath());
+        } catch (BLLException ex) {
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not listen on directory", ex.getMessage());
+        }
     }
 }
 

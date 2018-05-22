@@ -98,4 +98,8 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         
         pane.setPrefHeight(paneSize);
     }
+
+    Profile getProfile() {
+        return selectedProfile;
+    }
 }
