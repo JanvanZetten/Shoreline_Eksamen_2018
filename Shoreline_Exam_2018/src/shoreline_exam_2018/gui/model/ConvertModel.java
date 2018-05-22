@@ -276,15 +276,6 @@ public class ConvertModel
         }
 
     }
-
-    /**
-     * Sets the default directory on start up.
-     * @param outputField
-     */
-    public void setDefaultOutputDir(TextField outputField)
-    {
-        outputField.setText(bll.getDefaultDirectories()[0]);
-    }
 }
 
 //Class for showing the right name in the comboboxes list and button
