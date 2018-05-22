@@ -1,12 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.bll;
 
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
@@ -28,14 +22,25 @@ public interface BLLFacade
     /**
      * Starts a conversion with the given input and output file using the given
      * profile.
-     * @param taskName = Name for the conversion job.
-     * @param inputFile = The input file that is being converted.
-     * @param outputFile = The output file that is being converted to.
-     * @param profile = The profile that is used for the conversion.
-     * @return = A conversion job.
+     * @param taskName   = Name for the conversion job
+     * @param inputFile  = The input file that is being converted
+     * @param outputFile = The output file that is being converted to
+     * @param profile    = The profile that is used for the conversion
+     * @param listJobs   = The list in which the conversion job is contained
+     * @param cMultiJob  = The multi job object if one exists. Only used when folder converting, else, null
+     * @return = A single conversion job.
      * @throws BLLException
      */
     public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException;
+    
+    /**
+     * Creates a ConversionJobMulti through COnversionManager.
+     * @param currentProfile  = The profile that is used for the conversion.
+     * @param list            = The list in which the individual single conversion jobs are contained.
+     * @return = A multi conversion job.
+     * @throws BLLException 
+     */
+    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException;
     
     /**
      * Adds a profile to the database.

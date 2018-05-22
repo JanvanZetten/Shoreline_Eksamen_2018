@@ -84,9 +84,9 @@ public class DirectoryListener
                             Path newPath = ((WatchEvent<Path>) watchEvent).context();
 
                             // Update Runnables with Path.
-                            onFileCreated.setPath(newPath);
-                            onError.setPath(newPath);
-                            onClosed.setPath(newPath);
+                            onFileCreated.setPath(newPath.toAbsolutePath());
+                            onError.setPath(newPath.toAbsolutePath());
+                            onClosed.setPath(newPath.toAbsolutePath());
 
                             // Run on file created.
                             onFileCreated.run();
