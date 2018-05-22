@@ -32,10 +32,10 @@ public class MainModel {
      * @param paneSettings = The settings view.
      */
     public void setupTabs(AnchorPane paneConvert, AnchorPane paneProfiles, AnchorPane paneLog, AnchorPane paneSettings, Tab tabConvert) {
+        setPane("Settings", paneSettings);
         setPane("Convert", paneConvert);
         setPane("Profiles", paneProfiles);
         setPane("Log", paneLog);
-        setPane("Settings", paneSettings);
         this.tabConvert = tabConvert;
     }
 

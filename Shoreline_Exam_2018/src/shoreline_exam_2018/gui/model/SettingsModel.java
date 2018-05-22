@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
@@ -41,13 +36,26 @@ public class SettingsModel {
         } else {
             createNewProperties();
         }
+        txtfieldInputDir.setText(bll.getDefaultDirectories()[1]);
+        txtfieldOutputDir.setText(bll.getDefaultDirectories()[0]);
     }
 
+    /**
+     * Sets the TextField references from the controller.
+     * @param txtfieldInputDir
+     * @param txtfieldOutputDir 
+     */
     public void setTextFields(TextField txtfieldInputDir, TextField txtfieldOutputDir) {
         this.txtfieldInputDir = txtfieldInputDir;
         this.txtfieldOutputDir = txtfieldOutputDir;
     }
 
+    /**
+     * Sets a new default directory for either Input or Output.
+     * directory[0] = dirType. directory [1] = path to the directory.
+     * @param dirType     = The type of the directory (dirInput OR dirOutput)
+     * @param txtfieldDir = The directory TextField (txtfieldInputDir OR txtfieldOutputDir)
+     */
     public void newDefaultDir(String dirType, TextField txtfieldDir) {
         DirectoryChooser dc = new DirectoryChooser();
         String[] directory = new String[2];
@@ -72,12 +80,11 @@ public class SettingsModel {
         }
     }
 
-    public void setSettingsDefaultDirectories() {
-        String[] string = bll.getDefaultDirectories();
-        txtfieldInputDir.setText(string[1]);
-        txtfieldOutputDir.setText(string[0]);
-    }
-
+    /**
+     * Creates a new property file if one doesn't exist already, and sets
+     * the default values for all the properties. If new properties are added
+     * by the developer, this function needs to be expanded to support them.
+     */
     private void createNewProperties() {
         FileOutputStream fileOut = null;
         try {
@@ -97,6 +104,10 @@ public class SettingsModel {
         }
     }
 
+    /**
+     * Creates the default output directory when a new properties file is made.
+     * @param props 
+     */
     private void createStandardOutputDir(Properties props) {
         String[] directory = new String[2];
         directory[0] = "outputDir";
@@ -106,6 +117,10 @@ public class SettingsModel {
         bll.addDefaultOutput(directory[1]);
     }
 
+    /**
+     * Creates the default input directory when a new properties file is made.
+     * @param props 
+     */
     private void createStandardInputDir(Properties props) {
         String[] directory = new String[2];
         directory[0] = "inputDir";

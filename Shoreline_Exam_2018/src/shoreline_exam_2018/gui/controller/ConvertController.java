@@ -48,6 +48,7 @@ public class ConvertController implements Initializable {
         model.loadProfilesInCombo(profileCombobox);
         inputField.setEditable(false);
         outputField.setEditable(false);
+        model.setDefaultOutputDir(outputField);
     }
 
     /**
@@ -56,6 +57,14 @@ public class ConvertController implements Initializable {
     @FXML
     private void handleLoadButton(ActionEvent event) {
         inputField.setText(model.chooseFile());
+    }
+    
+    @FXML
+    private void handleLoadDirectoryButton(ActionEvent event) {
+        String directory = model.chooseDirectory();
+        if (directory != null) {
+            inputField.setText(directory);
+        }
     }
 
     /**
@@ -87,19 +96,10 @@ public class ConvertController implements Initializable {
                 inputField.setText("");
             }
         }
-
     }
-
+    
     public ConvertModel getModel() {
         return model;
-    }
-
-    @FXML
-    private void handleLoadDirectoryButton(ActionEvent event) {
-        String directory = model.chooseDirectory();
-        if (directory != null) {
-            inputField.setText(directory);
-        }
     }
 
 }

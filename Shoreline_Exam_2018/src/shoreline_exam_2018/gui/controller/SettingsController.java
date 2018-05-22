@@ -34,7 +34,6 @@ public class SettingsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         model = new SettingsModel();
         model.setTextFields(txtfieldInputDir, txtfieldOutputDir);
-        model.setSettingsDefaultDirectories();
         // Gets and reads properties.
         model.getProperties();
         
