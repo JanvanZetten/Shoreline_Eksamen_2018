@@ -11,16 +11,18 @@ import java.util.List;
  *
  * @author janvanzetten
  */
-public class InputObject {
+public class InputObject
+{
     List<InputField> fields;
 
-    public InputObject(List<InputField> fields) {
+    public InputObject(List<InputField> fields)
+    {
         this.fields = fields;
     }
 
-    public InputField getField(int index){
+    public InputField getField(int index) throws IndexOutOfBoundsException
+    {
         return fields.get(index);
     }
-    
-    
+
 }
