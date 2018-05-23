@@ -200,15 +200,18 @@ public class ProfileDAO
             if (se instanceof StructEntityDate)
             {
                 DateFormatRule dfr = ((StructEntityDate) se).getDfr();
-                con = dbcp.checkOut();
-                sql = "INSERT INTO RuleDateFormat VALUES(?, ?, ?);";
+                if (dfr != null)
+                {
+                    con = dbcp.checkOut();
+                    sql = "INSERT INTO RuleDateFormat VALUES(?, ?, ?);";
 
-                statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                statement.setInt(1, profileId);
-                statement.setInt(2, id);
-                statement.setString(3, dfr.getDateFormat());
+                    statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                    statement.setInt(1, profileId);
+                    statement.setInt(2, id);
+                    statement.setString(3, dfr.getDateFormat());
 
-                statement.executeUpdate();
+                    statement.executeUpdate();
+                }
             }
         }
         finally

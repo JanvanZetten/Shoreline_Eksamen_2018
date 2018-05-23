@@ -1030,6 +1030,19 @@ public class ProfileGrid extends GridPane
                                         defaultString.setText("0.0");
                                     }
                                     break;
+                                case STRING:
+                                    if (defaultString.getText() != null)
+                                    {
+                                        if (defaultString.getText().isEmpty())
+                                        {
+                                            defaultString.setText("");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        defaultString.setText("");
+                                    }
+                                    break;
                                 default:
                                     break;
                             }
