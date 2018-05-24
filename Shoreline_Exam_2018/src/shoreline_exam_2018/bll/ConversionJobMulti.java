@@ -14,13 +14,13 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
     
     private final AnchorPane pane = new AnchorPane();
     private final ListView<ConversionJobs> multiList;
-    private ListView<ConversionJobs> mainList;
-    private double paneSize = 44;
     private final Profile selectedProfile;
     private ArrayList<ConversionJobSingle> jobs;
     
     // Default size of ConversionJobSingle inside a Multi.
     private final int JOB_SIZE = 56;
+    // Default border size on COnversionJobMulti.
+    private double paneSize = 44;
     
     /**
      * Creates a ConversionJobMulti, which is the container of multiple 
@@ -49,36 +49,24 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * Sets up the pane and Array of jobs inside this object.
      * @param jobs 
      */
-    public void setupPane(ArrayList<ConversionJobSingle> jobs, ListView<ConversionJobs> list) {
+    public void setupPane(ArrayList<ConversionJobSingle> jobs) {
         this.jobs = jobs;
-        mainList = list;
         
         pane.setMinHeight(0);
         pane.setPrefHeight(paneSize(jobs));
-       
-        setupJobs(jobs);
         
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
         this.setPressed(true);
     }
-
-    /**
-     * Adds the jobs to this object.
-     * @param jobs 
-     */
-    private void setupJobs(ArrayList<ConversionJobSingle> jobs) {
-        for (ConversionJobSingle job : jobs) {
-            multiList.getItems().add(job);
-        }
-    }
     
     /**
-     * Retrieves the amount of jobs present in the Array.
+     * Retrieves the amount of jobs present in the Array and sets them.
      * @param jobs
      * @return 
      */
     private double paneSize(ArrayList<ConversionJobSingle> jobs) {
         for (ConversionJobSingle job : jobs) {
+            multiList.getItems().add(job);
             paneSize = paneSize + JOB_SIZE;
         }
         return paneSize;
@@ -123,7 +111,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
         
     }
 
-    Profile getProfile() {
+    public Profile getProfile() {
         return selectedProfile;
     }
 }

@@ -1,10 +1,6 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Properties;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import shoreline_exam_2018.bll.BLLException;
@@ -53,11 +49,10 @@ public class SettingsModel {
     public void newDefaultDir(String dirType, TextField txtfieldDir) {
         DirectoryChooser dc = new DirectoryChooser();
         String[] directory = new String[2];
-        directory[0] = dirType;
-
         String currentDir = System.getProperty("user.dir") + File.separator;
-
         File dir = new File(currentDir);
+        
+        directory[0] = dirType;
         dc.setInitialDirectory(dir);
         dc.setTitle("Choose a directory");
 

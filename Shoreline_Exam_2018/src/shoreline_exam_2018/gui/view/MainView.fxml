@@ -8,7 +8,7 @@
    <children>
       <TabPane layoutX="14.0" layoutY="46.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@css/style.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <tabs>
-          <Tab fx:id="tabConvert" text="Convert">
+          <Tab fx:id="tabConvert" onSelectionChanged="#handleDefaultDirectoryChanged" text="Convert">
             <content>
               <AnchorPane fx:id="paneConvert" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>

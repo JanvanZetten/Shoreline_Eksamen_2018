@@ -3,6 +3,7 @@ package shoreline_exam_2018.gui.controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
@@ -40,6 +41,10 @@ public class MainController implements Initializable
     @FXML
     private AnchorPane paneSettings;
     
+    // Will change to "true" once it has been called the first time to prevent error.
+    private boolean hasInitialized = false;
+    
+    // The default graphic size of the tab buttons.
     private int GRAPHIC_SIZE = 36;
 
     /**
@@ -57,6 +62,21 @@ public class MainController implements Initializable
         // Sets the images in the tabs for Log and Settings.
         tabLog.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/log.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
         tabSettings.setGraphic(new FlowPane(new ImageView(new Image("shoreline_exam_2018/resources/settings.png", GRAPHIC_SIZE, GRAPHIC_SIZE, true, true))));
+    }
+
+    /**
+     * Checks if default output directory has changed. Will only run after the
+     * first call, as it would result in a NullPointer if not.
+     * @param event 
+     */
+    @FXML
+    private void handleDefaultDirectoryChanged(Event event) {
+        if (hasInitialized == true) {
+            model.hasDefaultDirChanged();
+        }
+        else {
+            hasInitialized = true;
+        }
     }
 
 }
