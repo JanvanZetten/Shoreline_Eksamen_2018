@@ -5,7 +5,7 @@
  */
 package shoreline_exam_2018.be;
 
-import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 
 /**
  * The Profile BE Has a id for database purpose. Name of the profile. Structure

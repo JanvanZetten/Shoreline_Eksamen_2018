@@ -47,12 +47,12 @@ import shoreline_exam_2018.be.output.rule.DefaultStringRule;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityArray;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityDouble;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityInteger;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityString;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityArray;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityDouble;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityInteger;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 
