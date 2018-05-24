@@ -99,8 +99,7 @@ public class ConversionThread
     }
 
     /**
-     * Resumes the task after it has been paused. RESUME DOES NOT WORK
-     * CURRENTLY. NEEDS IMPLEMENTATION.
+     * Resumes the task after it has been paused. 
      */
     public void resumeTask()
     {

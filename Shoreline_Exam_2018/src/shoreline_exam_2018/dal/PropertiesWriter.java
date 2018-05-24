@@ -20,12 +20,12 @@ public class PropertiesWriter {
 
     public void updateDefaultDirectory(String[] directory) throws DALException, FileNotFoundException, IOException {
 
-        FileInputStream in = new FileInputStream("test.properties");
+        FileInputStream in = new FileInputStream("properties.properties");
         Properties props = new Properties();
         props.load(in);
         in.close();
 
-        FileOutputStream out = new FileOutputStream("test.properties");
+        FileOutputStream out = new FileOutputStream("properties.properties");
         props.setProperty(directory[0], directory[1]);
         props.store(out, null);
         out.close();

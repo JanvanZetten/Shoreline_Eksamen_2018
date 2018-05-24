@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -32,7 +30,7 @@ public class MainModel {
 
     public MainModel() {
         bll = BLLManager.getInstance();
-        File f = new File("test.properties");
+        File f = new File("properties.properties");
         if (f.exists() && !f.isDirectory()) {
             PropertiesReader propRead = new PropertiesReader();
         } else {
@@ -46,7 +44,7 @@ public class MainModel {
     private void createNewProperties() {
         FileOutputStream fileOut = null;
         try {
-            File file = new File("test.properties");
+            File file = new File("properties.properties");
             fileOut = new FileOutputStream(file);
             Properties props = new Properties();
 

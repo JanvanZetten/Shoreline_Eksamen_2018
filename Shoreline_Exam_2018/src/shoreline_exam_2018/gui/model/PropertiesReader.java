@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 
 /**
  *
@@ -33,9 +34,12 @@ public class PropertiesReader {
         setDefaultDirectories();
     }
     
+    /**
+     * Reads the properties file
+     */
     private void readProperties() {
         try {
-            FileInputStream fileInput = new FileInputStream("test.properties");
+            FileInputStream fileInput = new FileInputStream("properties.properties");
             Properties properties = new Properties();
             properties.load(fileInput);
             fileInput.close();
@@ -48,9 +52,11 @@ public class PropertiesReader {
             }
 
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(PropertiesReader.class.getName()).log(Level.SEVERE, null, ex);
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Cannot read properties", "Error: " + ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(PropertiesReader.class.getName()).log(Level.SEVERE, null, ex);
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Cannot read properties", "Error: " + ex.getMessage());
         }
     }
 
