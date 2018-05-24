@@ -18,8 +18,6 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
@@ -27,14 +25,12 @@ import shoreline_exam_2018.dal.DALException;
  *
  * @author janvanzetten
  */
-public class CSV_Horisontal_Reader implements Reader {
+public class CSV_Horisontal_Reader extends autoCloseableReader{
 
     CSVReader mainReader;
     Iterator<String[]> iterator;
     String fileName;
-    private static final long EXPIRATION_TIME = 10000; //in milliseconds
     private static final char SEPERATOR = ';';
-    private long timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
     private boolean open = false;
 
     
@@ -142,38 +138,12 @@ public class CSV_Horisontal_Reader implements Reader {
         }
     }
 
-    
-    /**
-     * Make a task which checkes for timeout and closes the stream if it does
-     */
-    private void makeTimeout() {
-        Thread thread;
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (System.currentTimeMillis() < timeouttime) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                try {
-                    closeMainStream();
-                } catch (DALException ex) {
-                    Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        thread.start();
-    }
-
     /**
      * closes the file stream
      * @throws DALException 
      */
-    private void closeMainStream() throws DALException {
+    @Override
+    synchronized void closeMainStream() throws DALException {
         try {
             mainReader.close();
         } catch (IOException ex) {

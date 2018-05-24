@@ -13,8 +13,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.poi.ss.usermodel.*;
 import shoreline_exam_2018.be.InputObject;
 import shoreline_exam_2018.dal.DALException;
@@ -23,10 +21,8 @@ import shoreline_exam_2018.dal.DALException;
  *
  * @author janvanzetten
  */
-public class XLSX_horisontal_Reader_for_Big_Documents implements Reader {
+public class XLSX_horisontal_Reader_for_Big_Documents extends autoCloseableReader {
 
-    private static final long EXPIRATION_TIME = 10000; //in milliseconds
-    private long timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
     private String FileName;
     private boolean open = false;
     private Workbook mainWorkbook;
@@ -152,40 +148,14 @@ public class XLSX_horisontal_Reader_for_Big_Documents implements Reader {
      *
      * @throws DALException
      */
-    private synchronized void closeMainStream() throws DALException {
+    @Override
+    synchronized void closeMainStream() throws DALException {
         try {
             open = false;
             mainWorkbook.close();
         } catch (IOException ex) {
             throw new DALException(ex.getMessage(), ex.getCause());
         }
-    }
-
-    /**
-     * makes a thread which cheks for timeout for the mainWorkbook and closes it
-     * when it expires
-     */
-    private void makeTimeout() {
-        Thread thread;
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (System.currentTimeMillis() < timeouttime) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                }
-                try {
-                    closeMainStream();
-                } catch (DALException ex) {
-                    Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        thread.start();
     }
 
     private boolean checkForEndOfRow(Row currentRow, int cellPointer, int cellsTolookforward) {

@@ -13,9 +13,9 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityDate;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityString;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 
 /**
