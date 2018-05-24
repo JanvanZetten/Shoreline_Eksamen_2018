@@ -133,7 +133,7 @@ public class ConverterTask extends Task {
      */
     private OutputPair convert(InputObject input) throws BLLException {
         try {
-            return new JsonPairJson("", mapper.mapRowToOutputpairListWithEntityCollection(selectedProfile.getStructure(), input));
+            return new JsonPairJson("", mapper.mapInputObjectToOutputpairList(selectedProfile.getStructure(), input));
         } catch (BLLException ex) {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
