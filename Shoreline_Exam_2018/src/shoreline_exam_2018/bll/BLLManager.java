@@ -1,5 +1,8 @@
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -10,11 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
-import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -36,7 +36,7 @@ import shoreline_exam_2018.gui.model.AutoUpdater;
 public class BLLManager implements BLLFacade
 {
 
-    private ConversionManager cMan;
+    private ConversionBoxManager cMan;
     private DALFacade dal;
     private LogManager logMng;
     private static final BLLManager INSTANCE = new BLLManager();
@@ -44,7 +44,7 @@ public class BLLManager implements BLLFacade
 
     private BLLManager()
     {
-        cMan = new ConversionManager();
+        cMan = new ConversionBoxManager();
         dal = new DALManager();
         logMng = new LogManager();
         dirListenerMan = new DirectoryListenerManager();
@@ -127,19 +127,19 @@ public class BLLManager implements BLLFacade
         }
     }
 
-    @Override
-    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException
-    {
-        Path outputfileChecked = checkForExisting(outputFile);
+//    @Override
+//    public ConversionBoxSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException
+//    {
+//        Path outputfileChecked = checkForExisting(outputFile);
+//
+//        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
+//    }
 
-        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
-    }
-
-    @Override
-    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException
-    {
-        return cMan.newMultiConversion(currentProfile, list);
-    }
+//    @Override
+//    public ConversionBoxMulti startMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> list) throws BLLException
+//    {
+//        return cMan.newMultiConversion(currentProfile, list);
+//    }
 
     @Override
     public User login(String username, String password) throws BLLException
@@ -208,7 +208,7 @@ public class BLLManager implements BLLFacade
     @Override
     public void createChangeListener(AutoUpdater aThis)
     {
-        new ChangeChecker().addObserver(aThis);
+        new LogChangeChecker().addObserver(aThis);
     }
 
     @Override
@@ -265,7 +265,8 @@ public class BLLManager implements BLLFacade
      * @param outputFile
      * @return
      */
-    private Path checkForExisting(Path outputFile)
+    @Override
+    public Path checkForExisting(Path outputFile)
     {
         int number = 1;
         if (dal.doesFileExist(outputFile))
@@ -310,7 +311,7 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public void addDirectoryListener(ConversionJobMulti MultiConversion, Path inputPath, Path outputPath) throws BLLException
+    public void addDirectoryListener(ConversionBoxMulti MultiConversion, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException
     {
         try
         {
@@ -330,7 +331,7 @@ public class BLLManager implements BLLFacade
                     {
                         try
                         {
-                            MultiConversion.addJob(startSingleConversion(name, path, Paths.get(output), MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
+                            MultiConversion.addJob(cManager.newConversion(name, path, Paths.get(output), MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
                         }
                         catch (BLLException ex)
                         {
@@ -361,6 +362,10 @@ public class BLLManager implements BLLFacade
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
+    }
+    
+    public void giveThreadConversionBox(ConversionBoxSingle cBox) {
+        
     }
 
 }

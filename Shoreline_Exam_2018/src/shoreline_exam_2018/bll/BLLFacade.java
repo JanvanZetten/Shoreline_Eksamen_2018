@@ -1,5 +1,7 @@
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +13,8 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.gui.model.AutoUpdater;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
 
 /**
  *
@@ -31,16 +35,16 @@ public interface BLLFacade
      * @return = A single conversion job.
      * @throws BLLException
      */
-    public ConversionJobSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionJobs> listJobs, ConversionJobMulti cMultiJob) throws BLLException;
+//    public ConversionBoxSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException;
     
     /**
-     * Creates a ConversionJobMulti through COnversionManager.
+     * Creates a ConversionBoxMulti through COnversionManager.
      * @param currentProfile  = The profile that is used for the conversion.
      * @param list            = The list in which the individual single conversion jobs are contained.
      * @return = A multi conversion job.
      * @throws BLLException 
      */
-    public ConversionJobMulti startMultiConversion(Profile currentProfile, ListView<ConversionJobs> list) throws BLLException;
+//    public ConversionBoxMulti startMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> list) throws BLLException;
     
     
     /**
@@ -167,5 +171,9 @@ public interface BLLFacade
      */
     public String[] getDefaultDirectories();
 
-    public void addDirectoryListener(ConversionJobMulti StartConversion, Path inputPath, Path outputPath) throws BLLException;
+    public void addDirectoryListener(ConversionBoxMulti StartConversion, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException;
+
+    public void giveThreadConversionBox(ConversionBoxSingle cBox);
+
+    public Path checkForExisting(Path outputPath);
 }

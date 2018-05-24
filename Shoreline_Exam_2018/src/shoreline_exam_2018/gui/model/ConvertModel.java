@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import shoreline_exam_2018.bll.ConversionJobSingle;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -19,9 +19,10 @@ import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
-import shoreline_exam_2018.bll.ConversionJobMulti;
-import shoreline_exam_2018.bll.ConversionJobs;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
 import shoreline_exam_2018.bll.LoggingHelper;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  *
@@ -31,11 +32,12 @@ public class ConvertModel
 {
 
     private BLLFacade bll;
+    private ConversionBoxManager cManager;
 
     ObservableList<Profile> profiles;
 
-    private List<ConversionJobSingle> tblTasks;
-    private ObservableList<ConversionJobSingle> olTasks;
+    private List<ConversionBoxSingle> tblTasks;
+    private ObservableList<ConversionBoxSingle> olTasks;
 
     private File selectedFile = null;
     private File outputFile;
@@ -50,12 +52,11 @@ public class ConvertModel
         bll = BLLManager.getInstance();
         profiles = FXCollections.observableArrayList();
         olTasks = FXCollections.observableArrayList();
+        cManager = new ConversionBoxManager();
     }
 
     /**
      * Sets array and observable lists for future use to place tasks into view.
-     *
-     * @param tblTasks
      */
     public void prepareTasks()
     {
@@ -156,9 +157,9 @@ public class ConvertModel
      * @param currentProfile the profile to use for conversion
      * @return the conversion job that is started
      */
-    public ConversionJobSingle StartSingleConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath)
+    public ConversionBoxSingle StartSingleConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs, String inputPath)
     {
-        ConversionJobSingle startConversion = null;
+        ConversionBoxSingle conversionBoxSingle = null;
         selectedFile = new File(inputPath);
         if (selectedFile != null && outputFile != null && currentProfile != null)
         {
@@ -168,12 +169,11 @@ public class ConvertModel
 
             name = split[split.length - 1];
             
-            
             try
             {
                 String output = outputFile.toPath() + File.separator + removeExtension(name) + ".json";
                 File outputFile = new File(output);
-                startConversion = bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs, null);
+                conversionBoxSingle = cManager.newConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs, null);
             }
             catch (BLLException ex)
             {
@@ -182,7 +182,7 @@ public class ConvertModel
             }
 
             selectedFile = null;
-            return startConversion;
+            return conversionBoxSingle;
         }
         else
         {
@@ -191,26 +191,18 @@ public class ConvertModel
         }
     }
 
-    public ConversionJobMulti StartMultiConversion(Profile currentProfile, ListView<ConversionJobs> listJobs, String inputPath)
+    public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs, String inputPath)
     {
-        ConversionJobMulti startConversion = null;
-        ArrayList<ConversionJobSingle> listConversions = new ArrayList<>();
-        ListView<ConversionJobs> list = new ListView<>();
+        ConversionBoxMulti conversionBoxMulti = null;
+        ArrayList<ConversionBoxSingle> listConversions = new ArrayList<>();
+        ListView<ConversionBoxInterface> list = new ListView<>();
         selectedFile = new File(inputPath);
 
         if (selectedFile != null && outputFile != null && currentProfile != null)
         {
             File[] directory = selectedFile.listFiles();
 
-            try
-            {
-                startConversion = bll.startMultiConversion(currentProfile, list);
-            }
-            catch (BLLException ex)
-            {
-                LoggingHelper.logException(ex);
-                AlertFactory.showError("Could not convert.", "Error: " + ex.getMessage());
-            }
+            conversionBoxMulti = cManager.newMultiConversion(currentProfile, list);
 
             for (File file : directory)
             {
@@ -220,7 +212,6 @@ public class ConvertModel
                 int i = file.toString().lastIndexOf('.');
 
                 extension = file.toString().substring(i + 1);
-                extension.trim();
 
                 if (extension.equals("xlsx") || extension.equals("csv"))
                 {
@@ -228,7 +219,7 @@ public class ConvertModel
                     {
                         String output = outputFile.toPath() + File.separator + removeExtension(file.getName()) + ".json";
                         File outputFile = new File(output);
-                        listConversions.add(bll.startSingleConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, list, startConversion));
+                        listConversions.add(cManager.newConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, list, conversionBoxMulti));
                     }
                     catch (BLLException ex)
                     {
@@ -237,9 +228,10 @@ public class ConvertModel
                     }
                 }
             }
-            startConversion.setupPane(listConversions);
+            conversionBoxMulti.setupPane(listConversions);
+            addFolderListener(conversionBoxMulti, inputPath, cManager);
             selectedFile = null;
-            return startConversion;
+            return conversionBoxMulti;
         }
         else
         {
@@ -269,11 +261,16 @@ public class ConvertModel
         return null;
     }
 
-    public void addFolderListener(ConversionJobMulti StartConversion, String path)
+    /**
+     * Creates a listener to a created ConversionBoxMulti. 
+     * @param conversionBoxMulti = The ConversionBoxMulti to have the listener.
+     * @param path               = The input path of the folder.
+     */
+    public void addFolderListener(ConversionBoxMulti conversionBoxMulti, String path, ConversionBoxManager cManager)
     {
         try
         {
-            bll.addDirectoryListener(StartConversion, Paths.get(path), outputFile.toPath());
+            bll.addDirectoryListener(conversionBoxMulti, Paths.get(path), outputFile.toPath(), cManager);
         }
         catch (BLLException ex)
         {

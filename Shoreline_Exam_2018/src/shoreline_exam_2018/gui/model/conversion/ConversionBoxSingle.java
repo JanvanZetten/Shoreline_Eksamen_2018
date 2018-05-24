@@ -1,4 +1,4 @@
-package shoreline_exam_2018.bll;
+package shoreline_exam_2018.gui.model.conversion;
 
 import java.nio.file.Path;
 import java.util.Optional;
@@ -19,19 +19,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.ConversionThread;
 
 /**
  *
  * @author alexl
  */
-public class ConversionJobSingle extends HBox implements ConversionJobs {
+public class ConversionBoxSingle extends HBox implements ConversionBoxInterface {
 
     private Label lblConversionName;
     private ProgressBar progress;
     private Button btnPause;
     private Button btnCancel;
-    private ListView<ConversionJobs> listJobs;
-    private ConversionJobMulti multi;
+    private ListView<ConversionBoxInterface> listJobs;
+    private ConversionBoxMulti multi;
 
     private int BUTTON_SIZE = 36;
 
@@ -46,13 +47,13 @@ public class ConversionJobSingle extends HBox implements ConversionJobs {
      * @param listJobs
      * @param multi
      */
-    public ConversionJobSingle(
+    public ConversionBoxSingle(
             String conversionName,
             ConversionThread cThread,
             Path outputPath,
             Profile selectedProfile,
-            ListView<ConversionJobs> listJobs,
-            ConversionJobMulti multi) {
+            ListView<ConversionBoxInterface> listJobs,
+            ConversionBoxMulti multi) {
         super();
 
         this.listJobs = listJobs;
@@ -136,7 +137,7 @@ public class ConversionJobSingle extends HBox implements ConversionJobs {
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionJobs> listJobs, Profile selectedProfile) {
+    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionBoxInterface> listJobs, Profile selectedProfile) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);
@@ -201,10 +202,10 @@ public class ConversionJobSingle extends HBox implements ConversionJobs {
     /**
      * Removes itself from the list given in the constructor.
      */
-    void removeFromList() {
+    public void removeFromList() {
         if (multi != null) {
             multi.notifyDeletedJob(this);
         }
-        listJobs.getItems().remove(ConversionJobSingle.this);
+        listJobs.getItems().remove(ConversionBoxSingle.this);
     }
 }

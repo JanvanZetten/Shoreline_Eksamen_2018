@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,7 +33,7 @@ public class ConversionThread
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
     private BooleanProperty isDone;
-    private ConversionJobSingle job = null;
+    private ConversionBoxSingle job = null;
     private BLLFacade bll;
 
     /**
@@ -163,7 +164,7 @@ public class ConversionThread
         return isOperating.getValue();
     }
 
-    void giveJob(ConversionJobSingle cJob)
+    public void giveBox(ConversionBoxSingle cJob)
     {
         job = cJob;
     }

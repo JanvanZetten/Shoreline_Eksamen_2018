@@ -10,7 +10,7 @@ import shoreline_exam_2018.gui.model.AlertFactory;
  *  to update the log list.
  * @author alexl
  */
-public class ChangeChecker extends Observable {
+public class LogChangeChecker extends Observable {
     
     private BLLFacade bll;
     private int lastLogID;
@@ -19,7 +19,7 @@ public class ChangeChecker extends Observable {
 
     private final static long WAIT_TIME = 1000;
 
-    public ChangeChecker() {
+    public LogChangeChecker() {
         
         try {
             bll = BLLManager.getInstance();

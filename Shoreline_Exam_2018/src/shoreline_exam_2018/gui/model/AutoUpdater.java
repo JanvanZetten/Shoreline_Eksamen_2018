@@ -9,7 +9,7 @@ import java.util.Observable;
 import java.util.Observer;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
-import shoreline_exam_2018.bll.ChangeChecker;
+import shoreline_exam_2018.bll.LogChangeChecker;
 
 /**
  *
