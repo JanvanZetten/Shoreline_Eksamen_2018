@@ -162,10 +162,11 @@ public class ConvertModel
             String[] split = selectedFile.getAbsolutePath().split(pattern);
 
             name = split[split.length - 1];
-
+            
+            
             try
             {
-                String output = outputFile.toPath() + File.separator + selectedFile.getName() + ".json";
+                String output = outputFile.toPath() + File.separator + removeExtension(name) + ".json";
                 File outputFile = new File(output);
                 startConversion = bll.startSingleConversion(name, selectedFile.toPath(), outputFile.toPath(), currentProfile, listJobs, null);
             }
@@ -220,7 +221,7 @@ public class ConvertModel
                 {
                     try
                     {
-                        String output = outputFile.toPath() + File.separator + file.getName() + ".json";
+                        String output = outputFile.toPath() + File.separator + removeExtension(file.getName()) + ".json";
                         File outputFile = new File(output);
                         listConversions.add(bll.startSingleConversion(file.getName(), file.toPath(), outputFile.toPath(), currentProfile, list, startConversion));
                     }
@@ -285,6 +286,21 @@ public class ConvertModel
     {
         outputField.setText(bll.getDefaultDirectories()[0]);
         outputFile = new File(outputField.getText());
+    }
+    
+    /**
+     * Removes the last . and the text after that
+     * @param name
+     * @return 
+     */
+    private String removeExtension(String name){
+            String[] outputSplit = name.split("\\.");
+            String outputName = outputSplit[0];
+            for (int i = 1; i < (outputSplit.length - 1); i++) {
+                outputName = outputName + "." +  outputSplit[i];
+            }
+            System.out.println(outputName);
+            return outputName;
     }
 }
 
