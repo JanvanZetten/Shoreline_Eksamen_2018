@@ -171,9 +171,21 @@ public interface BLLFacade
      */
     public String[] getDefaultDirectories();
 
-    public void addDirectoryListener(ConversionBoxMulti StartConversion, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException;
+    /**
+     * Adds a listener to a ConversionBoxMulti that is currently active. 
+     * @param conversionBoxMulti = The ConversionBoxMulti object
+     * @param inputPath          = The input path
+     * @param outputPath         = The output path
+     * @param cManager           = The ConversionBoxManager object needed to create new COnversionJobSingles
+     * @throws BLLException 
+     */
+    public void addDirectoryListener(ConversionBoxMulti conversionBoxMulti, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException;
 
-    public void giveThreadConversionBox(ConversionBoxSingle cBox);
-
+    /**
+     * Is called whenever tab focus is changed. Checks for ConvertModel if
+     * a new default path has been set in SettingsView.
+     * @param outputPath = The default output path.
+     * @return 
+     */
     public Path checkForExisting(Path outputPath);
 }

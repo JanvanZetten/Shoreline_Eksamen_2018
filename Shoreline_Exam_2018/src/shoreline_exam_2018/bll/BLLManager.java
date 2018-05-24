@@ -126,21 +126,7 @@ public class BLLManager implements BLLFacade
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
-
-//    @Override
-//    public ConversionBoxSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException
-//    {
-//        Path outputfileChecked = checkForExisting(outputFile);
-//
-//        return cMan.newConversion(taskName, inputFile, outputfileChecked, profile, listJobs, cMultiJob);
-//    }
-
-//    @Override
-//    public ConversionBoxMulti startMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> list) throws BLLException
-//    {
-//        return cMan.newMultiConversion(currentProfile, list);
-//    }
-
+    
     @Override
     public User login(String username, String password) throws BLLException
     {
@@ -311,7 +297,7 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public void addDirectoryListener(ConversionBoxMulti MultiConversion, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException
+    public void addDirectoryListener(ConversionBoxMulti conversionBoxMulti, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException
     {
         try
         {
@@ -331,7 +317,7 @@ public class BLLManager implements BLLFacade
                     {
                         try
                         {
-                            MultiConversion.addJob(cManager.newConversion(name, path, Paths.get(output), MultiConversion.getProfile(), MultiConversion.getListJobs(), MultiConversion));
+                            conversionBoxMulti.addJob(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
                         }
                         catch (BLLException ex)
                         {
@@ -362,10 +348,6 @@ public class BLLManager implements BLLFacade
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
-    }
-    
-    public void giveThreadConversionBox(ConversionBoxSingle cBox) {
-        
     }
 
 }
