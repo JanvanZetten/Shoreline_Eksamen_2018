@@ -56,9 +56,9 @@ public class AlertFactory
      * Shows Alert Confirmation.
      * @param message
      */
-    public static void showConfirmation(String header, String message)
+    public static Optional<ButtonType> showConfirmation(String header, String message)
     {
-        showCustomConfirmation(TITLE_CONFIRMATION, header, message);
+        return showCustomConfirmation(TITLE_CONFIRMATION, header, message);
     }
 
     /**
@@ -87,7 +87,7 @@ public class AlertFactory
      * @param header
      * @param message 
      */
-    private static void showCustomConfirmation(String title, String header, String message)
+    private static Optional<ButtonType> showCustomConfirmation(String title, String header, String message)
     {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, message, ButtonType.YES, ButtonType.NO);
         alert.setTitle(title);
@@ -99,15 +99,6 @@ public class AlertFactory
         stage.getIcons().add(LOGO);
         alert.getDialogPane().getScene().getStylesheets().add(STYLESHEET);
         result = alert.showAndWait();
-    }
-
-    /**
-     * Gets the result of the confirmation alert.
-     * @return 
-     */
-    public static Optional<ButtonType> getResult() {
         return result;
     }
-    
-    
 }

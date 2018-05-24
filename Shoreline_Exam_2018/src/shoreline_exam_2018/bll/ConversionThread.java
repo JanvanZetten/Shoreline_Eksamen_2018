@@ -33,7 +33,7 @@ public class ConversionThread
     private MutableBoolean isCanceled = new MutableBoolean(false);
     private MutableBoolean isOperating = new MutableBoolean(true);
     private BooleanProperty isDone;
-    private ConversionBoxSingle job = null;
+    private ConversionBoxSingle cBox = null;
     private BLLFacade bll;
 
     /**
@@ -60,11 +60,11 @@ public class ConversionThread
                 {
                     while (true)
                     {
-                        if (job != null)
+                        if (cBox != null)
                         {
                             Platform.runLater(() ->
                             {
-                                job.removeFromList();
+                                cBox.removeFromList();
                             });
                             break;
                         }
@@ -137,7 +137,7 @@ public class ConversionThread
                     LoggingHelper.logException(ex);
                     
                     isCanceled.setValue(true);
-                    job.removeFromList();
+                    cBox.removeFromList();
                 }
             }
         });
@@ -166,6 +166,6 @@ public class ConversionThread
 
     public void giveBox(ConversionBoxSingle cJob)
     {
-        job = cJob;
+        cBox = cJob;
     }
 }

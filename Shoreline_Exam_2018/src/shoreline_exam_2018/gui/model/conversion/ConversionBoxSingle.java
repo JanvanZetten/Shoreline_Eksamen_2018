@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
@@ -20,6 +18,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.ConversionThread;
+import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
  *
@@ -146,15 +145,9 @@ public class ConversionBoxSingle extends HBox implements ConversionBoxInterface 
         btnCancel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Alert alert = new Alert(AlertType.CONFIRMATION);
-                alert.setTitle("Cancel confirmation");
-                alert.setHeaderText("Cancelling conversion");
-                alert.setContentText("Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
-
-                Optional<ButtonType> result = alert.showAndWait();
-                if (result.get() == ButtonType.OK) {
+                Optional<ButtonType> result = AlertFactory.showConfirmation("Cancelling confirmation", "Are you sure you want to cancel the conversion of " + lblConversionName.getText() + " using the " + selectedProfile.getName() + " profile?");
+                if (result.get() == ButtonType.YES) {
                     cThread.cancelTask();
-                    cThread.resumeTask();
                 }
             }
         });
