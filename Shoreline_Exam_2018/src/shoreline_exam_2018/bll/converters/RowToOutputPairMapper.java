@@ -45,7 +45,7 @@ public class RowToOutputPairMapper
      * StructEntryDouble, StructEntryInteger, StructEntryObject and
      * StructEntryString.
      */
-    public List<OutputPair> mapRowToOutputpairListWithEntityCollection(CollectionEntity structObject, InputObject inputObject) throws BLLException
+    public List<OutputPair> mapInputObjectToOutputpairList(CollectionEntity structObject, InputObject inputObject) throws BLLException
     {
         List<StructEntityInterface> collection = structObject.getCollection();
 
@@ -58,7 +58,7 @@ public class RowToOutputPairMapper
                 //check what object this structE
                 if (structEntry instanceof StructEntityArray)
                 {
-                    List<OutputPair> jsonArray = mapRowToOutputpairListWithEntityCollection((StructEntityArray) structEntry, inputObject);
+                    List<OutputPair> jsonArray = mapInputObjectToOutputpairList((StructEntityArray) structEntry, inputObject);
                     output.add(new JsonPairArray(structEntry.getColumnName(), jsonArray));
 
                 }
@@ -85,14 +85,9 @@ public class RowToOutputPairMapper
                             date = inputField.getDateValue();
                         }
 
-                        if (se.getDefaultValue() != null)
-                        {
-                            output.add(new JsonPairDate(se.getColumnName(), date));
-                        }
-                        else
-                        {
-                            output.add(new JsonPairDate(se.getColumnName(), date));
-                        }
+                        
+                        output.add(new JsonPairDate(se.getColumnName(), date));
+                        
                     }
                     else
                     {
@@ -146,7 +141,7 @@ public class RowToOutputPairMapper
                 }
                 else if (structEntry instanceof StructEntityObject)
                 {
-                    List<OutputPair> jsonObject = mapRowToOutputpairListWithEntityCollection((StructEntityObject) structEntry, inputObject);
+                    List<OutputPair> jsonObject = mapInputObjectToOutputpairList((StructEntityObject) structEntry, inputObject);
                     output.add(new JsonPairJson(structEntry.getColumnName(), jsonObject));
                 }
                 else if (structEntry instanceof StructEntityString)
