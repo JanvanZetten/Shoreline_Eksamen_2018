@@ -1,23 +1,25 @@
-package shoreline_exam_2018.bll;
+package shoreline_exam_2018.gui.model.conversion;
 
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.util.ArrayList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  *
  * @author Alex
  */
-public class ConversionJobMulti extends TitledPane implements ConversionJobs {
+public class ConversionBoxMulti extends TitledPane implements ConversionBoxInterface {
     
     private final AnchorPane pane = new AnchorPane();
-    private final ListView<ConversionJobs> multiList;
+    private final ListView<ConversionBoxInterface> multiList;
     private final Profile selectedProfile;
-    private ArrayList<ConversionJobSingle> jobs;
+    private ArrayList<ConversionBoxSingle> jobs;
     
-    // Default size of ConversionJobSingle inside a Multi.
+    // Default size of ConversionBoxSingle inside a Multi.
     private final int JOB_SIZE = 56;
     // Default border size on COnversionJobMulti.
     private double paneSize = 44;
@@ -28,7 +30,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * @param selectedProfile = The currently selected profile
      * @param list
      */
-    public ConversionJobMulti(Profile selectedProfile, ListView<ConversionJobs> list) {
+    public ConversionBoxMulti(Profile selectedProfile, ListView<ConversionBoxInterface> list) {
         super();
         
         this.multiList = list;
@@ -49,7 +51,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * Sets up the pane and Array of jobs inside this object.
      * @param jobs 
      */
-    public void setupPane(ArrayList<ConversionJobSingle> jobs) {
+    public void setupPane(ArrayList<ConversionBoxSingle> jobs) {
         this.jobs = jobs;
         
         pane.setMinHeight(0);
@@ -64,8 +66,8 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * @param jobs
      * @return 
      */
-    private double paneSize(ArrayList<ConversionJobSingle> jobs) {
-        for (ConversionJobSingle job : jobs) {
+    private double paneSize(ArrayList<ConversionBoxSingle> jobs) {
+        for (ConversionBoxSingle job : jobs) {
             multiList.getItems().add(job);
             paneSize = paneSize + JOB_SIZE;
         }
@@ -76,7 +78,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * Gets the ListView.
      * @return 
      */
-    public ListView<ConversionJobs> getListJobs() {
+    public ListView<ConversionBoxInterface> getListJobs() {
         return multiList;
     }
     
@@ -84,7 +86,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * Add job to the coversionjobs
      * @param conversion 
      */
-    public void addJob(ConversionJobSingle conversion){
+    public void addJob(ConversionBoxSingle conversion){
         jobs.add(conversion);
         
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
@@ -101,7 +103,7 @@ public class ConversionJobMulti extends TitledPane implements ConversionJobs {
      * AnchorPane dynamically as jobs are deleted from the list.
      * @param job 
      */
-    public void notifyDeletedJob(ConversionJobSingle job) {
+    public void notifyDeletedJob(ConversionBoxSingle job) {
         jobs.remove(job);
         this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
         

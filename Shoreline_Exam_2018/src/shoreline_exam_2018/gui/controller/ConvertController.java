@@ -16,9 +16,9 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import shoreline_exam_2018.gui.model.ConvertModel;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.bll.ConversionJobMulti;
-import shoreline_exam_2018.bll.ConversionJobSingle;
-import shoreline_exam_2018.bll.ConversionJobs;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  * FXML Controller class
@@ -36,7 +36,7 @@ public class ConvertController implements Initializable {
     @FXML
     private TextField outputField;
     @FXML
-    private ListView<ConversionJobs> listJobs;
+    private ListView<ConversionBoxInterface> listJobs;
 
     /**
      * Initializes the controller class.
@@ -83,16 +83,15 @@ public class ConvertController implements Initializable {
         File input = new File(inputField.getText());
 
         if (input.isFile()) {
-            ConversionJobSingle StartConversion = model.StartSingleConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
+            ConversionBoxSingle StartConversion = model.StartSingleConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
             if (StartConversion != null) {
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");
             }
         }
         else if (input.isDirectory()) {
-            ConversionJobMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
+            ConversionBoxMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
             if (StartConversion != null) {
-                model.addFolderListener(StartConversion, inputField.getText());
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");
             }
