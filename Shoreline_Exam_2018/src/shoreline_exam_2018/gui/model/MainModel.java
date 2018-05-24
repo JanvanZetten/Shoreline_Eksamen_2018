@@ -94,7 +94,6 @@ public class MainModel {
 
     /**
      * Sets the tabs in all the tabs of the MainView.
-     *
      * @param paneConvert = The conversion view.
      * @param paneProfiles = The profiles view.
      * @param paneLog = The log view.
@@ -111,7 +110,6 @@ public class MainModel {
     /**
      * Re-scales the views to have the same anchors as the tab panes they are
      * located in. Also sets a node of the view into the tab pane.
-     *
      * @param PANE_NAME = Name of the tab.
      * @param PANE = Name of the pane.
      */
@@ -153,7 +151,6 @@ public class MainModel {
 
     /**
      * Sets tab for Convert View.
-     *
      * @param tabConvert
      */
     public void setTabConvert(Tab tabConvert) {
