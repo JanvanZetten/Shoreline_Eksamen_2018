@@ -16,7 +16,7 @@ import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.ConversionJobSingle;
 import shoreline_exam_2018.dal.DALException;

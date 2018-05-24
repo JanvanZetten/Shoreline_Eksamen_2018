@@ -5,6 +5,12 @@
  */
 package shoreline_exam_2018.bll.converters;
 
+import shoreline_exam_2018.be.output.structure.entity.StructEntityInteger;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityDouble;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityArray;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +22,6 @@ import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.rule.DateFormatRule;
 import shoreline_exam_2018.be.output.rule.DefaultStringRule;
 import shoreline_exam_2018.be.output.structure.*;
-import shoreline_exam_2018.be.output.structure.entry.*;
 import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.bll.BLLException;
 

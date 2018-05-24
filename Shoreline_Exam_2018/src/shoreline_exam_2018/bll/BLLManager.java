@@ -19,7 +19,7 @@ import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
-import shoreline_exam_2018.be.output.structure.entry.StructEntityObject;
+import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.be.runnable.RunnableWithPath;
 import shoreline_exam_2018.bll.Utilities.FileUtils;
 import shoreline_exam_2018.dal.DALException;
