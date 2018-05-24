@@ -56,9 +56,11 @@ public class MainModel {
             props.store(fileOut, null);
             fileOut.close();
         } catch (FileNotFoundException ex) {
-            AlertFactory.showError("Could not read properties", "The directory could not be found: " + ex.getMessage());
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not create properties", "The directory could not be found: " + ex.getMessage());
         } catch (IOException ex) {
-            AlertFactory.showError("Could not read properties", ex.getMessage());
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not create properties", ex.getMessage());
         }
     }
 
@@ -142,14 +144,10 @@ public class MainModel {
             PANE.getChildren().setAll(node);
         } catch (MalformedURLException ex) {
             LoggingHelper.logException(ex);
-            Logger
-                    .getLogger(MainModel.class
-                            .getName()).log(Level.SEVERE, null, ex);
+            AlertFactory.showError("An error has occured", "Error: " + ex.getMessage());
         } catch (IOException ex) {
             LoggingHelper.logException(ex);
-            Logger
-                    .getLogger(MainModel.class
-                            .getName()).log(Level.SEVERE, null, ex);
+            AlertFactory.showError("An error has occured", "Error: " + ex.getMessage());
         }
     }
 
@@ -160,5 +158,12 @@ public class MainModel {
      */
     public void setTabConvert(Tab tabConvert) {
         this.tabConvert = tabConvert;
+    }
+
+    /**
+     * Gives ConvertModel the ability to see if the default output directory has changed.
+     */
+    public void hasDefaultDirChanged() {
+        cm.hasDefaultDirChanged();
     }
 }

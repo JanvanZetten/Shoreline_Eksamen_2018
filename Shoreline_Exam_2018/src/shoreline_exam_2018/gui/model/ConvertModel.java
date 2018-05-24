@@ -39,6 +39,11 @@ public class ConvertModel
 
     private File selectedFile = null;
     private File outputFile;
+    
+    // Is only used to check if the default output path has changed.
+    private File defaultOutputFileChecker;
+    
+    private TextField outputField;
 
     public ConvertModel()
     {
@@ -231,7 +236,7 @@ public class ConvertModel
                     }
                 }
             }
-            startConversion.setupPane(listConversions, listJobs);
+            startConversion.setupPane(listConversions);
             selectedFile = null;
             return startConversion;
         }
@@ -283,8 +288,21 @@ public class ConvertModel
      */
     public void setDefaultOutputDir(TextField outputField)
     {
-        outputField.setText(bll.getDefaultDirectories()[0]);
-        outputFile = new File(outputField.getText());
+        this.outputField = outputField;
+        this.outputField.setText(bll.getDefaultDirectories()[0]);
+        outputFile = new File(this.outputField.getText());
+        defaultOutputFileChecker = new File(this.outputField.getText());
+    }
+
+    /**
+     * Checks if the default output has changed and sets it if it has.
+     */
+    public void hasDefaultDirChanged() {
+        if (!defaultOutputFileChecker.getPath().equals(bll.getDefaultDirectories()[0])) {
+            outputField.setText(bll.getDefaultDirectories()[0]);
+            outputFile = new File(outputField.getText());
+            defaultOutputFileChecker = new File(outputField.getText());
+        }
     }
 }
 
