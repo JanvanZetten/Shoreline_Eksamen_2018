@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.ss.usermodel.*;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**

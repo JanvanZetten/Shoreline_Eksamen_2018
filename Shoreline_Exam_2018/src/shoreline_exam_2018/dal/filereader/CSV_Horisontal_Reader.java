@@ -18,7 +18,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**
