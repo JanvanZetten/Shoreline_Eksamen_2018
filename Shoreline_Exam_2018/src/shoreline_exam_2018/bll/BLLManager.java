@@ -35,15 +35,13 @@ import shoreline_exam_2018.gui.model.AutoUpdater;
 public class BLLManager implements BLLFacade
 {
 
-    private ConversionBoxManager cMan;
-    private DALFacade dal;
-    private LogManager logMng;
+    private final DALFacade dal;
+    private final LogManager logMng;
+    private final DirectoryListenerManager dirListenerMan;
     private static final BLLManager INSTANCE = new BLLManager();
-    private DirectoryListenerManager dirListenerMan;
 
     private BLLManager()
     {
-        cMan = new ConversionBoxManager();
         dal = new DALManager();
         logMng = new LogManager();
         dirListenerMan = new DirectoryListenerManager();
