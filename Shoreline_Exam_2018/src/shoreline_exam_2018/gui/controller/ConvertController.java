@@ -44,7 +44,6 @@ public class ConvertController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         model = new ConvertModel();
-        model.prepareTasks();
         model.loadProfilesInCombo(profileCombobox);
         inputField.setEditable(false);
         outputField.setEditable(false);
@@ -83,14 +82,14 @@ public class ConvertController implements Initializable {
         File input = new File(inputField.getText());
 
         if (input.isFile()) {
-            ConversionBoxSingle StartConversion = model.StartSingleConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
+            ConversionBoxSingle StartConversion = model.StartSingleConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
             if (StartConversion != null) {
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");
             }
         }
         else if (input.isDirectory()) {
-            ConversionBoxMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs, inputField.getText());
+            ConversionBoxMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
             if (StartConversion != null) {
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");

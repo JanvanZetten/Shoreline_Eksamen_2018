@@ -15,7 +15,7 @@ public class ConversionBoxMulti extends TitledPane implements ConversionBoxInter
     private final AnchorPane pane = new AnchorPane();
     private final ListView<ConversionBoxInterface> multiList;
     private final Profile selectedProfile;
-    private ArrayList<ConversionBoxSingle> jobs;
+    private ArrayList<ConversionBoxSingle> boxes;
     
     // Default size of ConversionBoxSingle inside a Multi.
     private final int JOB_SIZE = 56;
@@ -46,11 +46,11 @@ public class ConversionBoxMulti extends TitledPane implements ConversionBoxInter
     }
     
     /**
-     * Sets up the pane and Array of jobs inside this object.
+     * Sets up the pane and Array of boxes inside this object.
      * @param jobs 
      */
     public void setupPane(ArrayList<ConversionBoxSingle> jobs) {
-        this.jobs = jobs;
+        this.boxes = jobs;
         
         pane.setMinHeight(0);
         pane.setPrefHeight(paneSize(jobs));
@@ -60,7 +60,7 @@ public class ConversionBoxMulti extends TitledPane implements ConversionBoxInter
     }
     
     /**
-     * Retrieves the amount of jobs present in the Array and sets them.
+     * Retrieves the amount of boxes present in the Array and sets them.
      * @param jobs
      * @return 
      */
@@ -81,13 +81,13 @@ public class ConversionBoxMulti extends TitledPane implements ConversionBoxInter
     }
     
     /**
-     * Add job to the coversionjobs
+     * Add box to the multi conversion box
      * @param conversion 
      */
-    public void addJob(ConversionBoxSingle conversion){
-        jobs.add(conversion);
+    public void addBox(ConversionBoxSingle conversion){
+        boxes.add(conversion);
         
-        this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
+        this.setText(boxes.size() + " files with the " + selectedProfile.getName() + " profile");
         
         paneSize = paneSize + JOB_SIZE;
         
@@ -97,13 +97,13 @@ public class ConversionBoxMulti extends TitledPane implements ConversionBoxInter
     }
     
     /**
-     * Is called whenever a job has finished inside this object. Resizes the
-     * AnchorPane dynamically as jobs are deleted from the list.
-     * @param job 
+     * Is called whenever a box has finished inside this object. Resizes the
+     * AnchorPane dynamically as boxes are deleted from the list.
+     * @param box 
      */
-    public void notifyDeletedJob(ConversionBoxSingle job) {
-        jobs.remove(job);
-        this.setText(jobs.size() + " files with the " + selectedProfile.getName() + " profile");
+    public void notifyDeletedJob(ConversionBoxSingle box) {
+        boxes.remove(box);
+        this.setText(boxes.size() + " files with the " + selectedProfile.getName() + " profile");
         
         paneSize = paneSize - JOB_SIZE;
         

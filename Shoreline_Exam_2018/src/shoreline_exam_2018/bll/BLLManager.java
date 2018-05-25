@@ -310,7 +310,7 @@ public class BLLManager implements BLLFacade
                     {
                         try
                         {
-                            conversionBoxMulti.addJob(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
+                            conversionBoxMulti.addBox(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
                         }
                         catch (BLLException ex)
                         {
