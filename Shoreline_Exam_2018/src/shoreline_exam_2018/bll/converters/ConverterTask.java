@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javafx.beans.property.BooleanProperty;
 import javafx.concurrent.Task;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.OutputPair;
