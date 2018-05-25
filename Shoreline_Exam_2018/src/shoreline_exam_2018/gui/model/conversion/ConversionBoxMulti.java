@@ -1,12 +1,10 @@
 package shoreline_exam_2018.gui.model.conversion;
 
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.util.ArrayList;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.AnchorPane;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  *

@@ -1,7 +1,5 @@
 package shoreline_exam_2018.gui.model.conversion;
 
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
@@ -10,7 +8,6 @@ import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.ConversionThread;
 import shoreline_exam_2018.bll.Utilities.FileUtils;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  *
