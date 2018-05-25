@@ -1,5 +1,6 @@
 package shoreline_exam_2018.gui.model.conversion;
 
+import shoreline_exam_2018.bll.converters.ConversionTaskManager;
 import java.nio.file.Path;
 import java.util.Optional;
 import javafx.event.ActionEvent;
@@ -17,7 +18,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import shoreline_exam_2018.be.Profile;
-import shoreline_exam_2018.bll.ConversionThread;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
@@ -48,7 +48,7 @@ public class ConversionBoxSingle extends HBox implements ConversionBoxInterface 
      */
     public ConversionBoxSingle(
             String conversionName,
-            ConversionThread cThread,
+            ConversionTaskManager cThread,
             Path outputPath,
             Profile selectedProfile,
             ListView<ConversionBoxInterface> listJobs,
@@ -95,7 +95,7 @@ public class ConversionBoxSingle extends HBox implements ConversionBoxInterface 
      *
      * @param cThread
      */
-    private void setProgressBarInfo(ConversionThread cThread) {
+    private void setProgressBarInfo(ConversionTaskManager cThread) {
         progress.setProgress(0);
         progress.progressProperty().unbind();
         progress.progressProperty().bind(cThread.getTask().progressProperty());
@@ -108,7 +108,7 @@ public class ConversionBoxSingle extends HBox implements ConversionBoxInterface 
      *
      * @param cThread
      */
-    private void setPauseButtonInfo(ConversionThread cThread) {
+    private void setPauseButtonInfo(ConversionTaskManager cThread) {
         btnPause.setStyle("-fx-background-color: transparent;");
         Image imagePause = new Image("shoreline_exam_2018/resources/pause.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageViewPause = new ImageView(imagePause);
@@ -136,7 +136,7 @@ public class ConversionBoxSingle extends HBox implements ConversionBoxInterface 
      *
      * @param cThread
      */
-    private void setCancelButtonInfo(ConversionThread cThread, ListView<ConversionBoxInterface> listJobs, Profile selectedProfile) {
+    private void setCancelButtonInfo(ConversionTaskManager cThread, ListView<ConversionBoxInterface> listJobs, Profile selectedProfile) {
         btnCancel.setStyle("-fx-background-color: transparent;");
         Image image = new Image("shoreline_exam_2018/resources/stop.png", BUTTON_SIZE, BUTTON_SIZE, true, true);
         ImageView imageView = new ImageView(image);

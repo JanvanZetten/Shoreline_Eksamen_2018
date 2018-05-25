@@ -18,6 +18,13 @@ import shoreline_exam_2018.dal.DALException;
  */
 public class PropertiesWriter {
 
+    /**
+     * Updates the default directory in the properties file. Requires a String Array.
+     * @param directory = [0] = inputDir / outputDir. [1] = path to the directory.
+     * @throws DALException
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     public void updateDefaultDirectory(String[] directory) throws DALException, FileNotFoundException, IOException {
 
         FileInputStream in = new FileInputStream("properties.properties");

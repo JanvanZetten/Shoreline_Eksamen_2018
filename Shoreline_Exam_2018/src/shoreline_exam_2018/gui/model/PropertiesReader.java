@@ -25,6 +25,7 @@ import shoreline_exam_2018.bll.LoggingHelper;
 public class PropertiesReader {
 
     BLLFacade bll;
+    // Valuelist contains the property value.
     List<String> valueList = new ArrayList<String>();
 
     public PropertiesReader() {

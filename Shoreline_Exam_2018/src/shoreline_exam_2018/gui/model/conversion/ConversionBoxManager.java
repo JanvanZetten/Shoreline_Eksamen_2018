@@ -1,16 +1,13 @@
 package shoreline_exam_2018.gui.model.conversion;
 
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
+import shoreline_exam_2018.bll.converters.ConversionTaskManager;
 import java.nio.file.Path;
 import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
-import shoreline_exam_2018.bll.ConversionThread;
 import shoreline_exam_2018.bll.Utilities.FileUtils;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 
 /**
  *
@@ -30,13 +27,16 @@ public class ConversionBoxManager {
      * 
      * Used for both MULTI conversion and SINGLE conversion.
      *
-     * @param taskName = The name of the Conversion
-     * @param inputPath the input file
-     * @param outputPath the output file
+     * @param taskName        = The name of the Conversion
+     * @param inputPath       = The input file
+     * @param outputPath      = The output file
      * @param selectedProfile = The selected profile for the conversion
-     * @return = Returns the Task so that it can be set in the view.
+     * @param listBoxes       = The list that contains the boxes
+     * @param cMultiJob       = The multi box. If no multi box exists, null is entered as the parameter
+     * @return the Task so that it can be set in the view.
+     * @throws shoreline_exam_2018.bll.BLLException
      */
-    public ConversionBoxSingle newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException {
+    public ConversionBoxSingle newConversion(String taskName, Path inputPath, Path outputPath, Profile selectedProfile, ListView<ConversionBoxInterface> listBoxes, ConversionBoxMulti cMultiJob) throws BLLException {
 
         String inputExtension;
         String outputExtension;
@@ -45,15 +45,15 @@ public class ConversionBoxManager {
         inputExtension = FileUtils.getFiletype(inputPath);
         outputExtension = FileUtils.getFiletype(outputfileChecked);
         
-        ConversionThread cThread = null;
+        ConversionTaskManager cTaskMan = null;
 
         if ((inputExtension.equalsIgnoreCase("XLSX") || inputExtension.equalsIgnoreCase("CSV")) && outputExtension.equalsIgnoreCase("json")) {
-            cThread = new ConversionThread(taskName, inputPath, outputfileChecked, selectedProfile);
+            cTaskMan = new ConversionTaskManager(taskName, inputPath, outputfileChecked, selectedProfile);
         }
 
-        if (cThread != null) {
-            ConversionBoxSingle cBox = new ConversionBoxSingle(taskName, cThread, outputfileChecked, selectedProfile, listJobs, cMultiJob);
-            cThread.giveBox(cBox);
+        if (cTaskMan != null) {
+            ConversionBoxSingle cBox = new ConversionBoxSingle(taskName, cTaskMan, outputfileChecked, selectedProfile, listBoxes, cMultiJob);
+            cTaskMan.giveBox(cBox);
             return cBox;
         } else {
             throw new BLLException("one of the file types might not be supported");
@@ -63,11 +63,11 @@ public class ConversionBoxManager {
     /**
      * Creates a ConversionBoxMulti that contains COnversionJobSingles.
      * 
-     * Used for ONLY MULTI conversion.
+     * Used ONLY for MULTI conversion.
      * 
-     * @param selectedProfile
-     * @param listJobs
-     * @return 
+     * @param selectedProfile = The profile that created the conversion
+     * @param list            = The list that exists inside the multi conversion
+     * @return the ConversionBoxMulti that has been created.
      */
     public ConversionBoxMulti newMultiConversion(Profile selectedProfile, ListView<ConversionBoxInterface> list) {
         ConversionBoxMulti cMultiJob = new ConversionBoxMulti(selectedProfile, list);

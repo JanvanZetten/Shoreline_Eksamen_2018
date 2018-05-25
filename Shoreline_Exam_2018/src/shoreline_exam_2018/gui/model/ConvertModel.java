@@ -191,6 +191,14 @@ public class ConvertModel
         }
     }
 
+    /**
+     * Creates a new ConversionBoxMulti and adds all files in a folder into this
+     * object as ConversionBoxSingle. Also checks for file-types.
+     * @param currentProfile
+     * @param listJobs
+     * @param inputPath
+     * @return 
+     */
     public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs, String inputPath)
     {
         ConversionBoxMulti conversionBoxMulti = null;
@@ -240,6 +248,10 @@ public class ConvertModel
         }
     }
 
+    /**
+     * Opens a DirectoryChooser to select a folder to convert from.
+     * @return the input path as a string.
+     */
     public String chooseDirectory()
     {
         DirectoryChooser direcChosser = new DirectoryChooser();
@@ -265,6 +277,7 @@ public class ConvertModel
      * Creates a listener to a created ConversionBoxMulti. 
      * @param conversionBoxMulti = The ConversionBoxMulti to have the listener.
      * @param path               = The input path of the folder.
+     * @param cManager           = The ConversionBoxManager that connects task and box creation.
      */
     public void addFolderListener(ConversionBoxMulti conversionBoxMulti, String path, ConversionBoxManager cManager)
     {

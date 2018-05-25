@@ -2,7 +2,6 @@ package shoreline_exam_2018.bll;
 
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -245,12 +244,6 @@ public class BLLManager implements BLLFacade
         return dal.getDefaultDirectories();
     }
 
-    /**
-     * Checks for existing and adds number to it to get a unique filename
-     *
-     * @param outputFile
-     * @return
-     */
     @Override
     public Path checkForExisting(Path outputFile)
     {
