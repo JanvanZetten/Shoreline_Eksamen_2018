@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
@@ -29,7 +32,7 @@ public class PropertiesReader {
         bll = BLLManager.getInstance();
         
         readProperties();
-        setDefaultDirectories();
+        setDefaults();
     }
     
     /**
@@ -59,7 +62,7 @@ public class PropertiesReader {
         }
     }
 
-    private void setDefaultDirectories() {
+    private void setDefaults() {
         for (String[] strings : valueList) {
             if (strings[0].equals("inputDir")) {
                 bll.addDefaultInput(strings[1]);
@@ -68,8 +71,14 @@ public class PropertiesReader {
             if (strings[0].equals("outputDir")) {
                 bll.addDefaultOutput(strings[1]);
             }
+            
+            if (strings[0].equals("defaultProfile")) {
+                try {
+                    bll.addDefaultProfile(strings[1]);
+                } catch (BLLException ex) {
+                    AlertFactory.showError("Properties could not be read", "Error: " + ex.getMessage());
+                }
+            }
         }
     }
-    
-    private
 }

@@ -235,7 +235,12 @@ public class BLLManager implements BLLFacade
     }
     
     @Override
-    public void addDefaultProfile(String[] profile) throws BLLException {
+    public void addDefaultProfile(String profile) throws BLLException {
+        dal.addDefaultProfile(profile);
+    }
+    
+    @Override
+    public void updateDefaultProfile(String[] profile) throws BLLException {
         try {
             dal.updateDefaultProfile(profile);
         } catch (DALException | IOException ex) {
@@ -347,14 +352,4 @@ public class BLLManager implements BLLFacade
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
-
-    @Override
-    public void updateDefaultProfile(String[] profile) throws BLLException {
-        try {
-            dal.updateDefaultProfile(profile);
-        } catch (DALException | IOException ex) {
-            throw new BLLException(ex.getMessage(), ex.getCause());
-        }
-    }
-
 }

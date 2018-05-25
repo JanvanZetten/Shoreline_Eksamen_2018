@@ -139,6 +139,10 @@ public interface DALFacade
      * @return 
      */
     public boolean doesFileExist(Path file);
+    
+    public void addDefaultProfile(String profile);
 
     public void updateDefaultProfile(String[] profile) throws DALException, IOException;
+    
+    public String getDefaultProfile();
 }

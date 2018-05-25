@@ -100,7 +100,7 @@ public class MainModel {
             directory[0] = "defaultProfile";
             directory[1] = -1 + "";
             props.setProperty(directory[0], directory[1]);
-            bll.addDefaultProfile(directory);
+            bll.updateDefaultProfile(directory);
         } catch (BLLException ex) {
             AlertFactory.showError("Couldn't create properties", "Error: " + ex.getMessage());
         }
