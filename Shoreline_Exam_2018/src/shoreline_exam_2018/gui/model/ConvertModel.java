@@ -1,10 +1,6 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;

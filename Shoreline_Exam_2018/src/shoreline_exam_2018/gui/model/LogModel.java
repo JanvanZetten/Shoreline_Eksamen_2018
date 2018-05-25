@@ -25,13 +25,13 @@ public class LogModel {
 
     ObservableList<Log> logList;
     BLLFacade bll = BLLManager.getInstance();
-    AutoUpdater aupdate;
+    
     boolean run = true;
 
     public LogModel() {
         logList = FXCollections.observableArrayList();
-        aupdate = new AutoUpdater(this);
-        aupdate.setAsObserver();
+        AutoUpdater aUpdate = new AutoUpdater(this);
+        aUpdate.setAsObserver();
     }
 
     /**
