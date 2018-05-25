@@ -7,11 +7,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.gui.controller.ConvertController;
 import shoreline_exam_2018.gui.controller.ProfilesController;
@@ -48,8 +51,9 @@ public class MainModel {
             fileOut = new FileOutputStream(file);
             Properties props = new Properties();
 
-            createStandardOutputDir(props);
-            createStandardInputDir(props);
+            createDefaultOutputDir(props);
+            createDefaultInputDir(props);
+            createDefaultProfile(props);
 
             props.store(fileOut, null);
             fileOut.close();
@@ -67,7 +71,7 @@ public class MainModel {
      *
      * @param props
      */
-    private void createStandardOutputDir(Properties props) {
+    private void createDefaultOutputDir(Properties props) {
         String[] directory = new String[2];
         directory[0] = "outputDir";
         directory[1] = System.getProperty("user.dir") + File.separator;
@@ -81,13 +85,25 @@ public class MainModel {
      *
      * @param props
      */
-    private void createStandardInputDir(Properties props) {
+    private void createDefaultInputDir(Properties props) {
         String[] directory = new String[2];
         directory[0] = "inputDir";
         directory[1] = System.getProperty("user.dir") + File.separator;
         directory[1] = directory[1].substring(0, directory[1].length() - 1);
         props.setProperty(directory[0], directory[1]);
         bll.addDefaultInput(directory[1]);
+    }
+    
+    private void createDefaultProfile(Properties props) {
+        try {
+            String[] directory = new String[2];
+            directory[0] = "defaultProfile";
+            directory[1] = -1 + "";
+            props.setProperty(directory[0], directory[1]);
+            bll.addDefaultProfile(directory);
+        } catch (BLLException ex) {
+            AlertFactory.showError("Couldn't create properties", "Error: " + ex.getMessage());
+        }
     }
 
     /**

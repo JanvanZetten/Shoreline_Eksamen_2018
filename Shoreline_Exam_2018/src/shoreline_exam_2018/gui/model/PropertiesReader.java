@@ -10,10 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
@@ -26,7 +23,7 @@ public class PropertiesReader {
 
     BLLFacade bll;
     // Valuelist contains the property value.
-    List<String> valueList = new ArrayList<String>();
+    ArrayList<String[]> valueList = new ArrayList<>();
 
     public PropertiesReader() {
         bll = BLLManager.getInstance();
@@ -47,9 +44,10 @@ public class PropertiesReader {
 
             Enumeration enuKeys = properties.keys();
             while (enuKeys.hasMoreElements()) {
-                String key = (String) enuKeys.nextElement();
-                String value = properties.getProperty(key);
-                valueList.add(value);
+                String[] props = new String[2];
+                props[0] = (String) enuKeys.nextElement();
+                props[1] = properties.getProperty(props[0]);
+                valueList.add(props);
             }
 
         } catch (FileNotFoundException ex) {
@@ -62,7 +60,16 @@ public class PropertiesReader {
     }
 
     private void setDefaultDirectories() {
-        bll.addDefaultOutput(valueList.get(0));
-        bll.addDefaultInput(valueList.get(1));
+        for (String[] strings : valueList) {
+            if (strings[0].equals("inputDir")) {
+                bll.addDefaultInput(strings[1]);
+            }
+            
+            if (strings[0].equals("outputDir")) {
+                bll.addDefaultOutput(strings[1]);
+            }
+        }
     }
+    
+    private
 }

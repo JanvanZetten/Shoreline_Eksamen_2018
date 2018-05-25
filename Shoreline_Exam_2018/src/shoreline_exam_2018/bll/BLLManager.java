@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import shoreline_exam_2018.be.Log;
@@ -214,11 +216,7 @@ public class BLLManager implements BLLFacade
         {
             dal.updateDefaultDirectory(directory, input, output);
         }
-        catch (DALException ex)
-        {
-            throw new BLLException(ex.getMessage(), ex.getCause());
-        }
-        catch (IOException ex)
+        catch (DALException | IOException ex)
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
@@ -234,6 +232,15 @@ public class BLLManager implements BLLFacade
     public void addDefaultInput(String inputValue)
     {
         dal.addDefaultInput(inputValue);
+    }
+    
+    @Override
+    public void addDefaultProfile(String[] profile) throws BLLException {
+        try {
+            dal.updateDefaultProfile(profile);
+        } catch (DALException | IOException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
     }
 
     @Override
@@ -337,6 +344,15 @@ public class BLLManager implements BLLFacade
         }
         catch (DALException ex)
         {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
+    public void updateDefaultProfile(String[] profile) throws BLLException {
+        try {
+            dal.updateDefaultProfile(profile);
+        } catch (DALException | IOException ex) {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }

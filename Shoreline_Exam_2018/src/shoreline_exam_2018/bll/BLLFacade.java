@@ -185,4 +185,8 @@ public interface BLLFacade
      * @return 
      */
     public Path checkForExisting(Path outputPath);
+
+    public void updateDefaultProfile(String[] profile) throws BLLException;
+
+    public void addDefaultProfile(String[] string) throws BLLException;
 }
