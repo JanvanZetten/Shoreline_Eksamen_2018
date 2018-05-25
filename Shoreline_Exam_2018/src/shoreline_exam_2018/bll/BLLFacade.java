@@ -1,19 +1,16 @@
 package shoreline_exam_2018.bll;
 
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.gui.model.AutoUpdater;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
 
 /**

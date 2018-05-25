@@ -7,8 +7,6 @@ package shoreline_exam_2018.gui.model;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -18,7 +16,6 @@ import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
-import shoreline_exam_2018.gui.model.AlertFactory;
 
 /**
  *
