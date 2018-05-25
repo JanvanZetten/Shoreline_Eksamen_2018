@@ -304,7 +304,7 @@ public class BLLManager implements BLLFacade
 
                     String name = split[split.length - 1];
 
-                    String output = outputPath + File.separator + name + ".json";
+                    String output = outputPath + File.separator + FileUtils.removeExtension(name) + ".json";
 
                     Platform.runLater(() ->
                     {
