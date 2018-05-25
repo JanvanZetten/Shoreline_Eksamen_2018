@@ -253,6 +253,12 @@ public class BLLManager implements BLLFacade
     {
         return dal.getDefaultDirectories();
     }
+    
+    @Override
+    public int getDefaultProfile() {
+        int i = Integer.parseInt(dal.getDefaultProfile());
+        return i;
+    }
 
     @Override
     public Path checkForExisting(Path outputFile)

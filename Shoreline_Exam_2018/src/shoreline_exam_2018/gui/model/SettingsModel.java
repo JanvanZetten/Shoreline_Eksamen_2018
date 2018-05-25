@@ -116,5 +116,13 @@ public class SettingsModel {
         });
 
         profileCombobox.setButtonCell(new profileListCell());
+        
+        for (Profile profile : profileCombobox.getItems()) {
+                if (bll.getDefaultProfile() == profile.getId()) {
+                    profileCombobox.getSelectionModel().select(profile);
+                    System.out.println(profile.getId());
+                }
+                
+            }
     }
 }

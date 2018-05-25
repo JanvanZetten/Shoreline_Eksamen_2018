@@ -1,6 +1,9 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
@@ -24,8 +27,7 @@ import shoreline_exam_2018.gui.model.conversion.BoxMaker;
  *
  * @author alexl
  */
-public class ConvertModel
-{
+public class ConvertModel {
 
     private final BLLFacade bll;
     private final BoxMaker bMaker;
@@ -34,14 +36,13 @@ public class ConvertModel
 
     private File selectedFile = null;
     private File outputFile;
-    
+
     // Is only used to check if the default output path has changed.
     private File defaultOutputFileChecker;
-    
+
     private TextField outputField;
 
-    public ConvertModel()
-    {
+    public ConvertModel() {
         bll = BLLManager.getInstance();
         profiles = FXCollections.observableArrayList();
         bMaker = new BoxMaker();
@@ -49,10 +50,10 @@ public class ConvertModel
 
     /**
      * Opens a file chooser and sets a File object to be the selected file.
-     * @return 
+     *
+     * @return
      */
-    public String chooseFile()
-    {
+    public String chooseFile() {
 
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Supported Files", "*.xlsx", "*.csv");
         FileChooser.ExtensionFilter xlsxfilter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
@@ -71,20 +72,19 @@ public class ConvertModel
 
         selectedFile = fc.showOpenDialog(null);
 
-        if (selectedFile != null)
-        {
+        if (selectedFile != null) {
 
             return selectedFile.toString();
         }
         return "";
     }
-    
+
     /**
      * Opens a DirectoryChooser to select a folder to convert from.
+     *
      * @return the input path as a string.
      */
-    public String chooseDirectory()
-    {
+    public String chooseDirectory() {
         DirectoryChooser direcChosser = new DirectoryChooser();
 
         direcChosser.setTitle("Chosse input directory");
@@ -97,8 +97,7 @@ public class ConvertModel
 
         selectedFile = direcChosser.showDialog(new Stage());
 
-        if (selectedFile != null)
-        {
+        if (selectedFile != null) {
             return selectedFile.toString();
         }
         return "";
@@ -109,8 +108,7 @@ public class ConvertModel
      *
      * @return a string with the path
      */
-    public String chooseDestination()
-    {
+    public String chooseDestination() {
         DirectoryChooser dc = new DirectoryChooser();
 
         dc.setTitle("Chosse output directory");
@@ -123,8 +121,7 @@ public class ConvertModel
 
         outputFile = dc.showDialog(null);
 
-        if (outputFile != null)
-        {
+        if (outputFile != null) {
             return outputFile.toString();
         }
 
@@ -134,32 +131,38 @@ public class ConvertModel
     /**
      * Populates the given combo box with profiles and sets proper naming for
      * these profiles so it looks nicely
+     *
      * @param profileCombobox
      */
-    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox)
-    {
-        profileCombobox.setItems(profiles);
-        try
-        {
-            profiles.addAll(bll.getAllProfiles());
-        }
-        catch (BLLException ex)
-        {
-            LoggingHelper.logException(ex);
-            AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
-        }
-
-        profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
-
-        profileCombobox.setButtonCell(new profileListCell());
+    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
+            profileCombobox.setItems(profiles);
+            try {
+                profiles.addAll(bll.getAllProfiles());
+            } catch (BLLException ex) {
+                LoggingHelper.logException(ex);
+                AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
+            }
+            profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
+            profileCombobox.setButtonCell(new profileListCell());
+            
+            
+            for (Profile profile : profileCombobox.getItems()) {
+                if (bll.getDefaultProfile() == profile.getId()) {
+                    profileCombobox.getSelectionModel().select(profile);
+                    System.out.println(profile.getId());
+                }
+                else {
+                    profileCombobox.getSelectionModel().selectFirst();
+                }
+            }
     }
 
     /**
      * Add profile to profiles list.
+     *
      * @param profile
      */
-    public void addProfile(Profile profile)
-    {
+    public void addProfile(Profile profile) {
         profiles.add(profile);
     }
 
@@ -170,29 +173,28 @@ public class ConvertModel
      * @param listJobs
      * @return the conversion job that is started
      */
-    public ConversionBoxSingle StartSingleConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs)
-    {
+    public ConversionBoxSingle StartSingleConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs) {
         return bMaker.createSingleBox(currentProfile, listJobs, selectedFile, outputFile);
     }
 
     /**
      * Creates a new ConversionBoxMulti and adds all files in a folder into this
      * object as ConversionBoxSingle. Also checks for file-types.
+     *
      * @param currentProfile
      * @param listMain
-     * @return 
+     * @return
      */
-    public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listMain)
-    {
+    public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listMain) {
         return bMaker.createMultiBox(currentProfile, listMain, selectedFile, outputFile);
     }
-    
+
     /**
      * Sets the default directory on start up.
+     *
      * @param outputField
      */
-    public void setDefaultOutputDir(TextField outputField)
-    {
+    public void setDefaultOutputDir(TextField outputField) {
         this.outputField = outputField;
         this.outputField.setText(bll.getDefaultDirectories()[0]);
         outputFile = new File(this.outputField.getText());
@@ -202,29 +204,25 @@ public class ConvertModel
     /**
      * Checks if the default output has changed and sets it if it has.
      */
-    public void hasDefaultDirChanged() {
+    public void haveDefaultsChanged() {
         if (!defaultOutputFileChecker.getPath().equals(bll.getDefaultDirectories()[0])) {
             outputField.setText(bll.getDefaultDirectories()[0]);
             outputFile = new File(outputField.getText());
             defaultOutputFileChecker = new File(outputField.getText());
         }
+        
     }
 }
 
 //Class for showing the right name in the comboboxes list and button
-class profileListCell extends ListCell<Profile>
-{
+class profileListCell extends ListCell<Profile> {
 
     @Override
-    protected void updateItem(Profile item, boolean empty)
-    {
+    protected void updateItem(Profile item, boolean empty) {
         super.updateItem(item, empty);
-        if (item == null || empty)
-        {
+        if (item == null || empty) {
             setGraphic(null);
-        }
-        else
-        {
+        } else {
             setText(item.getName());
         }
     }

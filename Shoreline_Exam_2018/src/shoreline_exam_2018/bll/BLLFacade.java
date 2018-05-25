@@ -189,4 +189,6 @@ public interface BLLFacade
     public void updateDefaultProfile(String[] profile) throws BLLException;
 
     public void addDefaultProfile(String string) throws BLLException;
+    
+    public int getDefaultProfile();
 }

@@ -175,6 +175,6 @@ public class MainModel {
      * Gives ConvertModel the ability to see if the default output directory has changed.
      */
     public void hasDefaultDirChanged() {
-        cm.hasDefaultDirChanged();
+        cm.haveDefaultsChanged();
     }
 }

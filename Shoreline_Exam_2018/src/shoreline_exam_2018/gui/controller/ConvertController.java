@@ -48,7 +48,6 @@ public class ConvertController implements Initializable {
         inputField.setEditable(false);
         outputField.setEditable(false);
         model.setDefaultOutputDir(outputField);
-        profileCombobox.getSelectionModel().selectFirst();
     }
 
     /**
