@@ -39,9 +39,7 @@ public class ProfilesController implements Initializable
     @FXML
     private SplitPane splitPane;
     @FXML
-    private ScrollPane scrollHeader;
-    @FXML
-    private GridPane gridDrag;
+    private AnchorPane paneHeader;
     @FXML
     private ScrollPane scrollMain;
     @FXML
@@ -57,7 +55,7 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, scrollHeader, gridDrag, scrollMain, btnBack, btnSave);
+            pm = new ProfilesModel(txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, paneHeader, scrollMain, btnBack, btnSave);
         });
     }
 

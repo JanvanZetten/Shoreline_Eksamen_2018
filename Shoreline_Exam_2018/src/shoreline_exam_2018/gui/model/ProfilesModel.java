@@ -5,26 +5,21 @@
  */
 package shoreline_exam_2018.gui.model;
 
+import shoreline_exam_2018.gui.model.profile.StructurePane;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import javafx.event.EventHandler;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -35,6 +30,7 @@ import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.bll.Utilities.StructEntityUtils;
+import shoreline_exam_2018.gui.model.profile.HeaderPane;
 
 /**
  *
@@ -42,30 +38,25 @@ import shoreline_exam_2018.bll.Utilities.StructEntityUtils;
  */
 public class ProfilesModel
 {
-    private static final String STYLESHEET = "shoreline_exam_2018/gui/view/css/style.css"; // Root CSS
-
     private BLLFacade bll; // BLL Manager to contact database.
     private TextField txtFieldProfileName; // Profile Name TextField.
     private TextField txtfieldSourcefile; // SourceFile TextField.
     private Button btnSource; // Source Button.
     private AnchorPane innerAnchor; // AnchorPane showing SplitPane.
     private SplitPane splitPane; // SplitPane with ScrollHeader and ScrollMain.
-    private ScrollPane scrollHeader; // ScrollPane for gridDrag.
-    private GridPane gridDrag; // Grid Pane which contains column headers from input file.
-    private ScrollPane scrollMain; // ScrollPane for ProfileGrid.
+    private AnchorPane paneHeader; // Pane to show headers.
+    private ScrollPane scrollMain; // ScrollPane for StructurePane.
     private Button btnBack; // Back Button.
     private Button btnSave; // Save Button.
-    private HashMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers to their index and example.
-    private int headerRowCount; // gridDrag row count.
     private ConvertModel cm; // Convert Model to add Profile to ComboBox.
     private Tab tabConvert; // Tab for convert view for switching tab on success.
-    private ProfileGrid pg; // The Master Grid.
-    private boolean isNext;
+    private StructurePane pg; // The Master Grid.
+    private boolean isNext; // is rule view.
 
     /**
      * Takes Profile Edit GridPane as parameter. Uses BLLManager.
      */
-    public ProfilesModel(TextField txtFieldProfileName, TextField txtfieldSourcefile, Button btnSource, AnchorPane innerAnchor, SplitPane splitPane, ScrollPane scrollHeader, GridPane gridDrag, ScrollPane scrollMain, Button btnBack, Button btnSave)
+    public ProfilesModel(TextField txtFieldProfileName, TextField txtfieldSourcefile, Button btnSource, AnchorPane innerAnchor, SplitPane splitPane, AnchorPane paneHeader, ScrollPane scrollMain, Button btnBack, Button btnSave)
     {
         this.bll = BLLManager.getInstance();
 
@@ -74,102 +65,16 @@ public class ProfilesModel
         this.btnSource = btnSource;
         this.innerAnchor = innerAnchor;
         this.splitPane = splitPane;
-        this.scrollHeader = scrollHeader;
-        this.gridDrag = gridDrag;
+        this.paneHeader = paneHeader;
         this.scrollMain = scrollMain;
         this.btnBack = btnBack;
         this.btnBack.setVisible(false);
         this.btnSave = btnSave;
         this.btnSave.setText("Next");
 
-        this.pg = new ProfileGrid(true);
+        this.pg = new StructurePane(true);
 
-        // Makes ScrollPaneHeader accept drag and drop copying.
-        this.scrollHeader.setOnDragOver(e ->
-        {
-            e.acceptTransferModes(TransferMode.COPY);
-        });
-        // So that the element dragged to a row can be dragged back and destroyed.
-        this.scrollHeader.setOnDragDropped(destroyHeader());
-
-        this.isNext = false;
-        clearData();
-    }
-
-    /**
-     * Remove index for row. Drag and Drop event Simple sets drop completed if
-     * the drop is not empty.
-     * @return
-     */
-    private EventHandler destroyHeader()
-    {
-        EventHandler eh = new EventHandler<DragEvent>()
-        {
-            @Override
-            public void handle(DragEvent e)
-            {
-                Dragboard db = e.getDragboard();
-                if (db.hasString())
-                {
-                    e.setDropCompleted(true);
-                }
-                else
-                {
-                    e.setDropCompleted(false);
-                }
-            }
-        };
-        return eh;
-    }
-
-    /**
-     * Add headers to scrollHeader grid pane / gridDrag
-     * @param header
-     */
-    private void addInputHeadersAndExamples(int index, String header, String example)
-    {
-        // Makes TextField to hold header name.
-        TextField tfHeader = new TextField(header);
-        tfHeader.setId("DRAGANDDROP");
-        tfHeader.setEditable(false);
-
-        // Make drag and drop copying compatible.
-        tfHeader.setOnDragDetected(e ->
-        {
-            Dragboard db = tfHeader.startDragAndDrop(TransferMode.COPY);
-            db.setDragView(getDragAndDropScene(new TextField(header)).snapshot(null), e.getX(), e.getY());
-            ClipboardContent cc = new ClipboardContent();
-            cc.putString(header);
-            db.setContent(cc);
-        });
-
-        // Set constraints and add to GridPane.
-        GridPane.setConstraints(tfHeader, 0, headerRowCount);
-        gridDrag.getChildren().addAll(tfHeader);
-        headerRowCount++;
-    }
-
-    /**
-     * Gets headers from file and creates the header Grid. Resets Master Grid.
-     * @param path
-     */
-    private void getDataFromFile(Path path)
-    {
-        try
-        {
-            headersIndexAndExamples = bll.getHeadersAndExamplesFromFile(path);
-            for (String string : headersIndexAndExamples.keySet())
-            {
-                addInputHeadersAndExamples(headersIndexAndExamples.get(string).getKey(), string, headersIndexAndExamples.get(string).getValue());
-            }
-            pg.addHashMap(headersIndexAndExamples);
-            clearData();
-        }
-        catch (BLLException ex)
-        {
-            LoggingHelper.logException(ex);
-            AlertFactory.showError("Could not get data from file", "The program was unable to get any data from " + path.toString() + ", Try another file");
-        }
+        clearView();
     }
 
     /**
@@ -185,6 +90,39 @@ public class ProfilesModel
         }
     }
 
+    /**
+     * Gets headers from file and creates the header Grid. Resets Master Grid.
+     * @param path
+     */
+    private void getDataFromFile(Path path)
+    {
+        try
+        {
+            clearData();
+
+            HashMap<String, Entry<Integer, String>> headersIndexAndExamples = bll.getHeadersAndExamplesFromFile(path);
+            ObservableMap<String, Entry<Integer, String>> obsHeader = FXCollections.observableHashMap();
+            obsHeader.putAll(headersIndexAndExamples);
+            pg.addHashMap(obsHeader);
+            HeaderPane hp = new HeaderPane(pg);
+
+            AnchorPane.setTopAnchor(hp, 0.0);
+            AnchorPane.setRightAnchor(hp, 0.0);
+            AnchorPane.setBottomAnchor(hp, 0.0);
+            AnchorPane.setLeftAnchor(hp, 0.0);
+
+            paneHeader.getChildren().add(hp);
+        }
+        catch (BLLException ex)
+        {
+            LoggingHelper.logException(ex);
+            AlertFactory.showError("Could not get data from file", "The program was unable to get any data from " + path.toString() + ", Try another file");
+        }
+    }
+
+    /**
+     * Shows structurePane
+     */
     public void handleBack()
     {
         isNext = false;
@@ -196,6 +134,9 @@ public class ProfilesModel
         innerAnchor.getChildren().add(splitPane);
     }
 
+    /**
+     * Shows ruleView and last saves the profile.
+     */
     public void handleSaveStructure()
     {
         // Gets structure from Master Grid.
@@ -221,7 +162,7 @@ public class ProfilesModel
             String profileName = txtFieldProfileName.getText();
             // Create Object with ProfileName and Structure.
             StructEntityObject seo = new StructEntityObject(profileName, result);
-            /*
+
             try
             {
                 // Add Structure to database.
@@ -237,7 +178,6 @@ public class ProfilesModel
                 LoggingHelper.logException(ex);
                 AlertFactory.showError("Data error", "An error happened trying to save the structure.\nERROR: " + ex.getMessage());
             }
-             */
         }
         else
         {
@@ -332,10 +272,9 @@ public class ProfilesModel
      */
     private void clearData()
     {
-        headersIndexAndExamples = new HashMap<>();
-        headerRowCount = 0;
         scrollMain.setContent(pg);
         loadStructure();
+        paneHeader.getChildren().clear();
     }
 
     /**
@@ -346,7 +285,7 @@ public class ProfilesModel
         clearData();
         txtfieldSourcefile.setText("");
         txtFieldProfileName.setText("");
-        gridDrag.getChildren().clear();
+        handleBack();
     }
 
     /**
@@ -376,29 +315,6 @@ public class ProfilesModel
     }
 
     /**
-     * Adds convert model and tab.
-     * @param cm
-     * @param tabConvert
-     */
-    public void addSharedInfo(ConvertModel cm, Tab tabConvert)
-    {
-        this.tabConvert = tabConvert;
-        this.cm = cm;
-    }
-
-    /**
-     * Getting the right style for drag and drop
-     * @param node
-     * @return
-     */
-    private Scene getDragAndDropScene(Parent parent)
-    {
-        Scene scene = new Scene(parent);
-        scene.getStylesheets().add(STYLESHEET);
-        return scene;
-    }
-
-    /**
      * Load default structure.
      */
     private void loadStructure()
@@ -423,5 +339,16 @@ public class ProfilesModel
             AlertFactory.showWarning("Loading structure", "Was not able to load default structure.");
             LoggingHelper.logException(ex);
         }
+    }
+
+    /**
+     * Adds convert model and tab.
+     * @param cm
+     * @param tabConvert
+     */
+    public void addSharedInfo(ConvertModel cm, Tab tabConvert)
+    {
+        this.tabConvert = tabConvert;
+        this.cm = cm;
     }
 }
