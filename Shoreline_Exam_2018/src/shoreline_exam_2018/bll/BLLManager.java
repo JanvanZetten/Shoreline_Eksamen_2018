@@ -125,7 +125,7 @@ public class BLLManager implements BLLFacade
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
-    
+
     @Override
     public User login(String username, String password) throws BLLException
     {
@@ -143,33 +143,7 @@ public class BLLManager implements BLLFacade
     @Override
     public String encrypt(String base) throws BLLException
     {
-        try
-        {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-
-            byte[] hash = digest.digest(base.getBytes("UTF-8"));
-
-            StringBuffer hexString = new StringBuffer();
-
-            for (int i = 0; i < hash.length; i++)
-            {
-
-                String hex = Integer.toHexString(0xff & hash[i]);
-
-                if (hex.length() == 1)
-                {
-                    hexString.append('0');
-                }
-
-                hexString.append(hex);
-            }
-
-            return hexString.toString();
-        }
-        catch (NoSuchAlgorithmException | UnsupportedEncodingException ex)
-        {
-            throw new BLLException(ex.getMessage(), ex.getCause());
-        }
+        return Encrypter.encrypt(base);
     }
 
     @Override
@@ -233,17 +207,22 @@ public class BLLManager implements BLLFacade
     {
         dal.addDefaultInput(inputValue);
     }
-    
+
     @Override
-    public void addDefaultProfile(String profile) throws BLLException {
+    public void addDefaultProfile(String profile) throws BLLException
+    {
         dal.addDefaultProfile(profile);
     }
-    
+
     @Override
-    public void updateDefaultProfile(String[] profile) throws BLLException {
-        try {
+    public void updateDefaultProfile(String[] profile) throws BLLException
+    {
+        try
+        {
             dal.updateDefaultProfile(profile);
-        } catch (DALException | IOException ex) {
+        }
+        catch (DALException | IOException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -253,9 +232,10 @@ public class BLLManager implements BLLFacade
     {
         return dal.getDefaultDirectories();
     }
-    
+
     @Override
-    public int getDefaultProfile() {
+    public int getDefaultProfile()
+    {
         int i = Integer.parseInt(dal.getDefaultProfile());
         return i;
     }
