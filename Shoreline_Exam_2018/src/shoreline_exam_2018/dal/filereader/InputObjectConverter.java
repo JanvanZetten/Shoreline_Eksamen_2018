@@ -10,9 +10,9 @@ import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import shoreline_exam_2018.be.InputField;
-import shoreline_exam_2018.be.InputFieldType;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputField;
+import shoreline_exam_2018.be.input.InputFieldType;
+import shoreline_exam_2018.be.input.InputObject;
 
 /**
  *

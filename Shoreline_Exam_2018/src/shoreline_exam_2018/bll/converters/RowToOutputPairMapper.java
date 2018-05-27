@@ -14,9 +14,9 @@ import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import shoreline_exam_2018.be.InputField;
-import shoreline_exam_2018.be.InputFieldType;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputField;
+import shoreline_exam_2018.be.input.InputFieldType;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.rule.DateFormatRule;
@@ -36,10 +36,10 @@ public class RowToOutputPairMapper
      * get a List of outputpairs with the data from the inputObject and the
      * structure and fields from the structObject
      *
-     * @param structObject the object describing which data should convert to
-     * what
-     * @param inputObject the inputObject from which to load the data
+     * @param structObject the object describing which data should convert to what
+     * @param inputObject the inputObject from which to load the data 
      * @return a list of outputpairs
+     * 
      * @throws BLLException if the stuctObject has a structEntry which is not
      * supported. The supported are: StructEntryArray, StructEntryDate,
      * StructEntryDouble, StructEntryInteger, StructEntryObject and

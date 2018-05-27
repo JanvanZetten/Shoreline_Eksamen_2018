@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package shoreline_exam_2018.bll;
+package shoreline_exam_2018.bll.converters;
 
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
@@ -18,14 +18,19 @@ import javafx.concurrent.Task;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.MutableBoolean;
 import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.bll.BLLException;
+import shoreline_exam_2018.bll.BLLFacade;
+import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 import shoreline_exam_2018.bll.converters.ConverterTask;
 import shoreline_exam_2018.gui.model.AlertFactory;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 
 /**
  *
  * @author alexl
  */
-public class ConversionThread
+public class ConversionTaskManager
 {
     private String taskName;
     private ConverterTask task;
@@ -44,7 +49,7 @@ public class ConversionThread
      * @param outputfile
      * @param coversionProfile
      */
-    public ConversionThread(String taskName, Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
+    public ConversionTaskManager(String taskName, Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
     {
         this.taskName = taskName;
         bll = BLLManager.getInstance();
@@ -76,7 +81,7 @@ public class ConversionThread
                             }
                             catch (InterruptedException ex)
                             {
-                                Logger.getLogger(ConversionThread.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ConversionTaskManager.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
 

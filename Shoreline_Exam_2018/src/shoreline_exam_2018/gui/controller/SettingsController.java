@@ -10,7 +10,9 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.gui.model.SettingsModel;
 
 /**
@@ -24,6 +26,8 @@ public class SettingsController implements Initializable {
     private TextField txtfieldInputDir;
     @FXML
     private TextField txtfieldOutputDir;
+    @FXML
+    private ComboBox<Profile> cmboboxProfile;
     
     private SettingsModel model;
 
@@ -34,6 +38,7 @@ public class SettingsController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         model = new SettingsModel();
         model.setTextFields(txtfieldInputDir, txtfieldOutputDir);
+        model.loadProfilesInCombo(cmboboxProfile);
         // Gets and reads properties.
         model.getProperties();
         
@@ -49,6 +54,11 @@ public class SettingsController implements Initializable {
     @FXML
     private void handleOutputDir(ActionEvent event) {
         model.newDefaultDir("outputDir", txtfieldOutputDir);
+    }
+
+    @FXML
+    private void handleProfileDefault(ActionEvent event) {
+        model.newDefaultProfile("defaultProfile", cmboboxProfile.getSelectionModel().getSelectedItem());
     }
 
 }

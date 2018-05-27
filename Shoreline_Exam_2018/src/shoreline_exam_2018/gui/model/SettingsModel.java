@@ -1,11 +1,17 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
+import shoreline_exam_2018.bll.LoggingHelper;
 
 /**
  *
@@ -16,9 +22,11 @@ public class SettingsModel {
     private BLLFacade bll;
     private TextField txtfieldInputDir;
     private TextField txtfieldOutputDir;
+    private ObservableList<Profile> profiles;
 
     public SettingsModel() {
         bll = BLLManager.getInstance();
+        profiles = FXCollections.observableArrayList();
     }
 
     /**
@@ -64,8 +72,57 @@ public class SettingsModel {
                 txtfieldDir.setText(directory[1]);
                 bll.updateDefaultDirectory(directory, txtfieldInputDir.getText(), txtfieldOutputDir.getText());
             } catch (BLLException ex) {
-                AlertFactory.showError("The config could not be updated", "Error: " + ex.getMessage());
+                AlertFactory.showError("The properties file could not be updated", "Error: " + ex.getMessage());
             }
         }
+    }
+
+    /**
+     *
+     * @param defaultProfile
+     * @param newDefProfile
+     */
+    public void newDefaultProfile(String defaultProfile, Profile newDefProfile) {
+        try {
+            String[] profile = new String[2];
+            profile[0] = defaultProfile;
+            profile[1] = newDefProfile.getId() + "";
+            bll.updateDefaultProfile(profile);
+        } catch (BLLException ex) {
+            AlertFactory.showError("The properties file could not be updated", "Error: " + ex.getMessage());
+        }
+    }
+
+    /**
+     * Populates the given combo box with profiles and sets proper naming for
+     * these profiles so it looks nicely
+     * @param profileCombobox
+     */
+    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox)
+    {
+        profileCombobox.setItems(profiles);
+        try
+        {
+            profiles.addAll(bll.getAllProfiles());
+        }
+        catch (BLLException ex)
+        {
+            LoggingHelper.logException(ex);
+            AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
+        }
+
+        profileCombobox.setCellFactory((ListView<Profile> param) -> {
+            return new profileListCell();
+        });
+
+        profileCombobox.setButtonCell(new profileListCell());
+        
+        for (Profile profile : profileCombobox.getItems()) {
+                if (bll.getDefaultProfile() == profile.getId()) {
+                    profileCombobox.getSelectionModel().select(profile);
+                    System.out.println(profile.getId());
+                }
+                
+            }
     }
 }

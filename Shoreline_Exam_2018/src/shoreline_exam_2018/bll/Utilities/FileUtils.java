@@ -25,4 +25,18 @@ public class FileUtils {
         return inputSplit[inputSplit.length - 1];
     }
     
+    /**
+     * Removes the last . and the text after that
+     * @param name
+     * @return 
+     */
+    public static String removeExtension(String name){
+            String[] outputSplit = name.split("\\.");
+            String outputName = outputSplit[0];
+            for (int i = 1; i < (outputSplit.length - 1); i++) {
+                outputName = outputName + "." +  outputSplit[i];
+            }
+            System.out.println(outputName);
+            return outputName;
+    }
 }

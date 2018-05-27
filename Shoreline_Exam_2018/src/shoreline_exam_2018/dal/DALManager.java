@@ -12,8 +12,8 @@ import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import shoreline_exam_2018.be.InputField;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputField;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -46,6 +46,7 @@ public class DALManager implements DALFacade
     private static User currentUser;
     private static String defaultInputDir;
     private static String defaultOutputDir;
+    private static String defaultProfileID;
 
     public DALManager()
     {
@@ -171,7 +172,7 @@ public class DALManager implements DALFacade
     @Override
     public void updateDefaultDirectory(String[] directory, String input, String output) throws DALException, IOException
     {
-        propWriter.updateDefaultDirectory(directory);
+        propWriter.updateProperties(directory);
         this.defaultInputDir = input;
         this.defaultOutputDir = output;
     }
@@ -187,6 +188,17 @@ public class DALManager implements DALFacade
     {
         this.defaultInputDir = inputValue;
     }
+    
+    @Override
+    public void addDefaultProfile(String profile) {
+        this.defaultProfileID = profile;
+    }
+    
+    @Override
+    public void updateDefaultProfile(String[] profile) throws DALException, IOException {
+        propWriter.updateProperties(profile);
+        this.defaultProfileID = profile[1];
+    }
 
     @Override
     public String[] getDefaultDirectories()
@@ -195,6 +207,11 @@ public class DALManager implements DALFacade
         directories[1] = defaultInputDir;
         directories[0] = defaultOutputDir;
         return directories;
+    }
+    
+    @Override
+    public String getDefaultProfile() {
+        return defaultProfileID;
     }
 
     @Override

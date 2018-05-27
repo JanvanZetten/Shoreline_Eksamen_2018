@@ -2,7 +2,6 @@ package shoreline_exam_2018.bll;
 
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -13,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import shoreline_exam_2018.be.Log;
@@ -36,15 +37,13 @@ import shoreline_exam_2018.gui.model.AutoUpdater;
 public class BLLManager implements BLLFacade
 {
 
-    private ConversionBoxManager cMan;
-    private DALFacade dal;
-    private LogManager logMng;
+    private final DALFacade dal;
+    private final LogManager logMng;
+    private final DirectoryListenerManager dirListenerMan;
     private static final BLLManager INSTANCE = new BLLManager();
-    private DirectoryListenerManager dirListenerMan;
 
     private BLLManager()
     {
-        cMan = new ConversionBoxManager();
         dal = new DALManager();
         logMng = new LogManager();
         dirListenerMan = new DirectoryListenerManager();
@@ -217,11 +216,7 @@ public class BLLManager implements BLLFacade
         {
             dal.updateDefaultDirectory(directory, input, output);
         }
-        catch (DALException ex)
-        {
-            throw new BLLException(ex.getMessage(), ex.getCause());
-        }
-        catch (IOException ex)
+        catch (DALException | IOException ex)
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
@@ -238,19 +233,33 @@ public class BLLManager implements BLLFacade
     {
         dal.addDefaultInput(inputValue);
     }
+    
+    @Override
+    public void addDefaultProfile(String profile) throws BLLException {
+        dal.addDefaultProfile(profile);
+    }
+    
+    @Override
+    public void updateDefaultProfile(String[] profile) throws BLLException {
+        try {
+            dal.updateDefaultProfile(profile);
+        } catch (DALException | IOException ex) {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
 
     @Override
     public String[] getDefaultDirectories()
     {
         return dal.getDefaultDirectories();
     }
+    
+    @Override
+    public int getDefaultProfile() {
+        int i = Integer.parseInt(dal.getDefaultProfile());
+        return i;
+    }
 
-    /**
-     * Checks for existing and adds number to it to get a unique filename
-     *
-     * @param outputFile
-     * @return
-     */
     @Override
     public Path checkForExisting(Path outputFile)
     {
@@ -311,13 +320,13 @@ public class BLLManager implements BLLFacade
 
                     String name = split[split.length - 1];
 
-                    String output = outputPath + File.separator + name + ".json";
+                    String output = outputPath + File.separator + FileUtils.removeExtension(name) + ".json";
 
                     Platform.runLater(() ->
                     {
                         try
                         {
-                            conversionBoxMulti.addJob(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
+                            conversionBoxMulti.addBox(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
                         }
                         catch (BLLException ex)
                         {
@@ -349,5 +358,4 @@ public class BLLManager implements BLLFacade
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
-
 }

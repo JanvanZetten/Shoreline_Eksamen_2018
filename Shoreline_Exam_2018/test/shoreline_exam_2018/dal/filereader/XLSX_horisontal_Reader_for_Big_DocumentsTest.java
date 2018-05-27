@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import shoreline_exam_2018.be.InputObject;
+import shoreline_exam_2018.be.input.InputObject;
 import shoreline_exam_2018.dal.DALException;
 
 /**

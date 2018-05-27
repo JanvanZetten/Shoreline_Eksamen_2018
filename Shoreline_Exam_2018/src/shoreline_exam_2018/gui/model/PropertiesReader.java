@@ -10,10 +10,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.List;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
@@ -25,13 +25,14 @@ import shoreline_exam_2018.bll.LoggingHelper;
 public class PropertiesReader {
 
     BLLFacade bll;
-    List<String> valueList = new ArrayList<String>();
+    // Valuelist contains the property value.
+    ArrayList<String[]> valueList = new ArrayList<>();
 
     public PropertiesReader() {
         bll = BLLManager.getInstance();
         
         readProperties();
-        setDefaultDirectories();
+        setDefaults();
     }
     
     /**
@@ -46,9 +47,10 @@ public class PropertiesReader {
 
             Enumeration enuKeys = properties.keys();
             while (enuKeys.hasMoreElements()) {
-                String key = (String) enuKeys.nextElement();
-                String value = properties.getProperty(key);
-                valueList.add(value);
+                String[] props = new String[2];
+                props[0] = (String) enuKeys.nextElement();
+                props[1] = properties.getProperty(props[0]);
+                valueList.add(props);
             }
 
         } catch (FileNotFoundException ex) {
@@ -60,8 +62,23 @@ public class PropertiesReader {
         }
     }
 
-    private void setDefaultDirectories() {
-        bll.addDefaultOutput(valueList.get(0));
-        bll.addDefaultInput(valueList.get(1));
+    private void setDefaults() {
+        for (String[] strings : valueList) {
+            if (strings[0].equals("inputDir")) {
+                bll.addDefaultInput(strings[1]);
+            }
+            
+            if (strings[0].equals("outputDir")) {
+                bll.addDefaultOutput(strings[1]);
+            }
+            
+            if (strings[0].equals("defaultProfile")) {
+                try {
+                    bll.addDefaultProfile(strings[1]);
+                } catch (BLLException ex) {
+                    AlertFactory.showError("Properties could not be read", "Error: " + ex.getMessage());
+                }
+            }
+        }
     }
 }
