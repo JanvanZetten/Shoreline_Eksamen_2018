@@ -23,37 +23,19 @@ import shoreline_exam_2018.be.output.OutputPair;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairDate;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairJson;
 import shoreline_exam_2018.be.output.jsonpair.JsonPairString;
+import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.output.Writer;
 
 /**
  *
  * @author Asbamz
  */
-public class JsonDAOTest
+public class JsonWriterTest
 {
+    private JsonPairJson jsonObj;
 
-    public JsonDAOTest()
+    public JsonWriterTest()
     {
-    }
-
-    @BeforeClass
-    public static void setUpClass()
-    {
-    }
-
-    @AfterClass
-    public static void tearDownClass()
-    {
-    }
-
-    /**
-     * Test of createFile method, of class JsonWriter.
-     */
-    @Test
-    public void testCreateFile() throws Exception
-    {
-        /*
-        System.out.println("JsonWriter:testCreateFile");
         List<OutputPair> thisShouldWork = new ArrayList<>();
         thisShouldWork.add(new JsonPairString("siteName", ""));
         thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
@@ -75,7 +57,27 @@ public class JsonDAOTest
         OutputPair oio = new JsonPairJson("planning", oioArr);
         thisShouldWork.add(oio);
 
-        JsonPairJson jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
+        jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
+    }
+
+    @BeforeClass
+    public static void setUpClass()
+    {
+    }
+
+    @AfterClass
+    public static void tearDownClass()
+    {
+    }
+
+    /**
+     * Test of createFile method, of class JsonWriter.
+     */
+    @Test
+    public void testCreateFile() throws Exception
+    {
+        /*
+        System.out.println("JsonWriter:testCreateFile");
 
         List<OutputPair> jpArr = new ArrayList<>();
         jpArr.add(jsonObj);
@@ -115,28 +117,6 @@ public class JsonDAOTest
     public void writeObjectToFile() throws Exception
     {
         System.out.println("JsonDAO:writeObjectToFile");
-        List<OutputPair> thisShouldWork = new ArrayList<>();
-        thisShouldWork.add(new JsonPairString("siteName", ""));
-        thisShouldWork.add(new JsonPairString("assetSerialNumber", "asset._id"));
-        thisShouldWork.add(new JsonPairString("type", "SAP import field -> 'Order Type'"));
-        thisShouldWork.add(new JsonPairString("externalWorkOrderId", "SAP import field -> 'Order'"));
-        thisShouldWork.add(new JsonPairString("systemStatus", "SAP import field -> 'System status'"));
-        thisShouldWork.add(new JsonPairString("userStatus", "SAP import field -> 'User status'"));
-        thisShouldWork.add(new JsonPairDate("createdOn", Calendar.getInstance().getTime()));
-        thisShouldWork.add(new JsonPairString("createdBy", "SAP"));
-        thisShouldWork.add(new JsonPairString("name", "SAP import field -> 'Opr. short text' if empty then  'Description2'"));
-        thisShouldWork.add(new JsonPairString("priority", "SAP import field -> 'priority' if set else 'Low'"));
-        thisShouldWork.add(new JsonPairString("status", "NEW"));
-
-        List<OutputPair> oioArr = new ArrayList<>();
-        oioArr.add(new JsonPairString("latestFinishDate", "Datetime Object"));
-        oioArr.add(new JsonPairString("earliestStartDate", "Datetime Object"));
-        oioArr.add(new JsonPairString("latestStartDate", "Datetime Object"));
-        oioArr.add(new JsonPairString("estimatedTime", ""));
-        OutputPair oio = new JsonPairJson("planning", oioArr);
-        thisShouldWork.add(oio);
-
-        JsonPairJson jsonObj = new JsonPairJson("jsonObject", thisShouldWork);
 
         Writer jdao = new JsonWriter(Paths.get(System.getProperty("user.dir") + "/test.json"));
         jdao.writeObjectToFile(jsonObj);
@@ -171,4 +151,29 @@ public class JsonDAOTest
         }
     }
 
+    @Test
+    public void testBigFile() throws Exception
+    {
+        System.out.println("JsonDAO:testBigFile");
+
+        Writer jdao = new JsonWriter(Paths.get(System.getProperty("user.dir") + "/testBIG.json"));
+
+        try
+        {
+            // Loop to check memory. Uses 200-300MB memory.
+            for (int i = 0; i < 500000; i++)
+            {
+                jdao.writeObjectToFile(jsonObj);
+            }
+            jdao.closeStream();
+        }
+        catch (DALException ex)
+        {
+
+        }
+        finally
+        {
+            Files.deleteIfExists(Paths.get(System.getProperty("user.dir") + "/testBIG.json"));
+        }
+    }
 }

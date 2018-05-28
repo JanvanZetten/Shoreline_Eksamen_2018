@@ -50,11 +50,11 @@ public class DirectoryListenerTest
             {
                 if (path != null)
                 {
-                    System.out.println(path + " lol");
+                    System.out.println(path + " test");
                 }
                 else
                 {
-                    System.out.println("WAT");
+                    System.out.println("path missing");
                 }
             }
         };
@@ -70,7 +70,7 @@ public class DirectoryListenerTest
                 }
                 else
                 {
-                    System.out.println("WAT error");
+                    System.out.println("error");
                 }
             }
         };
@@ -86,7 +86,7 @@ public class DirectoryListenerTest
                 }
                 else
                 {
-                    System.out.println("WAT closed");
+                    System.out.println("closed");
                 }
             }
         };
