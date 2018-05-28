@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.bll.converters;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -105,7 +107,7 @@ public class ConversionTaskManager
     }
 
     /**
-     * Resumes the task after it has been paused. 
+     * Resumes the task after it has been paused.
      */
     public void resumeTask()
     {
@@ -140,9 +142,20 @@ public class ConversionTaskManager
                 {
                     AlertFactory.showError("Conversion Error", ex.getMessage());
                     LoggingHelper.logException(ex);
-                    
+
                     isCanceled.setValue(true);
                     cBox.removeFromList();
+                }
+                else
+                {
+                    System.out.println("Unhandled exception: " + ex.getClass() + " " + ex.getLocalizedMessage() + " " + ex.getMessage() + " " + ex.getCause());
+
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    ex.printStackTrace(pw);
+                    String st = "";
+                    st = sw.toString(); // stack trace as a string
+                    System.out.println("Exception: " + ex + " stacktrace: " + st);
                 }
             }
         });

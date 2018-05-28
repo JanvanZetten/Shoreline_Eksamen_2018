@@ -28,7 +28,8 @@ import shoreline_exam_2018.dal.output.json.JsonWriter;
  *
  * @author janvanzetten
  */
-public class ConverterTask extends Task {
+public class ConverterTask extends Task
+{
 
     Reader reader;
     Writer writer;
@@ -40,14 +41,21 @@ public class ConverterTask extends Task {
     Path inputFile;
     Path outputFile;
 
-    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException {
+    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
+    {
         String filetype = FileUtils.getFiletype(inputFile);
-        try {
-            if (filetype.equalsIgnoreCase("xlsx")) {
+        try
+        {
+            if (filetype.equalsIgnoreCase("xlsx"))
+            {
                 reader = new XLSX_horisontal_Reader_for_Big_Documents(inputFile.toString());
-            } else if (filetype.equalsIgnoreCase("csv")) {
+            }
+            else if (filetype.equalsIgnoreCase("csv"))
+            {
                 reader = new CSV_Horisontal_Reader(inputFile.toString());
-            }else{
+            }
+            else
+            {
                 throw new BLLException("The file type is not supported");
             }
             writer = new JsonWriter(outputFile);
@@ -58,32 +66,39 @@ public class ConverterTask extends Task {
             this.isCanceld = isCanceld;
             this.isOperating = isOperating;
             this.isDone = isDone;
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    protected Object call() throws Exception {
-        try {
+    protected Object call() throws Exception
+    {
+        int currentrow = 0;
+        try
+        {
             updateProgress(0, 1);
-            int currentrow = 0;
             int totalRows = reader.numberOfRows();
 
-            while (reader.hasNext()) {
+            while (reader.hasNext())
+            {
                 InputObject input = read();
 
                 currentrow++;
 
                 updateProgress(currentrow, totalRows);
 
-                if (isCanceld.getValue()) {
+                if (isCanceld.getValue())
+                {
                     stop();
                     //Deletes the output file from the outputPath.
                     Files.delete(outputFile);
                     return null;
                 }
-                while (!isOperating.getValue()) {
+                while (!isOperating.getValue())
+                {
                     Thread.sleep(1000);
                 }
 
@@ -96,17 +111,22 @@ public class ConverterTask extends Task {
             stop();
 
             return null;
-        } catch (BLLException | DALException ex) {
+        }
+        catch (BLLException | DALException ex)
+        {
             stop();
             String str = "";
 
-            try {
+            try
+            {
                 Files.delete(outputFile);
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 str += e.getMessage();
             }
 
-            throw new BLLException(ex.getMessage() + " " + str, ex.getCause());
+            throw new BLLException("#" + currentrow + ", " + ex.getMessage() + " " + str, ex.getCause());
         }
     }
 
@@ -116,10 +136,14 @@ public class ConverterTask extends Task {
      * @return
      * @throws BLLException
      */
-    private InputObject read() throws BLLException {
-        try {
+    private InputObject read() throws BLLException
+    {
+        try
+        {
             return reader.getNext();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -131,10 +155,14 @@ public class ConverterTask extends Task {
      * @return
      * @throws BLLException
      */
-    private OutputPair convert(InputObject input) throws BLLException {
-        try {
+    private OutputPair convert(InputObject input) throws BLLException
+    {
+        try
+        {
             return new JsonPairJson("", mapper.mapInputObjectToOutputpairList(selectedProfile.getStructure(), input));
-        } catch (BLLException ex) {
+        }
+        catch (BLLException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -145,10 +173,14 @@ public class ConverterTask extends Task {
      * @param output
      * @throws BLLException
      */
-    private void write(OutputPair output) throws BLLException {
-        try {
+    private void write(OutputPair output) throws BLLException
+    {
+        try
+        {
             writer.writeObjectToFile(output);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -158,10 +190,14 @@ public class ConverterTask extends Task {
      *
      * @throws BLLException
      */
-    public void stop() throws BLLException {
-        try {
+    public void stop() throws BLLException
+    {
+        try
+        {
             writer.closeStream();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }

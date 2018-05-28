@@ -36,10 +36,11 @@ public class RowToOutputPairMapper
      * get a List of outputpairs with the data from the inputObject and the
      * structure and fields from the structObject
      *
-     * @param structObject the object describing which data should convert to what
-     * @param inputObject the inputObject from which to load the data 
+     * @param structObject the object describing which data should convert to
+     * what
+     * @param inputObject the inputObject from which to load the data
      * @return a list of outputpairs
-     * 
+     *
      * @throws BLLException if the stuctObject has a structEntry which is not
      * supported. The supported are: StructEntryArray, StructEntryDate,
      * StructEntryDouble, StructEntryInteger, StructEntryObject and
@@ -85,9 +86,15 @@ public class RowToOutputPairMapper
                             date = inputField.getDateValue();
                         }
 
-                        
-                        output.add(new JsonPairDate(se.getColumnName(), date));
-                        
+                        if (date != null)
+                        {
+                            output.add(new JsonPairDate(se.getColumnName(), date));
+                        }
+                        else
+                        {
+                            throw new BLLException("Was not able to get Date: " + se.getInputIndex() + ":" + se.getColumnName() + ":" + inputField.getValue());
+                        }
+
                     }
                     else
                     {

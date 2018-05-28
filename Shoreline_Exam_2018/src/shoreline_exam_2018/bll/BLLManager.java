@@ -1,5 +1,6 @@
 package shoreline_exam_2018.bll;
 
+import shoreline_exam_2018.bll.Utilities.Encrypter;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
 import java.io.File;
