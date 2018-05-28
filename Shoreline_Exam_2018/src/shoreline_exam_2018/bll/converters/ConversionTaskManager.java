@@ -86,7 +86,7 @@ public class ConversionTaskManager
                         }
 
                     }
-                    //task = null;
+                    task = null;
                     isDone.removeListener(this);
                     isDone = null;
                 }

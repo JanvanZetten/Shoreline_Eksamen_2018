@@ -36,7 +36,6 @@ public class FileUtils {
             for (int i = 1; i < (outputSplit.length - 1); i++) {
                 outputName = outputName + "." +  outputSplit[i];
             }
-            System.out.println(outputName);
             return outputName;
     }
 }
