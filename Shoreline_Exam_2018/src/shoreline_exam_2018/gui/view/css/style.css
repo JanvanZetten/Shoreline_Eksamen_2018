@@ -272,8 +272,15 @@ and open the template in the editor.
 .scroll-bar:horizontal .thumb,
 .scroll-bar:vertical .thumb {
     -fx-background-color: #DFDFDF;
-    -fx-background-insets: 1;
     -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal .thumb {
+    -fx-background-insets: 1 0 1 0;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-insets: 0 1 0 1;
 }
 
 .scroll-pane .corner{
