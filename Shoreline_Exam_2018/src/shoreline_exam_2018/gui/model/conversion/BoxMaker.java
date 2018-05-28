@@ -17,29 +17,31 @@ import shoreline_exam_2018.gui.model.AlertFactory;
  *
  * @author alexl
  */
-public class BoxMaker {
+public class BoxMaker
+{
 
     private final ConversionBoxManager cManager;
     private final BLLFacade bll;
-    
-    public BoxMaker() {
+
+    public BoxMaker()
+    {
         cManager = new ConversionBoxManager();
         bll = BLLManager.getInstance();
     }
-    
+
     /**
      * Start a conversion with the given input and output files
      *
      * @param currentProfile = The profile initiating the conversion
-     * @param listBoxes      = The list that contains this single box.
-     * @param selectedFile   = The file that has been selected.
+     * @param listBoxes = The list that contains this single box.
+     * @param selectedFile = The file that has been selected.
      * @param outputFile
      * @return the conversion job that is started
      */
-    public ConversionBoxSingle createSingleBox(Profile currentProfile, 
-                                                     ListView<ConversionBoxInterface> listBoxes, 
-                                                     File selectedFile, 
-                                                     File outputFile)
+    public ConversionBoxSingle createSingleBox(Profile currentProfile,
+            ListView<ConversionBoxInterface> listBoxes,
+            File selectedFile,
+            File outputFile)
     {
         ConversionBoxSingle conversionBoxSingle = null;
         if (selectedFile != null && outputFile != null && currentProfile != null)
@@ -49,7 +51,7 @@ public class BoxMaker {
             String[] split = selectedFile.getAbsolutePath().split(pattern);
 
             name = split[split.length - 1];
-            
+
             try
             {
                 String output = outputFile.toPath() + File.separator + FileUtils.removeExtension(name) + ".json";
@@ -78,15 +80,14 @@ public class BoxMaker {
      * @param listJobs
      * @param selectedFile
      * @param outputFile
-     * @return 
+     * @return
      */
-    public ConversionBoxMulti createMultiBox(Profile currentProfile, 
-                                                   ListView<ConversionBoxInterface> listJobs, 
-                                                   File selectedFile, 
-                                                   File outputFile)
+    public ConversionBoxMulti createMultiBox(Profile currentProfile,
+            ListView<ConversionBoxInterface> listJobs,
+            File selectedFile,
+            File outputFile)
     {
         ConversionBoxMulti conversionBoxMulti = null;
-        ArrayList<ConversionBoxSingle> listConversions = new ArrayList<>();
         ListView<ConversionBoxInterface> list = new ListView<>();
 
         if (selectedFile != null && outputFile != null && currentProfile != null)
@@ -110,7 +111,7 @@ public class BoxMaker {
                     {
                         String output = outputFile.toPath() + File.separator + FileUtils.removeExtension(file.getName()) + ".json";
                         File correctOutputFile = new File(output);
-                        listConversions.add(cManager.newConversion(file.getName(), file.toPath(), correctOutputFile.toPath(), currentProfile, list, conversionBoxMulti));
+                        conversionBoxMulti.addBox(cManager.newConversion(file.getName(), file.toPath(), correctOutputFile.toPath(), currentProfile, list, conversionBoxMulti));
                     }
                     catch (BLLException ex)
                     {
@@ -119,7 +120,6 @@ public class BoxMaker {
                     }
                 }
             }
-            conversionBoxMulti.setupPane(listConversions);
             addFolderListener(conversionBoxMulti, selectedFile.getPath(), cManager, outputFile);
             return conversionBoxMulti;
         }
@@ -129,12 +129,13 @@ public class BoxMaker {
             return null;
         }
     }
-    
+
     /**
-     * Creates a listener to a created ConversionBoxMulti. 
+     * Creates a listener to a created ConversionBoxMulti.
      * @param conversionBoxMulti = The ConversionBoxMulti to have the listener.
-     * @param path               = The input path of the folder.
-     * @param cManager           = The ConversionBoxManager that connects task and box creation.
+     * @param path = The input path of the folder.
+     * @param cManager = The ConversionBoxManager that connects task and box
+     * creation.
      * @param outputFile
      */
     private void addFolderListener(ConversionBoxMulti conversionBoxMulti, String path, ConversionBoxManager cManager, File outputFile)
