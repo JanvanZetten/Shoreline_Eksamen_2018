@@ -6,6 +6,7 @@
 package shoreline_exam_2018.be.input;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -23,6 +24,37 @@ public class InputObject
     public InputField getField(int index) throws IndexOutOfBoundsException
     {
         return fields.get(index);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.fields);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final InputObject other = (InputObject) obj;
+        if (!Objects.equals(this.fields, other.fields))
+        {
+            return false;
+        }
+        return true;
     }
 
 }

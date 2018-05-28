@@ -5,6 +5,7 @@
  */
 package shoreline_exam_2018.be;
 
+import java.util.Objects;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 
 /**
@@ -70,4 +71,51 @@ public class Profile
     {
         return createdBy;
     }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 89 * hash + this.id;
+        hash = 89 * hash + Objects.hashCode(this.name);
+        hash = 89 * hash + Objects.hashCode(this.structure);
+        hash = 89 * hash + Objects.hashCode(this.createdBy);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final Profile other = (Profile) obj;
+        if (this.id != other.id)
+        {
+            return false;
+        }
+        if (!Objects.equals(this.name, other.name))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.createdBy, other.createdBy))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.structure, other.structure))
+        {
+            return false;
+        }
+        return true;
+    }
+
 }

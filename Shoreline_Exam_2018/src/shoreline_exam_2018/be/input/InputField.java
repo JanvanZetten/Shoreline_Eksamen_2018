@@ -6,12 +6,14 @@
 package shoreline_exam_2018.be.input;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
  * @author janvanzetten
  */
-public class InputField {
+public class InputField
+{
 
     String stringField;
     Date dateField;
@@ -23,7 +25,8 @@ public class InputField {
      *
      * @param type
      */
-    public InputField(InputFieldType type) {
+    public InputField(InputFieldType type)
+    {
         this.type = type;
     }
 
@@ -33,10 +36,12 @@ public class InputField {
      * @param type the fieleds type as enum
      * @param value the initial value
      */
-    public InputField(InputFieldType type, Object value) {
+    public InputField(InputFieldType type, Object value)
+    {
         this.type = type;
 
-        switch (type) {
+        switch (type)
+        {
             case STRING:
                 stringField = (String) value;
                 break;
@@ -56,8 +61,10 @@ public class InputField {
      *
      * @return
      */
-    public Object getValue() {
-        switch (type) {
+    public Object getValue()
+    {
+        switch (type)
+        {
             case STRING:
                 return stringField;
             case DATE:
@@ -74,8 +81,10 @@ public class InputField {
      *
      * @return the string or empty string if type is empty
      */
-    public String getStringValue() {
-        switch (type) {
+    public String getStringValue()
+    {
+        switch (type)
+        {
             case STRING:
                 return stringField;
             case NUMERIC:
@@ -92,8 +101,10 @@ public class InputField {
      *
      * @return the date or null when type is empty
      */
-    public Date getDateValue() {
-        if (type == InputFieldType.EMPTY) {
+    public Date getDateValue()
+    {
+        if (type == InputFieldType.EMPTY)
+        {
             return null;
         }
         return dateField;
@@ -104,8 +115,10 @@ public class InputField {
      *
      * @return
      */
-    public Double getDoubleValue() {
-        if (type == InputFieldType.NUMERIC) {
+    public Double getDoubleValue()
+    {
+        if (type == InputFieldType.NUMERIC)
+        {
             return numericfield;
         }
         return null;
@@ -116,28 +129,80 @@ public class InputField {
      *
      * @return
      */
-    public Integer getIntValue() {
-        if (type == InputFieldType.NUMERIC) {
+    public Integer getIntValue()
+    {
+        if (type == InputFieldType.NUMERIC)
+        {
             Double asdouble = numericfield;
             return asdouble.intValue();
         }
         return null;
     }
 
-    public void setStringField(String stringField) {
+    public void setStringField(String stringField)
+    {
         this.stringField = stringField;
     }
 
-    public void setDateField(Date dateField) {
+    public void setDateField(Date dateField)
+    {
         this.dateField = dateField;
     }
 
-    public void setNumericfield(double numericfield) {
+    public void setNumericfield(double numericfield)
+    {
         this.numericfield = numericfield;
     }
 
-    public InputFieldType getType() {
+    public InputFieldType getType()
+    {
         return type;
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 29 * hash + Objects.hashCode(this.stringField);
+        hash = 29 * hash + Objects.hashCode(this.dateField);
+        hash = 29 * hash + Objects.hashCode(this.numericfield);
+        hash = 29 * hash + Objects.hashCode(this.type);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final InputField other = (InputField) obj;
+        if (!Objects.equals(this.stringField, other.stringField))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.dateField, other.dateField))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.numericfield, other.numericfield))
+        {
+            return false;
+        }
+        if (this.type != other.type)
+        {
+            return false;
+        }
+        return true;
     }
 
 }

@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.be.output.rule;
 
+import java.util.Objects;
+
 /**
  *
  * @author Asbamz
@@ -36,4 +38,41 @@ public class DefaultDoubleRule extends Rule<Double, Double>
     {
         return isForced;
     }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 67 * hash + Objects.hashCode(this.defaultValue);
+        hash = 67 * hash + (this.isForced ? 1 : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final DefaultDoubleRule other = (DefaultDoubleRule) obj;
+        if (this.isForced != other.isForced)
+        {
+            return false;
+        }
+        if (!Objects.equals(this.defaultValue, other.defaultValue))
+        {
+            return false;
+        }
+        return true;
+    }
+
 }

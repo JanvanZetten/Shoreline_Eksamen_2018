@@ -8,6 +8,7 @@ package shoreline_exam_2018.be.output.rule;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -184,4 +185,36 @@ public class DateFormatRule extends Rule<Date, String>
     {
         return DATE_FORMAT;
     }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.DATE_FORMAT);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final DateFormatRule other = (DateFormatRule) obj;
+        if (!Objects.equals(this.DATE_FORMAT, other.DATE_FORMAT))
+        {
+            return false;
+        }
+        return true;
+    }
+
 }

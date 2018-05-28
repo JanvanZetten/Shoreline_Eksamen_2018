@@ -7,6 +7,7 @@ package shoreline_exam_2018.be.output.jsonpair;
 
 import shoreline_exam_2018.be.output.OutputPair;
 import java.util.List;
+import java.util.Objects;
 import org.json.simple.JSONObject;
 
 /**
@@ -52,4 +53,41 @@ public class JsonPairJson implements OutputPair<JSONObject>
     {
         return value.toJSONString();
     }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 53 * hash + Objects.hashCode(this.key);
+        hash = 53 * hash + Objects.hashCode(this.value);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
+            return true;
+        }
+        if (obj == null)
+        {
+            return false;
+        }
+        if (getClass() != obj.getClass())
+        {
+            return false;
+        }
+        final JsonPairJson other = (JsonPairJson) obj;
+        if (!Objects.equals(this.key, other.key))
+        {
+            return false;
+        }
+        if (!Objects.equals(this.value, other.value))
+        {
+            return false;
+        }
+        return true;
+    }
+
 }
