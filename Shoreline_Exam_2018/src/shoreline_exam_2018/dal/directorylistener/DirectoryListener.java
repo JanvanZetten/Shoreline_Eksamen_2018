@@ -119,6 +119,7 @@ public class DirectoryListener
         });
 
         thread.setDaemon(true);
+        thread.setPriority(Thread.MIN_PRIORITY);
         thread.start();
     }
 

@@ -5,13 +5,14 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import shoreline_exam_2018.gui.model.AlertFactory;
 
-/** 
- *  This class creates a thread that checks changes in the database every second 
- *  to update the log list.
+/**
+ * This class creates a thread that checks changes in the database every second
+ * to update the log list.
  * @author alexl
  */
-public class LogChangeChecker extends Observable {
-    
+public class LogChangeChecker extends Observable
+{
+
     private BLLFacade bll;
     private int lastLogID;
     private static Thread thread;
@@ -19,16 +20,21 @@ public class LogChangeChecker extends Observable {
 
     private final static long WAIT_TIME = 1000;
 
-    public LogChangeChecker() {
-        
-        try {
+    public LogChangeChecker()
+    {
+
+        try
+        {
             bll = BLLManager.getInstance();
             lastLogID = bll.getNewestLog();
-            
+
             thread = new Thread(getTask(Thread.currentThread()));
             thread.setDaemon(true);
+            thread.setPriority(Thread.MIN_PRIORITY);
             thread.start();
-        } catch (BLLException ex) {
+        }
+        catch (BLLException ex)
+        {
             AlertFactory.showError("A connection to the database was lost", ex.getMessage());
         }
     }
@@ -36,24 +42,30 @@ public class LogChangeChecker extends Observable {
     /**
      * Creates a new thread for the ChangeChecker to run on.
      * @param fxThread
-     * @return 
+     * @return
      */
-    private Runnable getTask(Thread fxThread) {
-        Task task = new Task() {
+    private Runnable getTask(Thread fxThread)
+    {
+        Task task = new Task()
+        {
             @Override
-            protected Object call() throws Exception {
-                while (running) {
+            protected Object call() throws Exception
+            {
+                while (running)
+                {
                     int logId = bll.getNewestLog();
-                    if (logId != lastLogID) {
+                    if (logId != lastLogID)
+                    {
                         //if the last log is not the same:
                         setChanged();
-                        Platform.runLater(() -> {
+                        Platform.runLater(() ->
+                        {
                             notifyObservers();
                         });
-                                
+
                         lastLogID = logId;
                     }
-                    
+
                     Thread.sleep(WAIT_TIME);
                 }
                 return null;

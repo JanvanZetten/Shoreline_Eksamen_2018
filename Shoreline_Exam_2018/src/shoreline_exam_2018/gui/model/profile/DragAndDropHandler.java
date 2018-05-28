@@ -134,13 +134,12 @@ public class DragAndDropHandler
 
                     if (fromIndex == null)
                     {
-                        event.setDropCompleted(false);
+                        return;
                     }
                     sei.set(index, null);
                 }
                 header.setText("");
                 example.setText("");
-                event.setDropCompleted(true);
             }
         };
         return onHeaderDragDropped;

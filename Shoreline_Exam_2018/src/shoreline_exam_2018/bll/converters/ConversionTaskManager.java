@@ -131,6 +131,7 @@ public class ConversionTaskManager
     {
         thread = new Thread(task);
         thread.setDaemon(true);
+        thread.setPriority(Thread.MIN_PRIORITY);
 
         task.setOnFailed(e ->
         {
