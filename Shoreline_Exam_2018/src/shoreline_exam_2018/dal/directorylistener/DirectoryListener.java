@@ -65,7 +65,7 @@ public class DirectoryListener
             try (WatchService service = fs.newWatchService())
             {
                 isClosed = false;
-                PATH.register(service, ENTRY_CREATE);
+                PATH.register(service, StandardWatchEventKinds.ENTRY_CREATE);
 
                 WatchKey key = null;
                 while (true)
@@ -80,8 +80,11 @@ public class DirectoryListener
                         {
                             continue;
                         }
-                        else if (ENTRY_CREATE == kind)
+                        else if (StandardWatchEventKinds.ENTRY_CREATE == kind)
                         {
+                            // Wait for system to close file.
+                            Thread.sleep(500);
+
                             // Get new Path.
                             Path newPath = ((WatchEvent<Path>) watchEvent).context();
 
