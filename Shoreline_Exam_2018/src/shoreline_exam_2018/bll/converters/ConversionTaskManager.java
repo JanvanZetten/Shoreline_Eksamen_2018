@@ -5,7 +5,6 @@
  */
 package shoreline_exam_2018.bll.converters;
 
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 import java.nio.file.Path;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,7 +21,6 @@ import shoreline_exam_2018.bll.BLLException;
 import shoreline_exam_2018.bll.BLLFacade;
 import shoreline_exam_2018.bll.BLLManager;
 import shoreline_exam_2018.bll.LoggingHelper;
-import shoreline_exam_2018.bll.converters.ConverterTask;
 import shoreline_exam_2018.gui.model.AlertFactory;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 
@@ -45,9 +43,11 @@ public class ConversionTaskManager
      * Creates listeners for a progressbar for a task and runs the task on a
      * separate thread.
      *
+     * @param taskName
      * @param inputFile
      * @param outputfile
      * @param coversionProfile
+     * @throws shoreline_exam_2018.bll.BLLException
      */
     public ConversionTaskManager(String taskName, Path inputFile, Path outputfile, Profile coversionProfile) throws BLLException
     {
@@ -86,6 +86,7 @@ public class ConversionTaskManager
                         }
 
                     }
+                    task = null;
                     isDone.removeListener(this);
                     isDone = null;
                 }
