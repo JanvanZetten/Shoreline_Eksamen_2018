@@ -61,6 +61,11 @@ and open the template in the editor.
     -fx-background-color: #4986A8;
 }
 
+#ICONTAB.tab {
+    -fx-pref-width: 57px;
+    -fx-alignment: CENTER_RIGHT;
+}
+
 /* Set tab label alignment and text fill */
 .tab .tab-label {
     -fx-alignment: CENTER;
@@ -78,19 +83,19 @@ and open the template in the editor.
     -fx-border-color: transparent;
 }
 
-.titled-pane 
-{ 
+.titled-pane
+{
     -fx-text-fill: #FFFFFF;
 }
 
-.titled-pane > .title 
+.titled-pane > .title
 {
     -fx-background-color: #737f8c, #737f8c, #737f8c;
     -fx-background-radius: 10 10 10 10, 10 10 10 10, 10 10 10 10;
-    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em; 
+    -fx-padding: 0.166667em 0.833333em 0.25em 0.833333em;
 }
 
-.titled-pane:expanded > .title 
+.titled-pane:expanded > .title
 {
     -fx-background-radius: 10 10 0 0, 10 10 10 10, 10 10 10 10;
 }
@@ -226,7 +231,63 @@ and open the template in the editor.
     -fx-background-radius: 0, 0, 0, 0;
 }
 
-#ICONTAB.tab {
-    -fx-pref-width: 57px;
-    -fx-alignment: CENTER_RIGHT;
+.split-pane:horizontal > .split-pane-divider,
+.split-pane:vertical > .split-pane-divider {
+    -fx-background-color: #DFDFDF;
+}
+
+.scroll-bar:horizontal ,
+.scroll-bar:vertical{
+    -fx-background-color: #DFDFDF;
+}
+
+.scroll-bar:horizontal {
+    -fx-min-height: 16.5;
+    -fx-pref-height: 16.5;
+}
+
+.scroll-bar:vertical {
+    -fx-min-width: 16.5;
+    -fx-pref-width: 16.5;
+}
+
+.scroll-bar > .increment-button > .increment-arrow,
+.scroll-bar > .decrement-button > .decrement-arrow {
+    -fx-background-color: #4D4D4D;
+}
+
+.increment-button,
+.decrement-button {
+    -fx-fill: #FFFFFF;
+    -fx-background-color: transparent;
+    -fx-border-color: #4D4D4D;
+}
+
+.scroll-bar:horizontal .track ,
+.scroll-bar:vertical .track{
+    -fx-background-color: #4D4D4D;
+    -fx-background-radius: 0;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #DFDFDF;
+    -fx-background-insets: 1;
+    -fx-background-radius: 0;
+}
+
+.scroll-pane .corner{
+    -fx-background-color: #4D4D4D;
+    -fx-background-insets: 0,-2,-2,0;
+}
+
+.list-view .corner{
+    -fx-background-color: #4D4D4D;
+}
+.list-view .scroll-bar:horizontal {
+    -fx-padding: 0 0 1 0;
+}
+
+.list-view .scroll-bar:vertical {
+    -fx-padding: 0 1 0 0;
 }
