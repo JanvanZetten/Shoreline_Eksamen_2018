@@ -310,6 +310,9 @@ public class RuleEntitySimple
         {
             switch (newValue)
             {
+                case "No Rules":
+                    removeRules();
+                    break;
                 case "Default":
                     showDefaultValue();
                     break;
@@ -327,7 +330,7 @@ public class RuleEntitySimple
 
         // Available choices.
         ObservableList<String> rules = FXCollections.observableArrayList();
-        rules.addAll("No Rule", "Default", "Backup");
+        rules.addAll("No Rules", "Default", "Backup");
         if (se.getSST() == SimpleStructType.DATE)
         {
             rules.add("DateFormat");
@@ -368,6 +371,21 @@ public class RuleEntitySimple
                     }
                 }
                 break;
+        }
+    }
+
+    /**
+     * Removes all rules for element.
+     */
+    private void removeRules()
+    {
+        hideAll();
+        se.setBackupIndex(null);
+        se.setDefaultValue(null);
+        if (se instanceof StructEntityDate)
+        {
+            StructEntityDate sed = (StructEntityDate) se;
+            sed.setDfr(null);
         }
     }
 
