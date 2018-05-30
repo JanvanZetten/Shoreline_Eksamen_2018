@@ -63,11 +63,11 @@ public class BLLManager implements BLLFacade
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLException
+    public Profile addProfile(String name, StructEntityObject structure) throws BLLException
     {
         try
         {
-            return dal.addProfile(name, structure, createdBy);
+            return dal.addProfile(name, structure);
         }
         catch (DALException ex)
         {

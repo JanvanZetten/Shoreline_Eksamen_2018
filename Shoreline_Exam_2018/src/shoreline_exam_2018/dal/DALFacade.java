@@ -30,7 +30,7 @@ public interface DALFacade
      * @return
      * @throws DALException 
      */
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException;
+    public Profile addProfile(String name, StructEntityObject structure) throws DALException;
 
     /**
      * Gets all profiles from the database.

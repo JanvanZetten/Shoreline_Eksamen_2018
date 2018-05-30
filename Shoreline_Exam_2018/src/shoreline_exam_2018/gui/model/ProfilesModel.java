@@ -234,7 +234,7 @@ public class ProfilesModel
                 try
                 {
                     // Add Profile to database.
-                    Profile profile = bll.addProfile(profileName, seo, 0);
+                    Profile profile = bll.addProfile(profileName, seo);
 
                     // If Convert Model is set. Add it to the ComboBox.
                     if (cm != null)

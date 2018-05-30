@@ -59,9 +59,9 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws DALException
+    public Profile addProfile(String name, StructEntityObject structure) throws DALException
     {
-        return profileDAO.addProfile(name, structure, createdBy);
+        return profileDAO.addProfile(name, structure, currentUser.getId());
     }
 
     @Override

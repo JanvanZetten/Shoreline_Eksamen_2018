@@ -53,7 +53,7 @@ public interface BLLFacade
      * @return = The profile that was made with this method.
      * @throws BLLException
      */
-    public Profile addProfile(String name, StructEntityObject structure, int createdBy) throws BLLException;
+    public Profile addProfile(String name, StructEntityObject structure) throws BLLException;
 
     /**
      * Gets all profiles from the database and returns them in a list.
