@@ -126,7 +126,8 @@ public class RowToOutputPairMapper
 
         if (inputField != null
                 && (inputField.getType() == InputFieldType.DATE
-                || inputField.getType() == InputFieldType.STRING || inputField.getType() == InputFieldType.EMPTY))
+                || inputField.getType() == InputFieldType.STRING
+                || inputField.getType() == InputFieldType.EMPTY))
         {
             Date date = null;
             if (inputField.getType() == InputFieldType.STRING)
@@ -186,13 +187,29 @@ public class RowToOutputPairMapper
 
         if (inputField != null
                 && (inputField.getType() == InputFieldType.NUMERIC
+                || inputField.getType() == InputFieldType.STRING
                 || inputField.getType() == InputFieldType.EMPTY))
         {
             Double fieldValue = null;
-            fieldValue = inputField.getDoubleValue();
-            if (fieldValue == null && backupField != null)
+            if (inputField.getType() == InputFieldType.STRING)
             {
-                fieldValue = backupField.getDoubleValue();
+                fieldValue = Double.parseDouble(inputField.getStringValue());
+                if (fieldValue == null && backupField != null)
+                {
+                    fieldValue = Double.parseDouble(backupField.getStringValue());
+                }
+                if (fieldValue == null)
+                {
+                    throw new BLLException("It was not possible to convert String value to Numeric");
+                }
+            }
+            else
+            {
+                fieldValue = inputField.getDoubleValue();
+                if (fieldValue == null && backupField != null)
+                {
+                    fieldValue = backupField.getDoubleValue();
+                }
             }
 
             if (((StructEntityDouble) structEntry).getDefaultValue() != null)
@@ -230,13 +247,29 @@ public class RowToOutputPairMapper
 
         if (inputField != null
                 && (inputField.getType() == InputFieldType.NUMERIC
+                || inputField.getType() == InputFieldType.STRING
                 || inputField.getType() == InputFieldType.EMPTY))
         {
             Integer fieldValue = null;
-            fieldValue = inputField.getIntValue();
-            if (fieldValue == null && backupField != null)
+            if (inputField.getType() == InputFieldType.STRING)
             {
-                fieldValue = backupField.getIntValue();
+                fieldValue = Integer.parseInt(inputField.getStringValue());
+                if (fieldValue == null && backupField != null)
+                {
+                    fieldValue = Integer.parseInt(backupField.getStringValue());
+                }
+                if (fieldValue == null)
+                {
+                    throw new BLLException("It was not possible to convert String value to Numeric");
+                }
+            }
+            else
+            {
+                fieldValue = inputField.getIntValue();
+                if (fieldValue == null && backupField != null)
+                {
+                    fieldValue = backupField.getIntValue();
+                }
             }
 
             if (((StructEntityInteger) structEntry).getDefaultValue() != null)
