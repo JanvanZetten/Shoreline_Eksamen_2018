@@ -46,10 +46,9 @@ public interface BLLFacade
     
     /**
      * Adds a profile to the database.
-     * @param name = Name of the profile.
+     * @param name      = Name of the profile.
      * @param structure = The StructEntityObject that determines how it should
      * convert.
-     * @param createdBy = ID of the user who created the profile.
      * @return = The profile that was made with this method.
      * @throws BLLException
      */
@@ -185,10 +184,24 @@ public interface BLLFacade
      * @return 
      */
     public Path checkForExisting(Path outputPath);
-
+    
+    /**
+     * Updates the default profile in the properties.
+     * @param profile = profile[0] = "defaultProfile", profile[1] = profile ID.
+     * @throws BLLException 
+     */
     public void updateDefaultProfile(String[] profile) throws BLLException;
 
+    /**
+     * Adds a new default profile to the properties.
+     * @param string = ID of the default profile.
+     * @throws BLLException 
+     */
     public void addDefaultProfile(String string) throws BLLException;
     
+    /**
+     * Gets the defualt profile from the properties.
+     * @return the ID of the default profile.
+     */
     public int getDefaultProfile();
 }

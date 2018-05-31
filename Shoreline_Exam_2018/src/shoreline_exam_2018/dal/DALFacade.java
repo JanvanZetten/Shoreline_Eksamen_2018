@@ -131,7 +131,6 @@ public interface DALFacade
      * @return 
      */
     public String[] getDefaultDirectories();
-
     
     /**
      * Checks if the file already exists
@@ -140,9 +139,23 @@ public interface DALFacade
      */
     public boolean doesFileExist(Path file);
     
+    /**
+     * Adds a new default profile to the properties.
+     * @param profile = ID of the default profile.
+     */
     public void addDefaultProfile(String profile);
 
+    /**
+     * Updates the default profile in the properties.
+     * @param profile = profile[0] = "defaultProfile", profile[1] = profile ID.
+     * @throws shoreline_exam_2018.dal.DALException
+     * @throws java.io.IOException
+     */
     public void updateDefaultProfile(String[] profile) throws DALException, IOException;
     
+    /**
+     * Gets the defualt profile from the properties.
+     * @return the ID of the default profile.
+     */
     public String getDefaultProfile();
 }
