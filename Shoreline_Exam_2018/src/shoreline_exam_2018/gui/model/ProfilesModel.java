@@ -174,9 +174,10 @@ public class ProfilesModel
         {
             try
             {
+                String deletedName = selectedProfile.getName();
                 bll.deleteProfile(selectedProfile);
                 cm.getProfiles().remove(selectedProfile);
-                bll.addLog(LogType.PROFILE, "Profile " + selectedProfile.getName() + " was successfully removed from the system.");
+                bll.addLog(LogType.PROFILE, "Profile " + deletedName + " was successfully removed from the system.");
                 AlertFactory.showInformation("Success", "The Profile was successfully been removed from the system.");
             }
             catch (BLLException ex)
