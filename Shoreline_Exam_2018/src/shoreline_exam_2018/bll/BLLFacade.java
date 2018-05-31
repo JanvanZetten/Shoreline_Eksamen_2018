@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.User;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.gui.model.AutoUpdater;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 
 /**
  *
@@ -20,30 +23,6 @@ import shoreline_exam_2018.gui.model.conversion.ConversionBoxManager;
  */
 public interface BLLFacade
 {
-
-    /**
-     * Starts a conversion with the given input and output file using the given
-     * profile.
-     * @param taskName = Name for the conversion job
-     * @param inputFile = The input file that is being converted
-     * @param outputFile = The output file that is being converted to
-     * @param profile = The profile that is used for the conversion
-     * @param listJobs = The list in which the conversion job is contained
-     * @param cMultiJob = The multi job object if one exists. Only used when
-     * folder converting, else, null
-     * @return = A single conversion job.
-     * @throws BLLException
-     */
-//    public ConversionBoxSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException;
-    /**
-     * Creates a ConversionBoxMulti through COnversionManager.
-     * @param currentProfile = The profile that is used for the conversion.
-     * @param list = The list in which the individual single conversion jobs are
-     * contained.
-     * @return = A multi conversion job.
-     * @throws BLLException
-     */
-//    public ConversionBoxMulti startMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> list) throws BLLException;
     /**
      * Adds a profile to the database.
      * @param name = Name of the profile.
@@ -200,18 +179,18 @@ public interface BLLFacade
      * @return
      */
     public Path checkForExisting(Path outputPath);
-    
+
     /**
      * Updates the default profile in the properties.
      * @param profile = profile[0] = "defaultProfile", profile[1] = profile ID.
-     * @throws BLLException 
+     * @throws BLLException
      */
     public void updateDefaultProfile(String[] profile) throws BLLException;
 
     /**
      * Adds a new default profile to the properties.
      * @param string = ID of the default profile.
-     * @throws BLLException 
+     * @throws BLLException
      */
     public void addDefaultProfile(String string) throws BLLException;
 

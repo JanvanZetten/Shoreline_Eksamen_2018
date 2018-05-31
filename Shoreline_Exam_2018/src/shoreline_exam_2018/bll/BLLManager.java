@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
+import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -26,18 +27,22 @@ import shoreline_exam_2018.dal.DALManager;
 import shoreline_exam_2018.dal.directorylistener.DirectoryListenerManager;
 import shoreline_exam_2018.gui.model.AlertFactory;
 import shoreline_exam_2018.gui.model.AutoUpdater;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
+import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 
 /**
  *
  * @author alexl
  */
-public class BLLManager implements BLLFacade {
+public class BLLManager implements BLLFacade
+{
 
     private final DALFacade dal;
     private final DirectoryListenerManager dirListenerMan;
     private static final BLLManager INSTANCE = new BLLManager();
 
-    private BLLManager() {
+    private BLLManager()
+    {
         dal = new DALManager();
         dirListenerMan = new DirectoryListenerManager();
     }
@@ -49,51 +54,72 @@ public class BLLManager implements BLLFacade {
      *
      * @return
      */
-    public static BLLManager getInstance() {
+    public static BLLManager getInstance()
+    {
         return INSTANCE;
     }
 
     @Override
     public Profile addProfile(String name, StructEntityObject structure, HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples) throws BLLException
-        try {
+    {
+        try
+        {
             return dal.addProfile(name, structure, headersIndexAndExamples);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public List<Profile> getAllProfiles() throws BLLException {
-        try {
+    public List<Profile> getAllProfiles() throws BLLException
+    {
+        try
+        {
             return dal.getAllProfiles();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws BLLException {
-        try {
+    public StructEntityObject addStructure(String name, StructEntityObject structure, int createdBy) throws BLLException
+    {
+        try
+        {
             return dal.addStructure(name, structure, createdBy);
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public List<StructEntityObject> getAllStructures() throws BLLException {
-        try {
+    public List<StructEntityObject> getAllStructures() throws BLLException
+    {
+        try
+        {
             return dal.getAllStructures();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLException {
-        try {
+    public HashMap<String, Entry<Integer, String>> getHeadersAndExamplesFromFile(Path path) throws BLLException
+    {
+        try
+        {
             return dal.getHeadersAndExamplesFromFile(path, FileUtils.getFiletype(path));
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
@@ -125,109 +151,149 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
+
+    public User login(String username, String password) throws BLLException
+    {
+        try
+        {
             User currentUser = dal.userLogin(username, encrypt(password));
             return currentUser;
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public String encrypt(String base) throws BLLException {
+    public String encrypt(String base) throws BLLException
+    {
         return Encrypter.encrypt(base);
     }
 
     @Override
-    public List<Log> getAllLogs() throws BLLException {
-        try {
+    public List<Log> getAllLogs() throws BLLException
+    {
+        try
+        {
             return dal.getAllLogs();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
     public Log addLog(LogType type, String message) throws BLLException
-        try {
-        return logMng.addLog(type, message);
-        } catch (DALException ex) {
+    {
+        try
+        {
+            return dal.addLog(type, message);
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public User getcurrentUser() {
+    public User getcurrentUser()
+    {
         return dal.getCurrentUser();
     }
 
     @Override
-    public void createChangeListener(AutoUpdater aThis) {
+    public void createChangeListener(AutoUpdater aThis)
+    {
         new LogChangeChecker().addObserver(aThis);
     }
 
     @Override
-    public int getNewestLog() throws BLLException {
-        try {
+    public int getNewestLog() throws BLLException
+    {
+        try
+        {
             return dal.getNewestLog();
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException {
-        try {
+    public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException
+    {
+        try
+        {
             dal.updateDefaultDirectory(directory, input, output);
-        } catch (DALException | IOException ex) {
+        }
+        catch (DALException | IOException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public void addDefaultOutput(String outputValue) {
+    public void addDefaultOutput(String outputValue)
+    {
         dal.addDefaultOutput(outputValue);
     }
 
     @Override
-    public void addDefaultInput(String inputValue) {
+    public void addDefaultInput(String inputValue)
+    {
         dal.addDefaultInput(inputValue);
     }
 
     @Override
-    public void addDefaultProfile(String profile) throws BLLException {
+    public void addDefaultProfile(String profile) throws BLLException
+    {
         dal.addDefaultProfile(profile);
     }
 
     @Override
-    public void updateDefaultProfile(String[] profile) throws BLLException {
-        try {
+    public void updateDefaultProfile(String[] profile) throws BLLException
+    {
+        try
+        {
             dal.updateDefaultProfile(profile);
-        } catch (DALException | IOException ex) {
+        }
+        catch (DALException | IOException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 
     @Override
-    public String[] getDefaultDirectories() {
+    public String[] getDefaultDirectories()
+    {
         return dal.getDefaultDirectories();
     }
 
     @Override
-    public int getDefaultProfile() {
+    public int getDefaultProfile()
+    {
         int i = Integer.parseInt(dal.getDefaultProfile());
         return i;
     }
 
     @Override
-    public Path checkForExisting(Path outputFile) {
+    public Path checkForExisting(Path outputFile)
+    {
         int number = 1;
-        if (dal.doesFileExist(outputFile)) {
-            while (dal.doesFileExist(addNumberToPath(outputFile, number))) {
+        if (dal.doesFileExist(outputFile))
+        {
+            while (dal.doesFileExist(addNumberToPath(outputFile, number)))
+            {
                 number++;
             }
             return addNumberToPath(outputFile, number);
 
-        } else {
+        }
+        else
+        {
             return outputFile;
         }
     }
@@ -239,7 +305,8 @@ public class BLLManager implements BLLFacade {
      * @param number
      * @return
      */
-    private Path addNumberToPath(Path outputFile, int number) {
+    private Path addNumberToPath(Path outputFile, int number)
+    {
         String asString = outputFile.toString();
         String result;
 
@@ -249,7 +316,8 @@ public class BLLManager implements BLLFacade {
 
         result = split[0];
 
-        for (int i = 1; i < split.length; i++) {
+        for (int i = 1; i < split.length; i++)
+        {
             result = result + "." + split[i];
         }
 
@@ -257,11 +325,15 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public void addDirectoryListener(ConversionBoxMulti conversionBoxMulti, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException {
-        try {
-            dirListenerMan.GetDirectoryListener(inputPath, new RunnableWithPath() {
+    public void addDirectoryListener(ConversionBoxMulti conversionBoxMulti, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException
+    {
+        try
+        {
+            dirListenerMan.GetDirectoryListener(inputPath, new RunnableWithPath()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     String pattern = Pattern.quote(System.getProperty("file.separator"));
                     String[] split = path.toString().split(pattern);
 
@@ -270,29 +342,39 @@ public class BLLManager implements BLLFacade {
                     String output = outputPath + File.separator + FileUtils.removeExtension(name) + ".json";
 
                     Platform.runLater(()
-                            -> {
-                        try {
+                            ->
+                    {
+                        try
+                        {
                             conversionBoxMulti.addBox(cManager.newConversion(name, path, Paths.get(output), conversionBoxMulti.getProfile(), conversionBoxMulti.getListJobs(), conversionBoxMulti));
-                        } catch (BLLException ex) {
+                        }
+                        catch (BLLException ex)
+                        {
                             AlertFactory.showError("Conversion Error", ex.getMessage());
                         }
                     });
 
                 }
-            }, new RunnableWithPath() {
+            }, new RunnableWithPath()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     System.out.println("Exception in Directory listener");
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
-            }, new RunnableWithPath() {
+            }, new RunnableWithPath()
+            {
                 @Override
-                public void run() {
+                public void run()
+                {
                     System.out.println("Closing");
                     //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
             });
-        } catch (DALException ex) {
+        }
+        catch (DALException ex)
+        {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
