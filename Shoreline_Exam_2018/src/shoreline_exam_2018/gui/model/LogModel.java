@@ -7,7 +7,6 @@ package shoreline_exam_2018.gui.model;
 
 import java.util.List;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -58,12 +57,6 @@ public class LogModel {
     public ObservableList<Log> getLogItems() {
         return logList;
     }
-    
-    public void addListener(ListChangeListener cl)
-    {
-        logList.addListener(cl);
-    }
-
     
     /**
      * sets the listitem text for logitems 
