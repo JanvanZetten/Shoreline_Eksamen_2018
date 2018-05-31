@@ -18,13 +18,14 @@ public class StructEntityDate extends SimpleEntity
 {
     DateFormatRule dfr;
 
-    public StructEntityDate(String columnName, int inputIndex)
+    public StructEntityDate(int id, String columnName, int inputIndex)
     {
-        this(columnName, inputIndex, null);
+        this(id, columnName, inputIndex, null);
     }
 
-    public StructEntityDate(String columnName, int inputIndex, DateFormatRule dfr)
+    public StructEntityDate(int id, String columnName, int inputIndex, DateFormatRule dfr)
     {
+        this.id = id;
         this.columnName = columnName;
         this.inputIndex = inputIndex;
         this.dfr = dfr;

@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author Asbamz
  */
-public class DefaultDateRule extends Rule<Date, Date>
+public class DefaultDateRule extends Rule<Date, Date> implements DefaultRule
 {
     private Date defaultValue;
     private boolean isForced;
@@ -35,6 +35,7 @@ public class DefaultDateRule extends Rule<Date, Date>
         return item;
     }
 
+    @Override
     public boolean isForced()
     {
         return isForced;

@@ -24,7 +24,9 @@ import shoreline_exam_2018.be.output.rule.DateFormatRule;
 import shoreline_exam_2018.be.output.rule.DefaultDateRule;
 import shoreline_exam_2018.be.output.rule.DefaultDoubleRule;
 import shoreline_exam_2018.be.output.rule.DefaultIntegerRule;
+import shoreline_exam_2018.be.output.rule.DefaultRule;
 import shoreline_exam_2018.be.output.rule.DefaultStringRule;
+import shoreline_exam_2018.be.output.rule.Rule;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
@@ -336,9 +338,53 @@ public class RuleEntitySimple
             rules.add("DateFormat");
         }
         cmbDefaultRule.setItems(rules);
-        cmbDefaultRule.getSelectionModel().selectFirst();
 
         index++;
+
+        checkForExistingRules();
+
+        if (cmbDefaultRule.getSelectionModel().isEmpty())
+        {
+            cmbDefaultRule.getSelectionModel().selectFirst();
+        }
+    }
+
+    private void checkForExistingRules()
+    {
+        if (se.getBackupIndex() != null)
+        {
+            cmbDefaultRule.getSelectionModel().select("Backup");
+            cmbBackupIndex.getSelectionModel().select(specification.getHeadersIndexToName().get(se.getBackupIndex()));
+        }
+        if (se.getDefaultValue() != null)
+        {
+            Rule dr = se.getDefaultValue();
+
+            cmbDefaultRule.getSelectionModel().select("Default");
+            switch (se.getSST())
+            {
+                case DATE:
+                    defaultDate.setValue(((DefaultDateRule) dr).applyRuleOn(null).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    break;
+                default:
+                    defaultString.setText(String.valueOf(dr.applyRuleOn(null)));
+                    break;
+            }
+
+            if (se.getDefaultValue() instanceof DefaultRule)
+            {
+                cbForced.setSelected(((DefaultRule) dr).isForced());
+            }
+        }
+        if (se instanceof StructEntityDate)
+        {
+            StructEntityDate sed = (StructEntityDate) se;
+            if (sed.getDfr() != null)
+            {
+                cmbDefaultRule.getSelectionModel().select("DateFormat");
+                dateFormat.setText(sed.getDfr().getDateFormat());
+            }
+        }
     }
 
     /**

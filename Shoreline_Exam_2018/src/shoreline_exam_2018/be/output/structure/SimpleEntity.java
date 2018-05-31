@@ -13,13 +13,20 @@ import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
  * Entry for simple data.
  * @author Asbamz
  */
-public abstract class SimpleEntity implements StructEntityInterface
+public abstract class SimpleEntity extends StructEntity
 {
+    protected int id;
     protected String columnName;
     protected int inputIndex;
     protected SimpleStructType sst;
     protected Rule defaultValue;
     protected Integer backupIndex;
+
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 
     @Override
     public String getColumnName()
@@ -116,5 +123,4 @@ public abstract class SimpleEntity implements StructEntityInterface
         }
         return true;
     }
-
 }

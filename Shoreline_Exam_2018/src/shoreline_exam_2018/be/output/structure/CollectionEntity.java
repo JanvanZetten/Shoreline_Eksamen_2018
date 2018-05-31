@@ -13,11 +13,18 @@ import java.util.Objects;
  * Entry for Collections.
  * @author Asbamz
  */
-public abstract class CollectionEntity implements StructEntityInterface
+public abstract class CollectionEntity extends StructEntity
 {
+    protected int id;
     protected String columnName;
-    protected List<StructEntityInterface> collection;
+    protected List<StructEntity> collection;
     protected CollectionStructType cst;
+
+    @Override
+    public int getId()
+    {
+        return id;
+    }
 
     @Override
     public String getColumnName()
@@ -29,7 +36,7 @@ public abstract class CollectionEntity implements StructEntityInterface
      * Gets collection of entities.
      * @return
      */
-    public List<StructEntityInterface> getCollection()
+    public List<StructEntity> getCollection()
     {
         return collection;
     }
@@ -48,7 +55,7 @@ public abstract class CollectionEntity implements StructEntityInterface
     {
         String str = "";
         str += columnName + ":" + cst + "\n";
-        for (StructEntityInterface structEntryInterface : collection)
+        for (StructEntity structEntryInterface : collection)
         {
             str += "    " + structEntryInterface.toString() + "\n";
         }
@@ -95,5 +102,4 @@ public abstract class CollectionEntity implements StructEntityInterface
         }
         return true;
     }
-
 }

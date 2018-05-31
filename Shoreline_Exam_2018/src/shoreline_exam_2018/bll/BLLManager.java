@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
@@ -53,9 +54,9 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure) throws BLLException {
+    public Profile addProfile(String name, StructEntityObject structure, HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples) throws BLLException
         try {
-            return dal.addProfile(name, structure);
+            return dal.addProfile(name, structure, headersIndexAndExamples);
         } catch (DALException ex) {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }
@@ -98,8 +99,32 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public User login(String username, String password) throws BLLException {
-        try {
+    public void deleteProfile(Profile profile) throws BLLException
+    {
+        try
+        {
+            dal.deleteProfile(profile);
+        }
+        catch (DALException ex)
+        {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
+    public Profile updateProfile(Profile profile) throws BLLException
+    {
+        try
+        {
+            return dal.updateProfile(profile);
+        }
+        catch (DALException ex)
+        {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    @Override
             User currentUser = dal.userLogin(username, encrypt(password));
             return currentUser;
         } catch (DALException ex) {
@@ -122,9 +147,9 @@ public class BLLManager implements BLLFacade {
     }
 
     @Override
-    public Log addLog(LogType type, String message, User creator) throws BLLException {
+    public Log addLog(LogType type, String message) throws BLLException
         try {
-            return dal.addLog(type, message, creator);
+        return logMng.addLog(type, message);
         } catch (DALException ex) {
             throw new BLLException(ex.getMessage(), ex.getCause());
         }

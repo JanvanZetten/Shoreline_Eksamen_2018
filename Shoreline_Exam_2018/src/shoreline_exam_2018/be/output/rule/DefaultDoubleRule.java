@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author Asbamz
  */
-public class DefaultDoubleRule extends Rule<Double, Double>
+public class DefaultDoubleRule extends Rule<Double, Double> implements DefaultRule
 {
     private Double defaultValue;
     private boolean isForced;
@@ -34,6 +34,7 @@ public class DefaultDoubleRule extends Rule<Double, Double>
         return item;
     }
 
+    @Override
     public boolean isForced()
     {
         return isForced;

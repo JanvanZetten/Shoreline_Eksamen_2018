@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import shoreline_exam_2018.be.input.InputField;
 import shoreline_exam_2018.be.input.InputObject;
@@ -59,9 +60,9 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public Profile addProfile(String name, StructEntityObject structure) throws DALException
+    public Profile addProfile(String name, StructEntityObject structure, HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples) throws DALException
     {
-        return profileDAO.addProfile(name, structure, currentUser.getId());
+        return profileDAO.addProfile(name, structure, currentUser.getId(), headersIndexAndExamples);
     }
 
     @Override
@@ -80,6 +81,18 @@ public class DALManager implements DALFacade
     public List<StructEntityObject> getAllStructures() throws DALException
     {
         return structureDAO.getAllStructures();
+    }
+
+    @Override
+    public void deleteProfile(Profile profile) throws DALException
+    {
+        profileDAO.deleteProfile(profile.getId());
+    }
+
+    @Override
+    public Profile updateProfile(Profile profile) throws DALException
+    {
+        return profileDAO.updateProfile(profile, currentUser.getId());
     }
 
     @Override
@@ -158,9 +171,9 @@ public class DALManager implements DALFacade
     }
 
     @Override
-    public Log addLog(LogType type, String message, User creator) throws DALException
+    public Log addLog(LogType type, String message) throws DALException
     {
-        return logDAO.addLog(type, message, creator);
+        return logDAO.addLog(type, message, currentUser);
     }
 
     @Override
@@ -188,14 +201,16 @@ public class DALManager implements DALFacade
     {
         this.defaultInputDir = inputValue;
     }
-    
+
     @Override
-    public void addDefaultProfile(String profile) {
+    public void addDefaultProfile(String profile)
+    {
         this.defaultProfileID = profile;
     }
-    
+
     @Override
-    public void updateDefaultProfile(String[] profile) throws DALException, IOException {
+    public void updateDefaultProfile(String[] profile) throws DALException, IOException
+    {
         propWriter.updateProperties(profile);
         this.defaultProfileID = profile[1];
     }
@@ -208,9 +223,10 @@ public class DALManager implements DALFacade
         directories[0] = defaultOutputDir;
         return directories;
     }
-    
+
     @Override
-    public String getDefaultProfile() {
+    public String getDefaultProfile()
+    {
         return defaultProfileID;
     }
 

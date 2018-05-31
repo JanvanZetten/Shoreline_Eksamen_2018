@@ -17,14 +17,16 @@ import shoreline_exam_2018.bll.LoggingHelper;
  *
  * @author alexl
  */
-public class SettingsModel {
+public class SettingsModel
+{
 
     private BLLFacade bll;
     private TextField txtfieldInputDir;
     private TextField txtfieldOutputDir;
     private ObservableList<Profile> profiles;
 
-    public SettingsModel() {
+    public SettingsModel()
+    {
         bll = BLLManager.getInstance();
         profiles = FXCollections.observableArrayList();
     }
@@ -33,7 +35,8 @@ public class SettingsModel {
      * Retrieves the properties file and reads it on start-up. If no properties
      * exist, it will create the properties as default.
      */
-    public void getProperties() {
+    public void getProperties()
+    {
         txtfieldInputDir.setText(bll.getDefaultDirectories()[1]);
         txtfieldOutputDir.setText(bll.getDefaultDirectories()[0]);
     }
@@ -41,37 +44,44 @@ public class SettingsModel {
     /**
      * Sets the TextField references from the controller.
      * @param txtfieldInputDir
-     * @param txtfieldOutputDir 
+     * @param txtfieldOutputDir
      */
-    public void setTextFields(TextField txtfieldInputDir, TextField txtfieldOutputDir) {
+    public void setTextFields(TextField txtfieldInputDir, TextField txtfieldOutputDir)
+    {
         this.txtfieldInputDir = txtfieldInputDir;
         this.txtfieldOutputDir = txtfieldOutputDir;
     }
 
     /**
-     * Sets a new default directory for either Input or Output.
-     * directory[0] = dirType. directory [1] = path to the directory.
-     * @param dirType     = The type of the directory (dirInput OR dirOutput)
-     * @param txtfieldDir = The directory TextField (txtfieldInputDir OR txtfieldOutputDir)
+     * Sets a new default directory for either Input or Output. directory[0] =
+     * dirType. directory [1] = path to the directory.
+     * @param dirType = The type of the directory (dirInput OR dirOutput)
+     * @param txtfieldDir = The directory TextField (txtfieldInputDir OR
+     * txtfieldOutputDir)
      */
-    public void newDefaultDir(String dirType, TextField txtfieldDir) {
+    public void newDefaultDir(String dirType, TextField txtfieldDir)
+    {
         DirectoryChooser dc = new DirectoryChooser();
         String[] directory = new String[2];
         String currentDir = System.getProperty("user.dir") + File.separator;
         File dir = new File(currentDir);
-        
+
         directory[0] = dirType;
         dc.setInitialDirectory(dir);
         dc.setTitle("Choose a directory");
 
         File selectedFile = dc.showDialog(null);
 
-        if (selectedFile != null) {
-            try {
+        if (selectedFile != null)
+        {
+            try
+            {
                 directory[1] = selectedFile.toString();
                 txtfieldDir.setText(directory[1]);
                 bll.updateDefaultDirectory(directory, txtfieldInputDir.getText(), txtfieldOutputDir.getText());
-            } catch (BLLException ex) {
+            }
+            catch (BLLException ex)
+            {
                 AlertFactory.showError("The properties file could not be updated", "Error: " + ex.getMessage());
             }
         }
@@ -82,13 +92,17 @@ public class SettingsModel {
      * @param defaultProfile
      * @param newDefProfile
      */
-    public void newDefaultProfile(String defaultProfile, Profile newDefProfile) {
-        try {
+    public void newDefaultProfile(String defaultProfile, Profile newDefProfile)
+    {
+        try
+        {
             String[] profile = new String[2];
             profile[0] = defaultProfile;
             profile[1] = newDefProfile.getId() + "";
             bll.updateDefaultProfile(profile);
-        } catch (BLLException ex) {
+        }
+        catch (BLLException ex)
+        {
             AlertFactory.showError("The properties file could not be updated", "Error: " + ex.getMessage());
         }
     }
@@ -111,18 +125,20 @@ public class SettingsModel {
             AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
         }
 
-        profileCombobox.setCellFactory((ListView<Profile> param) -> {
+        profileCombobox.setCellFactory((ListView<Profile> param) ->
+        {
             return new profileListCell();
         });
 
         profileCombobox.setButtonCell(new profileListCell());
-        
-        for (Profile profile : profileCombobox.getItems()) {
-                if (bll.getDefaultProfile() == profile.getId()) {
-                    profileCombobox.getSelectionModel().select(profile);
-                    System.out.println(profile.getId());
-                }
-                
+
+        for (Profile profile : profileCombobox.getItems())
+        {
+            if (bll.getDefaultProfile() == profile.getId())
+            {
+                profileCombobox.getSelectionModel().select(profile);
             }
+
+        }
     }
 }

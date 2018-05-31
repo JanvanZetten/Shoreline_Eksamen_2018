@@ -9,14 +9,13 @@ import java.util.List;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.TransferMode;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -86,7 +85,7 @@ public class DragAndDropHandler
      * @param header
      * @return
      */
-    EventHandler<? super DragEvent> getOnHeaderDragDropped(TextField header, Label example)
+    EventHandler<? super DragEvent> getOnHeaderDragDropped(TextField header)
     {
         EventHandler<? super DragEvent> onHeaderDragDropped = new EventHandler<DragEvent>()
         {
@@ -96,14 +95,7 @@ public class DragAndDropHandler
                 Dragboard db = event.getDragboard();
                 if (db.hasString())
                 {
-                    if (specification.getHeadersIndexAndExamples() != null)
-                    {
-                        if (specification.getHeadersIndexAndExamples().containsKey(db.getString()))
-                        {
-                            header.setText(db.getString());
-                            example.setText(specification.getHeadersIndexAndExamples().get(db.getString()).getValue());
-                        }
-                    }
+                    header.setText(db.getString());
                     event.setDropCompleted(true);
                 }
                 else
@@ -120,14 +112,14 @@ public class DragAndDropHandler
      * @param header
      * @return
      */
-    EventHandler<? super DragEvent> getOnHeaderDragDone(int index, TextField header, Label example)
+    EventHandler<? super DragEvent> getOnHeaderDragDone(int index, TextField header)
     {
         EventHandler<? super DragEvent> onHeaderDragDropped = new EventHandler<DragEvent>()
         {
             @Override
             public void handle(DragEvent event)
             {
-                List<StructEntityInterface> sei = specification.getStructure();
+                List<StructEntity> sei = specification.getStructure();
                 if (sei.size() > 0)
                 {
                     Integer fromIndex = specification.getHeadersIndexAndExamples().get(header.getText()).getKey();
@@ -139,7 +131,6 @@ public class DragAndDropHandler
                     sei.set(index, null);
                 }
                 header.setText("");
-                example.setText("");
             }
         };
         return onHeaderDragDropped;

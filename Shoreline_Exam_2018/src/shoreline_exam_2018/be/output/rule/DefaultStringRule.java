@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author Asbamz
  */
-public class DefaultStringRule extends Rule<String, String>
+public class DefaultStringRule extends Rule<String, String> implements DefaultRule
 {
     private String defaultValue;
     private boolean isForced;
@@ -37,6 +37,7 @@ public class DefaultStringRule extends Rule<String, String>
         return defaultValue;
     }
 
+    @Override
     public boolean isForced()
     {
         return isForced;

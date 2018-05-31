@@ -5,7 +5,9 @@
  */
 package shoreline_exam_2018.gui.model.profile;
 
+import java.util.Collections;
 import java.util.List;
+import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
@@ -16,25 +18,29 @@ import shoreline_exam_2018.be.output.structure.StructEntity;
  *
  * @author Asbamz
  */
-public class GridStructureConverter
+public class GridProfileConverter
 {
     private final StructurePane owner;
+    private Profile currentProfile;
 
     /**
-     * From structure to grid converter.
+     * From profile to grid converter.
      * @param owner
      */
-    public GridStructureConverter(StructurePane owner)
+    public GridProfileConverter(StructurePane owner)
     {
         this.owner = owner;
     }
 
     /**
-     * Load a structure to profile view.
+     * Load a profile to structure pane.
      * @param structure
+     * @param profile
      */
-    public void loadStructure(List<StructEntity> structure)
+    public void loadProfile(List<StructEntity> structure, Profile profile)
     {
+        currentProfile = profile;
+        Collections.sort(structure);
         for (StructEntity sei : structure)
         {
             if (sei instanceof SimpleEntity)
@@ -55,6 +61,11 @@ public class GridStructureConverter
     private void loadSimpleStructure(SimpleEntity se)
     {
         ProfileEntitySimple pes = owner.addSimpleRow();
+        String headerName = owner.getSpecification().getHeadersIndexToName().get(se.getInputIndex());
+        if (headerName != null)
+        {
+            pes.getFromHeader().setText(headerName);
+        }
         pes.getToColumn().setText(se.getColumnName());
         switch (se.getSST())
         {
@@ -74,6 +85,8 @@ public class GridStructureConverter
                 pes.getCmbType().getSelectionModel().selectFirst();
                 break;
         }
+
+        owner.getStructure().set(pes.getIndex(), se);
     }
 
     /**
@@ -96,6 +109,6 @@ public class GridStructureConverter
                 pec.getCmbType().getSelectionModel().selectFirst();
                 break;
         }
-        pec.getCollection().loadStructure(ce.getCollection());
+        pec.getCollection().loadProfile(ce.getCollection(), currentProfile);
     }
 }
