@@ -19,6 +19,7 @@ public abstract class SimpleEntity implements StructEntityInterface
     protected int inputIndex;
     protected SimpleStructType sst;
     protected Rule defaultValue;
+    protected Integer backupIndex;
 
     @Override
     public String getColumnName()
@@ -58,6 +59,16 @@ public abstract class SimpleEntity implements StructEntityInterface
     public void setDefaultValue(Rule defaultValue)
     {
         this.defaultValue = defaultValue;
+    }
+
+    public Integer getBackupIndex()
+    {
+        return backupIndex;
+    }
+
+    public void setBackupIndex(Integer backupIndex)
+    {
+        this.backupIndex = backupIndex;
     }
 
     @Override

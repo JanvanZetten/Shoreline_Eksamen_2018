@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -117,13 +118,21 @@ public class ProfileDAO
         try
         {
             con = dbcp.checkOut();
-            String sql = "INSERT INTO ProfileStructureSimple VALUES(?, ?, ?, ?);";
+            String sql = "INSERT INTO ProfileStructureSimple VALUES(?, ?, ?, ?, ?);";
 
             PreparedStatement statement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(1, profileId);
             statement.setString(2, se.getColumnName());
             statement.setInt(3, se.getInputIndex());
             statement.setString(4, se.getSST().name());
+            if (se.getBackupIndex() != null)
+            {
+                statement.setInt(5, se.getBackupIndex());
+            }
+            else
+            {
+                statement.setNull(5, Types.INTEGER);
+            }
 
             statement.executeUpdate();
 
@@ -399,13 +408,19 @@ public class ProfileDAO
             String columnName;
             int inputIndex;
             String sst;
+            Integer backupIndex;
 
             while (rs.next())
             {
                 id = rs.getInt("id");
-                sst = rs.getString("sst");
                 columnName = rs.getString("columnName");
                 inputIndex = rs.getInt("inputIndex");
+                sst = rs.getString("sst");
+                backupIndex = rs.getInt("backupIndex");
+                if (rs.wasNull())
+                {
+                    backupIndex = null;
+                }
 
                 SimpleEntity se = null;
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
@@ -435,6 +450,7 @@ public class ProfileDAO
                 {
                     se.setDefaultValue(allDefaultRules.get(id));
                 }
+                se.setBackupIndex(backupIndex);
             }
 
             /*

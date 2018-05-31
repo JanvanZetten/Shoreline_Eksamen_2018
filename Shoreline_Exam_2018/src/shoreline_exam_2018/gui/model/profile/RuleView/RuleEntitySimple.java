@@ -51,8 +51,10 @@ public class RuleEntitySimple
     private TextField dateFormat;
     private Label lblForced;
     private CheckBox cbForced;
+    private ComboBox<String> cmbBackupIndex;
     private GridPane defaultValueRow;
     private GridPane dateFormatRow;
+    private GridPane backupRow;
 
     /**
      * Creates a rule row for Simple Entity.
@@ -80,6 +82,7 @@ public class RuleEntitySimple
         lblForced = new Label("Force:");
         cbForced = new CheckBox();
         colourBox = new ColourRectangle(specification.getDefaultRectangleWidth(), defaultString.heightProperty(), specification);
+        cmbBackupIndex = new ComboBox<>();
 
         GridPane.setConstraints(colourBox, 0, specification.isMaster() ? entityIndex + 1 : entityIndex);
         GridPane.setConstraints(lblHeader, 1, specification.isMaster() ? entityIndex + 1 : entityIndex);
@@ -104,6 +107,12 @@ public class RuleEntitySimple
         GridPane.setConstraints(dateFormatRow, 5, specification.isMaster() ? entityIndex + 1 : entityIndex);
         dateFormatRow.getChildren().addAll(dateFormat);
 
+        // GridPane to containing backup column.
+        backupRow = new GridPane();
+        owner.setupGridPane(backupRow, -0.1);
+        GridPane.setConstraints(backupRow, 5, specification.isMaster() ? entityIndex + 1 : entityIndex);
+        backupRow.getChildren().addAll(cmbBackupIndex);
+
         // Set size.
         specification.setDefaultWidth(lblHeader);
         specification.setDefaultWidth(lblExample);
@@ -113,6 +122,18 @@ public class RuleEntitySimple
         specification.setDefaultWidth(defaultString);
         specification.setDefaultWidth(cbForced);
         specification.setDefaultWidth(dateFormat);
+        specification.setDefaultWidth(cmbBackupIndex);
+
+        // Set visibility
+        switch (se.getSST())
+        {
+            case DATE:
+                defaultString.setVisible(false);
+                break;
+            default:
+                defaultDate.setVisible(false);
+                break;
+        }
 
         // Integer and Double cannot be empty restriction.
         defaultString.focusedProperty().addListener((observable, oldValue, newValue) ->
@@ -272,16 +293,34 @@ public class RuleEntitySimple
             }
         });
 
+        // Backup.
+        ObservableList<String> headers = FXCollections.observableArrayList();
+        for (String string : specification.getHeadersIndexAndExamples().keySet())
+        {
+            headers.add(string);
+        }
+        cmbBackupIndex.setItems(headers);
+        cmbBackupIndex.valueProperty().addListener((observable, oldValue, newValue) ->
+        {
+            se.setBackupIndex(specification.getHeadersIndexAndExamples().get(newValue).getKey());
+        });
+
         // Show elements matching choice.
         cmbDefaultRule.valueProperty().addListener((observable, oldValue, newValue) ->
         {
             switch (newValue)
             {
+                case "No Rules":
+                    removeRules();
+                    break;
                 case "Default":
                     showDefaultValue();
                     break;
                 case "DateFormat":
                     showDateFormat();
+                    break;
+                case "Backup":
+                    showBackup();
                     break;
                 default:
                     hideAll();
@@ -291,7 +330,7 @@ public class RuleEntitySimple
 
         // Available choices.
         ObservableList<String> rules = FXCollections.observableArrayList();
-        rules.addAll("No Rule", "Default");
+        rules.addAll("No Rules", "Default", "Backup");
         if (se.getSST() == SimpleStructType.DATE)
         {
             rules.add("DateFormat");
@@ -312,8 +351,6 @@ public class RuleEntitySimple
         {
             case DATE:
                 defaultValueRow.setVisible(true);
-                LocalDate ld = defaultDate.getValue();
-                defaultDate.setValue(ld);
                 break;
             default:
                 defaultValueRow.setVisible(true);
@@ -333,11 +370,22 @@ public class RuleEntitySimple
                             break;
                     }
                 }
-                else
-                {
-                    defaultString.setText(str);
-                }
                 break;
+        }
+    }
+
+    /**
+     * Removes all rules for element.
+     */
+    private void removeRules()
+    {
+        hideAll();
+        se.setBackupIndex(null);
+        se.setDefaultValue(null);
+        if (se instanceof StructEntityDate)
+        {
+            StructEntityDate sed = (StructEntityDate) se;
+            sed.setDfr(null);
         }
     }
 
@@ -351,15 +399,22 @@ public class RuleEntitySimple
     }
 
     /**
+     * Show backup element.
+     */
+    private void showBackup()
+    {
+        hideAll();
+        backupRow.setVisible(true);
+    }
+
+    /**
      * Hide all elements.
      */
     private void hideAll()
     {
-        se.setDefaultValue(null);
         defaultValueRow.setVisible(false);
         dateFormatRow.setVisible(false);
-        defaultDate.setValue(null);
-        defaultString.setText(null);
+        backupRow.setVisible(false);
     }
 
     /**
@@ -377,6 +432,7 @@ public class RuleEntitySimple
         nodes.add(cmbDefaultRule);
         nodes.add(defaultValueRow);
         nodes.add(dateFormatRow);
+        nodes.add(backupRow);
 
         return nodes;
     }
