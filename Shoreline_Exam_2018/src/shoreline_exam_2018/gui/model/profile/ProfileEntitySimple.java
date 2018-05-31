@@ -8,9 +8,13 @@ package shoreline_exam_2018.gui.model.profile;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.geometry.Insets;
@@ -21,12 +25,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDouble;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityInteger;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -57,7 +61,7 @@ public class ProfileEntitySimple extends ProfileEntity
         ProfileSpecification specification = owner.getSpecification();
         DragAndDropHandler dragAndDropHandler = specification.getDragAndDropHandler();
         ObservableMap<String, Map.Entry<Integer, String>> headersIndexAndExamples = specification.getHeadersIndexAndExamples();
-        List<StructEntityInterface> structure = specification.getStructure();
+        List<StructEntity> structure = specification.getStructure();
         List<ProfileEntity> structureEntities = specification.getStructureEntities();
         ChangeListener masterListener = owner.getMasterListener();
 
@@ -82,10 +86,10 @@ public class ProfileEntitySimple extends ProfileEntity
         fromHeader.setOnDragOver(dragAndDropHandler.getOnDragOverAcceptCopy());
 
         // On drag drop. Set the text to the string from the copy.
-        fromHeader.setOnDragDropped(dragAndDropHandler.getOnHeaderDragDropped(fromHeader, example));
+        fromHeader.setOnDragDropped(dragAndDropHandler.getOnHeaderDragDropped(fromHeader));
 
         // On drag from element to another i done. Reset element.
-        fromHeader.setOnDragDone(dragAndDropHandler.getOnHeaderDragDone(index, fromHeader, example));
+        fromHeader.setOnDragDone(dragAndDropHandler.getOnHeaderDragDone(index, fromHeader));
 
         // Set margin for first element.
         GridPane.setMargin(rect, new Insets(0.0, 0.0, 0.0, specification.getIndent()));
@@ -124,10 +128,15 @@ public class ProfileEntitySimple extends ProfileEntity
         GridPane.setConstraints(btnDelete, 4, rowCount);
 
         // Create and adds a ChangeListener.
-        ChangeListener cl = getSimpleChangeListener(fromHeader, cmbType, toColumn);
+        ChangeListener cl = getSimpleChangeListener();
         fromHeader.textProperty().addListener(cl);
         cmbType.valueProperty().addListener(cl);
         toColumn.textProperty().addListener(cl);
+
+        specification.addOnChangeHeaderValidation(() ->
+        {
+            validateHeaders();
+        });
 
         // Add masterListener.
         if (masterListener != null)
@@ -179,45 +188,69 @@ public class ProfileEntitySimple extends ProfileEntity
         return cb;
     }
 
+    private void validateHeaders()
+    {
+        if (fromHeader != null)
+        {
+            if (owner.getSpecification().getHeadersIndexAndExamples() != null)
+            {
+                if (owner.getSpecification().getHeadersIndexAndExamples().containsKey(fromHeader.getText()))
+                {
+                    example.setText(owner.getSpecification().getHeadersIndexAndExamples().get(fromHeader.getText()).getValue());
+                }
+                else
+                {
+                    example.setText("");
+                    fromHeader.setText("");
+                }
+            }
+        }
+    }
+
     /**
      * Updates structure list for simple datatypes to fit changed information.
      * Only when all data is set.
-     * @param cmb
-     * @param tf
-     * @param cb
      * @return
      */
-    private ChangeListener getSimpleChangeListener(TextField fromHeader, ComboBox<SimpleStructType> cmb, TextField tf)
+    private ChangeListener getSimpleChangeListener()
     {
         ChangeListener cl = new ChangeListener()
         {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue)
             {
-                if (fromHeader != null && cmb != null && tf != null)
+                validateHeaders();
+
+                if (fromHeader != null && cmbType != null && toColumn != null)
                 {
                     if (!fromHeader.getText().isEmpty())
                     {
-                        List<StructEntityInterface> structure = owner.getStructure();
+                        List<StructEntity> structure = owner.getStructure();
+                        if (!owner.getSpecification().getHeadersIndexAndExamples().containsKey(fromHeader.getText()))
+                        {
+                            fromHeader.setText("");
+                            structure.set(index, null);
+                            return;
+                        }
                         Integer fromIndex = owner.getSpecification().getHeadersIndexAndExamples().get(fromHeader.getText()).getKey();
                         if (fromIndex != null)
                         {
-                            if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
+                            if (!newValue.equals(oldValue) && cmbType.getValue() != null && !toColumn.getText().isEmpty())
                             {
 
-                                switch (cmb.getValue())
+                                switch (cmbType.getValue())
                                 {
                                     case DATE:
-                                        structure.set(index, new StructEntityDate(tf.getText(), fromIndex));
+                                        structure.set(index, new StructEntityDate(index, toColumn.getText(), fromIndex));
                                         return;
                                     case DOUBLE:
-                                        structure.set(index, new StructEntityDouble(tf.getText(), fromIndex));
+                                        structure.set(index, new StructEntityDouble(index, toColumn.getText(), fromIndex));
                                         return;
                                     case INTEGER:
-                                        structure.set(index, new StructEntityInteger(tf.getText(), fromIndex));
+                                        structure.set(index, new StructEntityInteger(index, toColumn.getText(), fromIndex));
                                         return;
                                     case STRING:
-                                        structure.set(index, new StructEntityString(tf.getText(), fromIndex));
+                                        structure.set(index, new StructEntityString(index, toColumn.getText(), fromIndex));
                                         return;
                                     default:
                                         break;
@@ -246,6 +279,16 @@ public class ProfileEntitySimple extends ProfileEntity
         nodes.add(toColumn);
         nodes.add(btnDelete);
         return nodes;
+    }
+
+    public TextField getFromHeader()
+    {
+        return fromHeader;
+    }
+
+    public Label getExample()
+    {
+        return example;
     }
 
     /**
@@ -282,5 +325,10 @@ public class ProfileEntitySimple extends ProfileEntity
         {
             index += shiftIdentifier;
         }
+    }
+
+    int getIndex()
+    {
+        return index;
     }
 }

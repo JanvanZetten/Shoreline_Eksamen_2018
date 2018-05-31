@@ -12,33 +12,23 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
-import shoreline_exam_2018.be.Profile;
 import shoreline_exam_2018.gui.model.ConvertModel;
-import shoreline_exam_2018.gui.model.ProfilesModel;
+import shoreline_exam_2018.gui.model.NewProfileModel;
 
 /**
  * FXML Controller class
  *
  * @author Asbamz
  */
-public class ProfilesController implements Initializable
+public class NewProfileController implements Initializable
 {
     @FXML
     private AnchorPane anchorMain;
-    @FXML
-    private AnchorPane anchorProfiles;
-    @FXML
-    private AnchorPane anchorNewProfile;
-    @FXML
-    private Button btnNewProfile;
-    @FXML
-    private ListView<Profile> listviewProfiles;
     @FXML
     private TextField txtFieldProfileName;
     @FXML
@@ -54,11 +44,11 @@ public class ProfilesController implements Initializable
     @FXML
     private ScrollPane scrollMain;
     @FXML
+    private Button btnBackToProfiles;
+    @FXML
     private Button btnBack;
     @FXML
-    private Button btnDelete;
-    @FXML
-    private Button btnUpdate;
+    private Button btnSave;
 
     /**
      * Initializes the controller class.
@@ -68,40 +58,48 @@ public class ProfilesController implements Initializable
     {
         Platform.runLater(() ->
         {
-            pm = new ProfilesModel(anchorMain, anchorProfiles, anchorNewProfile, btnNewProfile, listviewProfiles, txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, paneHeader, scrollMain, btnBack, btnDelete, btnUpdate);
+            npm = new NewProfileModel(anchorMain, txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, paneHeader, scrollMain, btnBack, btnSave);
         });
     }
 
-    private ProfilesModel pm;
+    private NewProfileModel npm;
 
-    @FXML
-    private void handleNewProfile(ActionEvent event)
-    {
-        pm.handleNewProfile();
-    }
-
+    /**
+     * Handle press on Source button.
+     * @param event
+     */
     @FXML
     private void handleSource(ActionEvent event)
     {
-        pm.handleSource();
+        npm.handleSource();
+    }
+
+    @FXML
+    private void handleBackToProfiles(ActionEvent event)
+    {
+        npm.handleBackToProfiles();
     }
 
     @FXML
     private void handleBack(ActionEvent event)
     {
-        pm.handleBack();
+        npm.handleBack();
     }
 
     @FXML
-    private void handleDelete(ActionEvent event)
+    private void handleSaveStructure(ActionEvent event)
     {
-        pm.handleDelete();
+        npm.handleSaveStructure();
     }
 
+    /**
+     * Handle press on Save button.
+     * @param event
+     */
     @FXML
-    private void handleUpdate(ActionEvent event)
+    private void handleSave(ActionEvent event)
     {
-        pm.handleUpdate();
+        npm.handleSave();
     }
 
     /**
@@ -109,8 +107,17 @@ public class ProfilesController implements Initializable
      * @param cm
      * @param tabConvert
      */
-    public void addSharedInfo(ConvertModel cm, Tab tabConvert)
+    void addSharedInfo(ConvertModel cm, Tab tabConvert)
     {
-        pm.addSharedInfo(cm, tabConvert);
+        npm.addSharedInfo(cm, tabConvert);
+    }
+
+    /**
+     * Get Model.
+     * @return
+     */
+    public NewProfileModel getModel()
+    {
+        return npm;
     }
 }

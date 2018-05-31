@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -44,10 +44,11 @@ public class ProfileSpecification
     {
         Color.web("737F8C"), Color.web("4986A8"), Color.web("2C546D"), Color.web("4D4D4D")
     }; // Group/Collection colours.
+    private final static List<Runnable> onChangeHeaderValidations = new ArrayList<>();
     private DragAndDropHandler dragAndDropHandler;
     private ObservableMap<String, Entry<Integer, String>> headersIndexAndExamples; // Mapping column headers from input file to their example.
     private HashMap<Integer, String> headersIndexToName; // Mapping column headers from input file to their example.
-    private List<StructEntityInterface> structure; // The structure of made from grid elements.
+    private List<StructEntity> structure; // The structure of made from grid elements.
     private List<ProfileEntity> structureEntities; // The grid elements.
     private MapChangeListener<String, Entry<Integer, String>> headersIndexToNameListener;
 
@@ -146,10 +147,19 @@ public class ProfileSpecification
             this.headersIndexAndExamples = headersIndexAndExamples;
             setHeadersIndexToNameListener();
         }
+
+        for (Runnable onChangeHeaderValidation : this.onChangeHeaderValidations)
+        {
+            onChangeHeaderValidation.run();
+        }
     }
 
     void clearStructure()
     {
+        if (IS_MASTER)
+        {
+            onChangeHeaderValidations.clear();
+        }
         structure.clear();
         structureEntities.clear();
     }
@@ -158,7 +168,7 @@ public class ProfileSpecification
      * Gets structure.
      * @return
      */
-    public List<StructEntityInterface> getStructure()
+    public List<StructEntity> getStructure()
     {
         return structure;
     }
@@ -266,5 +276,14 @@ public class ProfileSpecification
         dp.setMinWidth(DEFAULT_TEXTFIELD_WIDTH);
         dp.setPrefWidth(DEFAULT_TEXTFIELD_WIDTH);
         dp.setMaxWidth(DEFAULT_TEXTFIELD_WIDTH);
+    }
+
+    /**
+     * Add something that should happen when the headers are changed.
+     * @param runnable
+     */
+    void addOnChangeHeaderValidation(Runnable runnable)
+    {
+        onChangeHeaderValidations.add(runnable);
     }
 }

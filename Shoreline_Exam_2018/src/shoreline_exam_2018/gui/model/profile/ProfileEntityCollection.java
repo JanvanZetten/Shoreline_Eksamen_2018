@@ -20,10 +20,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -52,7 +52,7 @@ public class ProfileEntityCollection extends ProfileEntity
         ProfileSpecification specification = owner.getSpecification();
         DragAndDropHandler dragAndDropHandler = specification.getDragAndDropHandler();
         ObservableMap<String, Map.Entry<Integer, String>> headersIndexAndExamples = specification.getHeadersIndexAndExamples();
-        List<StructEntityInterface> structure = specification.getStructure();
+        List<StructEntity> structure = specification.getStructure();
         List<ProfileEntity> structureEntities = specification.getStructureEntities();
         ChangeListener masterListener = owner.getMasterListener();
 
@@ -168,16 +168,16 @@ public class ProfileEntityCollection extends ProfileEntity
             {
                 if (cmb != null && tf != null)
                 {
-                    List<StructEntityInterface> structure = owner.getStructure();
+                    List<StructEntity> structure = owner.getStructure();
                     if (!newValue.equals(oldValue) && cmb.getValue() != null && !tf.getText().isEmpty())
                     {
                         switch (cmb.getValue())
                         {
                             case ARRAY:
-                                structure.set(index, new StructEntityArray(tf.getText(), collection.getStructure()));
+                                structure.set(index, new StructEntityArray(index, tf.getText(), collection.getStructure()));
                                 return;
                             case OBJECT:
-                                structure.set(index, new StructEntityObject(tf.getText(), collection.getStructure()));
+                                structure.set(index, new StructEntityObject(index, tf.getText(), collection.getStructure()));
                                 return;
                             default:
                                 break;

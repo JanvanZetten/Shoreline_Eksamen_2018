@@ -7,6 +7,7 @@ package shoreline_exam_2018.gui.model.profile;
 
 import shoreline_exam_2018.gui.model.profile.RuleView.RulePane;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -20,7 +21,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.Profile;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -233,6 +235,15 @@ public class StructurePane extends GridPane
     }
 
     /**
+     * Get Header Map.
+     * @return
+     */
+    public ObservableMap<String, Entry<Integer, String>> getHashMap()
+    {
+        return specification.getHeadersIndexAndExamples();
+    }
+
+    /**
      * Clear data.
      */
     private void clearData()
@@ -294,14 +305,26 @@ public class StructurePane extends GridPane
      * Load a structure to profile view.
      * @param structure
      */
-    public void loadStructure(List<StructEntityInterface> structure)
+    public void loadStructure(List<StructEntity> structure)
     {
         clearView();
         GridStructureConverter gsc = new GridStructureConverter(this);
         gsc.loadStructure(structure);
     }
 
-    public List<StructEntityInterface> getStructure()
+    public void loadProfile(Profile profile)
+    {
+        clearView();
+        loadProfile(profile.getStructure().getCollection(), profile);
+    }
+
+    void loadProfile(List<StructEntity> structure, Profile profile)
+    {
+        GridProfileConverter gpc = new GridProfileConverter(this);
+        gpc.loadProfile(structure, profile);
+    }
+
+    public List<StructEntity> getStructure()
     {
         return specification.getStructure();
     }

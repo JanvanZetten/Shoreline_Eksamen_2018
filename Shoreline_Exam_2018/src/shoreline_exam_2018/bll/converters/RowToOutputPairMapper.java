@@ -22,8 +22,8 @@ import shoreline_exam_2018.be.output.jsonpair.*;
 import shoreline_exam_2018.be.output.rule.DateFormatRule;
 import shoreline_exam_2018.be.output.rule.DefaultStringRule;
 import shoreline_exam_2018.be.output.structure.*;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.bll.BLLException;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -48,11 +48,11 @@ public class RowToOutputPairMapper
      */
     public List<OutputPair> mapInputObjectToOutputpairList(CollectionEntity structObject, InputObject inputObject) throws BLLException
     {
-        List<StructEntityInterface> collection = structObject.getCollection();
+        List<StructEntity> collection = structObject.getCollection();
 
         List<OutputPair> output = new ArrayList<>();
 
-        for (StructEntityInterface structEntry : collection)
+        for (StructEntity structEntry : collection)
         {
             try
             {
@@ -101,7 +101,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairArray getArray(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairArray getArray(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         List<OutputPair> jsonArray = mapInputObjectToOutputpairList((StructEntityArray) structEntry, inputObject);
         return new JsonPairArray(structEntry.getColumnName(), jsonArray);
@@ -114,7 +114,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairDate getDate(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairDate getDate(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         StructEntityDate se = (StructEntityDate) structEntry;
         InputField inputField = inputObject.getField(se.getInputIndex());
@@ -175,7 +175,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairDouble getDouble(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairDouble getDouble(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         StructEntityDouble se = (StructEntityDouble) structEntry;
         InputField inputField = inputObject.getField(se.getInputIndex());
@@ -235,7 +235,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairInteger getInteger(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairInteger getInteger(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         StructEntityInteger se = (StructEntityInteger) structEntry;
         InputField inputField = inputObject.getField(se.getInputIndex());
@@ -295,7 +295,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairJson getObject(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairJson getObject(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         List<OutputPair> jsonObject = mapInputObjectToOutputpairList((StructEntityObject) structEntry, inputObject);
         return new JsonPairJson(structEntry.getColumnName(), jsonObject);
@@ -308,7 +308,7 @@ public class RowToOutputPairMapper
      * @return
      * @throws BLLException
      */
-    private JsonPairString getString(StructEntityInterface structEntry, InputObject inputObject) throws BLLException
+    private JsonPairString getString(StructEntity structEntry, InputObject inputObject) throws BLLException
     {
         StructEntityString se = (StructEntityString) structEntry;
         InputField inputField = inputObject.getField(se.getInputIndex());

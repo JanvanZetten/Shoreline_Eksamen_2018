@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextField?>
@@ -11,91 +12,115 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ProfilesController">
+<AnchorPane id="AnchorPane" fx:id="anchorMain" prefHeight="400.0" prefWidth="600.0" stylesheets="@css/style.css" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shoreline_exam_2018.gui.controller.ProfilesController">
     <children>
-        <GridPane hgap="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
-            <columnConstraints>
-                <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
-                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="400.0" prefWidth="400.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" valignment="CENTER" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <GridPane hgap="5.0" vgap="5.0" GridPane.rowIndex="1">
-                    <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="ALWAYS" />
-                    </columnConstraints>
-                    <children>
-                        <Label id="WHITE" text="Profile Name:" />
-                        <TextField fx:id="txtFieldProfileName" GridPane.columnIndex="1" />
-                    </children>
-                    <GridPane.margin>
-                        <Insets />
-                    </GridPane.margin>
-                    <rowConstraints>
-                        <RowConstraints />
-                    </rowConstraints>
-                </GridPane>
-                <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                    <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-                        <ColumnConstraints hgrow="ALWAYS" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" />
-                    </columnConstraints>
-                    <children>
-                        <Label id="WHITE" text="Source File:" />
-                        <TextField fx:id="txtfieldSourcefile" editable="false" GridPane.columnIndex="1" />
-                        <Button fx:id="btnSource" mnemonicParsing="false" onAction="#handleSource" text="Browse" GridPane.columnIndex="2" />
-                    </children>
-                    <rowConstraints>
-                        <RowConstraints />
-                    </rowConstraints>
-                </GridPane>
-                <Label id="WHITE" text="New Profile" GridPane.columnSpan="2" />
-            </children>
-        </GridPane>
-        <GridPane maxHeight="60.0" minHeight="60.0" prefHeight="60.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
-            <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            </columnConstraints>
-            <rowConstraints>
-                <RowConstraints maxHeight="60.0" minHeight="60.0" prefHeight="60.0" vgrow="SOMETIMES" />
-            </rowConstraints>
-            <children>
-                <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="5.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" vgap="5.0" GridPane.columnIndex="1">
-                    <children>
-                        <Button fx:id="btnBack" mnemonicParsing="false" onAction="#handleBack" text="Back" />
-                        <Button mnemonicParsing="false" onAction="#handleSaveStructure" text="Save structure">
-                            <opaqueInsets>
-                                <Insets />
-                            </opaqueInsets>
-                        </Button>
-                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#handleSave" text="Save" />
-                    </children>
-                    <opaqueInsets>
-                        <Insets />
-                    </opaqueInsets>
-                </FlowPane>
-            </children>
-        </GridPane>
-        <AnchorPane fx:id="innerAnchor" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="95.0">
-            <children>
-                <SplitPane fx:id="splitPane" dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="anchorProfiles" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+              <GridPane maxHeight="40.0" minHeight="40.0" prefHeight="40.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0">
+                  <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                      <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                  <children>
+                      <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="5.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" vgap="5.0" GridPane.columnIndex="1">
+                          <children>
+                              <Button fx:id="btnBack" mnemonicParsing="false" onAction="#handleBack" text="Back" />
+                        <Button fx:id="btnDelete" mnemonicParsing="false" onAction="#handleDelete" text="Delete" />
+                              <Button fx:id="btnUpdate" mnemonicParsing="false" onAction="#handleUpdate" text="Update" />
+                          </children>
+                          <opaqueInsets>
+                              <Insets />
+                          </opaqueInsets>
+                      </FlowPane>
+                  </children>
+              </GridPane>
+                <SplitPane dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="48.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="5.0">
                     <items>
-                        <AnchorPane fx:id="paneHeader" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false" />
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" style="-fx-background-color: transparent;" SplitPane.resizableWithParent="false">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <Button fx:id="btnNewProfile" mnemonicParsing="false" onAction="#handleNewProfile" text="New Profile" />
+                              <ListView fx:id="listviewProfiles" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS" />
+                           </children>
+                           <padding>
+                              <Insets top="5.0" />
+                           </padding>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-                            <children>
-                                <ScrollPane fx:id="scrollMain" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                            </children>
+                     <children>
+                        <GridPane hgap="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <columnConstraints>
+                              <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="300.0" prefWidth="300.0" />
+                              <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="400.0" prefWidth="400.0" />
+                           </columnConstraints>
+                           <rowConstraints>
+                              <RowConstraints fillHeight="false" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" valignment="CENTER" vgrow="SOMETIMES" />
+                           </rowConstraints>
+                           <children>
+                              <GridPane hgap="5.0" vgap="5.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints halignment="RIGHT" hgrow="ALWAYS" maxWidth="100.0" minWidth="100.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                 </columnConstraints>
+                                 <children>
+                                    <Label id="WHITE" text="Profile Name:" />
+                                    <TextField fx:id="txtFieldProfileName" GridPane.columnIndex="1" />
+                                 </children>
+                                 <GridPane.margin>
+                                    <Insets />
+                                 </GridPane.margin>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                 </rowConstraints>
+                              </GridPane>
+                              <GridPane hgap="5.0" vgap="5.0" GridPane.columnIndex="1">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
+                                    <ColumnConstraints hgrow="ALWAYS" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="65.0" minWidth="65.0" prefWidth="65.0" />
+                                 </columnConstraints>
+                                 <children>
+                                    <Label id="WHITE" text="Source File:" />
+                                    <TextField fx:id="txtfieldSourcefile" editable="false" GridPane.columnIndex="1" />
+                                    <Button fx:id="btnSource" mnemonicParsing="false" onAction="#handleSource" text="Browse" GridPane.columnIndex="2" />
+                                 </children>
+                                 <rowConstraints>
+                                    <RowConstraints />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </GridPane>
+                        <AnchorPane fx:id="innerAnchor" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="38.0">
+                           <children>
+                              <SplitPane fx:id="splitPane" dividerPositions="0.2" prefHeight="160.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <items>
+                                    <AnchorPane fx:id="paneHeader" minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" SplitPane.resizableWithParent="false" />
+                                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                                       <children>
+                                          <ScrollPane fx:id="scrollMain" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                       </children>
+                                    </AnchorPane>
+                                 </items>
+                              </SplitPane>
+                           </children>
+                        </AnchorPane>
+                     </children>
                         </AnchorPane>
                     </items>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
                 </SplitPane>
-            </children>
-        </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="anchorNewProfile" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
     </children>
 </AnchorPane>

@@ -51,11 +51,11 @@ public class LogManager
      * @return
      * @throws BLLException
      */
-    public Log addLog(LogType type, String message, User creator) throws BLLException
+    public Log addLog(LogType type, String message) throws BLLException
     {
         try
         {
-            return dal.addLog(type, message, creator);
+            return dal.addLog(type, message);
         }
         catch (DALException ex)
         {

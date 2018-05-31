@@ -12,11 +12,12 @@ import javafx.collections.ObservableMap;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import shoreline_exam_2018.be.output.rule.DefaultRule;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.gui.model.profile.ProfileEntity;
 import shoreline_exam_2018.gui.model.profile.ProfileSpecification;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -27,7 +28,7 @@ public class RulePane extends GridPane
     private final ProfileSpecification specification;
     private final ObservableMap<String, Map.Entry<Integer, String>> headersIndexAndExamples;
     private final HashMap<Integer, String> headersIndexToName;
-    private final List<StructEntityInterface> structure;
+    private final List<StructEntity> structure;
     private final List<ProfileEntity> structureEntities;
 
     /**

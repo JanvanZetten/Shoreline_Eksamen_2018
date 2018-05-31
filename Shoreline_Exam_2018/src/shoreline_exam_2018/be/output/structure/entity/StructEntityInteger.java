@@ -14,8 +14,9 @@ import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
  */
 public class StructEntityInteger extends SimpleEntity
 {
-    public StructEntityInteger(String columnName, int inputIndex)
+    public StructEntityInteger(int id, String columnName, int inputIndex)
     {
+        this.id = id;
         this.columnName = columnName;
         this.inputIndex = inputIndex;
         sst = SimpleStructType.INTEGER;

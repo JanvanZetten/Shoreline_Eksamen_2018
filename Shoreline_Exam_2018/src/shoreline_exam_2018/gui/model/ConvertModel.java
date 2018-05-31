@@ -1,6 +1,7 @@
 package shoreline_exam_2018.gui.model;
 
 import java.io.File;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
@@ -24,10 +25,12 @@ import shoreline_exam_2018.gui.model.conversion.BoxMaker;
  *
  * @author alexl
  */
-public class ConvertModel {
+public class ConvertModel
+{
 
     private final BLLFacade bll;
     private final BoxMaker bMaker;
+    private ComboBox<Profile> profileCombobox;
 
     private ObservableList<Profile> profiles;
 
@@ -39,7 +42,8 @@ public class ConvertModel {
 
     private TextField outputField;
 
-    public ConvertModel() {
+    public ConvertModel()
+    {
         bll = BLLManager.getInstance();
         profiles = FXCollections.observableArrayList();
         bMaker = new BoxMaker();
@@ -50,7 +54,8 @@ public class ConvertModel {
      *
      * @return
      */
-    public String chooseFile() {
+    public String chooseFile()
+    {
 
         FileChooser.ExtensionFilter filter = new FileChooser.ExtensionFilter("Supported Files", "*.xlsx", "*.csv");
         FileChooser.ExtensionFilter xlsxfilter = new FileChooser.ExtensionFilter("XLSX Files", "*.xlsx");
@@ -69,7 +74,8 @@ public class ConvertModel {
 
         selectedFile = fc.showOpenDialog(null);
 
-        if (selectedFile != null) {
+        if (selectedFile != null)
+        {
 
             return selectedFile.toString();
         }
@@ -81,7 +87,8 @@ public class ConvertModel {
      *
      * @return the input path as a string.
      */
-    public String chooseDirectory() {
+    public String chooseDirectory()
+    {
         DirectoryChooser direcChosser = new DirectoryChooser();
 
         direcChosser.setTitle("Chosse input directory");
@@ -94,7 +101,8 @@ public class ConvertModel {
 
         selectedFile = direcChosser.showDialog(new Stage());
 
-        if (selectedFile != null) {
+        if (selectedFile != null)
+        {
             return selectedFile.toString();
         }
         return "";
@@ -105,7 +113,8 @@ public class ConvertModel {
      *
      * @return a string with the path
      */
-    public String chooseDestination() {
+    public String chooseDestination()
+    {
         DirectoryChooser dc = new DirectoryChooser();
 
         dc.setTitle("Chosse output directory");
@@ -118,7 +127,8 @@ public class ConvertModel {
 
         outputFile = dc.showDialog(null);
 
-        if (outputFile != null) {
+        if (outputFile != null)
+        {
             return outputFile.toString();
         }
 
@@ -131,27 +141,42 @@ public class ConvertModel {
      *
      * @param profileCombobox
      */
-    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox) {
-            profileCombobox.setItems(profiles);
-            try {
-                profiles.addAll(bll.getAllProfiles());
-            } catch (BLLException ex) {
-                LoggingHelper.logException(ex);
-                AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
+    public void loadProfilesInCombo(ComboBox<Profile> profileCombobox)
+    {
+        this.profileCombobox = profileCombobox;
+        profileCombobox.setItems(profiles);
+        try
+        {
+            profiles.addAll(bll.getAllProfiles());
+        }
+        catch (BLLException ex)
+        {
+            LoggingHelper.logException(ex);
+            AlertFactory.showWarning("Could not load Profiles", "The program was unable to load Profiles into the Combo Box. Please restart the program if you want to convert.");
+        }
+        profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
+        profileCombobox.setButtonCell(new profileListCell());
+
+        for (Profile profile : profileCombobox.getItems())
+        {
+            if (bll.getDefaultProfile() == profile.getId())
+            {
+                profileCombobox.getSelectionModel().select(profile);
             }
-            profileCombobox.setCellFactory((ListView<Profile> param) -> new profileListCell());
-            profileCombobox.setButtonCell(new profileListCell());
-            
-            
-            for (Profile profile : profileCombobox.getItems()) {
-                if (bll.getDefaultProfile() == profile.getId()) {
-                    profileCombobox.getSelectionModel().select(profile);
-                    System.out.println(profile.getId());
-                }
-                else {
-                    profileCombobox.getSelectionModel().selectFirst();
-                }
+            else
+            {
+                profileCombobox.getSelectionModel().selectFirst();
             }
+        }
+    }
+
+    /**
+     * Get Profiles Observable List.
+     * @return
+     */
+    ObservableList<Profile> getProfiles()
+    {
+        return profiles;
     }
 
     /**
@@ -159,8 +184,24 @@ public class ConvertModel {
      *
      * @param profile
      */
-    public void addProfile(Profile profile) {
+    public void addProfile(Profile profile)
+    {
         profiles.add(profile);
+    }
+
+    /**
+     * Replace Profile.
+     * @param replaceProfile
+     * @param newProfile
+     */
+    void setProfile(Profile replaceProfile, Profile newProfile)
+    {
+        if (profiles.contains(replaceProfile))
+        {
+            int index = profiles.indexOf(replaceProfile);
+            profiles.set(index, newProfile);
+            profileCombobox.getSelectionModel().select(index);
+        }
     }
 
     /**
@@ -170,7 +211,8 @@ public class ConvertModel {
      * @param listJobs
      * @return the conversion job that is started
      */
-    public ConversionBoxSingle StartSingleConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs) {
+    public ConversionBoxSingle StartSingleConversion(Profile currentProfile, ListView<ConversionBoxInterface> listJobs)
+    {
         return bMaker.createSingleBox(currentProfile, listJobs, selectedFile, outputFile);
     }
 
@@ -182,7 +224,8 @@ public class ConvertModel {
      * @param listMain
      * @return
      */
-    public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listMain) {
+    public ConversionBoxMulti StartMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> listMain)
+    {
         return bMaker.createMultiBox(currentProfile, listMain, selectedFile, outputFile);
     }
 
@@ -191,7 +234,8 @@ public class ConvertModel {
      *
      * @param outputField
      */
-    public void setDefaultOutputDir(TextField outputField) {
+    public void setDefaultOutputDir(TextField outputField)
+    {
         this.outputField = outputField;
         this.outputField.setText(bll.getDefaultDirectories()[0]);
         outputFile = new File(this.outputField.getText());
@@ -201,25 +245,32 @@ public class ConvertModel {
     /**
      * Checks if the default output has changed and sets it if it has.
      */
-    public void haveDefaultsChanged() {
-        if (!defaultOutputFileChecker.getPath().equals(bll.getDefaultDirectories()[0])) {
+    public void haveDefaultsChanged()
+    {
+        if (!defaultOutputFileChecker.getPath().equals(bll.getDefaultDirectories()[0]))
+        {
             outputField.setText(bll.getDefaultDirectories()[0]);
             outputFile = new File(outputField.getText());
             defaultOutputFileChecker = new File(outputField.getText());
         }
-        
+
     }
 }
 
 //Class for showing the right name in the comboboxes list and button
-class profileListCell extends ListCell<Profile> {
+class profileListCell extends ListCell<Profile>
+{
 
     @Override
-    protected void updateItem(Profile item, boolean empty) {
+    protected void updateItem(Profile item, boolean empty)
+    {
         super.updateItem(item, empty);
-        if (item == null || empty) {
+        if (item == null || empty)
+        {
             setGraphic(null);
-        } else {
+        }
+        else
+        {
             setText(item.getName());
         }
     }

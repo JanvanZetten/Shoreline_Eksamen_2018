@@ -168,7 +168,7 @@ public class ConversionTaskManager
 
             try
             {
-                bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + taskName, bll.getcurrentUser());
+                bll.addLog(LogType.CONVERSION, "User " + bll.getcurrentUser().getName() + " has succesfully converted " + taskName);
             }
             catch (BLLException ex)
             {

@@ -5,6 +5,8 @@
  */
 package shoreline_exam_2018.be;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 
@@ -14,12 +16,13 @@ import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
  * CreatedBy is the creator of the Profile.
  * @author Asbamz
  */
-public class Profile
+public class Profile implements Comparable<Profile>
 {
     private int id;
     private String name;
     private StructEntityObject structure;
     private String createdBy;
+    private HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples;
 
     /**
      * Constructor.
@@ -72,6 +75,24 @@ public class Profile
         return createdBy;
     }
 
+    /**
+     * Gets header map.
+     * @return
+     */
+    public HashMap<String, Map.Entry<Integer, String>> getHeadersIndexAndExamples()
+    {
+        return headersIndexAndExamples;
+    }
+
+    /**
+     * Sets header map.
+     * @param headersIndexAndExamples
+     */
+    public void setHeadersIndexAndExamples(HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples)
+    {
+        this.headersIndexAndExamples = headersIndexAndExamples;
+    }
+
     @Override
     public int hashCode()
     {
@@ -103,19 +124,22 @@ public class Profile
         {
             return false;
         }
-        if (!Objects.equals(this.name, other.name))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.createdBy, other.createdBy))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.structure, other.structure))
-        {
-            return false;
-        }
         return true;
     }
 
+    @Override
+    public String toString()
+    {
+        return name;
+    }
+
+    @Override
+    public int compareTo(Profile o)
+    {
+        if (name.equals(o.getName()))
+        {
+            return id - o.getId();
+        }
+        return name.compareTo(o.getName());
+    }
 }

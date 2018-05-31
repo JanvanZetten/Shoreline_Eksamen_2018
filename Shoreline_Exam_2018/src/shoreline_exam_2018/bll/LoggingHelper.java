@@ -17,28 +17,33 @@ import shoreline_exam_2018.dal.DALManager;
  *
  * @author janvanzetten
  */
-public class LoggingHelper {
-    
+public class LoggingHelper
+{
+
     private static DALFacade dal = new DALManager();
-    
-    
+
     /**
      * sends a message to the log with the message from the exception
-     * @param ex 
+     * @param ex
      */
-    public static void logException(Exception ex){
+    public static void logException(Exception ex)
+    {
         logException(ex.getMessage());
     }
-    
+
     /**
      * sends a message to the log with the message given
-     * @param Message 
+     * @param Message
      */
-    public static void logException(String Message){
+    public static void logException(String Message)
+    {
         User currentUser = dal.getCurrentUser();
-        try {
-            dal.addLog(LogType.ERROR, currentUser.getName() + " had an error: " + Message, currentUser);
-        } catch (DALException ex1) {
+        try
+        {
+            dal.addLog(LogType.ERROR, currentUser.getName() + " had an error: " + Message);
+        }
+        catch (DALException ex1)
+        {
             Logger.getLogger(LoggingHelper.class.getName()).log(Level.SEVERE, null, ex1);
         }
     }

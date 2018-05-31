@@ -11,7 +11,7 @@ import java.util.Objects;
  *
  * @author Asbamz
  */
-public class DefaultIntegerRule extends Rule<Integer, Integer>
+public class DefaultIntegerRule extends Rule<Integer, Integer> implements DefaultRule
 {
     private Integer defaultValue;
     private boolean isForced;
@@ -34,6 +34,7 @@ public class DefaultIntegerRule extends Rule<Integer, Integer>
         return item;
     }
 
+    @Override
     public boolean isForced()
     {
         return isForced;

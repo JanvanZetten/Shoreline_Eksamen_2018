@@ -21,35 +21,43 @@ import shoreline_exam_2018.bll.LoggingHelper;
  *
  * @author alexl
  */
-public class LoginModel {
+public class LoginModel
+{
 
     private BLLFacade bll;
 
-    public LoginModel() {
+    public LoginModel()
+    {
         bll = BLLManager.getInstance();
     }
 
     /**
      * Logs the user in. Displays an error if a wrong login atempt is made.
      */
-    public void attemptLogin(String username, String password, Parent root, Stage loginStage) {
-        try {
+    public void attemptLogin(String username, String password, Parent root, Stage loginStage)
+    {
+        try
+        {
             bll.login(username, password);
             openMainView(root, loginStage);
-        } catch (BLLException ex) {
+        }
+        catch (BLLException ex)
+        {
             LoggingHelper.logException(ex);
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
     }
 
     /**
-     * Opens the MainView on login. Closes the LoginView. Sets the user that has logged in.
-     * Also writes a log when succesfully logging in.
+     * Opens the MainView on login. Closes the LoginView. Sets the user that has
+     * logged in. Also writes a log when succesfully logging in.
      * @param root
-     * @param loginStage 
+     * @param loginStage
      */
-    private void openMainView(Parent root, Stage loginStage) {
-        try {
+    private void openMainView(Parent root, Stage loginStage)
+    {
+        try
+        {
             Scene mainScene = new Scene(root);
             Stage mainStage = new Stage();
             mainStage.setScene(mainScene);
@@ -58,16 +66,18 @@ public class LoginModel {
             mainStage.show();
             mainStage.setScene(mainScene);
             mainStage.centerOnScreen();
-            
+
             String ipaddress = InetAddress.getLocalHost().toString();
             String[] split = ipaddress.split("/");
-            
-            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in from the IP address " + split[1], bll.getcurrentUser());
-            
+
+            bll.addLog(LogType.LOGIN, "User " + bll.getcurrentUser().getName() + " has logged in from the IP address " + split[1]);
+
             loginStage.close();
-        } catch (BLLException | UnknownHostException ex) {
+        }
+        catch (BLLException | UnknownHostException ex)
+        {
             LoggingHelper.logException(ex);
             AlertFactory.showError("Could not open main view", ex.getMessage());
-        } 
+        }
     }
 }

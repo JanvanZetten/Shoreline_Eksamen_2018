@@ -8,7 +8,7 @@ package shoreline_exam_2018.bll.Utilities;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -21,9 +21,9 @@ public class StructEntityUtils
      * @param lst
      * @return
      */
-    public static boolean isAnyEntryNull(List<StructEntityInterface> lst)
+    public static boolean isAnyEntryNull(List<StructEntity> lst)
     {
-        for (StructEntityInterface entity : lst)
+        for (StructEntity entity : lst)
         {
             if (entity instanceof SimpleEntity)
             {

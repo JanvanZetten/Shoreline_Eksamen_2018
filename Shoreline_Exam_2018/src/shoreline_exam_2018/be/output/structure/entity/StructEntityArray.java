@@ -8,7 +8,7 @@ package shoreline_exam_2018.be.output.structure.entity;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  * Array Collection Entity.
@@ -16,8 +16,9 @@ import shoreline_exam_2018.be.output.structure.StructEntityInterface;
  */
 public class StructEntityArray extends CollectionEntity
 {
-    public StructEntityArray(String columnName, List<StructEntityInterface> collection)
+    public StructEntityArray(int id, String columnName, List<StructEntity> collection)
     {
+        this.id = id;
         this.columnName = columnName;
         this.collection = collection;
         this.cst = CollectionStructType.ARRAY;

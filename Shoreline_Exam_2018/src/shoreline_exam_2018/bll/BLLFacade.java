@@ -4,6 +4,7 @@ import shoreline_exam_2018.gui.model.conversion.ConversionBoxMulti;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
@@ -23,37 +24,36 @@ public interface BLLFacade
     /**
      * Starts a conversion with the given input and output file using the given
      * profile.
-     * @param taskName   = Name for the conversion job
-     * @param inputFile  = The input file that is being converted
+     * @param taskName = Name for the conversion job
+     * @param inputFile = The input file that is being converted
      * @param outputFile = The output file that is being converted to
-     * @param profile    = The profile that is used for the conversion
-     * @param listJobs   = The list in which the conversion job is contained
-     * @param cMultiJob  = The multi job object if one exists. Only used when folder converting, else, null
+     * @param profile = The profile that is used for the conversion
+     * @param listJobs = The list in which the conversion job is contained
+     * @param cMultiJob = The multi job object if one exists. Only used when
+     * folder converting, else, null
      * @return = A single conversion job.
      * @throws BLLException
      */
 //    public ConversionBoxSingle startSingleConversion(String taskName, Path inputFile, Path outputFile, Profile profile, ListView<ConversionBoxInterface> listJobs, ConversionBoxMulti cMultiJob) throws BLLException;
-    
     /**
      * Creates a ConversionBoxMulti through COnversionManager.
-     * @param currentProfile  = The profile that is used for the conversion.
-     * @param list            = The list in which the individual single conversion jobs are contained.
+     * @param currentProfile = The profile that is used for the conversion.
+     * @param list = The list in which the individual single conversion jobs are
+     * contained.
      * @return = A multi conversion job.
-     * @throws BLLException 
+     * @throws BLLException
      */
 //    public ConversionBoxMulti startMultiConversion(Profile currentProfile, ListView<ConversionBoxInterface> list) throws BLLException;
-    
-    
     /**
      * Adds a profile to the database.
      * @param name = Name of the profile.
      * @param structure = The StructEntityObject that determines how it should
      * convert.
-     * @param createdBy = ID of the user who created the profile.
+     * @param headersIndexAndExamples = The headers used creating Profile.
      * @return = The profile that was made with this method.
      * @throws BLLException
      */
-    public Profile addProfile(String name, StructEntityObject structure) throws BLLException;
+    public Profile addProfile(String name, StructEntityObject structure, HashMap<String, Map.Entry<Integer, String>> headersIndexAndExamples) throws BLLException;
 
     /**
      * Gets all profiles from the database and returns them in a list.
@@ -80,6 +80,20 @@ public interface BLLFacade
     public List<StructEntityObject> getAllStructures() throws BLLException;
 
     /**
+     * Deletes given Profile from the database.s
+     * @param profile
+     * @throws BLLException
+     */
+    public void deleteProfile(Profile profile) throws BLLException;
+
+    /**
+     * Updates Profile with given id.
+     * @param profile
+     * @throws BLLException
+     */
+    public Profile updateProfile(Profile profile) throws BLLException;
+
+    /**
      * Returns a hashmap that shows headers and examples when creating a
      * profile.
      * @param path = The path to the file.
@@ -90,7 +104,7 @@ public interface BLLFacade
 
     /**
      * Attempts to log the user in. If it fails, it throws back an exception.
-     * @param username 
+     * @param username
      * @param password
      * @return
      * @throws BLLException
@@ -108,57 +122,57 @@ public interface BLLFacade
     /**
      * Gets a list of logs from the database
      * @return
-     * @throws BLLException 
+     * @throws BLLException
      */
     public List<Log> getAllLogs() throws BLLException;
 
     /**
      * Adds a new log to the database.
-     * @param type     = The type of the log
-     * @param message  = The message of the log
-     * @param creator  = The user who caused the log
+     * @param type = The type of the log
+     * @param message = The message of the log
+     * @param creator = The user who caused the log
      * @return
-     * @throws BLLException 
+     * @throws BLLException
      */
-    public Log addLog(LogType type, String message, User creator) throws BLLException;
+    public Log addLog(LogType type, String message) throws BLLException;
 
     /**
      * Gets the current user of the program
-     * @return 
+     * @return
      */
     public User getcurrentUser();
 
     /**
      * Creates a listener for the log that updates the log list automatically.
-     * @param aThis 
+     * @param aThis
      */
     public void createChangeListener(AutoUpdater aThis);
 
     /**
      * Gets the newest log in the database to update the log list.
      * @return
-     * @throws BLLException 
+     * @throws BLLException
      */
     public int getNewestLog() throws BLLException;
 
     /**
      * Updates the default directory of the chose type (input and output).
-     * @param directory  = [Type of directory, file path]
-     * @throws BLLException 
+     * @param directory = [Type of directory, file path]
+     * @throws BLLException
      */
     public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException;
 
     /**
-     * Adds default output from the properties on start-up so that it
-     * can be gotten later.
-     * @param outputValue  = Path of output
+     * Adds default output from the properties on start-up so that it can be
+     * gotten later.
+     * @param outputValue = Path of output
      */
     public void addDefaultOutput(String outputValue);
-    
+
     /**
-     * Adds default input from the properties on start-up so that it
-     * can be gotten later.
-     * @param inputValue  = Path of output
+     * Adds default input from the properties on start-up so that it can be
+     * gotten later.
+     * @param inputValue = Path of output
      */
     public void addDefaultInput(String inputValue);
 
@@ -169,26 +183,27 @@ public interface BLLFacade
     public String[] getDefaultDirectories();
 
     /**
-     * Adds a listener to a ConversionBoxMulti that is currently active. 
+     * Adds a listener to a ConversionBoxMulti that is currently active.
      * @param conversionBoxMulti = The ConversionBoxMulti object
-     * @param inputPath          = The input path
-     * @param outputPath         = The output path
-     * @param cManager           = The ConversionBoxManager object needed to create new COnversionJobSingles
-     * @throws BLLException 
+     * @param inputPath = The input path
+     * @param outputPath = The output path
+     * @param cManager = The ConversionBoxManager object needed to create new
+     * COnversionJobSingles
+     * @throws BLLException
      */
     public void addDirectoryListener(ConversionBoxMulti conversionBoxMulti, Path inputPath, Path outputPath, ConversionBoxManager cManager) throws BLLException;
 
     /**
-     * Is called whenever tab focus is changed. Checks for ConvertModel if
-     * a new default path has been set in SettingsView.
+     * Is called whenever tab focus is changed. Checks for ConvertModel if a new
+     * default path has been set in SettingsView.
      * @param outputPath = The default output path.
-     * @return 
+     * @return
      */
     public Path checkForExisting(Path outputPath);
 
     public void updateDefaultProfile(String[] profile) throws BLLException;
 
     public void addDefaultProfile(String string) throws BLLException;
-    
+
     public int getDefaultProfile();
 }

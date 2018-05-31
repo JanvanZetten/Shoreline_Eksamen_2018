@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.SimpleEntity;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityArray;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDouble;
@@ -25,6 +24,7 @@ import shoreline_exam_2018.be.output.structure.type.CollectionStructType;
 import shoreline_exam_2018.be.output.structure.type.SimpleStructType;
 import shoreline_exam_2018.dal.DALException;
 import shoreline_exam_2018.dal.database.connection.DBConnectorPool;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -67,7 +67,7 @@ public class StructureDAO
             rs.next();
             id = rs.getInt(1);
 
-            for (StructEntityInterface structEntryInterface : structure.getCollection())
+            for (StructEntity structEntryInterface : structure.getCollection())
             {
                 if (structEntryInterface instanceof CollectionEntity)
                 {
@@ -183,7 +183,7 @@ public class StructureDAO
      * @return
      * @throws SQLException
      */
-    private int addListOfStructEntries(int id, List<StructEntityInterface> seiLst) throws SQLException
+    private int addListOfStructEntries(int id, List<StructEntity> seiLst) throws SQLException
     {
         Connection con = null;
 
@@ -202,7 +202,7 @@ public class StructureDAO
             rs.next();
             id = rs.getInt(1);
 
-            for (StructEntityInterface structEntryInterface : seiLst)
+            for (StructEntity structEntryInterface : seiLst)
             {
                 if (structEntryInterface instanceof SimpleEntity)
                 {
@@ -243,9 +243,9 @@ public class StructureDAO
 
             while (rs.next())
             {
-                int profileId = rs.getInt("id");
+                int id = rs.getInt("id");
                 String name = rs.getString("name");
-                StructEntityObject structure = new StructEntityObject(name, getStructure(profileId));
+                StructEntityObject structure = new StructEntityObject(id, name, getStructure(id));
 
                 structures.add(structure);
 
@@ -269,9 +269,9 @@ public class StructureDAO
      * @return
      * @throws SQLException
      */
-    private List<StructEntityInterface> getStructure(int structureId) throws SQLException
+    private List<StructEntity> getStructure(int structureId) throws SQLException
     {
-        List<StructEntityInterface> lst = new ArrayList<>();
+        List<StructEntity> lst = new ArrayList<>();
         Connection con = null;
 
         try
@@ -290,32 +290,33 @@ public class StructureDAO
 
             StructEntityObject seo;
 
-            List<StructEntityInterface> simples = new ArrayList<>();
-            List<StructEntityInterface> objects = new ArrayList<>();
-            List<StructEntityInterface> arrays = new ArrayList<>();
+            List<StructEntity> simples = new ArrayList<>();
+            List<StructEntity> objects = new ArrayList<>();
+            List<StructEntity> arrays = new ArrayList<>();
 
             int id;
             String sst;
 
             while (rs.next())
             {
+                id = rs.getInt("id");
                 sst = rs.getString("sst");
 
                 if (sst.equalsIgnoreCase(SimpleStructType.DATE.name()))
                 {
-                    simples.add(new StructEntityDate(rs.getString("columnName"), -1));
+                    simples.add(new StructEntityDate(id, rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.DOUBLE.name()))
                 {
-                    simples.add(new StructEntityDouble(rs.getString("columnName"), -1));
+                    simples.add(new StructEntityDouble(id, rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.INTEGER.name()))
                 {
-                    simples.add(new StructEntityInteger(rs.getString("columnName"), -1));
+                    simples.add(new StructEntityInteger(id, rs.getString("columnName"), -1));
                 }
                 else if (sst.equalsIgnoreCase(SimpleStructType.STRING.name()))
                 {
-                    simples.add(new StructEntityString(rs.getString("columnName"), -1));
+                    simples.add(new StructEntityString(id, rs.getString("columnName"), -1));
                 }
             }
 
@@ -333,7 +334,7 @@ public class StructureDAO
             {
                 id = rs.getInt("id");
 
-                objects.add(new StructEntityObject(rs.getString("columnName"), getStructure(rs.getInt("otsId"))));
+                objects.add(new StructEntityObject(id, rs.getString("columnName"), getStructure(rs.getInt("otsId"))));
             }
 
             /*
@@ -350,7 +351,7 @@ public class StructureDAO
             {
                 id = rs.getInt("id");
 
-                arrays.add(new StructEntityArray(rs.getString("columnName"), getStructure(rs.getInt("atsId"))));
+                arrays.add(new StructEntityArray(id, rs.getString("columnName"), getStructure(rs.getInt("atsId"))));
             }
 
             lst.addAll(simples);

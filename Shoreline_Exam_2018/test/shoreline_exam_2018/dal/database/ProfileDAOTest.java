@@ -16,7 +16,7 @@ import shoreline_exam_2018.be.output.structure.CollectionEntity;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityDate;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityObject;
 import shoreline_exam_2018.be.output.structure.entity.StructEntityString;
-import shoreline_exam_2018.be.output.structure.StructEntityInterface;
+import shoreline_exam_2018.be.output.structure.StructEntity;
 
 /**
  *
@@ -85,7 +85,7 @@ public class ProfileDAOTest
         for (Profile profile : profiles)
         {
             System.out.println(profile.getName() + " " + profile.getStructure().getCollection().size());
-            for (StructEntityInterface structEntryInterface : profile.getStructure().getCollection())
+            for (StructEntity structEntryInterface : profile.getStructure().getCollection())
             {
                 System.out.println(structEntryInterface);
             }
