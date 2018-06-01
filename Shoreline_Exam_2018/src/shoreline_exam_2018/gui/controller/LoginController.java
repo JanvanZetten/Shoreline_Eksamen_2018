@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package shoreline_exam_2018.gui.controller;
 
 import java.net.URL;
@@ -11,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -28,8 +22,6 @@ public class LoginController implements Initializable {
     private TextField textfieldUsername;
     @FXML
     private TextField textviewPassword;
-    @FXML
-    private Button buttonLogin;
     
     private LoginModel model;
     private Parent preloadMainView;
