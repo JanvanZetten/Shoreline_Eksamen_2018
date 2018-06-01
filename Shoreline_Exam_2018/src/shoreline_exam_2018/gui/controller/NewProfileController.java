@@ -48,6 +48,8 @@ public class NewProfileController implements Initializable
     @FXML
     private Button btnBack;
     @FXML
+    private Button btnSaveStructure;
+    @FXML
     private Button btnSave;
 
     /**
@@ -58,7 +60,7 @@ public class NewProfileController implements Initializable
     {
         Platform.runLater(() ->
         {
-            npm = new NewProfileModel(anchorMain, txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, paneHeader, scrollMain, btnBack, btnSave);
+            npm = new NewProfileModel(anchorMain, txtFieldProfileName, txtfieldSourcefile, btnSource, innerAnchor, splitPane, paneHeader, scrollMain, btnBack, btnSaveStructure, btnSave);
         });
     }
 

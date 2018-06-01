@@ -70,7 +70,7 @@
                 <FlowPane alignment="CENTER_RIGHT" columnHalignment="RIGHT" hgap="5.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="200.0" prefWidth="200.0" vgap="5.0" GridPane.columnIndex="1">
                     <children>
                         <Button fx:id="btnBack" mnemonicParsing="false" onAction="#handleBack" text="Back" />
-                        <Button mnemonicParsing="false" onAction="#handleSaveStructure" text="Save structure">
+                        <Button fx:id="btnSaveStructure" mnemonicParsing="false" onAction="#handleSaveStructure" text="Save structure">
                             <opaqueInsets>
                                 <Insets />
                             </opaqueInsets>

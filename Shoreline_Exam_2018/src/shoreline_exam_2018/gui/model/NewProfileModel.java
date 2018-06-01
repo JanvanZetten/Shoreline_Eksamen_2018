@@ -47,6 +47,7 @@ public class NewProfileModel
     private AnchorPane paneHeader; // Pane to show headers.
     private ScrollPane scrollMain; // ScrollPane for StructurePane.
     private Button btnBack; // Back Button.
+    private Button btnSaveStructure; // Save as default structure.
     private Button btnSave; // Save Button.
     private ConvertModel cm; // Convert Model to add Profile to ComboBox.
     private Tab tabConvert; // Tab for convert view for switching tab on success.
@@ -59,7 +60,7 @@ public class NewProfileModel
     /**
      * Takes Profile Edit GridPane as parameter. Uses BLLManager.
      */
-    public NewProfileModel(AnchorPane anchorMain, TextField txtFieldProfileName, TextField txtfieldSourcefile, Button btnSource, AnchorPane innerAnchor, SplitPane splitPane, AnchorPane paneHeader, ScrollPane scrollMain, Button btnBack, Button btnSave)
+    public NewProfileModel(AnchorPane anchorMain, TextField txtFieldProfileName, TextField txtfieldSourcefile, Button btnSource, AnchorPane innerAnchor, SplitPane splitPane, AnchorPane paneHeader, ScrollPane scrollMain, Button btnBack, Button btnSaveStructure, Button btnSave)
     {
         this.bll = BLLManager.getInstance();
 
@@ -73,6 +74,9 @@ public class NewProfileModel
         this.scrollMain = scrollMain;
         this.btnBack = btnBack;
         this.btnBack.setVisible(false);
+        this.btnSaveStructure = btnSaveStructure;
+        this.btnSaveStructure.setVisible(false);
+        this.btnSaveStructure.setManaged(false);
         this.btnSave = btnSave;
         this.btnSave.setText("Next");
 
