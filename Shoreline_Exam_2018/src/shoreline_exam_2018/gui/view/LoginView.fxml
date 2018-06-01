@@ -40,8 +40,8 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <TextField fx:id="textfieldUsername" onAction="#handleLogin" promptText="Username..." text="alex" GridPane.rowIndex="1" />
-                  <PasswordField fx:id="textviewPassword" onAction="#handleLogin" text="123" GridPane.rowIndex="3" />
+                  <TextField fx:id="textfieldUsername" onAction="#handleLogin" promptText="Username..." text="guest" GridPane.rowIndex="1" />
+                  <PasswordField fx:id="textviewPassword" onAction="#handleLogin" text="guest" GridPane.rowIndex="3" />
                   <Label id="WHITE" text="Username:" GridPane.halignment="LEFT" />
                   <Label id="WHITE" text="Password:" GridPane.halignment="LEFT" GridPane.rowIndex="2" />
                </children>

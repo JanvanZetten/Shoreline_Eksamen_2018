@@ -13,7 +13,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
-import javafx.scene.control.ListView;
 import shoreline_exam_2018.be.Log;
 import shoreline_exam_2018.be.LogType;
 import shoreline_exam_2018.be.Profile;
@@ -27,8 +26,6 @@ import shoreline_exam_2018.dal.DALManager;
 import shoreline_exam_2018.dal.directorylistener.DirectoryListenerManager;
 import shoreline_exam_2018.gui.model.AlertFactory;
 import shoreline_exam_2018.gui.model.AutoUpdater;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxInterface;
-import shoreline_exam_2018.gui.model.conversion.ConversionBoxSingle;
 
 /**
  *
