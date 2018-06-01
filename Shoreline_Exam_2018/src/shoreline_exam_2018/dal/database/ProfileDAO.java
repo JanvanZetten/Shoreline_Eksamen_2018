@@ -100,8 +100,15 @@ public class ProfileDAO
             dbcp.checkIn(con);
         }
 
-        profile = new Profile(id, name, structure, String.valueOf(createdBy));
-        return profile;
+        // Make new references.
+        List<StructEntity> entities = new ArrayList<>();
+        entities.addAll(structure.getCollection());
+        StructEntityObject newStructure = new StructEntityObject(id, name, entities);
+        Profile newProfile = new Profile(id, name, newStructure, String.valueOf(createdBy));
+        HashMap<String, Entry<Integer, String>> newHeaderIndexExample = new HashMap<>();
+        newHeaderIndexExample.putAll(headersIndexAndExamples);
+        newProfile.setHeadersIndexAndExamples(newHeaderIndexExample);
+        return newProfile;
     }
 
     /**

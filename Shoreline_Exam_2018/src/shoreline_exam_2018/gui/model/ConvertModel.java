@@ -187,6 +187,7 @@ public class ConvertModel
     public void addProfile(Profile profile)
     {
         profiles.add(profile);
+        profileCombobox.getSelectionModel().select(profiles.indexOf(profile));
     }
 
     /**
