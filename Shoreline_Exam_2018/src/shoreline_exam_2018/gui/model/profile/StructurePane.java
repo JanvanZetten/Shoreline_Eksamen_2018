@@ -7,7 +7,6 @@ package shoreline_exam_2018.gui.model.profile;
 
 import shoreline_exam_2018.gui.model.profile.RuleView.RulePane;
 import java.util.List;
-import java.util.Map;
 import java.util.Map.Entry;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -312,33 +311,58 @@ public class StructurePane extends GridPane
         gsc.loadStructure(structure);
     }
 
+    /**
+     * Load Profile to the View.
+     * @param profile
+     */
     public void loadProfile(Profile profile)
     {
         clearView();
         loadProfile(profile.getStructure().getCollection(), profile);
     }
 
+    /**
+     * Load Structure with Profile to the View.
+     * @param structure
+     * @param profile
+     */
     void loadProfile(List<StructEntity> structure, Profile profile)
     {
         GridProfileConverter gpc = new GridProfileConverter(this);
         gpc.loadProfile(structure, profile);
     }
 
+    /**
+     * Gets the Structure.
+     * @return
+     */
     public List<StructEntity> getStructure()
     {
         return specification.getStructure();
     }
 
+    /**
+     * Get master listener.
+     * @return
+     */
     ChangeListener getMasterListener()
     {
         return masterListener;
     }
 
+    /**
+     * Removes node from this GridPane.
+     * @param node
+     */
     void removeNode(Node node)
     {
         this.getChildren().remove(node);
     }
 
+    /**
+     * Creates a rule pane with the information from this Structure.
+     * @return
+     */
     public GridPane createRuleView()
     {
         return new RulePane(specification);

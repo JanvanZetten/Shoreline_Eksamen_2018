@@ -220,6 +220,10 @@ public class ProfileEntityCollection extends ProfileEntity
         this.index = index;
     }
 
+    /**
+     * Returns the StructurePane.
+     * @return
+     */
     public StructurePane getCollection()
     {
         return collection;

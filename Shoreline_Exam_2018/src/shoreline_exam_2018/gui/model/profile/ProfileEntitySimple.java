@@ -281,11 +281,19 @@ public class ProfileEntitySimple extends ProfileEntity
         return nodes;
     }
 
+    /**
+     * Get fromHeader.
+     * @return
+     */
     public TextField getFromHeader()
     {
         return fromHeader;
     }
 
+    /**
+     * Get example.
+     * @return
+     */
     public Label getExample()
     {
         return example;
