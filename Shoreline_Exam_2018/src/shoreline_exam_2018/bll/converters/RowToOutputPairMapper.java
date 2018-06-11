@@ -193,10 +193,10 @@ public class RowToOutputPairMapper
             Double fieldValue = null;
             if (inputField.getType() == InputFieldType.STRING)
             {
-                fieldValue = Double.parseDouble(inputField.getStringValue());
+                fieldValue = parseDouble(inputField.getStringValue());
                 if (fieldValue == null && backupField != null)
                 {
-                    fieldValue = Double.parseDouble(backupField.getStringValue());
+                    fieldValue = parseDouble(backupField.getStringValue());
                 }
                 if (fieldValue == null)
                 {
@@ -253,10 +253,10 @@ public class RowToOutputPairMapper
             Integer fieldValue = null;
             if (inputField.getType() == InputFieldType.STRING)
             {
-                fieldValue = Integer.parseInt(inputField.getStringValue());
+                fieldValue = parseInt(inputField.getStringValue());
                 if (fieldValue == null && backupField != null)
                 {
-                    fieldValue = Integer.parseInt(backupField.getStringValue());
+                    fieldValue = parseInt(backupField.getStringValue());
                 }
                 if (fieldValue == null)
                 {
@@ -366,6 +366,32 @@ public class RowToOutputPairMapper
         else
         {
             throw new BLLException("The field is missing or has wrong data type, check profile");
+        }
+    }
+
+    private int parseInt(String str) throws BLLException
+    {
+        try
+        {
+            int i = Integer.parseInt(str);
+            return i;
+        }
+        catch (NumberFormatException ex)
+        {
+            throw new BLLException(ex.getMessage(), ex.getCause());
+        }
+    }
+
+    private Double parseDouble(String str) throws BLLException
+    {
+        try
+        {
+            Double d = Double.parseDouble(str);
+            return d;
+        }
+        catch (NumberFormatException ex)
+        {
+            throw new BLLException(ex.getMessage(), ex.getCause());
         }
     }
 }
