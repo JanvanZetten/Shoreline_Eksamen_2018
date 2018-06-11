@@ -33,20 +33,18 @@ public abstract class autoCloseableReader implements Reader
                 try
                 {
                     Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(autoCloseableReader.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                catch (InterruptedException ex)
-                {
-                    Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
             }
             try
             {
                 closeMainStream();
+            } catch (DALException ex) {
+                Logger.getLogger(autoCloseableReader.class.getName()).log(Level.SEVERE, null, ex);
             }
-            catch (DALException ex)
-            {
-                Logger.getLogger(XLSX_horisontal_Reader_for_Big_Documents.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            
         });
 
         thread.setDaemon(true);

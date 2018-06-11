@@ -41,7 +41,8 @@ public class ConverterTask extends Task
     Path inputFile;
     Path outputFile;
 
-    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile, MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
+    public ConverterTask(Profile selectedProfile, Path inputFile, Path outputFile,
+            MutableBoolean isCanceld, MutableBoolean isOperating, BooleanProperty isDone) throws BLLException
     {
         String filetype = FileUtils.getFiletype(inputFile);
         try
@@ -70,7 +71,7 @@ public class ConverterTask extends Task
         catch (DALException ex)
         {
             throw new BLLException(ex.getMessage(), ex.getCause());
-        }
+         }
     }
 
     @Override

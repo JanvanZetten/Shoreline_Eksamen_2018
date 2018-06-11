@@ -82,14 +82,18 @@ public class ConvertController implements Initializable {
         File input = new File(inputField.getText());
 
         if (input.isFile()) {
-            ConversionBoxSingle StartConversion = model.StartSingleConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
+            ConversionBoxSingle StartConversion = model.StartSingleConversion(
+                    profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
+            
             if (StartConversion != null) {
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");
             }
         }
         else if (input.isDirectory()) {
-            ConversionBoxMulti StartConversion = model.StartMultiConversion(profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
+            ConversionBoxMulti StartConversion = model.StartMultiConversion(
+                    profileCombobox.getSelectionModel().getSelectedItem(), listJobs);
+            
             if (StartConversion != null) {
                 listJobs.getItems().add(StartConversion);
                 inputField.setText("");

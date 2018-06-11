@@ -140,7 +140,8 @@ public class RowToOutputPairMapper
                 }
                 if (date == null)
                 {
-                    throw new BLLException("It was not possible to convert " + inputField.getStringValue() + " to a Date using " + dateFormat.getDateFormat() + " DateFormat.");
+                    throw new BLLException("It was not possible to convert " + inputField.getStringValue() +
+                            " to a Date using " + dateFormat.getDateFormat() + " DateFormat.");
                 }
             }
             else
@@ -158,7 +159,8 @@ public class RowToOutputPairMapper
             }
             else
             {
-                throw new BLLException("Was not able to get Date: " + se.getInputIndex() + ":" + se.getColumnName() + ":" + inputField.getValue());
+                throw new BLLException("Was not able to get Date: " + se.getInputIndex() + ":" + se.getColumnName() +
+                        ":" + inputField.getValue());
             }
 
         }
@@ -214,7 +216,8 @@ public class RowToOutputPairMapper
 
             if (((StructEntityDouble) structEntry).getDefaultValue() != null)
             {
-                return new JsonPairDouble(structEntry.getColumnName(), (Double) ((StructEntityDouble) structEntry).getDefaultValue()
+                return new JsonPairDouble(structEntry.getColumnName(), (Double) ((StructEntityDouble) structEntry)
+                        .getDefaultValue()
                         .applyRuleOn(fieldValue));
             }
             else
@@ -274,7 +277,8 @@ public class RowToOutputPairMapper
 
             if (((StructEntityInteger) structEntry).getDefaultValue() != null)
             {
-                return new JsonPairInteger(structEntry.getColumnName(), (Integer) ((StructEntityInteger) structEntry).getDefaultValue()
+                return new JsonPairInteger(structEntry.getColumnName(), (Integer) ((StructEntityInteger) structEntry)
+                        .getDefaultValue()
                         .applyRuleOn(fieldValue));
             }
             else

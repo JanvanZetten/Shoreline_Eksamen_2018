@@ -118,7 +118,7 @@ public class XLSX_horisontal_Reader_for_Big_Documents extends autoCloseableReade
         timeouttime = System.currentTimeMillis() + EXPIRATION_TIME;
         if (!open) {
             mainWorkbook = openStream();
-
+            makeTimeout();
             open = true;
         }
         
