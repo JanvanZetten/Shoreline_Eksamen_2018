@@ -43,7 +43,6 @@ public class LoginModel
         }
         catch (BLLException ex)
         {
-            LoggingHelper.logException(ex);
             AlertFactory.showError("Wrong information", "The username and password combination doesn't exist. Please try again.");
         }
     }
