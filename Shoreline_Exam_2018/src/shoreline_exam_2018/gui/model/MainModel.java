@@ -34,7 +34,7 @@ public class MainModel {
     public MainModel() {
         bll = BLLManager.getInstance();
         File f = new File("properties.properties");
-        if (f.exists() && !f.isDirectory()) {
+        if (f.exists()) {
             PropertiesReader propRead = new PropertiesReader();
         } else {
             createNewProperties();

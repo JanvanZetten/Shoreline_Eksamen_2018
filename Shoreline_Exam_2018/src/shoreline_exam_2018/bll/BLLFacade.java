@@ -134,6 +134,8 @@ public interface BLLFacade
     /**
      * Updates the default directory of the chose type (input and output).
      * @param directory = [Type of directory, file path]
+     * @param input
+     * @param output
      * @throws BLLException
      */
     public void updateDefaultDirectory(String[] directory, String input, String output) throws BLLException;

@@ -6,7 +6,6 @@
 package shoreline_exam_2018.be;
 
 import java.util.Date;
-import java.util.Objects;
 
 /**
  * Business Entity representation of a Log.
@@ -52,57 +51,6 @@ public class Log
     public Date getDate()
     {
         return date;
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 5;
-        hash = 37 * hash + this.id;
-        hash = 37 * hash + Objects.hashCode(this.type);
-        hash = 37 * hash + Objects.hashCode(this.message);
-        hash = 37 * hash + Objects.hashCode(this.createdBy);
-        hash = 37 * hash + Objects.hashCode(this.date);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj)
-        {
-            return true;
-        }
-        if (obj == null)
-        {
-            return false;
-        }
-        if (getClass() != obj.getClass())
-        {
-            return false;
-        }
-        final Log other = (Log) obj;
-        if (this.id != other.id)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.message, other.message))
-        {
-            return false;
-        }
-        if (this.type != other.type)
-        {
-            return false;
-        }
-        if (!Objects.equals(this.createdBy, other.createdBy))
-        {
-            return false;
-        }
-        if (!Objects.equals(this.date, other.date))
-        {
-            return false;
-        }
-        return true;
     }
 
 }
